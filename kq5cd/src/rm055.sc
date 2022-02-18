@@ -570,7 +570,7 @@ code_063f:
 			)
 			(6
 				(theAudio number: 9300 play:)
-				(door setCycle: Beg self)
+				(door setCycle: BegLoop self)
 			)
 			(7
 				(HandsOn)
@@ -607,33 +607,33 @@ code_063f:
 		(if (!= theRegister register)
 			(switch theRegister
 				(1
-					(client loop: 4 cel: 0 setCycle: End)
+					(client loop: 4 cel: 0 setCycle: EndLoop)
 				)
 				(2
 					(if (== register 1)
-						(client setCycle: Beg)
+						(client setCycle: BegLoop)
 					else
-						(client loop: 0 cel: 0 setCycle: End)
+						(client loop: 0 cel: 0 setCycle: EndLoop)
 					)
 				)
 				(3
 					(if (== register 2)
 						(client setLoop: 0)
-						(client cel: (client lastCel:) setCycle: Beg)
+						(client cel: (client lastCel:) setCycle: BegLoop)
 					else
 						(client setLoop: 1)
-						(client cel: (client lastCel:) setCycle: Beg)
+						(client cel: (client lastCel:) setCycle: BegLoop)
 					)
 				)
 				(4
 					(if (== register 5)
-						(client setCycle: Beg)
+						(client setCycle: BegLoop)
 					else
-						(client loop: 1 cel: 0 setCycle: End)
+						(client loop: 1 cel: 0 setCycle: EndLoop)
 					)
 				)
 				(5
-					(client loop: 5 cel: 0 setCycle: End)
+					(client loop: 5 cel: 0 setCycle: EndLoop)
 				)
 			)
 			(= register theRegister)
@@ -684,13 +684,13 @@ code_063f:
 					setLoop: 6
 					cel: 0
 					cycleSpeed: 3
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(2
 				((ego head?) dispose:)
 				(ego dispose:)
-				(dink setCycle: End self)
+				(dink setCycle: EndLoop self)
 			)
 			(3
 				(= seconds 1)
@@ -720,7 +720,7 @@ code_063f:
 					setMotion: PolyPath (- (dink x?) 20) (dink y?) self
 				)
 				(if (and (== (dink loop?) 4) (!= (dink cel?) 0))
-					(dink setCycle: Beg self)
+					(dink setCycle: BegLoop self)
 				else
 					(= cycles 1)
 				)
@@ -757,7 +757,7 @@ code_063f:
 					cel: 0
 					cycleSpeed: 1
 					setPri: (+ (dink priority?) 1)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(UnLoad 132 50)
 			)
@@ -778,20 +778,20 @@ code_063f:
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(5 (dink setCycle: End self))
-			(6 (dink setCycle: End self))
+			(5 (dink setCycle: EndLoop self))
+			(6 (dink setCycle: EndLoop self))
 			(7
-				(dink view: 874 setLoop: 3 cel: 0 setCycle: Fwd)
+				(dink view: 874 setLoop: 3 cel: 0 setCycle: Forward)
 				(= seconds 5)
 			)
 			(8
 				(theMusic number: 888 loop: 1 playBed:)
 				(UnLoad 132 890)
 				(DoAudio 1 8889)
-				(dink view: 1060 setLoop: 0 cel: 0 setCycle: End self)
+				(dink view: 1060 setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(9
 				(theAudio number: 8889 loop: 1 play:)
@@ -804,7 +804,7 @@ code_063f:
 				(= hairPinY (hairPin y?))
 				(= local24 global384)
 				(= local25 global385)
-				(dink view: 873 setLoop: 4 cel: 0 setCycle: End self)
+				(dink view: 873 setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(11
 				(dink
@@ -896,7 +896,7 @@ code_063f:
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -926,9 +926,9 @@ code_063f:
 					setLoop: 0
 					cycleSpeed: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
-				(door setCycle: End)
+				(door setCycle: EndLoop)
 			)
 			(2
 				(ego
@@ -954,7 +954,7 @@ code_063f:
 			)
 			(5
 				(ego z: 1000)
-				(door setCycle: Beg self)
+				(door setCycle: BegLoop self)
 			)
 			(6
 				(if (> (DoAudio 6) -1) (-- state))
@@ -982,14 +982,14 @@ code_063f:
 					view: 678
 					setLoop: 2
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (= cycles 10))
-			(3 (ego setCycle: Beg self))
-			(4 (ego setCycle: End self))
+			(3 (ego setCycle: BegLoop self))
+			(4 (ego setCycle: EndLoop self))
 			(5 (= cycles 10))
-			(6 (ego setCycle: Beg self))
+			(6 (ego setCycle: BegLoop self))
 			(7
 				((ego head?) show:)
 				(ego
@@ -1059,11 +1059,11 @@ code_063f:
 			)
 			(1
 				((ego head?) hide:)
-				(ego normal: 0 view: 56 setLoop: 2 setCycle: End self)
+				(ego normal: 0 view: 56 setLoop: 2 setCycle: EndLoop self)
 			)
 			(2
 				(SolvePuzzle 2)
-				(ego get: 36 setCycle: Beg self)
+				(ego get: 36 setCycle: BegLoop self)
 				(hairPin dispose:)
 				(= local24 0)
 				(= local25 0)
@@ -1172,7 +1172,7 @@ code_063f:
 					setLoop: local88
 					priority: 11
 					show:
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= register 3)
 				(= cycles 1)
@@ -1644,7 +1644,7 @@ code_063f:
 			setLoop: 4
 			ignoreActors: 1
 			posn: (+ (dink x?) 7) (- (dink y?) 46) 0
-			setCycle: Fwd
+			setCycle: Forward
 		)
 	)
 	

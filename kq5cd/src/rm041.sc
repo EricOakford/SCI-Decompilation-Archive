@@ -55,7 +55,7 @@
 					y: -25
 					setStep: 2 2
 					cycleSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 48 50 self
 				)
 			)
@@ -64,10 +64,10 @@
 				(roc setMotion: MoveTo (roc x?) (- (roc y?) 6) self)
 			)
 			(4
-				(roc y: (+ (roc y?) 6) setCycle: CT 0 1 self)
+				(roc y: (+ (roc y?) 6) setCycle: CycleTo 0 1 self)
 			)
 			(5
-				(roc setLoop: 1 cel: 0 cycleSpeed: 5 setCycle: End self)
+				(roc setLoop: 1 cel: 0 cycleSpeed: 5 setCycle: EndLoop self)
 			)
 			(6
 				(roc
@@ -77,7 +77,7 @@
 					y: 61
 					xStep: 3
 					cycleSpeed: 1
-					setCycle: Fwd
+					setCycle: Forward
 					moveSpeed: 0
 					setMotion: MoveTo 186 69 self
 				)
@@ -110,7 +110,7 @@
 					x: 283
 					y: 95
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(12
@@ -119,32 +119,32 @@
 					cel: 0
 					x: 285
 					y: 105
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 284 109 self
 				)
 			)
-			(13 (roc setCycle: CT 1 1 self))
+			(13 (roc setCycle: CycleTo 1 1 self))
 			(14
 				(roc setMotion: 0)
 				(= cycles 6)
 			)
-			(15 (roc setCycle: CT 2 1 self))
+			(15 (roc setCycle: CycleTo 2 1 self))
 			(16
 				(roc
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (roc x?) (- (roc y?) 10) self
 				)
 			)
 			(17 (= cycles 1))
 			(18
-				(roc setLoop: 7 cel: 0 setCycle: End self)
+				(roc setLoop: 7 cel: 0 setCycle: EndLoop self)
 			)
 			(19
 				(roc
 					setLoop: 8
 					cel: 5
 					x: (+ (roc x?) 8)
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 330 (roc y?) self
 				)
 			)

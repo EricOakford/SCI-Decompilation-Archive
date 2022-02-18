@@ -31,7 +31,7 @@
 		(super init:)
 		(addToPics add: smokeOut1 smokeOut2 doit:)
 		(self setFeatures: stairs ratHole room addObstacle: poly1)
-		(torch setCycle: Fwd init:)
+		(torch setCycle: Forward init:)
 		(door init:)
 		(if (== prevRoomNum 85)
 			(theMusic number: 66 loop: -1 vol: 127 play:)
@@ -43,7 +43,7 @@
 				posn: 150 128
 				cycleSpeed: 3
 				observeControl: 16384
-				setCycle: Fwd
+				setCycle: Forward
 				init:
 			)
 			((ego head?) hide:)
@@ -115,12 +115,12 @@
 			(1
 				(SpeakAudio 9054)
 				((ego head?) hide:)
-				(ego normal: 0 view: 56 loop: 1 cel: 0 setCycle: End self)
+				(ego normal: 0 view: 56 loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(SolvePuzzle 2)
 				(rope dispose:)
-				(ego get: 20 setCycle: Beg self)
+				(ego get: 20 setCycle: BegLoop self)
 			)
 			(3
 				(ego
@@ -163,26 +163,26 @@
 					cel: 0
 					cycleSpeed: 2
 					posn: 168 109
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
 				(theAudio number: 8113 loop: 1 play: self)
 			)
 			(4
-				(ego cel: 0 setCycle: End self)
+				(ego cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(theAudio number: 8113 loop: 1 play: self)
 			)
 			(6
-				(ego cel: 0 setCycle: End self)
+				(ego cel: 0 setCycle: EndLoop self)
 			)
 			(7
 				(theAudio number: 8113 loop: 1 play: self)
 			)
 			(8
-				(ego cel: 0 setCycle: End self)
+				(ego cel: 0 setCycle: EndLoop self)
 			)
 			(9
 				(theAudio number: 8113 loop: 1 play: self)
@@ -224,7 +224,7 @@
 					(= cycles 1)
 				)
 			)
-			(1 (door setCycle: End self))
+			(1 (door setCycle: EndLoop self))
 			(2
 				(ego setMotion: MoveTo 173 99 self)
 			)
@@ -286,7 +286,7 @@
 				)
 			)
 			(3
-				(rat setLoop: 2 cycleSpeed: 2 setCycle: Fwd)
+				(rat setLoop: 2 cycleSpeed: 2 setCycle: Forward)
 				(= cycles 15)
 			)
 			(4
@@ -299,12 +299,12 @@
 				)
 			)
 			(5
-				(rat setLoop: 2 setCycle: Fwd)
+				(rat setLoop: 2 setCycle: Forward)
 				(= cycles 100)
 			)
 			(6
 				(rat setCycle: 0)
-				(ego view: 820 loop: 0 cel: 0 setCycle: End self)
+				(ego view: 820 loop: 0 cel: 0 setCycle: EndLoop self)
 				(theAudio number: 8884 loop: 1 play:)
 			)
 			(7
@@ -356,9 +356,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0 (client setCycle: EndLoop self))
 			(1 (= cycles 10))
-			(2 (client setCycle: Beg self))
+			(2 (client setCycle: BegLoop self))
 			(3
 				(= state -1)
 				(= seconds (Random 3 10))

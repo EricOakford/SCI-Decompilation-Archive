@@ -49,15 +49,15 @@
 		)
 		(Bclr 40)
 		(features eachElementDo: #init)
-		(water1 setCycle: Fwd init:)
-		(water2 setCycle: Fwd init:)
-		(water3 setCycle: Fwd init:)
-		(pond1 setCycle: Fwd init:)
-		(pond2 setCycle: Fwd setScript: shadow init:)
+		(water1 setCycle: Forward init:)
+		(water2 setCycle: Forward init:)
+		(water3 setCycle: Forward init:)
+		(pond1 setCycle: Forward init:)
+		(pond2 setCycle: Forward setScript: shadow init:)
 		(theAudio number: 7054 loop: -1 doNotStop: 1 play:)
 		(waterfall init:)
-		(= global320 221)
-		(= global321 91)
+		(= cedricX 221)
+		(= cedricY 91)
 		(= global325 3044)
 		(cedric init: setScript: cedricLand)
 		(ego
@@ -130,7 +130,7 @@
 					cel: 0
 					loop: local0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(= cycles 1)
 				(++ local0)
@@ -164,7 +164,7 @@
 					cel: 0
 					posn: (+ (ego x?) 5) (- (ego y?) 5)
 					cycleSpeed: 2
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(pond2
 					setScript: 0
@@ -172,7 +172,7 @@
 					cel: 0
 					posn: 260 189
 					cycleSpeed: 4
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -196,7 +196,7 @@
 				(ego
 					setLoop: (if (== (ego loop?) 2) 5 else 4)
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 					setPri: 1
 					illegalBits: 0
 					setMotion: MoveTo (ego x?) (+ (ego y?) 30) self
@@ -227,7 +227,7 @@
 					view: 588
 					loop: 4
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					cycleSpeed: 2
 					setMotion: JumpTo 181 40 self
 				)
@@ -258,7 +258,7 @@
 					view: 588
 					loop: 5
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					cycleSpeed: 2
 					setMotion: JumpTo 212 43 self
 				)
@@ -285,7 +285,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(cedric setCycle: Fwd setMotion: MoveTo 221 91 self)
+				(cedric setCycle: Forward setMotion: MoveTo 221 91 self)
 			)
 			(1
 				(cedric setLoop: 1 stopUpd:)
@@ -301,7 +301,7 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (cedric setCycle: Beg self))
+			(0 (cedric setCycle: BegLoop self))
 			(1 (curRoom newRoom: local1))
 		)
 	)
@@ -454,7 +454,7 @@
 	)
 	
 	(method (init)
-		(self cycleSpeed: 2 setCycle: Fwd)
+		(self cycleSpeed: 2 setCycle: Forward)
 		(super init:)
 	)
 	

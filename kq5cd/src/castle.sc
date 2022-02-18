@@ -1494,7 +1494,7 @@
 			(8
 				(theWizard setCycle: BegLoop)
 				(= seconds 4)
-				(= global103 0)
+				(= inCartoon 0)
 			)
 			(9
 				(= deathMessage 657)
@@ -1590,7 +1590,7 @@
 				(theAudio stop:)
 				(theWizard cycleSpeed: 2 setCycle: BegLoop)
 				(= seconds 3)
-				(= global103 0)
+				(= inCartoon 0)
 			)
 			(111
 				(= deathMessage 657)

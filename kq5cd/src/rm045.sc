@@ -37,8 +37,8 @@
 	
 	(method (init)
 		(super init:)
-		(= global320 147)
-		(= global321 99)
+		(= cedricX 147)
+		(= cedricY 99)
 		(= global325 3068)
 		(self
 			setRegions: 220
@@ -146,7 +146,7 @@
 					view: 69
 					setLoop: 4
 					illegalBits: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: 4 2
 					setMotion: PolyPath 340 100 self
 				)
@@ -165,7 +165,7 @@
 				(surf1
 					init:
 					show:
-					setCycle: End self
+					setCycle: EndLoop self
 					setPri: 1
 					ignoreActors:
 					cycleSpeed: 10
@@ -179,22 +179,22 @@
 				)
 				(surf3
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: 1
 					ignoreActors:
 					cycleSpeed: 3
 				)
 				(surf4
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: 1
 					ignoreActors:
 					cycleSpeed: 6
 				)
 			)
 			(1
-				(surf1 setCycle: Beg self)
-				(surf2 setCycle: Beg)
+				(surf1 setCycle: BegLoop self)
+				(surf2 setCycle: BegLoop)
 			)
 			(2 (= state -1) (= seconds 1))
 		)
@@ -210,7 +210,7 @@
 				(globalCedric
 					view: 618
 					setLoop: 11
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 0
 					moveSpeed: 0
 					setStep: 5 5

@@ -129,7 +129,7 @@
 			)
 			(4
 				(curRoom setScript: bogusScript)
-				(yeti loop: 3 cel: 0 cycleSpeed: 1 setCycle: End self)
+				(yeti loop: 3 cel: 0 cycleSpeed: 1 setCycle: EndLoop self)
 			)
 			(5
 				(if
@@ -147,7 +147,7 @@
 					view: 542
 					ignoreActors:
 					cycleSpeed: 1
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				((ego head?) hide:)
 				(theAudio number: 7064 loop: 1 play:)
@@ -202,12 +202,12 @@
 					loop: 0
 					cel: 0
 					cycleSpeed: 1
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(2
 				(HandsOn)
-				(ego setCycle: End put: 2 36)
+				(ego setCycle: EndLoop put: 2 36)
 				(HandsOff)
 				(thePie
 					posn: (+ (ego x?) 31) (- (ego y?) 34)
@@ -227,25 +227,25 @@
 					setScript: 0
 					setStep: 2 1
 					cycleSpeed: 4
-					setCycle: End
+					setCycle: EndLoop
 					setMotion: MoveTo (yeti x?) 167 self
 				)
 				(chaseEgo client: 0 dispose:)
 			)
 			(4
 				(theAudio number: 7064 loop: -1 play:)
-				(yeti setLoop: 2 setCycle: Beg self)
+				(yeti setLoop: 2 setCycle: BegLoop self)
 			)
 			(5
 				(yeti
 					setLoop: 1
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: MoveTo (+ (yeti x?) 5) (yeti y?)
 				)
 			)
 			(6
-				(yeti setLoop: 2 cel: 0 setCycle: Beg self setStep: 4 3)
+				(yeti setLoop: 2 cel: 0 setCycle: BegLoop self setStep: 4 3)
 			)
 			(7
 				(theAudio stop:)
@@ -253,7 +253,7 @@
 				(yeti
 					setLoop: 4
 					cycleSpeed: 4
-					setCycle: End
+					setCycle: EndLoop
 					setStep: 3 5
 					setMotion: MoveTo (yeti x?) 240 self
 				)
@@ -299,7 +299,7 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 					illegalBits: 0
 					ignoreActors: 1
 				)

@@ -159,15 +159,15 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(elf setCycle: End)
+				(elf setCycle: EndLoop)
 				(= seconds (Random 2 4))
 			)
 			(1
-				(local2 setCycle: End)
+				(local2 setCycle: EndLoop)
 				(= seconds (Random 2 4))
 			)
 			(2
-				(local3 setCycle: End)
+				(local3 setCycle: EndLoop)
 				(= seconds (Random 2 4))
 			)
 			(3 (self init:))
@@ -192,7 +192,7 @@
 					cel: 0
 					x: (+ (ego x?) 5)
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theAudio number: 8077 loop: 1 play:)
 			)
@@ -245,16 +245,16 @@
 					x: (+ (ego x?) 8)
 				)
 				(if (== numEmeralds 1)
-					(ego loop: 2 setCycle: End self)
+					(ego loop: 2 setCycle: EndLoop self)
 				else
-					(ego loop: 1 setCycle: CT 5 1 self)
+					(ego loop: 1 setCycle: CycleTo 5 1 self)
 				)
 			)
 			(2
 				(if (== numEmeralds 1)
 					(self cue:)
 				else
-					(ego setCycle: End)
+					(ego setCycle: EndLoop)
 					(gem x: 145 y: 107 init:)
 					(if (== numEmeralds 2)
 						(gem setMotion: JumpTo 164 120 self)
@@ -305,7 +305,7 @@
 					loop: 2
 					cel: 0
 					setStep: 2 4
-					setCycle: End
+					setCycle: EndLoop
 					cycleSpeed: 4
 					setMotion: MoveTo 214 113 self
 					setScript: 0
@@ -331,12 +331,12 @@
 				)
 			)
 			(7
-				(elf setLoop: 3 cel: 0 setCycle: CT 5 1 self)
+				(elf setLoop: 3 cel: 0 setCycle: CycleTo 5 1 self)
 			)
 			(8
 				(gem dispose:)
-				(ego loop: 3 cel: 0 setCycle: CT 1 1)
-				(elf setCycle: End self)
+				(ego loop: 3 cel: 0 setCycle: CycleTo 1 1)
+				(elf setCycle: EndLoop self)
 			)
 			(9
 				(if (== numEmeralds 0)
@@ -347,7 +347,7 @@
 			)
 			(10
 				(cls)
-				(ego setCycle: Beg)
+				(ego setCycle: BegLoop)
 				(elf
 					setLoop: 4
 					cel: 0
@@ -362,7 +362,7 @@
 				(elf
 					setLoop: 12
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 					setMotion: MoveTo 222 76 self
 				)
 				(ego
@@ -386,34 +386,34 @@
 				(client setScript: 0)
 			)
 			(13
-				(elf loop: 14 cel: 0 setCycle: CT 5 1 self)
+				(elf loop: 14 cel: 0 setCycle: CycleTo 5 1 self)
 				(theMusic3 number: 84 loop: -1 vol: 127 play:)
 			)
 			(14
 				(gem dispose:)
-				(elf setCycle: End self)
+				(elf setCycle: EndLoop self)
 			)
 			(15
-				(elf cel: 0 setCycle: End self)
+				(elf cel: 0 setCycle: EndLoop self)
 				(ego cycleSpeed: 0)
 			)
 			(16
 				(theMusic3 stop:)
 				(theMusic2 number: 86 loop: -1 vol: 127 play:)
-				(ego loop: 3 cel: 0 setCycle: CT 1 1 self)
+				(ego loop: 3 cel: 0 setCycle: CycleTo 1 1 self)
 			)
 			(17
 				(elf hide:)
-				(ego setCycle: CT 4 1 self)
+				(ego setCycle: CycleTo 4 1 self)
 			)
 			(18
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 				(elf
 					show:
 					loop: 5
 					posn: 140 110
 					setMotion: 0
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(local2 dispose:)
 				(local3 dispose:)
@@ -424,7 +424,7 @@
 			)
 			(20
 				(elf hide:)
-				(ego setPri: -1 loop: 4 cel: 0 setCycle: CT 3 1 self)
+				(ego setPri: -1 loop: 4 cel: 0 setCycle: CycleTo 3 1 self)
 				(theMusic2 stop:)
 			)
 			(21
@@ -458,12 +458,12 @@
 			(23
 				(Face ego jinx)
 				((ego head?) show:)
-				(jinx setCycle: End)
+				(jinx setCycle: EndLoop)
 				(SpeakAudio 5089 0 1)
 				(= seconds 7)
 			)
 			(24
-				(elf view: 469 setLoop: 6 cel: 0 setCycle: CT 6 1 self)
+				(elf view: 469 setLoop: 6 cel: 0 setCycle: CycleTo 6 1 self)
 			)
 			(25
 				(gem
@@ -474,13 +474,13 @@
 					setScript: 0
 					setMotion: JumpTo 67 (gem y?)
 				)
-				(elf setCycle: End)
+				(elf setCycle: EndLoop)
 				(jinx loop: 13)
 				(jinxHead
 					setPri: (+ (jinx priority?) 1)
 					init:
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(26
@@ -517,14 +517,14 @@
 				)
 			)
 			(29
-				(jinx setLoop: 10 cel: 0 setCycle: CT 4 1 self)
+				(jinx setLoop: 10 cel: 0 setCycle: CycleTo 4 1 self)
 			)
-			(30 (jinx setCycle: Beg self))
-			(31 (jinx setCycle: End self))
+			(30 (jinx setCycle: BegLoop self))
+			(31 (jinx setCycle: EndLoop self))
 			(32 (= cycles 10))
 			(33
 				(jinx setLoop: 7)
-				(jinx cel: (jinx lastCel:) setCycle: Beg self)
+				(jinx cel: (jinx lastCel:) setCycle: BegLoop self)
 			)
 			(34
 				(Bset 56)
@@ -567,7 +567,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gem setCycle: End)
+				(gem setCycle: EndLoop)
 				(= cycles (Random 10 25))
 			)
 			(1 (self init:))

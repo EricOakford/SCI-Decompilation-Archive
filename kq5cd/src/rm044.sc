@@ -44,8 +44,8 @@
 	(method (init)
 		(super init:)
 		(= global325 3066)
-		(= global320 15)
-		(= global321 72)
+		(= cedricX 15)
+		(= cedricY 72)
 		(if (not (ego has: 30))
 			(ironBar init: ignoreActors: setPri: 2 stopUpd:)
 		)
@@ -69,7 +69,7 @@
 				setLoop: 1
 				setPri: 0
 				cycleSpeed: 4
-				setCycle: Fwd
+				setCycle: Forward
 			)
 		)
 		(surf1 setScript: waves)
@@ -100,7 +100,7 @@
 				illegalBits: 0
 				cycleSpeed: 2
 				posn: -10 160
-				setCycle: Fwd
+				setCycle: Forward
 				setPri: (+ (eagle priority?) 1)
 				normal: 0
 				view: 616
@@ -215,7 +215,7 @@
 				(ego
 					view: 9
 					setLoop: 1
-					setCycle: End self
+					setCycle: EndLoop self
 					illegalBits: 0
 					moveSpeed: 0
 					cel: 0
@@ -254,7 +254,7 @@
 				(ego
 					view: 9
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					cel: 0
 					moveSpeed: 0
 					illegalBits: 0
@@ -296,7 +296,7 @@
 				(surf1
 					init:
 					show:
-					setCycle: End self
+					setCycle: EndLoop self
 					setPri: 2
 					ignoreActors:
 					cycleSpeed: 10
@@ -324,10 +324,10 @@
 				)
 			)
 			(1
-				(surf1 setCycle: Beg self)
-				(surf2 setCycle: Beg)
-				(surf3 setCycle: Beg)
-				(surf4 setCycle: Beg)
+				(surf1 setCycle: BegLoop self)
+				(surf2 setCycle: BegLoop)
+				(surf3 setCycle: BegLoop)
+				(surf4 setCycle: BegLoop)
 			)
 			(2 (= state -1) (= seconds 1))
 		)
@@ -355,7 +355,7 @@
 					ignoreActors:
 					setLoop: 0
 					cel: 0
-					setCycle: CT 3 1
+					setCycle: CycleTo 3 1
 				)
 				(= cycles 1)
 			)
@@ -374,7 +374,7 @@
 				(= seconds 3)
 			)
 			(3
-				(ego setLoop: 2 cel: 0 setCycle: End self)
+				(ego setLoop: 2 cel: 0 setCycle: EndLoop self)
 				(if (== (theGame detailLevel:) 3)
 					(theAudio doNotStop: 1 number: 7055 loop: -1 play:)
 				)
@@ -385,7 +385,7 @@
 					posn: (+ (ego x?) 2) (+ (ego y?) 1)
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -462,7 +462,7 @@
 				(= local1 1)
 			)
 			(1
-				(eagle setCycle: Fwd setMotion: MoveTo 160 5 self)
+				(eagle setCycle: Forward setMotion: MoveTo 160 5 self)
 			)
 			(2
 				(= local1 0)
@@ -473,7 +473,7 @@
 					setPri: 2
 					cycleSpeed: 0
 					setStep: 3 4
-					setCycle: End
+					setCycle: EndLoop
 					setMotion: MoveTo (ego x?) (+ (ego y?) 10) self
 				)
 			)
@@ -503,7 +503,7 @@
 			)
 			(7
 				(ego
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: MoveTo (- (ego x?) 40) (+ (ego y?) 10) self
 				)
 			)
@@ -564,10 +564,10 @@
 				(ego view: 56 loop: 0 cel: 0 normal: 0 cycleSpeed: 1)
 				(= cycles 1)
 			)
-			(2 (ego setCycle: End self))
+			(2 (ego setCycle: EndLoop self))
 			(3
 				(ironBar dispose:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(4
 				(ego get: 30)

@@ -54,16 +54,16 @@
 	
 	(method (init)
 		(super init:)
-		(= global320 46)
-		(= global321 121)
+		(= cedricX 46)
+		(= cedricY 121)
 		(theAudio number: 7777 loop: -1 doNotStop: 1 play:)
 		(ego normal: 1 setStep: 2 1 view: 2 init:)
-		(smoke setCycle: Fwd init:)
-		(stream1 setCycle: Fwd init:)
-		(stream2 setCycle: Fwd init:)
-		(stream3 setCycle: Fwd init:)
-		(stream4 setCycle: Fwd init:)
-		(stream5 setCycle: Fwd init:)
+		(smoke setCycle: Forward init:)
+		(stream1 setCycle: Forward init:)
+		(stream2 setCycle: Forward init:)
+		(stream3 setCycle: Forward init:)
+		(stream4 setCycle: Forward init:)
+		(stream5 setCycle: Forward init:)
 		(= global325 3030)
 		(self
 			setFeatures: bakeSign road wind logs house
@@ -181,7 +181,7 @@
 				(proc762_1 @local76 3031 self)
 			)
 			(2
-				(door cycleSpeed: 2 setCycle: End self)
+				(door cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(3
 				(ego
@@ -190,7 +190,7 @@
 				)
 			)
 			(4
-				(door setPri: 12 setCycle: Beg self)
+				(door setPri: 12 setCycle: BegLoop self)
 			)
 			(5
 				(theMusic fade:)
@@ -208,7 +208,7 @@
 		(switch (= state newState)
 			(0
 				(ego normal: 0 setPri: 11 setLoop: 2 posn: 73 141)
-				(door setPri: 12 cycleSpeed: 2 setCycle: End self)
+				(door setPri: 12 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(1
 				(ego
@@ -218,7 +218,7 @@
 				)
 			)
 			(2
-				(door setPri: -1 setCycle: Beg)
+				(door setPri: -1 setCycle: BegLoop)
 				(= cycles 16)
 			)
 			(3
@@ -271,7 +271,7 @@
 					cel: 0
 					setMotion: MoveTo (ego x?) (+ (ego y?) 5)
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -279,7 +279,7 @@
 				(ego
 					setLoop: 2
 					posn: (- (ego x?) 30) (+ (ego y?) 10)
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: 3 1
 					setMotion: MoveTo -15 169
 					cycleSpeed: 3
@@ -366,11 +366,11 @@
 			(1
 				(cls)
 				(if local1
-					(cat cel: 0 setLoop: 4 setCycle: CT 8 1)
+					(cat cel: 0 setLoop: 4 setCycle: CycleTo 8 1)
 					(rat hide:)
 				else
 					(= local0 1)
-					(cat cel: 0 setLoop: 4 setCycle: End self)
+					(cat cel: 0 setLoop: 4 setCycle: EndLoop self)
 					(rat dispose:)
 				)
 				(theMusic3 stop:)
@@ -398,7 +398,7 @@
 					loop: 1
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(cat setMotion: Follow rat 10)
 			)
@@ -453,9 +453,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0 (client setCycle: EndLoop self))
 			(1 (= cycles 10))
-			(2 (client setCycle: Beg self))
+			(2 (client setCycle: BegLoop self))
 			(3
 				(= state -1)
 				(= seconds (Random 3 10))
@@ -475,7 +475,7 @@
 					loop: 2
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(= cycles 2)
 			)

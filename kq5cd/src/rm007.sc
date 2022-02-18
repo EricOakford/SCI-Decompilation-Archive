@@ -38,8 +38,8 @@
 	
 	(method (init)
 		(super init:)
-		(= global320 181)
-		(= global321 35)
+		(= cedricX 181)
+		(= cedricY 35)
 		(ego normal: 1 setStep: 3 2 view: 0 illegalBits: -32768)
 		(= global325 3033)
 		(theMusic number: 24 loop: -1 play:)
@@ -73,7 +73,7 @@
 			(else  (ego posn: 120 186))
 		)
 		(ego setCycle: KQ5SyncWalk init:)
-		(bird setCycle: Fwd init:)
+		(bird setCycle: Forward init:)
 		(poly1 points: @local0 size: 8)
 		(poly2 points: @local16 size: 7)
 		(poly3 points: @local30 size: 4)
@@ -124,18 +124,18 @@
 					y: 85
 					setLoop: 11
 					cycleSpeed: 0
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= cycles 20)
 			)
 			(1
-				(bird x: 105 setLoop: 12 setCycle: End self)
+				(bird x: 105 setLoop: 12 setCycle: EndLoop self)
 			)
 			(2
 				(bird
 					setLoop: 9
 					cycleSpeed: 1
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo -20 72 self
 				)
 			)
@@ -161,10 +161,10 @@
 				(= cycles 3)
 			)
 			(2
-				(prince cycleSpeed: 2 setCycle: CT 2 1 self)
+				(prince cycleSpeed: 2 setCycle: CycleTo 2 1 self)
 			)
 			(3
-				(prince setLoop: 4 cel: 0 setCycle: End self)
+				(prince setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(prince stopUpd:)

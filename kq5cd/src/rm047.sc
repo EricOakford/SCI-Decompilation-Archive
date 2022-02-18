@@ -249,28 +249,28 @@
 				(wave1
 					init:
 					show:
-					setCycle: End
+					setCycle: EndLoop
 					setPri: 2
 					ignoreActors:
 					cycleSpeed: (Random 5 10)
 				)
 				(wave2
 					init:
-					setCycle: End
+					setCycle: EndLoop
 					setPri: 2
 					ignoreActors:
 					cycleSpeed: (Random 5 10)
 				)
 				(wave3
 					init:
-					setCycle: End
+					setCycle: EndLoop
 					setPri: 2
 					ignoreActors:
 					cycleSpeed: (Random 5 10)
 				)
 				(wave4
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 					setPri: 2
 					ignoreActors:
 					cycleSpeed: (Random 5 10)
@@ -288,7 +288,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(sailBoat setCycle: Fwd)
+				(sailBoat setCycle: Forward)
 				(ego moveSpeed: 2)
 				(= seconds 1)
 			)
@@ -332,7 +332,7 @@
 					normal: 0
 					posn: 0 130
 					setPri: -1
-					setCycle: Fwd
+					setCycle: Forward
 					moveSpeed: 1
 					cycleSpeed: 1
 					init:
@@ -345,9 +345,9 @@
 			(2
 				(theAudio number: 7056 loop: 1 play: self)
 				(theMusic2 number: 893 loop: 1 vol: 127 play:)
-				(ego view: 130 cycleSpeed: 1 setCycle: Fwd)
+				(ego view: 130 cycleSpeed: 1 setCycle: Forward)
 			)
-			(3 (ego setCycle: End self))
+			(3 (ego setCycle: EndLoop self))
 			(4 (ego hide:) (= cycles 5))
 			(5
 				(= deathMessage 525)
@@ -368,7 +368,7 @@
 					setCel: -1
 					ignoreActors:
 					illegalBits: 0
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 2
 				)
 				(ego
@@ -411,7 +411,7 @@
 				(theAudio number: 7056 loop: 1 play: self)
 				(sailBoat
 					cycleSpeed: (if (== howFast 2) 16 else 8)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if (and (not (Btst 54)) (not (Btst 55)))
 					(cedric dispose:)
@@ -421,7 +421,7 @@
 						posn: (cedric x?) (cedric y?) (cedric z?)
 						loop: 1
 						cycleSpeed: 5
-						setCycle: End
+						setCycle: EndLoop
 					)
 				)
 			)
@@ -497,7 +497,7 @@
 					else
 						(- (staticBoat y?) 20)
 					)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -512,7 +512,7 @@
 				)
 				(seaMonster
 					setLoop: (+ 2 register)
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion:
 						MoveTo
 						(if register
@@ -529,7 +529,7 @@
 				(seaMonster
 					setLoop: (+ 4 register)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -548,7 +548,7 @@
 			(6
 				(staticCedric dispose:)
 				(theAudio number: 7070 loop: 1 play:)
-				(seaMonster setCycle: End)
+				(seaMonster setCycle: EndLoop)
 				(staticBoat dispose:)
 				(sail dispose:)
 				(= cycles 1)

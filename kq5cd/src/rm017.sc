@@ -42,7 +42,7 @@
 				(glint init: setScript: glimmer)
 			)
 			(zzzz init: setScript: snore)
-			(bandit init: cycleSpeed: 5 setCycle: Fwd)
+			(bandit init: cycleSpeed: 5 setCycle: Forward)
 			(self addObstacle: poly3)
 		)
 		(ego
@@ -134,7 +134,7 @@
 					cycleSpeed: 0
 					cel: 0
 					ignoreActors: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(ego illegalBits: 0 ignoreActors: 1)
 			)
@@ -159,7 +159,7 @@
 				(= cycles 2)
 			)
 			(3
-				(bandit view: 394 cel: 0 cycleSpeed: 2 setCycle: End self)
+				(bandit view: 394 cel: 0 cycleSpeed: 2 setCycle: EndLoop self)
 				((ego head?) hide:)
 				(ego
 					normal: 0
@@ -167,7 +167,7 @@
 					setLoop: (+ (bandit loop?) 4)
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (SpeakAudio 7772 0 1))
@@ -197,13 +197,13 @@
 					cel: 0
 					setAvoider: 0
 					cycleSpeed: 1
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 			)
 			(2
 				(ego get: 7)
 				(glint setScript: 0 dispose:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(3
 				(SolvePuzzle 2)
@@ -230,7 +230,7 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (glint setCycle: End self))
+			(0 (glint setCycle: EndLoop self))
 			(1
 				(glint stopUpd:)
 				(= seconds 10)
@@ -247,7 +247,7 @@
 		(switch (= state newState)
 			(0
 				(theAudio number: 7060 loop: 1 play: self)
-				(zzzz setCycle: End self)
+				(zzzz setCycle: EndLoop self)
 			)
 			(1)
 			(2 (= seconds 2))

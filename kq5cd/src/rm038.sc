@@ -164,7 +164,7 @@
 					show:
 					x: [local0 (* temp0 2)]
 					y: [local0 (+ (* temp0 2) 1)]
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (client hide:))
@@ -189,33 +189,33 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 2
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(2
-				(if local66 (ego setCycle: End self) else (= cycles 1))
+				(if local66 (ego setCycle: EndLoop self) else (= cycles 1))
 			)
 			(3
 				(if local66
-					(ego setLoop: 1 cycleSpeed: 1 setCycle: CT 4 1 self)
+					(ego setLoop: 1 cycleSpeed: 1 setCycle: CycleTo 4 1 self)
 					(theAudio number: 8113 loop: 1 play:)
 				else
-					(ego setLoop: 5 cycleSpeed: 1 setCycle: Fwd)
+					(ego setLoop: 5 cycleSpeed: 1 setCycle: Forward)
 				)
 				(= seconds 5)
 			)
 			(4
 				(if local66
-					(ego setCycle: End self)
+					(ego setCycle: EndLoop self)
 				else
-					(ego setLoop: 0 cel: 3 setCycle: Beg self)
+					(ego setLoop: 0 cel: 3 setCycle: BegLoop self)
 				)
 			)
 			(5
 				(if local66
 					(theAudio number: 8113 loop: 1 play:)
 					(ego cel: (- (ego cel?) 1))
-					(crystal setCycle: End self)
+					(crystal setCycle: EndLoop self)
 				else
 					(ego
 						view: 10
@@ -235,12 +235,12 @@
 				(crystal setStep: 15 setMotion: MoveTo 152 149 self)
 				(theAudio number: 8085 loop: 1 play:)
 			)
-			(7 (ego setCycle: Beg self))
+			(7 (ego setCycle: BegLoop self))
 			(8
 				(ego
 					setLoop: 0
 					cel: (- (NumCels ego) 1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(9
@@ -262,14 +262,14 @@
 					setLoop: 3
 					cycleSpeed: 3
 					normal: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11
 				(SpeakAudio 483)
 				(SolvePuzzle 4)
 				(crystal dispose:)
-				(ego get: 21 setCycle: Beg self)
+				(ego get: 21 setCycle: BegLoop self)
 			)
 			(12
 				(theAudio doNotStop: 1 number: 7054 loop: -1 play:)

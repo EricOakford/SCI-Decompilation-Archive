@@ -67,11 +67,11 @@
 			(0 (= seconds 5))
 			(1
 				(theIconBar disable: 0 1 2 3 4 5)
-				(family init: setCycle: End self)
+				(family init: setCycle: EndLoop self)
 				(theAudio number: 8134 loop: 1 play:)
 			)
 			(2
-				(family cel: 0 setLoop: 9 setCycle: End self)
+				(family cel: 0 setLoop: 9 setCycle: EndLoop self)
 			)
 			(3
 				(if (!= (DoAudio 6) -1) (-- state))
@@ -83,9 +83,9 @@
 				(SpeakAudio 5236 self)
 			)
 			(5
-				(family setLoop: 2 setCycle: End self)
+				(family setLoop: 2 setCycle: EndLoop self)
 			)
-			(6 (egoHead setCycle: End self))
+			(6 (egoHead setCycle: EndLoop self))
 			(7
 				(cls)
 				(SpeakAudio 5237 self)
@@ -93,7 +93,7 @@
 			)
 			(8
 				(cls)
-				(egoHead setCycle: Beg)
+				(egoHead setCycle: BegLoop)
 				(valHead setLoop: 11 setCycle: MouthSync 5238)
 				(SpeakAudio 5238 self)
 			)
@@ -104,7 +104,7 @@
 				(family
 					setLoop: 5
 					moveSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (family x?) 175 self
 				)
 			)

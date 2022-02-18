@@ -49,8 +49,8 @@
 	
 	(method (init)
 		(super init:)
-		(= global320 168)
-		(= global321 100)
+		(= cedricX 168)
+		(= cedricY 100)
 		(ego normal: 1 setStep: 2 2 view: 2 init:)
 		(self
 			setFeatures: FakeDoor signPost path27 hayStack house barn
@@ -88,10 +88,10 @@
 		)
 		(Load rsVIEW 71)
 		(theMusic2 number: 24 loop: -1 play:)
-		(river1 setCycle: Fwd init:)
-		(river2 setCycle: Fwd init:)
-		(smoke1 setCycle: Fwd init:)
-		(smoke2 setCycle: Fwd init:)
+		(river1 setCycle: Forward init:)
+		(river2 setCycle: Forward init:)
+		(smoke1 setCycle: Forward init:)
+		(smoke2 setCycle: Forward init:)
 		(poly1 points: @local0 size: 8)
 		(poly2 points: @local16 size: 20)
 		(poly3 points: @local56 size: 9)
@@ -158,7 +158,7 @@
 				(ego setMotion: MoveTo 104 124 self)
 			)
 			(1
-				(SDoor cel: 3 z: 0 setCycle: Beg self)
+				(SDoor cel: 3 z: 0 setCycle: BegLoop self)
 			)
 			(2 (= seconds 2))
 			(3
@@ -192,7 +192,7 @@
 					loop: 2
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End
+					setCycle: EndLoop
 				)
 			)
 			(1
@@ -241,11 +241,11 @@
 				(theAudio stop: doNotStop: 0)
 				(proc762_1 @local100 3056 self)
 			)
-			(2 (FDoor setCycle: End self))
+			(2 (FDoor setCycle: EndLoop self))
 			(3
 				(ego illegalBits: 0 setMotion: MoveTo 245 139 self)
 			)
-			(4 (FDoor setCycle: Beg self))
+			(4 (FDoor setCycle: BegLoop self))
 			(5
 				(ego illegalBits: -32768)
 				(curRoom newRoom: 85)
@@ -279,7 +279,7 @@
 					(else
 						(Face ego SDoor 5)
 						(theAudio number: 8123 loop: 1 play:)
-						(SDoor setCycle: End self)
+						(SDoor setCycle: EndLoop self)
 					)
 				)
 			)
@@ -312,14 +312,14 @@
 					hide:
 					setCel: (- ((ego head?) lastCel:) 1)
 				)
-				(ego view: 293 normal: 0 loop: 0 setCycle: End self)
+				(ego view: 293 normal: 0 loop: 0 setCycle: EndLoop self)
 			)
 			(3
-				(ego loop: 1 cycleSpeed: 4 setCycle: Fwd)
+				(ego loop: 1 cycleSpeed: 4 setCycle: Forward)
 				(= cycles 20)
 			)
 			(4
-				(ego loop: 0 cel: 3 setCycle: Beg self)
+				(ego loop: 0 cel: 3 setCycle: BegLoop self)
 			)
 			(5
 				(if
@@ -344,7 +344,7 @@
 					)
 					((ego head?) show:)
 					(ego setPri: 10)
-					(ants1 cycleSpeed: 3 setCycle: End init:)
+					(ants1 cycleSpeed: 3 setCycle: EndLoop init:)
 					(= seconds 8)
 				else
 					(SpeakAudio 401 0 1)
@@ -363,12 +363,12 @@
 			)
 			(6
 				(self setScript: singScript)
-				(ants1 loop: 6 setCycle: Fwd)
-				(ants2 cycleSpeed: 3 setCycle: End self init:)
+				(ants1 loop: 6 setCycle: Forward)
+				(ants2 cycleSpeed: 3 setCycle: EndLoop self init:)
 			)
 			(7
 				(cls)
-				(ants2 loop: 8 setCycle: Fwd)
+				(ants2 loop: 8 setCycle: Forward)
 				(= seconds 7)
 			)
 			(8)
@@ -389,7 +389,7 @@
 				(ants2
 					loop: 7
 					cel: (- (NumCels ants2) 1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(13
@@ -397,7 +397,7 @@
 				(ants1
 					loop: 5
 					cel: (- (NumCels ants1) 1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(14
@@ -462,7 +462,7 @@
 					cel: 0
 					setMotion: MoveTo (ego x?) (+ (ego y?) 5)
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -470,7 +470,7 @@
 				(ego
 					setLoop: 2
 					posn: (- (ego x?) 30) (+ (ego y?) 10)
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: 3 1
 					setMotion: MoveTo -15 185
 					cycleSpeed: 2
@@ -504,9 +504,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0 (client setCycle: EndLoop self))
 			(1 (= cycles 10))
-			(2 (client setCycle: Beg self))
+			(2 (client setCycle: BegLoop self))
 			(3
 				(= state -1)
 				(= seconds (Random 3 10))
@@ -527,13 +527,13 @@
 					posn: 245 138
 					setMotion: MoveTo 245 140
 				)
-				(FDoor cycleSpeed: 2 setCycle: End self)
+				(FDoor cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(1
 				(ego setMotion: MoveTo (ego x?) (+ (ego y?) 15) self)
 			)
 			(2
-				(FDoor setCycle: Beg self)
+				(FDoor setCycle: BegLoop self)
 				(ego setPri: -1 illegalBits: -32768)
 			)
 			(3 (HandsOn) (self dispose:))

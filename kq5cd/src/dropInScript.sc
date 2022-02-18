@@ -398,7 +398,7 @@
 				)
 				((ScriptID 55 1) dispose:)
 				(HandsOn)
-				(= global103 0)
+				(= inCartoon 0)
 				(self dispose:)
 			)
 		)

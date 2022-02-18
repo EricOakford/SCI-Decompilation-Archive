@@ -4,7 +4,8 @@
 (use Main)
 (use Intrface)
 (use Sync)
-(use RandCycle)
+;(use RandCycle)
+(use RandCyc)
 (use Actor)
 (use System)
 

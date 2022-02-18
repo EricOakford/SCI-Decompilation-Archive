@@ -393,28 +393,28 @@
 				(SpeakAudio 622)
 				(theMusic number: 128 loop: 1 play: self)
 				(leftSnake
-					setCycle: (if (== (theGame detailLevel:) 3) Fwd else 0)
+					setCycle: (if (== (theGame detailLevel:) 3) Forward else 0)
 					cycleSpeed: 5
 				)
 				(rightSnake
-					setCycle: (if (== (theGame detailLevel:) 3) Fwd else 0)
+					setCycle: (if (== (theGame detailLevel:) 3) Forward else 0)
 					cycleSpeed: 5
 				)
 				(keys1
 					init:
 					cycleSpeed: (Random 2 8)
-					setCycle: (if (> (theGame detailLevel:) 1) Fwd else 0)
-					setCycle: Fwd
+					setCycle: (if (> (theGame detailLevel:) 1) Forward else 0)
+					setCycle: Forward
 				)
 				(keys2
 					init:
 					cycleSpeed: (Random 2 8)
-					setCycle: (if (> (theGame detailLevel:) 1) Fwd else 0)
+					setCycle: (if (> (theGame detailLevel:) 1) Forward else 0)
 				)
 				(keys3
 					init:
 					cycleSpeed: (Random 2 8)
-					setCycle: (if (> (theGame detailLevel:) 1) Fwd else 0)
+					setCycle: (if (> (theGame detailLevel:) 1) Forward else 0)
 				)
 				(CastleHandsOn)
 			)

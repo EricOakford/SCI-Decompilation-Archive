@@ -40,17 +40,17 @@
 			(movingBoat init: ignoreActors:)
 			(sail
 				posn: (- (movingBoat x?) 10) (movingBoat y?)
-				setCycle: Fwd
+				setCycle: Forward
 				ignoreActors:
 				cycleSpeed: 30
 				init:
 			)
 		)
 		(theAudio number: 7055 loop: -1 doNotStop: 1 play:)
-		(chimney setCycle: Fwd cycleSpeed: 3 init:)
+		(chimney setCycle: Forward cycleSpeed: 3 init:)
 		(if (not (Btst 55))
-			(= global320 100)
-			(= global321 140)
+			(= cedricX 100)
+			(= cedricY 140)
 			(curRoom setRegions: 202)
 			(globalCedric setScript: myRotate)
 		)
@@ -79,7 +79,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(globalCedric view: 138 loop: 2 setCycle: End self)
+				(globalCedric view: 138 loop: 2 setCycle: EndLoop self)
 			)
 			(1
 				(globalCedric
@@ -152,7 +152,7 @@
 			(2
 				(ego
 					show:
-					setCycle: End self
+					setCycle: EndLoop self
 					setLoop: 13
 					setMotion: MoveTo 130 148 self
 				)
@@ -173,13 +173,13 @@
 					posn: (- (hermit x?) 5) (- (hermit y?) 32)
 					setPri: (+ (hermit priority?) 1)
 					loop: 1
-					setCycle: CT 8 1
+					setCycle: CycleTo 8 1
 					init:
 				)
 				(theMusic3 number: 821 loop: 1 play:)
 			)
 			(5
-				(arm setCycle: End)
+				(arm setCycle: EndLoop)
 				(hermit setLoop: 2)
 				(= seconds 5)
 			)
@@ -189,11 +189,11 @@
 					setLoop: 8
 					cycleSpeed: 2
 					posn: 275 155
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7
-				(mermaid setLoop: 7 cycleSpeed: 3 setCycle: Fwd)
+				(mermaid setLoop: 7 cycleSpeed: 3 setCycle: Forward)
 				(theAudio stop:)
 				(= cycles 1)
 			)
@@ -246,7 +246,7 @@
 				(theAudio number: 7055 loop: -1 doNotStop: 1 play:)
 				((ego head?) setCel: -1 setScript: 0)
 				(cls)
-				(mermaid setLoop: 10 cycleSpeed: 2 setCycle: End self)
+				(mermaid setLoop: 10 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(15
 				(ego
@@ -272,14 +272,14 @@
 					cycleSpeed: 2
 					setPri: 14
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(18
 				(ego
 					setLoop: 3
 					posn: (+ (ego x?) 31) (ego y?)
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 2)
 			)
@@ -287,7 +287,7 @@
 				(ego
 					posn: (ego x?) (- (ego y?) 18)
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(hermit_mouth dispose:)
 				(hermit
@@ -301,7 +301,7 @@
 				(arm hide:)
 			)
 			(20
-				(ego setLoop: 1 cycleSpeed: 2 setCycle: End self)
+				(ego setLoop: 1 cycleSpeed: 2 setCycle: EndLoop self)
 				(movingBoat
 					setStep: 1 1
 					setMotion: MoveTo 400 (movingBoat y?)
@@ -314,7 +314,7 @@
 			)
 			(21
 				(if (not (hermit mover?))
-					(door setCycle: Beg init:)
+					(door setCycle: BegLoop init:)
 					(theAudio number: 8124 loop: 1 play: self)
 				else
 					(= cycles 1)
@@ -339,7 +339,7 @@
 						view: 138
 						setLoop: 6
 						cycleSpeed: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(= cycles 1)

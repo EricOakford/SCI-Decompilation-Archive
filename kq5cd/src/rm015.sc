@@ -81,11 +81,11 @@
 		(theMusic2 number: 3 loop: -1 vol: 127 play:)
 	)
 	(cond 
-		((and (not global314) (> global315 3)) (curRoom newRoom: 211))
-		((not global314) (curRoom newRoom: 14))
-		((== global315 1)
+		((and (not desertRoomX) (> desertRoomY 3)) (curRoom newRoom: 211))
+		((not desertRoomX) (curRoom newRoom: 14))
+		((== desertRoomY 1)
 			(= globalCedric (++ theGPolyList15))
-			(curRoom newRoom: (if (== global314 7) 213 else 212))
+			(curRoom newRoom: (if (== desertRoomX 7) 213 else 212))
 		)
 		((localproc_113c 10 7)
 			(= globalCedric (++ theGPolyList15))
@@ -93,7 +93,7 @@
 		)
 		(else
 			(= temp0
-				[local1 (= temp1 (mod (+ global314 global315) 4))]
+				[local1 (= temp1 (mod (+ desertRoomX desertRoomY) 4))]
 			)
 			(++ theGPolyList15)
 			(curRoom drawPic: temp0)
@@ -235,7 +235,7 @@
 						(16 167)
 						(211 154)
 					)
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 				)
 			else
@@ -262,7 +262,7 @@
 (procedure (localproc_113c param1 param2)
 	(return
 		(if
-		(and (== param1 global314) (== param2 global315))
+		(and (== param1 desertRoomX) (== param2 desertRoomY))
 			(return 1)
 		else
 			(return 0)
@@ -278,7 +278,7 @@
 	(method (init &tmp temp0)
 		(self
 			setFeatures: desert
-			picture: [local1 (= temp0 (mod (+ global314 global315) 4))]
+			picture: [local1 (= temp0 (mod (+ desertRoomX desertRoomY) 4))]
 		)
 		(super init:)
 		(theMusic number: 2 loop: -1 vol: 127 play:)
@@ -545,7 +545,7 @@
 			(script (script doit:))
 			((and (== theGPolyList15 5) (not local19)) (= local19 1) (SpeakAudio 315))
 			((and (& temp0 $0008) (== local6 3))
-				(-- global315)
+				(-- desertRoomY)
 				(= gEgoEdgeHit 1)
 				(= local209 (theGame setCursor: waitCursor 1))
 				(localproc_0bc4)
@@ -599,9 +599,9 @@
 				(= local209 (theGame setCursor: waitCursor 1))
 				(= local0 1)
 				(switch gEgoEdgeHit
-					(3 (++ global315))
-					(2 (-- global314))
-					(4 (++ global314))
+					(3 (++ desertRoomY))
+					(2 (-- desertRoomX))
+					(4 (++ desertRoomX))
 				)
 				(localproc_0bc4)
 				(theGame setCursor: local209)
@@ -660,7 +660,7 @@
 					cel: 0
 					cycleSpeed: 2
 					normal: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ego head?) hide:)
 			)
@@ -678,7 +678,7 @@
 				)
 			)
 			(4
-				(buzzard setLoop: 4 cel: 4 setCycle: Beg self)
+				(buzzard setLoop: 4 cel: 4 setCycle: BegLoop self)
 			)
 			(5
 				(theMusic fade:)
@@ -690,7 +690,7 @@
 			(7
 				(cls)
 				(= deathMessage 317)
-				(EgoDead 264 0 End 20)
+				(EgoDead 264 0 EndLoop 20)
 			)
 		)
 	)
@@ -713,7 +713,7 @@
 				)
 			)
 			(1
-				(buzzard2 setLoop: 5 cel: 4 setCycle: Beg self)
+				(buzzard2 setLoop: 5 cel: 4 setCycle: BegLoop self)
 			)
 			(2 (buzzard2 setLoop: 1 cel: 0))
 		)
@@ -763,18 +763,18 @@
 			)
 			(2
 				(Face ego dummy 5)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(3
-				(ego loop: (+ (ego loop?) 4) cel: 0 setCycle: End self)
+				(ego loop: (+ (ego loop?) 4) cel: 0 setCycle: EndLoop self)
 			)
 			(4 (= cycles 20))
 			(5
-				(ego cel: 0 setCycle: End self)
+				(ego cel: 0 setCycle: EndLoop self)
 			)
 			(6
 				(SpeakAudio 311)
-				(ego loop: (- (ego loop?) 4) cel: 3 setCycle: Beg self)
+				(ego loop: (- (ego loop?) 4) cel: 3 setCycle: BegLoop self)
 			)
 			(7
 				(ego
@@ -824,16 +824,16 @@
 					loop: 1
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				(ego loop: 2 cel: 0 cycleSpeed: 2 setCycle: End self)
+				(ego loop: 2 cel: 0 cycleSpeed: 2 setCycle: EndLoop self)
 				(rope hide:)
 			)
 			(3
 				(ego loop: 3 cel: 0)
-				(rope loop: 4 setCycle: Fwd show:)
+				(rope loop: 4 setCycle: Forward show:)
 				(= seconds 4)
 			)
 			(4
@@ -842,20 +842,20 @@
 			)
 			(5
 				(rope loop: 5 setCycle: 0)
-				(ego loop: 6 setCycle: Fwd)
+				(ego loop: 6 setCycle: Forward)
 				(= seconds 4)
 			)
 			(6
-				(ego loop: 7 cel: 0 setCycle: End)
+				(ego loop: 7 cel: 0 setCycle: EndLoop)
 				(= seconds 4)
 			)
 			(7
 				(SpeakAudio 311)
-				(ego loop: 8 cel: 0 setCycle: End self)
+				(ego loop: 8 cel: 0 setCycle: EndLoop self)
 			)
 			(8
 				(rope loop: 0 cel: 1)
-				(ego loop: 1 cel: 1 setCycle: Beg self)
+				(ego loop: 1 cel: 1 setCycle: BegLoop self)
 			)
 			(9
 				(ego
@@ -894,13 +894,13 @@
 			(1
 				(= theScript 0)
 				((ego head?) hide:)
-				(ego normal: 0 view: 56 loop: 3 cel: 0 setCycle: End self)
+				(ego normal: 0 view: 56 loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(ego get: 8)
 				(SolvePuzzle 2)
 				(bootInSand dispose:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
 				(SpeakAudio 9073)

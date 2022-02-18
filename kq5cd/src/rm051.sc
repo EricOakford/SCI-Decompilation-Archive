@@ -46,8 +46,8 @@
 			(surf1 setScript: waves)
 		)
 		(if (not (Btst 55))
-			(= global320 186)
-			(= global321 176)
+			(= cedricX 186)
+			(= cedricY 176)
 			(= global325 3070)
 		)
 		(HandsOn)
@@ -221,12 +221,12 @@
 				else
 					(globalCedric setScript: 0)
 					(if (cast contains: globalCedric)
-						(globalCedric view: 138 loop: 5 setCycle: End self)
+						(globalCedric view: 138 loop: 5 setCycle: EndLoop self)
 					)
 				)
 			)
 			(2
-				(globalCedric loop: 9 setCycle: End self)
+				(globalCedric loop: 9 setCycle: EndLoop self)
 			)
 			(3
 				(HandsOn)
@@ -246,7 +246,7 @@
 				(surf1
 					init:
 					show:
-					setCycle: End self
+					setCycle: EndLoop self
 					setPri: 11
 					ignoreActors:
 					cycleSpeed: 10
@@ -274,10 +274,10 @@
 				)
 			)
 			(1
-				(surf1 setCycle: Beg self)
-				(surf2 setCycle: Beg)
-				(surf3 setCycle: Beg)
-				(surf4 setCycle: Beg)
+				(surf1 setCycle: BegLoop self)
+				(surf2 setCycle: BegLoop)
+				(surf3 setCycle: BegLoop)
+				(surf4 setCycle: BegLoop)
 			)
 			(2 (= state -1) (= cycles 1))
 		)
@@ -291,11 +291,11 @@
 		(switch (= state newState)
 			(0 (HandsOff) (= seconds 5))
 			(1
-				(ego loop: 1 cycleSpeed: 2 setCycle: Fwd)
+				(ego loop: 1 cycleSpeed: 2 setCycle: Forward)
 				(= cycles 15)
 			)
 			(2
-				(ego loop: 2 setCycle: End self)
+				(ego loop: 2 setCycle: EndLoop self)
 			)
 			(3
 				(if (not (Btst 55))
@@ -305,7 +305,7 @@
 						ignoreActors: 1
 						setPri: -1
 						illegalBits: 0
-						setCycle: Fwd
+						setCycle: Forward
 					)
 				else
 					(ego view: 0 loop: 3 init:)
@@ -339,7 +339,7 @@
 					setPri: -1
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
@@ -356,11 +356,11 @@
 					setCycle: KQ5SyncWalk
 				)
 				((ego head?) show:)
-				(Cedric show: loop: 4 cel: 0 setCycle: End self)
+				(Cedric show: loop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(7
 				(proc762_1 @local116 3080)
-				(Cedric loop: 11 cel: 0 setPri: 14 setCycle: End self)
+				(Cedric loop: 11 cel: 0 setPri: 14 setCycle: EndLoop self)
 			)
 			(8
 				(proc762_1 @local116 3081 self)
@@ -451,7 +451,7 @@
 					cel: 0
 					setStep: 4 8
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 					setPri:
 						(cond 
 							((ego inRect: 130 45 190 65) 2)
@@ -510,7 +510,7 @@
 					loop: 0
 					ignoreActors:
 					normal: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -519,7 +519,7 @@
 				(fishy dispose:)
 				(= cycles 1)
 			)
-			(4 (ego setCycle: Beg self))
+			(4 (ego setCycle: BegLoop self))
 			(5
 				(ego view: 0 setPri: -1 normal: 1)
 				((ego head?) show:)

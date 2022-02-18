@@ -44,28 +44,28 @@
 				(wave1
 					init:
 					show:
-					setCycle: End
+					setCycle: EndLoop
 					setPri: 2
 					ignoreActors:
 					cycleSpeed: (Random 5 10)
 				)
 				(wave2
 					init:
-					setCycle: End
+					setCycle: EndLoop
 					setPri: 2
 					ignoreActors:
 					cycleSpeed: (Random 5 10)
 				)
 				(wave3
 					init:
-					setCycle: End
+					setCycle: EndLoop
 					setPri: 2
 					ignoreActors:
 					cycleSpeed: (Random 5 10)
 				)
 				(wave4
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 					setPri: 2
 					ignoreActors:
 					cycleSpeed: (Random 5 10)
@@ -84,7 +84,7 @@
 		(switch (= state newState)
 			(0
 				(mermaid
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: 9
 					cycleSpeed: 2
 					moveSpeed: 1
@@ -120,7 +120,7 @@
 					init:
 					posn: 0 140
 					setPri: -1
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 5
 					setStep: 1 1
 					moveSpeed: 1

@@ -45,8 +45,8 @@
 	
 	(method (init)
 		(super init:)
-		(= global320 238)
-		(= global321 146)
+		(= cedricX 238)
+		(= cedricY 146)
 		(if (not (Btst 34))
 			(self setRegions: 202)
 			(= global325 3062)
@@ -142,7 +142,7 @@
 					cel: 0
 					cycleSpeed: 1
 					setPri: 8
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: JumpTo 271 123 self
 				)
 				((ego head?) hide:)
@@ -167,7 +167,7 @@
 					cel: 0
 					setPri: -1
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: JumpTo 226 115 self
 				)
 				((ego head?) hide:)
@@ -207,7 +207,7 @@
 					setLoop: 2
 					cycleSpeed: 1
 					setPri: 8
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: JumpTo 242 111 self
 				)
 				((ego head?) hide:)
@@ -232,7 +232,7 @@
 					cel: 0
 					setPri: -1
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: JumpTo 284 152 self
 				)
 				((ego head?) hide:)
@@ -277,7 +277,7 @@
 					view: 78
 					setLoop: (if (ego inRect: 207 117 233 123) 1 else 0)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					illegalBits: 0
 				)
 				(if (<= (ego y?) 138)
@@ -350,7 +350,7 @@
 					cycleSpeed: 0
 					setLoop: local6
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: JumpTo local2 local3 self
 					illegalBits: 0
 				)
@@ -368,7 +368,7 @@
 					(ego
 						setLoop: (+ (ego loop?) 6)
 						cel: 0
-						setCycle: End self
+						setCycle: EndLoop self
 						cycleSpeed: 2
 					)
 				)
@@ -399,7 +399,7 @@
 						view: 497
 						setLoop: local8
 						cel: 0
-						setCycle: End
+						setCycle: EndLoop
 						yStep: 8
 						setMotion: MoveTo (theActor x?) (+ (theActor y?) 100) self
 					)
@@ -410,7 +410,7 @@
 					view: 497
 					cel: 0
 					setLoop: (if (mod (ego loop?) 2) 5 else 4)
-					setCycle: End
+					setCycle: EndLoop
 					yStep: 8
 					setPri: 9
 					setMotion: MoveTo (ego x?) (+ (ego y?) 100) self
@@ -441,7 +441,7 @@
 					loop: 2
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(ego cycleSpeed: 1 setMotion: MoveTo (ego x?) 189 self)
 			)
@@ -459,7 +459,7 @@
 				(= cycles 3)
 			)
 			(4
-				(ego setLoop: 1 cel: 0 posn: 38 163 setCycle: End self)
+				(ego setLoop: 1 cel: 0 posn: 38 163 setCycle: EndLoop self)
 			)
 			(5
 				(ego
@@ -502,7 +502,7 @@
 					view: 478
 					setLoop: 1
 					setCel: 16
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				((ego head?) hide:)
 			)
@@ -524,13 +524,13 @@
 					loop: 8
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(ego
 					setLoop: 0
 					posn: 56 189
 					cycleSpeed: 1
-					setCycle: Rev
+					setCycle: Reverse
 					setMotion: MoveTo 56 213 self
 				)
 			)

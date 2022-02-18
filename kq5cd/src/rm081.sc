@@ -86,7 +86,7 @@
 					setLoop: 4
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -133,7 +133,7 @@
 					cel: 3
 					posn: (+ (ego x?) 3) (+ (ego y?) 17)
 					cycleSpeed: 1
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(2
@@ -168,7 +168,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(elf init: cycleSpeed: 1 setCycle: Fwd)
+				(elf init: cycleSpeed: 1 setCycle: Forward)
 				(= cycles 15)
 			)
 			(1 (SpeakAudio 5095 self))

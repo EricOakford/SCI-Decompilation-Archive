@@ -337,7 +337,7 @@
 					cel: 1
 					posn: (ego x?) 160
 					cycleSpeed: 4
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(91

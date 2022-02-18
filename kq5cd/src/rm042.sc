@@ -29,7 +29,7 @@
 	(method (init)
 		(super init:)
 		(theMusic number: 824 loop: -1 vol: 127 playBed:)
-		(locket setCycle: Fwd cycleSpeed: 3 init:)
+		(locket setCycle: Forward cycleSpeed: 3 init:)
 		(self setFeatures: egg nest)
 		(User canControl: 0 canInput: 1)
 		(theGame setCursor: crownCursor)
@@ -65,12 +65,12 @@
 			(1
 				(babyRoc1
 					cycleSpeed: (if (== howFast 0) 10 else 20)
-					setCycle: End self
+					setCycle: EndLoop self
 					init:
 				)
 				(babyRoc2
 					cycleSpeed: (if (== howFast 0) 10 else 20)
-					setCycle: End self
+					setCycle: EndLoop self
 					init:
 				)
 			)
@@ -78,8 +78,8 @@
 				(theMusic3 number: 789 loop: -1 vol: 127 play:)
 			)
 			(3
-				(babyRoc1 loop: 2 cel: 0 setCycle: End self)
-				(babyRoc2 loop: 3 cel: 0 setCycle: End self)
+				(babyRoc1 loop: 2 cel: 0 setCycle: EndLoop self)
+				(babyRoc2 loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(4)
 			(5
@@ -96,7 +96,7 @@
 						posn: 126 78
 						cel: 0
 						cycleSpeed: 10
-						setCycle: CT 1 1 self
+						setCycle: CycleTo 1 1 self
 					)
 				else
 					(HandsOff)
@@ -105,7 +105,7 @@
 						posn: 126 78
 						cel: 0
 						cycleSpeed: 10
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 					(++ state)
 					(theMusic number: 825 loop: -1 vol: 127 playBed:)
@@ -113,10 +113,10 @@
 			)
 			(7 (curRoom newRoom: 43))
 			(8
-				(babyRoc2 loop: 5 cel: 0 cycleSpeed: 2 setCycle: End self)
+				(babyRoc2 loop: 5 cel: 0 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(9
-				(babyRoc2 loop: 6 cel: 0 setCycle: Fwd cycleSpeed: 1)
+				(babyRoc2 loop: 6 cel: 0 setCycle: Forward cycleSpeed: 1)
 				(= seconds 3)
 			)
 			(10
@@ -138,7 +138,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego loop: 1 cel: 0 setCycle: End self)
+				(ego loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(1 (locket hide:) (= cycles 2))
 			(2

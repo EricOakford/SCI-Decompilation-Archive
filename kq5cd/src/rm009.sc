@@ -55,8 +55,8 @@
 		(or (== howFast 0) (< (theGame detailLevel:) 3))
 			(= local114 1)
 		)
-		(= global320 190)
-		(= global321 83)
+		(= cedricX 190)
+		(= cedricY 83)
 		(= global325 3041)
 		(theMusic number: 24 loop: -1 play:)
 		(= gEgoIllegalBits (ego illegalBits?))
@@ -168,16 +168,16 @@
 		(switch (= state newState)
 			(0
 				(if (< (Random 0 7) 4)
-					(wArm setCycle: CT 2 -1 self)
+					(wArm setCycle: CycleTo 2 -1 self)
 				else
-					(wArm setCycle: CT 0 -1 self)
+					(wArm setCycle: CycleTo 0 -1 self)
 				)
 			)
 			(1
 				(if (== (wArm cel?) 2)
-					(wArm setCycle: CT 3 1 self)
+					(wArm setCycle: CycleTo 3 1 self)
 				else
-					(wArm setCycle: CT 5 1 self)
+					(wArm setCycle: CycleTo 5 1 self)
 				)
 			)
 			(2 (= state -1) (= cycles 6))
@@ -191,7 +191,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(wFace setCycle: End)
+				(wFace setCycle: EndLoop)
 				(= state -1)
 				(= seconds (Random 6 12))
 			)
@@ -230,7 +230,7 @@
 					show:
 					posn: (wTear1 x?) (wTear1 y?)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(switch (Random 0 2)
 					(0 (wTear1 x: 50 y: 109))
@@ -384,7 +384,7 @@
 					view: 251
 					loop: 4
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -396,12 +396,12 @@
 					cel: 0
 					x: 103
 					y: 127
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(4
-				(wArm setCycle: End self)
-				(ego view: 251 loop: 5 cel: 0 setCycle: End self)
+				(wArm setCycle: EndLoop self)
+				(ego view: 251 loop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(theMusic stop:)
@@ -430,8 +430,8 @@
 				(= cycles 15)
 			)
 			(9
-				(eHair cycleSpeed: 2 setCycle: End self)
-				(wHair cycleSpeed: 2 setCycle: End self)
+				(eHair cycleSpeed: 2 setCycle: EndLoop self)
+				(wHair cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(10)
 			(11
@@ -440,10 +440,10 @@
 				(= cycles 2)
 			)
 			(12
-				(willow loop: 3 cel: 0 cycleSpeed: 2 setCycle: End self)
+				(willow loop: 3 cel: 0 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(13
-				(willow loop: 4 cel: 0 setCycle: End self)
+				(willow loop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(14
 				(eHair
@@ -468,7 +468,7 @@
 				(willow
 					loop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					illegalBits: 0
 					startUpd:
 				)
@@ -485,7 +485,7 @@
 			(17
 				(DoAudio 1 8023)
 				(harp show: setMotion: MoveTo 73 124 self)
-				(willow loop: 3 cel: 0 setCycle: End)
+				(willow loop: 3 cel: 0 setCycle: EndLoop)
 			)
 			(18
 				(theAudio number: 8023 loop: 1 play:)
@@ -542,14 +542,14 @@
 					loop: 5
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(24
-				(prince loop: 6 cel: 0 cycleSpeed: 2 setCycle: End)
+				(prince loop: 6 cel: 0 cycleSpeed: 2 setCycle: EndLoop)
 				(= seconds 5)
 			)
-			(25 (prince setCycle: Beg self))
+			(25 (prince setCycle: BegLoop self))
 			(26
 				(willow show:)
 				(prince setLoop: 0 cel: 0 posn: 91 105)
@@ -560,7 +560,7 @@
 					y: (prince y?)
 					z: 35
 					cycleSpeed: 3
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 				)
 				(wHair setCycle: MouthSync 1006)
@@ -670,19 +670,19 @@
 					loop: 0
 					cel: 0
 					cycleSpeed: 4
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(theAudio number: 7071 loop: 1 play:)
-				(ego loop: 4 cel: 0 setCycle: End self)
+				(ego loop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(ego loop: 0 cel: 1 setCycle: Beg self)
+				(ego loop: 0 cel: 1 setCycle: BegLoop self)
 			)
 			(4
 				(SpeakAudio 7058 self)
-				(ego view: 46 loop: 0 setCycle: Fwd)
+				(ego view: 46 loop: 0 setCycle: Forward)
 			)
 			(5
 				(ego normal: 1 view: 0 setCycle: KQ5SyncWalk loop: 0)
@@ -723,12 +723,12 @@
 				(proc770_0 @local140 ego)
 				(proc762_1 @local140 1016)
 				((ego head?) hide:)
-				(ego normal: 0 view: 56 loop: 3 cel: 0 setCycle: End self)
+				(ego normal: 0 view: 56 loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(SolvePuzzle 2)
 				(harp dispose:)
-				(ego get: 10 setCycle: Beg self)
+				(ego get: 10 setCycle: BegLoop self)
 			)
 			(3
 				(ego
@@ -1257,7 +1257,7 @@
 			(4
 				(cls)
 				(eHair setCycle: 0 hide:)
-				(willow loop: 2 cel: 0 setCycle: End self illegalBits: 0)
+				(willow loop: 2 cel: 0 setCycle: EndLoop self illegalBits: 0)
 				(harp
 					view: 256
 					setLoop: 4
@@ -1271,7 +1271,7 @@
 			(5
 				(DoAudio 1 8023)
 				(harp show: setMotion: MoveTo 73 124 self)
-				(willow loop: 3 cel: 0 setCycle: End)
+				(willow loop: 3 cel: 0 setCycle: EndLoop)
 			)
 			(6
 				(theAudio number: 8023 loop: 1 play:)
@@ -1328,14 +1328,14 @@
 					loop: 5
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(12
-				(prince loop: 6 cel: 0 cycleSpeed: 2 setCycle: End)
+				(prince loop: 6 cel: 0 cycleSpeed: 2 setCycle: EndLoop)
 				(= seconds 5)
 			)
-			(13 (prince setCycle: Beg self))
+			(13 (prince setCycle: BegLoop self))
 			(14
 				(willow show:)
 				(prince setLoop: 0 cel: 0 posn: 91 105)
@@ -1346,7 +1346,7 @@
 					y: (prince y?)
 					z: 35
 					cycleSpeed: 3
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 				)
 				(wHair setCycle: MouthSync 1006)

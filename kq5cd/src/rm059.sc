@@ -406,7 +406,7 @@
 					posn: 310 179
 					setLoop: 1
 					cycleSpeed: 1
-					setCycle: End
+					setCycle: EndLoop
 				)
 				((ScriptID 550 5)
 					init:
@@ -424,7 +424,7 @@
 					cel: 0
 					cycleSpeed: 3
 					setPri: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ScriptID 550 5)
 					show:
@@ -440,7 +440,7 @@
 				((ScriptID 550 4)
 					setCel: 255
 					cycleSpeed: 2
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(theAudio number: 8018 loop: 1 play:)
 			)
@@ -453,7 +453,7 @@
 	)
 )
 
-(instance blockOne of Blk
+(instance blockOne of Block
 	(properties
 		top 1000
 		left -1000
@@ -504,10 +504,10 @@
 		(switch (= state newState)
 			(0
 				(if (< (DoSound sndDISPOSE) 8)
-					((ScriptID 550 5) setCycle: End self)
+					((ScriptID 550 5) setCycle: EndLoop self)
 				else
 					(theAudio number: 8071 loop: 1 play: self)
-					((ScriptID 550 5) setCycle: End)
+					((ScriptID 550 5) setCycle: EndLoop)
 				)
 			)
 			(1 (= cycles 5))

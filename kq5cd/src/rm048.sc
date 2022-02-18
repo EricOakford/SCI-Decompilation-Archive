@@ -31,9 +31,9 @@
 		(super init:)
 		(LoadMany 128 620 651)
 		(if (> (theGame detailLevel:) 0)
-			(wave0 setCycle: Fwd init:)
-			(wave1 setCycle: Fwd init:)
-			(wave2 setCycle: Fwd init:)
+			(wave0 setCycle: Forward init:)
+			(wave1 setCycle: Forward init:)
+			(wave2 setCycle: Forward init:)
 		)
 		(self setFeatures: island)
 		(HandsOff)
@@ -138,7 +138,7 @@
 				)
 			)
 			(1
-				(boat view: 130 setLoop: 1 cycleSpeed: 2 setCycle: Fwd)
+				(boat view: 130 setLoop: 1 cycleSpeed: 2 setCycle: Forward)
 				(= seconds 4)
 			)
 			(2

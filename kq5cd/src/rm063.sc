@@ -474,12 +474,12 @@
 		(if (and (> (++ local4) 20) (not local3))
 			(= local3 1)
 			(= local4 0)
-			(self setCycle: End)
+			(self setCycle: EndLoop)
 		)
 		(if (and (> local4 45) (== local3 1))
 			(= local3 0)
 			(= local4 0)
-			(self setCycle: Beg)
+			(self setCycle: BegLoop)
 		)
 	)
 	
@@ -527,7 +527,7 @@
 					view: 708
 					setLoop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (= cycles 5))
@@ -535,7 +535,7 @@
 				(= local1 0)
 				(wand dispose:)
 				(CastleEgoSpeed)
-				(ego loop: 1 cel: 0 setCycle: End self)
+				(ego loop: 1 cel: 0 setCycle: EndLoop self)
 				(Bset 66)
 				(ego get: 35)
 				(SolvePuzzle 3)
@@ -568,12 +568,12 @@
 			(1 1 (= seconds (Random 5 20)))
 			(2
 				2
-				((ScriptID 550 7) setCycle: End self)
+				((ScriptID 550 7) setCycle: EndLoop self)
 			)
 			(3 3 (= seconds (Random 5 20)))
 			(4
 				4
-				((ScriptID 550 7) setCycle: Beg self)
+				((ScriptID 550 7) setCycle: BegLoop self)
 				(= state 0)
 			)
 		)
@@ -596,11 +596,11 @@
 					ignoreActors: 1
 					illegalBits: 0
 					setPri: -1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				((ScriptID 550 7) setLoop: 2 cel: 0 setCycle: End self)
+				((ScriptID 550 7) setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(self setScript: wizWaitingScript)
@@ -655,13 +655,13 @@
 					setLoop: temp0
 					cycleSpeed: 2
 					cel: 0
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(2
 				((ScriptID 550 1)
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					posn: (+ ((ScriptID 550 7) x?) 19) (- ((ScriptID 550 7) y?) 41)
 				)
 				(= seconds 2)
@@ -679,12 +679,12 @@
 					view: 132
 					normal: 0
 					setLoop: temp0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
 				(CastleEgoSpeed)
-				(ego setLoop: (+ (ego loop?) 2) setCycle: Fwd)
+				(ego setLoop: (+ (ego loop?) 2) setCycle: Forward)
 				(= seconds 6)
 			)
 			(5
@@ -697,10 +697,10 @@
 					(315 (= temp0 11))
 				)
 				(CastleEgoSpeed)
-				(ego setLoop: temp0 cel: 0 setCycle: End self)
+				(ego setLoop: temp0 cel: 0 setCycle: EndLoop self)
 			)
 			(6
-				((ScriptID 550 7) cycleSpeed: 3 setCycle: Beg)
+				((ScriptID 550 7) cycleSpeed: 3 setCycle: BegLoop)
 				(= seconds 4)
 				(= inCartoon 0)
 			)

@@ -38,8 +38,8 @@
 		(super init:)
 		(if (not (Btst 55))
 			(= global325 3083)
-			(= global320 208)
-			(= global321 56)
+			(= cedricX 208)
+			(= cedricY 56)
 			(self setRegions: 202)
 			(if (not (Btst 99)) (ego setScript: conversation))
 		)
@@ -181,7 +181,7 @@
 					view: 68
 					setLoop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					cycleSpeed: 1
 					setPri: 1
 					illegalBits: 0
@@ -222,15 +222,15 @@
 					posn: 198 144
 					cycleSpeed: 3
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(theAudio number: 8132 loop: 1 play: self)
-				(ego setLoop: 2 setCycle: Fwd)
+				(ego setLoop: 2 setCycle: Forward)
 			)
 			(3
-				(ego setLoop: 1 cel: 3 setCycle: Beg)
+				(ego setLoop: 1 cel: 3 setCycle: BegLoop)
 				(= seconds 4)
 			)
 			(4
@@ -253,24 +253,24 @@
 					cycleSpeed: 3
 					setLoop: 3
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
-				(ego setLoop: 4 cel: 0 setCycle: End self)
-				(grate cycleSpeed: 3 loop: 5 setCycle: End)
+				(ego setLoop: 4 cel: 0 setCycle: EndLoop self)
+				(grate cycleSpeed: 3 loop: 5 setCycle: EndLoop)
 			)
 			(7
-				(ego setLoop: 6 cel: 0 setCycle: End self)
+				(ego setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(8
 				(poker init:)
 				(grate posn: 174 126)
 				(RedrawCast)
-				(ego setLoop: 7 cel: 0 setCycle: End self)
+				(ego setLoop: 7 cel: 0 setCycle: EndLoop self)
 			)
 			(9
-				(ego setLoop: 8 cel: 0 setCycle: End self)
+				(ego setLoop: 8 cel: 0 setCycle: EndLoop self)
 			)
 			(10
 				(ego
@@ -303,8 +303,8 @@
 				(if (not (Btst 55))
 					(cond 
 						((< (theGame detailLevel:) 3) (= cycles 1))
-						((== (globalCedric cel?) 0) (globalCedric setScript: 0 setCycle: CT 1 1 self))
-						((> (globalCedric cel?) 1) (globalCedric setScript: 0 setCycle: CT 1 -1 self))
+						((== (globalCedric cel?) 0) (globalCedric setScript: 0 setCycle: CycleTo 1 1 self))
+						((> (globalCedric cel?) 1) (globalCedric setScript: 0 setCycle: CycleTo 1 -1 self))
 						(else (= cycles 1))
 					)
 				else
@@ -330,11 +330,11 @@
 					cycleSpeed: 3
 					cel: 3
 					setLoop: 8
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(4
-				(ego setLoop: 9 cel: 0 setCycle: End self)
+				(ego setLoop: 9 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(HandsOn)
@@ -360,14 +360,14 @@
 					cycleSpeed: 3
 					setLoop: 3
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(SpeakAudio 571)
 				(= cycles 1)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(ego
 					view: 0

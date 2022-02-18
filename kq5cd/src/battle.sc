@@ -135,7 +135,7 @@
 				(= cycles 1)
 			)
 			(2
-				(gMordObj init: setCycle: End self)
+				(gMordObj init: setCycle: EndLoop self)
 			)
 			(3
 				(proc762_1 @local120 917 self)
@@ -184,7 +184,7 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11
@@ -195,7 +195,7 @@
 					cel: 0
 					cycleSpeed: 0
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theAudio number: 8138 loop: 1 play:)
 			)
@@ -205,16 +205,16 @@
 					setLoop: 3
 					cel: 0
 					cycleSpeed: 0
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(if (Btst 55)
 					(= inCartoon 0)
-					(ego cycleSpeed: 1 setCycle: End self)
+					(ego cycleSpeed: 1 setCycle: EndLoop self)
 				else
 					((ScriptID 604 5)
 						setLoop: 0
 						setCel: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 					(theAudio number: 8897 loop: 1 play:)
 				)
@@ -228,19 +228,19 @@
 					((ScriptID 604 5)
 						setMotion: 0
 						setLoop: 1
-						setCycle: Fwd
+						setCycle: Forward
 						cycleSpeed: 1
 						setScript: owlScript self
 					)
 				)
 			)
 			(14
-				((ScriptID 604 5) setLoop: 2 cel: 0 setCycle: End self)
+				((ScriptID 604 5) setLoop: 2 cel: 0 setCycle: EndLoop self)
 				(theAudio number: 8892 loop: 1 play:)
 			)
 			(15
 				((ScriptID 604 5) stopUpd:)
-				(gMordObj view: 715 setLoop: 0 cel: 0 setCycle: End self)
+				(gMordObj view: 715 setLoop: 0 cel: 0 setCycle: EndLoop self)
 				(theMusic2 number: 125 loop: 1 priority: 15 play:)
 			)
 			(16 (= seconds 4))
@@ -250,7 +250,7 @@
 			)
 			(18
 				(cls)
-				(gMordObj setLoop: 1 cel: 0 setCycle: End self)
+				(gMordObj setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(19 (= seconds 3))
 			(20
@@ -327,7 +327,7 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -336,7 +336,7 @@
 					setLoop: 1
 					posn: (+ (gMordObj x?) 27) (- (gMordObj y?) 31)
 					setStep: 6 6
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 2)
 			)
@@ -367,7 +367,7 @@
 					cycleSpeed: 2
 					cel: 0
 					posn: (- (ego x?) 23) (+ (ego y?) 1)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(8
@@ -379,7 +379,7 @@
 					illegalBits: 0
 					signal: (| (gNewActorCloner signal?) $6000)
 					posn: (ego x?) (ego y?) 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(gNewActorCloner_2
 					view: 722
@@ -389,15 +389,15 @@
 					signal: (| (gNewActorCloner_2 signal?) $6000)
 					posn: (+ (ego x?) 38) (ego y?) 0
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(theAudio number: 7064 loop: 1 play:)
 			)
 			(9
-				(gNewActorCloner setCycle: Beg self)
+				(gNewActorCloner setCycle: BegLoop self)
 			)
 			(10
-				(ego setLoop: 2 cel: 0 setCycle: End self)
+				(ego setLoop: 2 cel: 0 setCycle: EndLoop self)
 				(gNewActorCloner z: 1000)
 				(gNewActorCloner_2 z: 1000)
 			)
@@ -410,13 +410,13 @@
 			)
 			(12
 				(theAudio number: 7064 loop: 1 play:)
-				(gNewActorCloner setCycle: End self)
+				(gNewActorCloner setCycle: EndLoop self)
 			)
 			(13
-				(gNewActorCloner setCycle: Beg self)
+				(gNewActorCloner setCycle: BegLoop self)
 			)
 			(14
-				(ego setLoop: 2 cel: 0 setCycle: End self)
+				(ego setLoop: 2 cel: 0 setCycle: EndLoop self)
 				(gNewActorCloner z: 1000)
 				(gNewActorCloner_2 z: 1000)
 			)
@@ -475,23 +475,23 @@
 			(29
 				(gNewActorCloner z: 1000)
 				(gNewActorCloner_2 z: 1000)
-				(ego setLoop: 4 cel: 0 setCycle: CT 9 1 self)
+				(ego setLoop: 4 cel: 0 setCycle: CycleTo 9 1 self)
 			)
 			(30
-				(ego setPri: 5 setCycle: End self)
+				(ego setPri: 5 setCycle: EndLoop self)
 			)
 			(31
 				(ego
 					setLoop: 5
 					cel: 0
 					cycleSpeed: 4
-					setCycle: End
+					setCycle: EndLoop
 					setStep: 10 10
 					setMotion: MoveTo (- (ego x?) 35) (+ (ego y?) 90) self
 				)
 			)
 			(32
-				(ego cycleSpeed: 0 setLoop: 6 cel: 0 setCycle: End self)
+				(ego cycleSpeed: 0 setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(33
 				(ego setLoop: 8 cel: 1)
@@ -505,14 +505,14 @@
 					setLoop: 10
 					posn: (+ (ego x?) 21) (ego y?) 0
 					setPri: -1
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(gMordObj
 					view: 725
 					setLoop: 0
 					setPri: 13
 					setStep: 3 3
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (- (gMordObj x?) 60) (- (gMordObj y?) 15) self
 				)
 			)
@@ -570,7 +570,7 @@
 					cel: 0
 					yStep: 2
 					setMotion: MoveTo (gMordObj x?) (+ (gMordObj y?) 30)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -634,7 +634,7 @@
 					setLoop: 0
 					cel: 0
 					setStep: 10 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9 (= seconds 1))
@@ -642,7 +642,7 @@
 				(gNewActorCloner_3
 					setLoop: [local42 register]
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11
@@ -667,11 +667,11 @@
 						self
 				)
 				(theAudio number: 8200 loop: 1 play:)
-				(gNewActorCloner_3 setCycle: Beg)
+				(gNewActorCloner_3 setCycle: BegLoop)
 				(ego setScript: bunnyScript 0 [local108 register])
 			)
 			(12
-				(gNewActorCloner_5 setLoop: 7 cel: 0 setCycle: End self)
+				(gNewActorCloner_5 setLoop: 7 cel: 0 setCycle: EndLoop self)
 			)
 			(13
 				(cond 
@@ -741,7 +741,7 @@
 					setLoop: temp1
 					cel: 0
 					setPri: temp2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -782,7 +782,7 @@
 					setLoop: temp1
 					cel: 0
 					posn: egoX egoY
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -848,7 +848,7 @@
 					setLoop: temp1
 					cel: 0
 					posn: egoX egoY
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -858,7 +858,7 @@
 						setLoop: 6
 						posn: 145 136
 						cycleSpeed: 1
-						setCycle: Fwd
+						setCycle: Forward
 					)
 				)
 				(self dispose:)
@@ -872,7 +872,7 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0 (client setCycle: EndLoop self))
 			(1 (= seconds (Random 1 5)))
 			(2 (self init:))
 		)
@@ -906,7 +906,7 @@
 				(gNewActorCloner_4 view: 712 z: 1000)
 				(gNewActorCloner_5 view: 712 z: 1000)
 				(gNewActorCloner view: 712 z: 1000)
-				(gMordObj view: 730 setLoop: 0 cel: 0 setCycle: End self)
+				(gMordObj view: 730 setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(UnLoad 128 728)
@@ -919,7 +919,7 @@
 					setLoop: 6
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (= seconds 2))
@@ -931,10 +931,10 @@
 				)
 			)
 			(6
-				(gMordObj setLoop: 8 cel: 0 setCycle: End self)
+				(gMordObj setLoop: 8 cel: 0 setCycle: EndLoop self)
 			)
 			(7
-				(gMordObj setLoop: 14 cycleSpeed: 3 setCycle: Fwd)
+				(gMordObj setLoop: 14 cycleSpeed: 3 setCycle: Forward)
 				(SpeakAudio 924 0 1)
 				(= seconds 5)
 			)
@@ -963,7 +963,7 @@
 					setLoop: 3
 					cel: 0
 					moveSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(12
@@ -980,7 +980,7 @@
 			)
 			(14 (gMordObj cel: 0))
 			(15
-				(ego setLoop: 6 cel: 0 setCycle: End self)
+				(ego setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(16
 				(ego
@@ -996,7 +996,7 @@
 					cel: 0
 					cycleSpeed: 2
 					posn: (gMordObj x?) (gMordObj y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(18
@@ -1019,7 +1019,7 @@
 			)
 			(20 (gMordObj cel: 0))
 			(21
-				(ego setLoop: 6 cel: 0 setCycle: End self)
+				(ego setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(22
 				(ego
@@ -1035,7 +1035,7 @@
 					cycleSpeed: 2
 					cel: 0
 					posn: (gMordObj x?) (gMordObj y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(24
@@ -1050,7 +1050,7 @@
 				(ego setMotion: MoveTo (+ (ego x?) 15) (ego y?) self)
 			)
 			(25
-				(ego setLoop: 6 cel: 0 setCycle: End self)
+				(ego setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(26
 				(ego
@@ -1066,7 +1066,7 @@
 					cycleSpeed: 2
 					cel: 0
 					posn: (gMordObj x?) (gMordObj y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(28
@@ -1089,16 +1089,16 @@
 					setLoop: 3
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(30
-				(gMordObj setLoop: 14 cycleSpeed: 1 setCycle: Fwd)
+				(gMordObj setLoop: 14 cycleSpeed: 1 setCycle: Forward)
 				(SpeakAudio 925 0 1)
 				(= seconds 4)
 			)
 			(31
-				(ego cel: 0 setCycle: End self)
+				(ego cel: 0 setCycle: EndLoop self)
 				(= seconds 4)
 			)
 			(32
@@ -1138,11 +1138,11 @@
 					cel: 0
 					setPri: (- (ego priority?) 1)
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(gMordObj setLoop: 1 cel: 0 setCycle: End self)
+				(gMordObj setLoop: 1 cel: 0 setCycle: EndLoop self)
 				(gNewActorCloner_2
 					view: 734
 					setLoop: 2
@@ -1151,7 +1151,7 @@
 					posn: (gMordObj x?) (gMordObj y?) 0
 					setPri: (+ (ego priority?) 1)
 					setScript: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 0)
@@ -1159,14 +1159,14 @@
 				(gMordObj
 					setLoop: 3
 					posn: (+ (gMordObj x?) 45) (- (gMordObj y?) 4)
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(gNewActorCloner_2
 					setLoop: 4
 					posn: (gMordObj x?) (gMordObj y?)
-					setCycle: Fwd
+					setCycle: Forward
 				)
-				(ego setLoop: 12 cel: 0 setCycle: End self)
+				(ego setLoop: 12 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(localproc_2d75)
@@ -1193,7 +1193,7 @@
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(8
@@ -1215,9 +1215,9 @@
 					posn: (+ (gMordObj x?) 2) (- (gMordObj y?) 56) 0
 					init:
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
-				(ego setLoop: 1 cel: 2 setCycle: Beg)
+				(ego setLoop: 1 cel: 2 setCycle: BegLoop)
 			)
 			(10
 				(if
@@ -1231,7 +1231,7 @@
 				(= cycles 1)
 			)
 			(11
-				(gNewActorCloner_3 setLoop: 4 setCycle: Fwd)
+				(gNewActorCloner_3 setLoop: 4 setCycle: Forward)
 				(gNewActorCloner_5
 					view: 742
 					setLoop: 8
@@ -1239,7 +1239,7 @@
 					setPri: (+ (gNewActorCloner_3 priority?) 1)
 					cycleSpeed: 0
 					setScript: 0
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(gNewActorCloner_4
 					view: 742
@@ -1249,11 +1249,11 @@
 					setPri: (+ (ego priority?) 1)
 					init:
 					cycleSpeed: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(12
-				(gNewActorCloner_4 setLoop: 6 setCycle: Fwd)
+				(gNewActorCloner_4 setLoop: 6 setCycle: Forward)
 				(= seconds 2)
 				(ego setLoop: 0 cel: 1 z: 0)
 				(gNewActorCloner dispose:)
@@ -1270,9 +1270,9 @@
 				(= seconds 1)
 			)
 			(15
-				(gMordObj setLoop: 4 setCycle: End self)
-				(gNewActorCloner_2 setLoop: 5 setCycle: End self)
-				(gNewActorCloner_4 setLoop: 7 cel: 0 setCycle: End self)
+				(gMordObj setLoop: 4 setCycle: EndLoop self)
+				(gNewActorCloner_2 setLoop: 5 setCycle: EndLoop self)
+				(gNewActorCloner_4 setLoop: 7 cel: 0 setCycle: EndLoop self)
 			)
 			(16 0)
 			(17 0)
@@ -1282,7 +1282,7 @@
 				(gNewActorCloner_2 dispose:)
 				(gNewActorCloner_4 dispose:)
 				(gNewActorCloner_5 dispose:)
-				(gNewActorCloner_3 setLoop: 9 cel: 0 setCycle: End self)
+				(gNewActorCloner_3 setLoop: 9 cel: 0 setCycle: EndLoop self)
 			)
 			(19)
 			(20 (= seconds 2))
@@ -1309,7 +1309,7 @@
 				(switch global387
 					(0 (= cycles 1))
 					(4
-						(ego view: 721 setLoop: 1 cel: 6 setCycle: Beg self)
+						(ego view: 721 setLoop: 1 cel: 6 setCycle: BegLoop self)
 						(theAudio stop:)
 						(gNewActorCloner setScript: 0)
 						(gNewActorCloner view: 712 z: 1000)
@@ -1317,14 +1317,14 @@
 					)
 					(2
 						(if (== local40 1)
-							(ego view: 740 setLoop: 0 cel: 0 setCycle: End self)
+							(ego view: 740 setLoop: 0 cel: 0 setCycle: EndLoop self)
 							(= register 1)
 						else
-							(ego view: 740 setLoop: 2 cel: 7 setCycle: Beg self)
+							(ego view: 740 setLoop: 2 cel: 7 setCycle: BegLoop self)
 						)
 					)
 					(1
-						(ego view: 740 setLoop: 1 cel: 7 setCycle: Beg self)
+						(ego view: 740 setLoop: 1 cel: 7 setCycle: BegLoop self)
 					)
 				)
 			)
@@ -1344,10 +1344,10 @@
 								cel: 0
 								setPri: -1
 								posn: (- (ego x?) 6) (- (ego y?) 7)
-								setCycle: End self
+								setCycle: EndLoop self
 							)
 						else
-							(ego view: 721 setLoop: 1 cel: 0 setCycle: End self)
+							(ego view: 721 setLoop: 1 cel: 0 setCycle: EndLoop self)
 						)
 					)
 					(2
@@ -1356,7 +1356,7 @@
 							view: (if temp0 718 else 740)
 							setLoop: (if temp0 0 else 2)
 							cel: 0
-							setCycle: End self
+							setCycle: EndLoop self
 						)
 					)
 					(1
@@ -1368,7 +1368,7 @@
 								view: (if temp0 718 else 740)
 								setLoop: (if temp0 3 else 1)
 								cel: 0
-								setCycle: End self
+								setCycle: EndLoop self
 							)
 						)
 					)
@@ -1380,9 +1380,9 @@
 							cel: 0
 						)
 						(if temp0
-							(ego setCycle: CT 5 1 self)
+							(ego setCycle: CycleTo 5 1 self)
 						else
-							(ego z: 19 setCycle: End self)
+							(ego z: 19 setCycle: EndLoop self)
 							(gNewActorCloner
 								view: 742
 								setLoop: 0
@@ -1424,11 +1424,11 @@
 					posn: (ego x?) (- (ego y?) 40) 0
 					setPri: 9
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(client setLoop: 4 setCycle: Fwd)
+				(client setLoop: 4 setCycle: Forward)
 				(= cycles 10)
 			)
 			(2 (= local41 1))
@@ -1521,7 +1521,7 @@
 									(= theInventoryFirst (inventory next: inventoryFirst))
 									(= temp1 (NodeValue inventoryFirst))
 									(cond 
-										((not (temp1 isMemberOf: IconI)) (temp1 moveTo: 1))
+										((not (temp1 isMemberOf: IconItem)) (temp1 moveTo: 1))
 										(
 											(or
 												(== (temp1 message?) 2)

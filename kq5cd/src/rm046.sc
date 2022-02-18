@@ -48,8 +48,8 @@
 		(super init:)
 		(LoadMany 128 624 626 628)
 		(Load rsSCRIPT 941)
-		(= global320 100)
-		(= global321 140)
+		(= cedricX 100)
+		(= cedricY 140)
 		(= global325 3070)
 		(self setFeatures: house beach bell setRegions: 220)
 		(ego posn: 0 500 illegalBits: -16384 init:)
@@ -85,7 +85,7 @@
 		(if (== (theGame detailLevel:) 3)
 			(theAudio number: 7055 loop: -1 doNotStop: 1 play:)
 			(surf1 setScript: waves)
-			(chimney setCycle: Fwd cycleSpeed: 3)
+			(chimney setCycle: Forward cycleSpeed: 3)
 		)
 		(if
 			(and
@@ -251,7 +251,7 @@
 					ignoreActors: 1
 					illegalBits: 0
 					setPri: -1
-					setCycle: End self
+					setCycle: EndLoop self
 					setLoop: 13
 					setMotion: MoveTo 130 148 self species
 				)
@@ -273,13 +273,13 @@
 					posn: (- (hermit_a x?) 5) (- (hermit_a y?) 32)
 					setPri: (+ (hermit_a priority?) 1)
 					setLoop: 1
-					setCycle: CT 8 1
+					setCycle: CycleTo 8 1
 					init:
 				)
 				(theMusic3 number: 821 loop: 1 play:)
 			)
 			(5
-				(arm setCycle: End)
+				(arm setCycle: EndLoop)
 				(hermit_a setLoop: 2)
 				(= seconds 5)
 			)
@@ -289,11 +289,11 @@
 					setLoop: 8
 					cycleSpeed: 2
 					posn: 275 155
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7
-				(mermaid setLoop: 7 cycleSpeed: 3 setCycle: Fwd)
+				(mermaid setLoop: 7 cycleSpeed: 3 setCycle: Forward)
 				(= cycles 1)
 			)
 			(8
@@ -338,7 +338,7 @@
 			(14
 				((ego head?) setCel: -1 setScript: 0)
 				(cls)
-				(mermaid setLoop: 10 cycleSpeed: 2 setCycle: End self)
+				(mermaid setLoop: 10 cycleSpeed: 2 setCycle: EndLoop self)
 				(theAudio number: 9302 play:)
 			)
 			(15
@@ -354,7 +354,7 @@
 				)
 			)
 			(16
-				(door setCycle: Beg self show:)
+				(door setCycle: BegLoop self show:)
 				(ego setCycle: KQ5SyncWalk setLoop: -1 view: 0)
 				(NormalEgo)
 			)
@@ -401,7 +401,7 @@
 				(surf1
 					init:
 					show:
-					setCycle: End self
+					setCycle: EndLoop self
 					setPri: 2
 					ignoreActors:
 					cycleSpeed: (Random 5 10)
@@ -415,8 +415,8 @@
 				)
 			)
 			(1
-				(surf1 setCycle: Beg self)
-				(surf2 setCycle: Beg)
+				(surf1 setCycle: BegLoop self)
+				(surf2 setCycle: BegLoop)
 			)
 			(2 (= seconds 5))
 			(3 (= state -1) (= cycles 1))
@@ -460,7 +460,7 @@
 					cel: 0
 					posn: 176 149
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -497,7 +497,7 @@
 			)
 			(1
 				((ego head?) hide:)
-				(ego view: 628 loop: 3 cycleSpeed: 1 setCycle: Fwd)
+				(ego view: 628 loop: 3 cycleSpeed: 1 setCycle: Forward)
 				(theAudio number: 8828 loop: -1 play:)
 				(= seconds 4)
 			)
@@ -531,10 +531,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(globalCedric view: 138 loop: 1 setCycle: End self)
+				(globalCedric view: 138 loop: 1 setCycle: EndLoop self)
 			)
 			(1
-				(globalCedric view: 138 loop: 4 cel: 7 setCycle: Beg self)
+				(globalCedric view: 138 loop: 4 cel: 7 setCycle: BegLoop self)
 			)
 			(2
 				(globalCedric stopUpd:)
@@ -583,7 +583,7 @@
 				(= cycles 1)
 			)
 			(5
-				(door startUpd: ignoreActors: 0 setCycle: Beg self)
+				(door startUpd: ignoreActors: 0 setCycle: BegLoop self)
 			)
 			(6
 				(if (!= (DoAudio 6) -1) (-- state))
@@ -613,7 +613,7 @@
 				((ego head?) show:)
 				(ego
 					show:
-					setCycle: Rev
+					setCycle: Reverse
 					setLoop: 1
 					setMotion: MoveTo (+ (ego x?) 20) (ego y?) self
 				)
@@ -621,7 +621,7 @@
 					view: 624
 					setLoop: 4
 					posn: (- (ego x?) 19) (ego y?)
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(shell
 					init:
@@ -676,7 +676,7 @@
 					posn: 260 155
 					setPri: 15
 					normal: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
@@ -703,7 +703,7 @@
 				(ego
 					view: 624
 					setLoop: (if (Btst 55) 14 else 11)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11
@@ -728,7 +728,7 @@
 				)
 			)
 			(12
-				(door cycleSpeed: 2 setCycle: Beg self)
+				(door cycleSpeed: 2 setCycle: BegLoop self)
 			)
 			(13
 				(theAudio number: 7055 loop: -1 doNotStop: 1 play:)
@@ -789,7 +789,7 @@
 				(arm
 					init:
 					posn: (- (ego x?) 4) (- (ego y?) 30)
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(3
@@ -803,7 +803,7 @@
 			(5
 				((ego head?) setLoop: -1 cel: 4)
 				(ego view: 0 loop: 7 cel: 2)
-				(door startUpd: ignoreActors: 1 setCycle: End self)
+				(door startUpd: ignoreActors: 1 setCycle: EndLoop self)
 			)
 			(6 (= seconds 1))
 			(7
@@ -996,7 +996,7 @@
 				)
 			)
 			(7
-				(door startUpd: ignoreActors: 0 setCycle: Beg self)
+				(door startUpd: ignoreActors: 0 setCycle: BegLoop self)
 				(theMusic2 fade:)
 			)
 			(8

@@ -42,7 +42,7 @@
 			addObstacle: poly1
 			setScript: enterNorth
 		)
-		(glow1 setCycle: Fwd init:)
+		(glow1 setCycle: Forward init:)
 		(eyeBall init: stopUpd:)
 		(book init: stopUpd:)
 		(poly1 points: @local2 size: 28)
@@ -159,7 +159,7 @@
 						(== eyeBallLoop 6)
 						(> (ego y?) 160)
 					)
-					(eyeBall setCycle: Beg self)
+					(eyeBall setCycle: BegLoop self)
 				)
 				(
 					(and
@@ -171,7 +171,7 @@
 				)
 				((== eyeBallLoop 5)
 					(if (< (ego y?) 160)
-						(eyeBall cel: 0 loop: 6 setCycle: End)
+						(eyeBall cel: 0 loop: 6 setCycle: EndLoop)
 					else
 						(eyeBall cel: (/ (ego x?) 70))
 					)
@@ -353,12 +353,12 @@
 					cycleSpeed: 2
 					cel: 0
 					setPri: 15
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if register (-- state))
 			)
 			(2
-				(ego setLoop: 1 cel: 0 setCycle: Fwd cycleSpeed: 12)
+				(ego setLoop: 1 cel: 0 setCycle: Forward cycleSpeed: 12)
 				(= seconds 3)
 			)
 			(3
@@ -405,19 +405,19 @@
 					setLoop: 8
 					posn: 159 105
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (= cycles (Random 5 10)))
 			(2
-				((ScriptID 550 7) setLoop: 7 cel: 0 setCycle: End self)
+				((ScriptID 550 7) setLoop: 7 cel: 0 setCycle: EndLoop self)
 			)
 			(3 (= cycles (Random 5 10)))
 			(4
 				((ScriptID 550 7)
 					setLoop: 6
 					setCel: 255
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(5
@@ -429,9 +429,9 @@
 			(6
 				(if (not (Random 0 3))
 					(if (Random 0 1)
-						((ScriptID 550 7) setCycle: End)
+						((ScriptID 550 7) setCycle: EndLoop)
 					else
-						((ScriptID 550 7) setCycle: Beg)
+						((ScriptID 550 7) setCycle: BegLoop)
 					)
 				)
 				(= seconds (Random 2 6))
@@ -440,15 +440,15 @@
 			)
 			(7
 				(CastleHandsOff)
-				((ScriptID 550 7) setLoop: 6 cel: 0 setCycle: End self)
+				((ScriptID 550 7) setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(8 (= cycles (Random 5 10)))
 			(9
-				((ScriptID 550 7) setLoop: 7 cel: 7 setCycle: End self)
+				((ScriptID 550 7) setLoop: 7 cel: 7 setCycle: EndLoop self)
 			)
 			(10 (= cycles (Random 5 10)))
 			(11
-				((ScriptID 550 7) setLoop: 8 cel: 11 setCycle: Beg self)
+				((ScriptID 550 7) setLoop: 8 cel: 11 setCycle: BegLoop self)
 			)
 			(12
 				(CastleHandsOn)
@@ -469,15 +469,15 @@
 					setLoop: 5
 					posn: 159 105
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
 				(if (not (Random 0 3))
 					(if (Random 0 1)
-						((ScriptID 550 7) setCycle: End)
+						((ScriptID 550 7) setCycle: EndLoop)
 					else
-						((ScriptID 550 7) setCycle: Beg)
+						((ScriptID 550 7) setCycle: BegLoop)
 					)
 				)
 				(= seconds (Random 2 6))
@@ -493,20 +493,20 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				((ScriptID 550 7) setLoop: 6 cel: 0 setCycle: End self)
+				((ScriptID 550 7) setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(1
 				((ScriptID 550 7)
 					setLoop: 7
 					setCel: 255
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(2
 				((ScriptID 550 7)
 					setLoop: 8
 					setCel: 255
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(3

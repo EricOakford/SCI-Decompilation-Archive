@@ -35,8 +35,8 @@
 		(NormalEgo)
 		(theMusic loop: -1 number: 832 vol: 127 play:)
 		(if (not (Btst 55))
-			(= global320 281)
-			(= global321 152)
+			(= cedricX 281)
+			(= cedricY 152)
 			(= global325 3083)
 			(self setRegions: 202)
 		)
@@ -74,7 +74,7 @@
 				loop: 9
 				cel: 2
 				posn: 107 43
-				setCycle: Fwd
+				setCycle: Forward
 				cycleSpeed: 1
 				setPri: 15
 				init:
@@ -82,14 +82,14 @@
 			(rActor
 				loop: 10
 				posn: 212 39
-				setCycle: Fwd
+				setCycle: Forward
 				cycleSpeed: 1
 				setPri: 15
 				init:
 			)
 		else
-			(lDragon setCycle: Fwd init: hide:)
-			(rDragon setCycle: Fwd init: hide:)
+			(lDragon setCycle: Forward init: hide:)
+			(rDragon setCycle: Forward init: hide:)
 			(Load rsVIEW 668)
 		)
 		(poly1 points: @local1 size: 7)
@@ -194,7 +194,7 @@
 					view: 70
 					cel: 0
 					setLoop: (if (& (ego onControl: 0) $0400) 0 else 1)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -215,12 +215,12 @@
 				(Bset 35)
 				((ego head?) hide:)
 				(theAudio number: 8130 loop: -1 play:)
-				(ego view: 666 loop: 10 setCycle: End self cycleSpeed: 3)
+				(ego view: 666 loop: 10 setCycle: EndLoop self cycleSpeed: 3)
 				(lDragon loop: 8 posn: 157 48 cycleSpeed: 0 show:)
 				(rDragon hide:)
 			)
 			(1
-				(ego loop: 11 cel: 0 setCycle: End self)
+				(ego loop: 11 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(theAudio stop:)
@@ -271,7 +271,7 @@
 				((ego head?) hide:)
 				(egoTop
 					posn: (ego x?) 130
-					setCycle: End self
+					setCycle: EndLoop self
 					cycleSpeed: 2
 					init:
 				)
@@ -292,17 +292,17 @@
 			)
 			(3
 				(theAudio stop:)
-				(lDragon loop: 11 posn: 117 57 setCycle: Fwd)
+				(lDragon loop: 11 posn: 117 57 setCycle: Forward)
 				(rDragon view: 668 posn: 213 53 loop: 12 show:)
-				(crystal setCycle: Fwd init:)
+				(crystal setCycle: Forward init:)
 				(= cycles 20)
 			)
 			(4
 				(theAudio number: 8131 loop: 1 play:)
-				(crystal loop: 4 cel: 0 setCycle: End self)
+				(crystal loop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(5
-				(crystal loop: 5 setCycle: Fwd)
+				(crystal loop: 5 setCycle: Forward)
 				(= cycles 20)
 			)
 			(6
@@ -319,7 +319,7 @@
 					loop: 7
 					cel: 0
 					posn: 109 54
-					setCycle: End self
+					setCycle: EndLoop self
 					cycleSpeed: 0
 					show:
 				)
@@ -328,7 +328,7 @@
 					loop: 8
 					cel: 0
 					posn: 209 51
-					setCycle: End
+					setCycle: EndLoop
 					cycleSpeed: 0
 					show:
 				)
@@ -338,7 +338,7 @@
 					loop: 9
 					cel: 2
 					posn: 107 43
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 3
 					setPri: 15
 					show:
@@ -346,13 +346,13 @@
 				(rActor
 					loop: 10
 					posn: 212 39
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 3
 					setPri: 15
 					show:
 				)
 				(crystal hide: 3)
-				(egoTop setCycle: Beg self)
+				(egoTop setCycle: BegLoop self)
 			)
 			(9
 				(egoTop hide:)

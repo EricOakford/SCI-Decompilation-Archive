@@ -32,8 +32,8 @@
 	
 	(method (init)
 		(super init:)
-		(= global320 63)
-		(= global321 132)
+		(= cedricX 63)
+		(= cedricY 132)
 		(= global325 3059)
 		(self
 			setFeatures: rock cliff path30 ledge
@@ -147,9 +147,9 @@
 					loop: 2
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End
+					setCycle: EndLoop
 				)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(1
 				(rope show: stopUpd:)
@@ -159,7 +159,7 @@
 					loop: 5
 					setCel: 16
 					posn: 127 157
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(2
@@ -205,7 +205,7 @@
 					cel: 0
 					loop: 0
 					cycleSpeed: 2
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 				(theAudio number: 8069 loop: 1 play:)
 			)
@@ -225,7 +225,7 @@
 					posn: 79 21
 					cycleSpeed: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: MoveTo 82 35 self
 					init:
 				)
@@ -273,7 +273,7 @@
 					loop: 0
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theAudio number: 8069 loop: 1 play:)
 			)
@@ -294,7 +294,7 @@
 					cycleSpeed: 1
 					cel: 0
 					setPri: 10
-					setCycle: End self
+					setCycle: EndLoop self
 					init:
 				)
 			)
@@ -334,11 +334,11 @@
 					view: 479
 					loop: 5
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if (not (Btst 88)) (proc762_1 @local29 3061))
 				(if (== ((inventory at: 20) owner?) 31)
-					(branch setCycle: End)
+					(branch setCycle: EndLoop)
 				)
 			)
 			(3
@@ -352,7 +352,7 @@
 						cel: 0
 						cycleSpeed: 5
 						setPri: 10
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(rope hide:)
@@ -364,7 +364,7 @@
 						cel: 0
 						cycleSpeed: 5
 						setPri: 10
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 			)
@@ -377,7 +377,7 @@
 							loop: 5
 							cycleSpeed: 0
 							setScript: 0
-							setCycle: CT 7 1 self
+							setCycle: CycleTo 7 1 self
 						)
 					else
 						(= cycles 1)
@@ -389,9 +389,9 @@
 						cel: 0
 						cycleSpeed: 3
 						setPri: 10
-						setCycle: End self
+						setCycle: EndLoop self
 					)
-					(branch loop: 3 cel: 0 cycleSpeed: 2 setCycle: End)
+					(branch loop: 3 cel: 0 cycleSpeed: 2 setCycle: EndLoop)
 					(theAudio number: 8856 loop: 1 play: self)
 				)
 			)
@@ -408,7 +408,7 @@
 							cycleSpeed: 1
 							loop: 9
 							cel: 0
-							setCycle: CT 4 1 self
+							setCycle: CycleTo 4 1 self
 						)
 					else
 						(= cycles 1)
@@ -443,7 +443,7 @@
 			)
 			(1
 				((ego head?) hide:)
-				(ego normal: 0 view: 501 cycleSpeed: 5 setCycle: End self)
+				(ego normal: 0 view: 501 cycleSpeed: 5 setCycle: EndLoop self)
 			)
 			(2 (= seconds 5))
 			(3
@@ -471,7 +471,7 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 					setPri: 5
 					illegalBits: 0
 				)

@@ -44,9 +44,9 @@
 		(Load rsVIEW 48)
 		(cedric init:)
 		(if (== (theGame detailLevel:) 3) (water init:))
-		(wheel init: setCycle: Fwd)
+		(wheel init: setCycle: Forward)
 		(cow init: setScript: cowScript)
-		(smoke init: setCycle: Fwd)
+		(smoke init: setCycle: Forward)
 		(= global325 3025)
 		(switch prevRoomNum
 			(west
@@ -117,7 +117,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(cedric cel: 0 setCycle: End self)
+				(cedric cel: 0 setCycle: EndLoop self)
 			)
 			(1
 				(cedric stopUpd:)
@@ -132,7 +132,7 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (cedric setCycle: Beg self))
+			(0 (cedric setCycle: BegLoop self))
 			(1
 				(theMusic fade:)
 				(curRoom newRoom: local0)
@@ -161,7 +161,7 @@
 					loop: (if (< (ego loop?) 4) 0 else 1)
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -176,7 +176,7 @@
 							(- (ego x?) 23)
 						)
 						(+ (ego y?) 9)
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: 2 1
 					setMotion: PolyPath -5 200
 					cycleSpeed: 2
@@ -248,7 +248,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(cow cycleSpeed: 2 setCycle: Beg)
+				(cow cycleSpeed: 2 setCycle: BegLoop)
 				(= seconds (Random 5 10))
 				(= state -1)
 			)

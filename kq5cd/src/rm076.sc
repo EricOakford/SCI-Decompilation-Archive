@@ -64,10 +64,10 @@
 			)
 			(2
 				(proc762_1 @local8 9109)
-				(crispin cel: 0 setLoop: 0 setCycle: End self)
+				(crispin cel: 0 setLoop: 0 setCycle: EndLoop self)
 			)
 			(3
-				(crispin cel: 0 setLoop: 8 setCycle: End self)
+				(crispin cel: 0 setLoop: 8 setCycle: EndLoop self)
 			)
 			(4
 				(proc762_0 @local8 @local17 @local0 self)

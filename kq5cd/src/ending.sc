@@ -75,29 +75,29 @@
 					ignoreActors: 1
 					cycleSpeed: 1
 					moveSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ego head?) hide:)
 			)
 			(3
 				(theAudio number: 8138 loop: 1 play:)
-				(egoMagic init: cycleSpeed: 1 setCycle: End self)
+				(egoMagic init: cycleSpeed: 1 setCycle: EndLoop self)
 			)
 			(4
 				(egoMagic dispose:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(5 (= seconds 2))
 			(6 (SpeakAudio 1083 self))
 			(7
-				(ego setLoop: 2 setCycle: End self)
+				(ego setLoop: 2 setCycle: EndLoop self)
 			)
 			(8
 				(cls)
 				(ego normal: 1 view: 2 setLoop: -1)
 				((ego head?) show:)
 				(theAudio number: 8139 loop: 1 play:)
-				(egoWand init: setCycle: End self)
+				(egoWand init: setCycle: EndLoop self)
 			)
 			(9
 				(egoWand stopUpd:)
@@ -106,7 +106,7 @@
 				(= seconds 2)
 			)
 			(10
-				(cassima setCycle: End self)
+				(cassima setCycle: EndLoop self)
 			)
 			(11 (= seconds 2))
 			(12
@@ -148,7 +148,7 @@
 			)
 			(16
 				(cls)
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 				(cassima setLoop: 2 cycleSpeed: 5 setCycle: RandCycle)
 				(cassimaHead init: setPri: 15)
 				(= cycles 1)
@@ -169,7 +169,7 @@
 			)
 			(19
 				(cassimaHead setCycle: 0 cel: 0)
-				(cassima setCycle: End self)
+				(cassima setCycle: EndLoop self)
 			)
 			(20 (cls) (= cycles 1))
 			(21
@@ -188,14 +188,14 @@
 			)
 			(23
 				(cls)
-				(ego setCycle: Beg)
+				(ego setCycle: BegLoop)
 				(cassima setLoop: 3 setCycle: RandCycle)
 				(cassimaHead setCycle: MouthSync 1087)
 				(SpeakAudio 1087 self)
 			)
 			(24
 				(cassimaHead setCycle: 0 cel: 0)
-				(cassima setCycle: Beg self)
+				(cassima setCycle: BegLoop self)
 			)
 			(25
 				(Load rsVIEW 922)
@@ -211,7 +211,7 @@
 					cycleSpeed: 2
 					moveSpeed: 2
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					init:
 				)
 			)
@@ -224,7 +224,7 @@
 			)
 			(28
 				(cls)
-				(ego setCycle: Beg)
+				(ego setCycle: BegLoop)
 				(crispinMouth init: cycleSpeed: 2)
 				(crispinMouth setCycle: MouthSync 5201)
 				(SpeakAudio 5201 self)
@@ -264,7 +264,7 @@
 			)
 			(1
 				(theMusic number: 143 loop: -1 play:)
-				(crispin setLoop: 1 setCycle: End self)
+				(crispin setLoop: 1 setCycle: EndLoop self)
 			)
 			(2
 				(crispinMouth setCycle: MouthSync 5206)
@@ -273,7 +273,7 @@
 			(3
 				(cls)
 				(crispinMouth hide: setCycle: 0)
-				(crispin setLoop: 2 setCycle: End self)
+				(crispin setLoop: 2 setCycle: EndLoop self)
 			)
 			(4
 				(theAudio number: 8138 loop: 1 play:)
@@ -281,16 +281,16 @@
 					init:
 					setPri: (+ (crispin priority?) 1)
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
 				(theAudio number: 8138 loop: 1 play:)
-				(cMagic setLoop: 4 posn: 118 165 setCycle: End self)
+				(cMagic setLoop: 4 posn: 118 165 setCycle: EndLoop self)
 			)
 			(6
 				(theAudio number: 8140 loop: 1 play:)
-				(alexander init: setCycle: End self)
+				(alexander init: setCycle: EndLoop self)
 				(Face ego alexander 5)
 			)
 			(7
@@ -300,44 +300,44 @@
 					posn: 118 165
 					cel: 0
 					setMotion: MoveTo (- (cMagic x?) 3) (- (cMagic y?) 3)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(8
 				(theAudio number: 8140 loop: 1 play:)
-				(rosella init: setCycle: End self)
+				(rosella init: setCycle: EndLoop self)
 			)
 			(9
-				(rosella cel: 0 setLoop: 3 setCycle: End)
+				(rosella cel: 0 setLoop: 3 setCycle: EndLoop)
 				(theAudio number: 8138 loop: 1 play:)
 				(cMagic
 					setStep: 6 6
 					posn: 118 165
 					cel: 0
 					setMotion: MoveTo (- (cMagic x?) 8) (- (cMagic y?) 8)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(10
 				(cMagic dispose:)
 				(theAudio number: 8140 loop: 1 play:)
-				(valanice init: setCycle: End self)
+				(valanice init: setCycle: EndLoop self)
 				(Face ego rosella 5)
 			)
 			(11
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(12
-				(crispin view: 922 setLoop: 7 setCycle: End self)
+				(crispin view: 922 setLoop: 7 setCycle: EndLoop self)
 			)
 			(13
-				(valanice cel: 0 setLoop: 1 setCycle: End)
+				(valanice cel: 0 setLoop: 1 setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(14
 				(theMusic fade:)
-				(valanice setCycle: Beg)
-				(rosella setCycle: Beg)
+				(valanice setCycle: BegLoop)
+				(rosella setCycle: BegLoop)
 				(= seconds 2)
 			)
 			(15
@@ -370,11 +370,11 @@
 					setLoop: 5
 					cycleSpeed: 2
 					moveSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(19 (= seconds 2))
-			(20 (ego setCycle: Beg self))
+			(20 (ego setCycle: BegLoop self))
 			(21 (= seconds 2))
 			(22
 				(valanice show:)
@@ -401,11 +401,11 @@
 					normal: 0
 					setLoop: 6
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(24 (= seconds 5))
-			(25 (ego setCycle: Beg self))
+			(25 (ego setCycle: BegLoop self))
 			(26
 				(alexander show:)
 				(valanice show:)
@@ -430,19 +430,19 @@
 			)
 			(29
 				((ego head?) hide:)
-				(ego view: 916 normal: 0 setLoop: 7 setCycle: End self)
+				(ego view: 916 normal: 0 setLoop: 7 setCycle: EndLoop self)
 			)
 			(30
 				(ego setCycle: MouthSync 5209)
 				(SpeakAudio 5209 self)
-				(ego cycleSpeed: 2 setLoop: 10 setCycle: Fwd)
+				(ego cycleSpeed: 2 setLoop: 10 setCycle: Forward)
 			)
-			(31 (ego setCycle: Beg self))
+			(31 (ego setCycle: BegLoop self))
 			(32
 				(ego
 					setLoop: 7
 					cel: (- (NumCels ego) 1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(33
@@ -463,13 +463,13 @@
 					setLoop: 1
 					cycleSpeed: 2
 					moveSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 91 169 self
 				)
 			)
 			(35
 				(cassima
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: 6
 					setMotion: MoveTo 97 150 self
 				)
@@ -544,20 +544,20 @@
 					setLoop: 4
 					cycleSpeed: 3
 					moveSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
-				(alexander setLoop: 5 setCycle: End self)
+				(alexander setLoop: 5 setCycle: EndLoop self)
 			)
 			(6
-				(alexander setCycle: Beg self)
+				(alexander setCycle: BegLoop self)
 			)
 			(7
 				(alexander setLoop: 4)
 				(alexander
 					cel: (- (NumCels alexander) 1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(8
@@ -571,7 +571,7 @@
 				(alexander
 					view: 928
 					ignoreActors: 1
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: 1
 					setMotion: MoveTo (- (alexander x?) 5) (alexander y?) self
 				)
@@ -609,7 +609,7 @@
 				(crispin setLoop: 7)
 				(crispin
 					cel: (- (NumCels crispin) 1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(13
@@ -632,7 +632,7 @@
 					setLoop: 3
 					cycleSpeed: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					init:
 				)
 			)
@@ -643,13 +643,13 @@
 					init:
 					ignoreActors: 1
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(17
 				(bottle view: 922 stopUpd:)
 				(theMusic number: 146 loop: 1 play:)
-				(crispin setLoop: 7 cycleSpeed: 2 setCycle: End self)
+				(crispin setLoop: 7 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(18
 				(crispin setLoop: 9 cycleSpeed: 4)
@@ -668,11 +668,11 @@
 				(= cycles 1)
 			)
 			(20
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(21
 				(cls)
-				(crispin setLoop: 8 setCycle: End)
+				(crispin setLoop: 8 setCycle: EndLoop)
 				(SpeakAudio 5215 self)
 			)
 			(22
@@ -687,7 +687,7 @@
 			)
 			(24
 				(egoHead setCycle: 0 hide:)
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(25
 				(cls)
@@ -697,7 +697,7 @@
 				(SpeakAudio 5217 self)
 			)
 			(26
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(27
 				(ego setLoop: 8)
@@ -706,7 +706,7 @@
 					view: 916
 					setLoop: 8
 					posn: 93 136
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(cls)
 				(egoHead posn: 93 110 show:)
@@ -746,7 +746,7 @@
 					posn: 93 110
 					setCycle: 0
 				)
-				(egoTemp setCycle: Beg self)
+				(egoTemp setCycle: BegLoop self)
 			)
 			(32
 				(egoTemp dispose:)
@@ -813,12 +813,12 @@
 				(= cycles 1)
 			)
 			(41
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(42
 				(cls)
 				(theMusic number: 148 loop: 1 play:)
-				(crispin setLoop: 8 setCycle: End self)
+				(crispin setLoop: 8 setCycle: EndLoop self)
 			)
 			(43
 				(crispin setCycle: MouthSync 5223)
@@ -827,15 +827,15 @@
 			(44
 				(cls)
 				(theAudio number: 8140 loop: 1 play:)
-				(crispin setCycle: Beg)
-				(cedric cel: 0 setLoop: 8 setCycle: End self)
+				(crispin setCycle: BegLoop)
+				(cedric cel: 0 setLoop: 8 setCycle: EndLoop self)
 			)
 			(45
-				(cedric setLoop: 5 cycleSpeed: 2 setCycle: Fwd)
+				(cedric setLoop: 5 cycleSpeed: 2 setCycle: Forward)
 				(= seconds 3)
 			)
 			(46
-				(cedric setLoop: 6 setCycle: End self)
+				(cedric setLoop: 6 setCycle: EndLoop self)
 			)
 			(47
 				(if
@@ -885,7 +885,7 @@
 				(SpeakAudio 5227 self)
 			)
 			(53
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(54
 				(cls)
@@ -894,7 +894,7 @@
 				(SpeakAudio 5228 self)
 			)
 			(55
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(56
 				(cls)
@@ -915,13 +915,13 @@
 				(SpeakAudio 5230 self)
 			)
 			(58
-				(alexHead setLoop: 12 setCycle: Beg)
-				(crispin setLoop: 8 cel: 0 setCycle: End self)
+				(alexHead setLoop: 12 setCycle: BegLoop)
+				(crispin setLoop: 8 cel: 0 setCycle: EndLoop self)
 			)
 			(59
-				(crispin setCycle: Beg)
+				(crispin setCycle: BegLoop)
 				(theAudio number: 8140 loop: 1 play:)
-				(cassima view: 933 setLoop: 7 setCycle: End self)
+				(cassima view: 933 setLoop: 7 setCycle: EndLoop self)
 			)
 			(60
 				(cls)
@@ -942,7 +942,7 @@
 				(SpeakAudio 5232 self)
 			)
 			(62
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(63
 				(cls)
@@ -967,17 +967,17 @@
 				(SpeakAudio 5235 self)
 			)
 			(66
-				(crispin setLoop: 8 cel: 0 setCycle: End self)
+				(crispin setLoop: 8 cel: 0 setCycle: EndLoop self)
 			)
 			(67 (= seconds 2))
 			(68
 				(theAudio number: 8140 loop: 1 play:)
 				(alexHead dispose:)
-				(ego cycleSpeed: 2 setLoop: 0 setCycle: End self)
+				(ego cycleSpeed: 2 setLoop: 0 setCycle: EndLoop self)
 			)
 			(69
 				(ego setLoop: 1)
-				(ego cel: (- (NumCels ego) 1) setCycle: Beg self)
+				(ego cel: (- (NumCels ego) 1) setCycle: BegLoop self)
 			)
 			(70 (ego hide:) (= cycles 3))
 			(71 (curRoom newRoom: 123))

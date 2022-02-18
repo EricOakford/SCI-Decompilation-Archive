@@ -61,7 +61,7 @@
 		(princess
 			setPri: 11
 			setLoop: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 3
 			posn: 70 152
 			init:
@@ -106,7 +106,7 @@
 		(super init:)
 		(fireplace
 			cycleSpeed: 8
-			setCycle: (if (> (theGame detailLevel:) 1) Fwd else 0)
+			setCycle: (if (> (theGame detailLevel:) 1) Forward else 0)
 			init:
 		)
 		(poly1 points: @local7 size: 18)
@@ -155,7 +155,7 @@
 				(if (not local0)
 					(princess setScript: scaredTalk)
 				else
-					(princess loop: 1 cel: 0 setCycle: End)
+					(princess loop: 1 cel: 0 setCycle: EndLoop)
 				)
 			)
 			(
@@ -223,10 +223,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(princess setCycle: Beg self)
+				(princess setCycle: BegLoop self)
 			)
 			(1
-				(princess setLoop: 0 setCycle: Fwd)
+				(princess setLoop: 0 setCycle: Forward)
 				(= cycles 1)
 			)
 			(2 (client setScript: 0 cue:))
@@ -240,7 +240,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(princess setLoop: 1 cel: 0 setCycle: End)
+				(princess setLoop: 1 cel: 0 setCycle: EndLoop)
 			)
 		)
 	)
@@ -257,7 +257,7 @@
 				(theMusic number: 102 loop: -1 playBed: self)
 				(Face ego princess 5)
 				(if (!= (princess loop?) 1)
-					(princess setLoop: 1 cel: 0 setCycle: End self)
+					(princess setLoop: 1 cel: 0 setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
@@ -304,7 +304,7 @@
 						setCel: 0
 						ignoreActors: 1
 						cycleSpeed: 3
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(= cycles 1)
@@ -511,7 +511,7 @@
 	)
 )
 
-(instance blockOne of Blk
+(instance blockOne of Block
 	(properties
 		top 137
 		bottom 159
@@ -642,7 +642,7 @@
 			(1
 				(Face ego princess 5)
 				(if (!= (princess loop?) 1)
-					(princess setLoop: 1 cel: 0 setCycle: End self)
+					(princess setLoop: 1 cel: 0 setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)

@@ -47,7 +47,7 @@
 				(curRoom setScript: enterLeft)
 			)
 		)
-		(glow1 init: setCycle: Fwd)
+		(glow1 init: setCycle: Forward)
 		(ego init:)
 		(poly1 points: @local0 size: 6)
 		(poly2 points: @local12 size: 4)

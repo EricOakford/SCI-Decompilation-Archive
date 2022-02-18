@@ -185,9 +185,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0 (client setCycle: EndLoop self))
 			(1 (= seconds 6))
-			(2 (client setCycle: Beg self))
+			(2 (client setCycle: BegLoop self))
 			(3 (client setScript: 0))
 		)
 	)
@@ -198,8 +198,8 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
-			(1 (client setCycle: Beg self))
+			(0 (client setCycle: EndLoop self))
+			(1 (client setCycle: BegLoop self))
 			(2 (client setScript: 0))
 		)
 	)

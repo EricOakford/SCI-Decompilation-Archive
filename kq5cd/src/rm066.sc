@@ -98,7 +98,7 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 2 4)))
 			(1
-				(steam z: 0 cel: 0 setCycle: End self)
+				(steam z: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(2 (self init:))
 		)
@@ -123,14 +123,14 @@
 					setLoop: 1
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(if (not (Btst 81)) (Bset 81) (SolvePuzzle 4))
 				(cWand init: cel: 0)
-				(if (Btst 60) (cWand setCycle: Fwd))
-				(ego setLoop: 3 cel: 0 setCycle: End self)
+				(if (Btst 60) (cWand setCycle: Forward))
+				(ego setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(if (IsObject (ego head?)) ((ego head?) show:))
@@ -169,13 +169,13 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(if (not (Btst 82)) (Bset 82) (SolvePuzzle 4))
-				(mWand init: setCycle: Fwd)
-				(ego setLoop: 2 cel: 0 setCycle: End self)
+				(mWand init: setCycle: Forward)
+				(ego setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(if (IsObject (ego head?)) ((ego head?) show:))
@@ -212,12 +212,12 @@
 					setLoop: 3
 					setCel: 16
 					cycleSpeed: 1
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(2
 				(cWand dispose:)
-				(ego setLoop: 1 get: 28 setCel: 16 setCycle: Beg self)
+				(ego setLoop: 1 get: 28 setCel: 16 setCycle: BegLoop self)
 			)
 			(3
 				(if (IsObject (ego head?)) ((ego head?) show:))
@@ -256,12 +256,12 @@
 					setLoop: 2
 					setCel: 16
 					cycleSpeed: 1
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(2
 				(mWand dispose:)
-				(ego setLoop: 0 get: 35 setCel: 16 setCycle: Beg self)
+				(ego setLoop: 0 get: 35 setCel: 16 setCycle: BegLoop self)
 			)
 			(3
 				(if (IsObject (ego head?)) ((ego head?) show:))
@@ -315,12 +315,12 @@
 					setLoop: 6
 					cycleSpeed: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(theGame setCursor: waitCursor 1)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
 				(SolvePuzzle 5)
@@ -350,7 +350,7 @@
 						(== ((inventory at: 28) owner?) curRoomNum)
 						(== ((inventory at: 35) owner?) curRoomNum)
 					)
-					(cWand setCycle: Fwd)
+					(cWand setCycle: Forward)
 					(= seconds 2)
 				else
 					(= cycles 1)
@@ -366,7 +366,7 @@
 					(Bset 60)
 				else
 					(SpeakAudio 687)
-					(mWand setCycle: Fwd)
+					(mWand setCycle: Forward)
 				)
 				(ego normal: 1 setLoop: -1 setCel: -1)
 				((ego head?) moveHead: 1 setCel: -1)
@@ -395,10 +395,10 @@
 			(1
 				(theAudio number: 8876 loop: -1 play:)
 				(glow1 init: setScript: glow1Script)
-				(glow2 init: setCycle: End self)
+				(glow2 init: setCycle: EndLoop self)
 			)
 			(2
-				(glow2 cel: 0 setCycle: End self)
+				(glow2 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(if (> (++ register) 2)
@@ -410,7 +410,7 @@
 				)
 			)
 			(4
-				(glow3 init: setCycle: End self)
+				(glow3 init: setCycle: EndLoop self)
 				(glow3a init:)
 				(theAudio number: 8869 loop: 1 play:)
 			)
@@ -423,12 +423,12 @@
 				)
 			)
 			(6
-				(glow13 init: setCycle: End self)
+				(glow13 init: setCycle: EndLoop self)
 				(theAudio number: 8871 loop: 1 play:)
 			)
 			(7
 				(glow2 dispose:)
-				(glow4 init: setCycle: End self)
+				(glow4 init: setCycle: EndLoop self)
 			)
 			(8
 				(glow3 setScript: glow3Script)
@@ -536,7 +536,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(glow1 cel: 0 setCycle: End self)
+				(glow1 cel: 0 setCycle: EndLoop self)
 				(glow1Sound number: 867 priority: 3 play:)
 			)
 			(1 (self init:))
@@ -552,18 +552,18 @@
 			(0 (= cycles (Random 2 30)))
 			(1
 				(if (> (Random 0 99) 69)
-					(client cel: 0 setCycle: End self)
+					(client cel: 0 setCycle: EndLoop self)
 					(theMusic3 number: 869 loop: 1 priority: 10 play:)
 					(= register 1)
 				else
-					(glow13 cel: 0 setCycle: End self)
+					(glow13 cel: 0 setCycle: EndLoop self)
 					(theMusic3 number: 871 loop: 1 priority: 10 play:)
 					(= register 0)
 				)
 			)
 			(2
 				(if register
-					(glow4 cel: 0 setCycle: End self)
+					(glow4 cel: 0 setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
@@ -580,7 +580,7 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 5 8)))
 			(1
-				(client cel: 0 setCycle: End self)
+				(client cel: 0 setCycle: EndLoop self)
 				(glow9Sound number: 874 play:)
 			)
 			(2 (self init:))
@@ -629,7 +629,7 @@
 		(super init:)
 		(self
 			y: 34
-			setCycle: Fwd
+			setCycle: Forward
 			setMotion: MoveTo (self x?) -10 self
 		)
 		(theMusic4 number: 872 loop: 1 play:)

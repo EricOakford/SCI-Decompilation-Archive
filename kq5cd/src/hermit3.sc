@@ -41,7 +41,7 @@
 		(egoMouth init:)
 		(hermitMouth init:)
 		(hermit_eyes init:)
-		(chimney setCycle: Fwd init:)
+		(chimney setCycle: Forward init:)
 		(self setScript: cartoon)
 	)
 	

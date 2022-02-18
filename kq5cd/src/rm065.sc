@@ -160,10 +160,10 @@
 					z: 6
 					setPri: 15
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(2 (ego setCycle: Beg self))
+			(2 (ego setCycle: BegLoop self))
 			(3
 				(SpeakAudio 673)
 				(if (IsObject (ego head?)) ((ego head?) show:))
@@ -596,10 +596,10 @@
 				(proc762_1 @local170 926 self)
 			)
 			(2
-				((ScriptID 550 7) cycleSpeed: 1 setCycle: CT 6 1 self)
+				((ScriptID 550 7) cycleSpeed: 1 setCycle: CycleTo 6 1 self)
 			)
 			(3
-				((ScriptID 550 1) show: setCycle: Fwd setPri: 15)
+				((ScriptID 550 1) show: setCycle: Forward setPri: 15)
 				(= seconds 2)
 			)
 			(4
@@ -607,23 +607,23 @@
 				(ego
 					view: 127
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					cycleSpeed: 3
 				)
 			)
 			(5
 				(theAudio number: 7058 loop: 1 play:)
-				(ego setLoop: 2 setCycle: Fwd cycleSpeed: 3)
+				(ego setLoop: 2 setCycle: Forward cycleSpeed: 3)
 				(= seconds 4)
 			)
 			(6
 				((ScriptID 550 1) hide:)
 				((ScriptID 550 7) setCel: 255)
-				(ego setLoop: 4 cel: 0 setCycle: End self)
+				(ego setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(7
 				(theAudio stop:)
-				((ScriptID 550 7) setCycle: Beg)
+				((ScriptID 550 7) setCycle: BegLoop)
 				(= seconds 3)
 				(= inCartoon 0)
 			)

@@ -36,8 +36,8 @@
 		(super init:)
 		(theMusic number: 834 loop: -1 play:)
 		(if (not (Btst 55))
-			(= global320 159)
-			(= global321 109)
+			(= cedricX 159)
+			(= cedricY 109)
 			(self setRegions: 202)
 			(= global325 3083)
 		)
@@ -56,7 +56,7 @@
 						loop: 2
 						cel: 0
 						cycleSpeed: 3
-						setCycle: End
+						setCycle: EndLoop
 					)
 				)
 			)
@@ -162,7 +162,7 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 					setPri: 13
 					illegalBits: 0
 				)
@@ -201,7 +201,7 @@
 					setLoop: 1
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 					setPri: 13
 					illegalBits: 0
 				)
@@ -231,7 +231,7 @@
 					view: 9
 					setLoop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: PolyPath 131 164 self
 				)
 			)
@@ -272,7 +272,7 @@
 					view: 9
 					setLoop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: PolyPath 101 188 self
 				)
 			)

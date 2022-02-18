@@ -131,7 +131,7 @@
 					loop: 0
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -148,7 +148,7 @@
 				else
 					(Bset 73)
 					(door hide:)
-					(ego loop: 1 cel: 0 setCycle: End self)
+					(ego loop: 1 cel: 0 setCycle: EndLoop self)
 					(theAudio number: 8122 loop: 1 play:)
 				)
 			)
@@ -192,13 +192,13 @@
 					loop: 2
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theMusic number: 36 loop: 1 play:)
 			)
 			(3
 				(SpeakAudio 340)
-				(ego loop: 1 cel: 3 setCycle: Beg self)
+				(ego loop: 1 cel: 3 setCycle: BegLoop self)
 				(theAudio number: 8124 loop: 1 play:)
 			)
 			(4
@@ -239,7 +239,7 @@
 					illegalBits: 0
 					setLoop: 1
 					cel: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(1
@@ -260,7 +260,7 @@
 					y: (+ (ego y?) 7)
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -269,7 +269,7 @@
 					x: (+ (ego x?) 4)
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5

@@ -32,8 +32,8 @@
 	)
 	
 	(method (init)
-		(= global320 101)
-		(= global321 92)
+		(= cedricX 101)
+		(= cedricY 92)
 		(super init:)
 		(if (Btst 34)
 			(++ local0)
@@ -125,7 +125,7 @@
 					signal: 16384
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 					setPri:
 						(cond 
 							((& (ego onControl: 1) $0008) 1)
@@ -164,7 +164,7 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 4
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -174,7 +174,7 @@
 					cel: 0
 					x: (- (ego x?) 10)
 					y: (- (ego y?) 10)
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: 5
 					yStep: 8
 					xStep: 8
@@ -183,7 +183,7 @@
 				)
 			)
 			(2
-				(ego setLoop: 2 cel: 0 y: 184 setCycle: End self)
+				(ego setLoop: 2 cel: 0 y: 184 setCycle: EndLoop self)
 			)
 			(3
 				(= local40 1)
@@ -218,7 +218,7 @@
 					view: 512
 					cel: 0
 					posn: (- (ego x?) 15) (- (ego y?) 37)
-					setCycle: End self
+					setCycle: EndLoop self
 					illegalBits: 0
 					cycleSpeed: 3
 				)
@@ -270,12 +270,12 @@
 					setLoop: 1
 					cel: 0
 					setMotion: MoveTo 69 122
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(4
 				(globalCedric dispose:)
-				(wolf cel: 3 setMotion: MoveTo 200 122 setCycle: End self)
+				(wolf cel: 3 setMotion: MoveTo 200 122 setCycle: EndLoop self)
 			)
 			(5
 				(Bset 34)
@@ -285,7 +285,7 @@
 					view: 502
 					loop: 4
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
@@ -295,7 +295,7 @@
 					setStep: 7 7
 					setLoop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7
@@ -341,7 +341,7 @@
 				)
 				(= seconds 2)
 			)
-			(2 (ego setCycle: End self))
+			(2 (ego setCycle: EndLoop self))
 			(3 (= seconds 2))
 			(4
 				(= deathMessage 443)

@@ -43,8 +43,8 @@
 		(super init:)
 		(HandsOn)
 		(self setFeatures: cave path35)
-		(= global320 248)
-		(= global321 112)
+		(= cedricX 248)
+		(= cedricY 112)
 		(if (Btst 57)
 			(= global325 3057)
 			(self setRegions: 202)
@@ -156,7 +156,7 @@
 		(tail
 			x: (wolf x?)
 			y: (+ (wolf y?) 5)
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 3
 			init:
 			setScript: swish
@@ -269,13 +269,13 @@
 			)
 			(1
 				(ego hide:)
-				(yeti setLoop: 3 cel: 0 setCycle: End self)
+				(yeti setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(yeti setLoop: 4 cel: 0 setCycle: End self)
+				(yeti setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(yeti setLoop: 5 cel: 0 setCycle: End self)
+				(yeti setLoop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(yeti
@@ -303,11 +303,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(tail setCycle: End)
+				(tail setCycle: EndLoop)
 				(= seconds (Random 3 8))
 			)
 			(1
-				(tail setCycle: Beg)
+				(tail setCycle: BegLoop)
 				(= seconds (Random 3 8))
 				(= state -1)
 			)
@@ -340,7 +340,7 @@
 		(switch (= state newState)
 			(0
 				(tail hide:)
-				(wolf loop: 11 cel: 4 setCycle: Beg self)
+				(wolf loop: 11 cel: 4 setCycle: BegLoop self)
 			)
 			(1
 				(SpeakAudio 468)
@@ -348,7 +348,7 @@
 			)
 			(2
 				(cls)
-				(wolf setCycle: End self)
+				(wolf setCycle: EndLoop self)
 			)
 			(3
 				(wolf loop: 15)
@@ -367,13 +367,13 @@
 		(switch (= state newState)
 			(0
 				(tail hide:)
-				(wolf loop: 11 cel: 4 setCycle: Beg self)
+				(wolf loop: 11 cel: 4 setCycle: BegLoop self)
 			)
 			(1
 				(SpeakAudio 469)
 				(ego setMotion: PolyPath 85 (ego y?) self)
 			)
-			(2 (wolf setCycle: End self))
+			(2 (wolf setCycle: EndLoop self))
 			(3
 				(HandsOn)
 				(client setScript: 0)
@@ -390,7 +390,7 @@
 			(0
 				(proc762_1 @local137 5108)
 				(tail hide:)
-				(wolf loop: 11 cel: 4 setCycle: Beg self)
+				(wolf loop: 11 cel: 4 setCycle: BegLoop self)
 			)
 			(1
 				(wolf setLoop: 0 setCycle: Walk setMotion: MoveTo -40 178)
@@ -464,7 +464,7 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 					setPri: (if (< (ego y?) 80) 0 else 1)
 					illegalBits: 0
 					ignoreActors: 1
