@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 84)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use KQ5Room)
 (use Sync)
@@ -22,8 +22,8 @@
 	
 	(method (init)
 		(super init:)
-		(Load rsVIEW 796)
-		(Load rsSCRIPT 941)
+		(Load VIEW 796)
+		(Load SCRIPT 941)
 		(theMouth init:)
 		(arms init:)
 		(theEyes init:)

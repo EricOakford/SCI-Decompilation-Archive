@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 85)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -244,8 +244,10 @@
 				(theMusic stop:)
 				(theMusic2 stop:)
 				(if (not (Btst 39))
-					(Graph grFILL_BOX 0 0 200 320 3 0 0)
-					(Graph grUPDATE_BOX 0 0 200 320 1)
+					;(Graph grFILL_BOX 0 0 200 320 3 0 0)
+					;(Graph grUPDATE_BOX 0 0 200 320 1)
+					(Graph 11 0 0 200 320 3 0 0)
+					(Graph 12 0 0 200 320 1)
 					(cast eachElementDo: #dispose)
 					(Bset 39)
 					(curRoom newRoom: 86)
@@ -318,11 +320,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 720)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 724)
 					(event claimed: 1)
 				)
@@ -357,11 +359,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 720)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 724)
 					(event claimed: 1)
 				)
@@ -395,11 +397,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 720)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 724)
 					(event claimed: 1)
 				)
@@ -425,11 +427,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 720)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 724)
 					(event claimed: 1)
 				)
@@ -459,11 +461,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 720)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 724)
 					(event claimed: 1)
 				)
@@ -490,15 +492,15 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 721)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 725)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 727)
 					(event claimed: 1)
 				)
@@ -525,11 +527,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 722)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 726)
 					(event claimed: 1)
 				)
@@ -554,11 +556,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 723)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(10
 							(SpeakAudio 728)
@@ -567,7 +569,7 @@
 						)
 					)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(HandsOff)
 					(theMusic number: 120 loop: -1 play:)
 					(++ local0)

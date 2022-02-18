@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 92)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use KQ5Room)
@@ -561,7 +561,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(if (MousedOn ego event)
 						(switch (inventory indexOf: (theIconBar curInvIcon?))
 							(10
@@ -594,7 +594,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(10
 							(SolvePuzzle 4)

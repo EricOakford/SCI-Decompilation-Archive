@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 17)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use KQ5Room)
@@ -285,11 +285,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 323)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: getStaff)
 					(event claimed: 1)
@@ -334,11 +334,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 324)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not local1)
 						(++ local1)
 						(SpeakAudio 320)
@@ -368,7 +368,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (cast contains: bandit)
 						(SpeakAudio 321)
 					else
@@ -376,7 +376,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(if (cast contains: bandit)
 						(SpeakAudio 9104)
 						(curRoom setScript: wakeUp)

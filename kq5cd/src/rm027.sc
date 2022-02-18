@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 27)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -86,7 +86,7 @@
 			)
 			(else  (ego posn: 245 155))
 		)
-		(Load rsVIEW 71)
+		(Load VIEW 71)
 		(theMusic2 number: 24 loop: -1 play:)
 		(river1 setCycle: Forward init:)
 		(river2 setCycle: Forward init:)
@@ -129,11 +129,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 392)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(ego setMotion: PolyPath (ego x?) 189)
 					(event claimed: 1)
 				)
@@ -554,7 +554,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 391)
 					(event claimed: 1)
 				)
@@ -584,11 +584,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 392)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(ego setMotion: PolyPath (ego x?) 189)
 					(event claimed: 1)
 				)
@@ -619,11 +619,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 392)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(ego setMotion: PolyPath (ego x?) 189)
 					(event claimed: 1)
 				)
@@ -645,11 +645,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 393)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: searchHay)
 					(event claimed: 1)
@@ -676,11 +676,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 394)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 399)
 					(event claimed: 1)
 				)
@@ -707,7 +707,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 395)
 					(event claimed: 1)
 				)
@@ -734,11 +734,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 396)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: enterInn)
 					(event claimed: 1)
@@ -767,16 +767,16 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 397)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: enterKitchen)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(1
 							(HandsOff)
@@ -809,11 +809,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 397)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not (Btst 79))
 						(SpeakAudio 398)
 					else
@@ -844,7 +844,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(localproc_173a)
 					(event claimed: 1)
 				)

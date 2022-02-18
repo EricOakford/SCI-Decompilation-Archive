@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 6)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -100,7 +100,7 @@
 			(rat setLoop: 6 ignoreActors: 1 init:)
 			(cat setLoop: 2 ignoreActors: 1 init:)
 		)
-		(Load rsVIEW 71)
+		(Load VIEW 71)
 		(theMusic2 number: 24 loop: -1 play:)
 		(door init:)
 		(bakeSign init:)
@@ -149,11 +149,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 208)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(ego setMotion: PolyPath (ego x?) 189)
 					(event claimed: 1)
 				)
@@ -545,11 +545,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 208)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(ego setMotion: PolyPath (ego x?) 189)
 					(event claimed: 1)
 				)
@@ -635,7 +635,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 209)
 					(event claimed: 1)
 				)
@@ -657,7 +657,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 210)
 					(event claimed: 1)
 				)
@@ -679,7 +679,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 211)
 					(event claimed: 1)
 				)
@@ -706,7 +706,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 212)
 					(event claimed: 1)
 				)
@@ -733,11 +733,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 213)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: openDoor)
 					(event claimed: 1)
@@ -776,7 +776,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(localproc_1562)
 					(event claimed: 1)
 				)
@@ -812,15 +812,15 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 214)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if local0 (SpeakAudio 215) else (SpeakAudio 216))
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(8
 							(if local0
@@ -891,7 +891,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(8
 							(if local0
@@ -953,7 +953,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 214)
 					(event claimed: 1)
 				)

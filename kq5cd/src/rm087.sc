@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 87)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use KQ5Room)
 

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 46)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -47,7 +47,7 @@
 	(method (init)
 		(super init:)
 		(LoadMany 128 624 626 628)
-		(Load rsSCRIPT 941)
+		(Load SCRIPT 941)
 		(= cedricX 100)
 		(= cedricY 140)
 		(= global325 3070)
@@ -1028,12 +1028,12 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 516)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT (event claimed: 0))
-				(JOY_DOWNRIGHT
+				(verbDo (event claimed: 0))
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(28 (event claimed: 0))
 						(else 
@@ -1069,7 +1069,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 518)
 					(event claimed: 1)
 				)
@@ -1121,11 +1121,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 519)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(23
 							(curRoom setScript: giveShell)
@@ -1165,11 +1165,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 520)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(28 (event claimed: 0))
 						(else 
@@ -1178,7 +1178,7 @@
 						)
 					)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (event claimed: 1)
 						(curRoom setScript: dPush)
 					else
@@ -1214,11 +1214,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 521)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(cond 
 						((cast contains: hermit_a) (event claimed: 0))
 						((Btst 71) (event claimed: 0))

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 53)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -146,7 +146,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Load rsVIEW 68)
+				(Load VIEW 68)
 				(if (not (Btst 55))
 					(proc762_1 @local39 3032 self)
 				else
@@ -185,7 +185,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Load rsVIEW 70)
+				(Load VIEW 70)
 				(if (not (Btst 55))
 					(proc762_1 @local39 3032 self)
 				else
@@ -333,11 +333,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 562)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 565)
 					(event claimed: 1)
 				)
@@ -364,7 +364,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 563)
 					(event claimed: 1)
 				)
@@ -390,7 +390,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 564)
 					(event claimed: 1)
 				)
@@ -417,11 +417,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 563)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 565)
 					(event claimed: 1)
 				)
@@ -448,11 +448,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 562)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 565)
 					(event claimed: 1)
 				)
@@ -479,11 +479,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 562)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 565)
 					(event claimed: 1)
 				)

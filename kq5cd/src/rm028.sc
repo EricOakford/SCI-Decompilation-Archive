@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 28)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Door)
@@ -256,7 +256,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 406)
 					(event claimed: 1)
 				)
@@ -285,11 +285,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 407)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: enter27)
 					(event claimed: 1)
@@ -319,11 +319,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 408)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(curRoom setScript: enterBar)
 					(event claimed: 1)
 				)
@@ -351,11 +351,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 409)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (== (cupboard cel?) 0)
 						(HandsOff)
 						(curRoom setScript: openCup)
@@ -394,11 +394,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 405)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(curRoom setScript: getLamb)
 					(self dispose:)
 					(event claimed: 1)

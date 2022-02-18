@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 76)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use CodeCue)
 (use KQ5Room)
@@ -27,7 +27,7 @@
 		(super init:)
 		(theMusic number: 0 stop:)
 		(User canInput: 0 controls: 0)
-		(Load rsVIEW 771)
+		(Load VIEW 771)
 		(crispin init:)
 		(ego
 			view: 0

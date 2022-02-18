@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 55)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use dropInScript)
@@ -397,8 +397,8 @@ code_063f:
 	(method (init)
 		(LoadMany 130 603)
 		(LoadMany 128 877 878 678 862 861 865 871 872 876)
-		(Load rsSOUND 78)
-		(Load rsVIEW 874 1060)
+		(Load SOUND 78)
+		(Load VIEW 874 1060)
 		(LoadMany 132 888 889 890 50)
 		(super init:)
 		(ego
@@ -694,7 +694,7 @@ code_063f:
 			)
 			(3
 				(= seconds 1)
-				(Load rsVIEW 545)
+				(Load VIEW 545)
 				(= inCartoon 0)
 			)
 			(4 (cls) (= seconds 3))
@@ -1336,11 +1336,11 @@ code_063f:
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 575)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 584)
 					(event claimed: 1)
 				)
@@ -1364,11 +1364,11 @@ code_063f:
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 576)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 585)
 					(event claimed: 1)
 				)
@@ -1392,11 +1392,11 @@ code_063f:
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 577)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: goHoleScript)
 					(event claimed: 1)
@@ -1422,11 +1422,11 @@ code_063f:
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 578)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not (Btst 68))
 						(HandsOff)
 						(curRoom setScript: lockedDoorScript)
@@ -1436,7 +1436,7 @@ code_063f:
 					)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(1
 							(SpeakAudio 251)
@@ -1510,15 +1510,15 @@ code_063f:
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 579)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 586)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(34
 							(dink setScript: 0)
@@ -1532,7 +1532,7 @@ code_063f:
 						)
 					)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(HandsOff)
 					(SpeakAudio (Random 9000 9003) self)
 					(if (== (dink cel?) 6)
@@ -1658,12 +1658,12 @@ code_063f:
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 580)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
-					(Load rsVIEW 56)
+				(verbDo
+					(Load VIEW 56)
 					(HandsOff)
 					(curRoom setScript: getHairPinScript)
 					(event claimed: 1)
@@ -1700,7 +1700,7 @@ code_063f:
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 581)
 					(event claimed: 1)
 				)
@@ -1722,7 +1722,7 @@ code_063f:
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(helper init: z: 1000 setScript: helpScript)
 					(event claimed: 1)
 				)

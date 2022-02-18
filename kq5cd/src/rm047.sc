@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 47)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -671,7 +671,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (cast contains: cedric)
 						(SpeakAudio 527)
 					else
@@ -700,7 +700,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 528)
 					(event claimed: 1)
 				)
@@ -727,7 +727,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 529)
 					(event claimed: 1)
 				)
@@ -755,7 +755,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 529)
 					(event claimed: 1)
 				)
@@ -850,7 +850,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 532)
 					(event claimed: 1)
 				)
@@ -879,7 +879,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 530)
 					(event claimed: 1)
 				)
@@ -907,7 +907,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 530)
 					(event claimed: 1)
 				)
@@ -977,7 +977,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (cast contains: cedric)
 						(SpeakAudio 531)
 					else
@@ -1090,7 +1090,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 9063)
 					(event claimed: 1)
 				)
@@ -1122,7 +1122,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 9063)
 					(event claimed: 1)
 				)

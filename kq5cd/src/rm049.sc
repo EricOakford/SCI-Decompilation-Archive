@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 49)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -45,7 +45,7 @@
 	)
 	
 	(method (init)
-		(Load rsVIEW 654)
+		(Load VIEW 654)
 		(super init:)
 		(self setFeatures: arch beach)
 		(ego init: view: 6 illegalBits: -32768)
@@ -539,7 +539,7 @@
 				)
 			)
 			(1
-				(Load rsVIEW 665)
+				(Load VIEW 665)
 				(ego
 					setMotion: PolyPath (+ (shell x?) 1) (+ (shell y?) 1) self
 				)
@@ -748,11 +748,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 538)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom
 						setScript: castOffScript 0 (== (ego view?) 661)
@@ -801,11 +801,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 539)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: getShellScript)
 					(event claimed: 1)
@@ -1003,7 +1003,7 @@ code_1be6:
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 541)
 					(event claimed: 1)
 				)

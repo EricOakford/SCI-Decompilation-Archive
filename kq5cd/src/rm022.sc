@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 22)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Waters)
@@ -329,7 +329,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 352)
 					(event claimed: 1)
 				)
@@ -351,7 +351,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 353)
 					(event claimed: 1)
 				)
@@ -373,7 +373,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 354)
 					(event claimed: 1)
 				)
@@ -395,7 +395,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 355)
 					(event claimed: 1)
 				)
@@ -422,11 +422,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 356)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (== ((inventory at: 6) owner?) 200)
 						(HandsOff)
 						(ego illegalBits: 0 setMotion: PolyPath 145 124)
@@ -454,7 +454,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 357)
 					(event claimed: 1)
 				)

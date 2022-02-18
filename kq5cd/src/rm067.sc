@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 67)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use castle)
@@ -49,13 +49,13 @@
 	
 	(method (init)
 		(super init:)
-		(Load rsVIEW 697)
-		(Load rsVIEW 695)
-		(Load rsVIEW 902)
-		(Load rsVIEW 882)
-		(Load rsVIEW 904)
-		(Load rsSOUND 97)
-		(Load rsSOUND 62)
+		(Load VIEW 697)
+		(Load VIEW 695)
+		(Load VIEW 902)
+		(Load VIEW 882)
+		(Load VIEW 904)
+		(Load SOUND 97)
+		(Load SOUND 62)
 		(= globalCedric actor_1)
 		(self setRegions: 550 setFeatures: mouseHole hole grate)
 		(switch prevRoomNum
@@ -78,7 +78,7 @@
 					posn: 1000 1000
 				)
 				((ego head?) moveHead: 0 hide:)
-				(Load rsSOUND 67)
+				(Load SOUND 67)
 				(CastleHandsOff)
 				(self setScript: henchCaught)
 			)
@@ -139,7 +139,7 @@
 			(script (return))
 			((== (event type?) 16384)
 				(switch (event message?)
-					(JOY_UPRIGHT
+					(verbLook
 						(if (& (OnControl 4 (event x?) (event y?)) $0004)
 							(SpeakAudio 9050)
 						else
@@ -579,15 +579,15 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 692)
 					(event claimed: 1)
 					(return)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (< local17 2) (event claimed: 1))
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(31
 							(if (ego has: 32)
@@ -656,14 +656,14 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(cond 
 						((== (stone cel?) (stone lastCel:)) (SpeakAudio 693) (event claimed: 1))
 						((Btst 96) (SpeakAudio 694) (event claimed: 1))
 						(else (event claimed: 0))
 					)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(cond 
 						((== (stone cel?) (stone lastCel:)) (SpeakAudio 701) (event claimed: 1))
 						((Btst 96) (SpeakAudio 702) (event claimed: 1))
@@ -702,14 +702,14 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(cond 
 						((ego has: 32) (SpeakAudio 695) (event claimed: 1))
 						((== (curRoom script?) lookInMseHole) (event claimed: 0))
 						(else (rm067 setScript: lookInMseHole) (event claimed: 1))
 					)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not (ego has: 32))
 						(switch local17
 							(0
@@ -732,7 +732,7 @@
 						(event claimed: 1)
 					)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(31
 							(if (not (ego has: 32))
@@ -780,11 +780,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 696)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(CastleHandsOff)
 					(curRoom setScript: gotoHole)
 					(event claimed: 1)
@@ -863,11 +863,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 697)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 704)
 					(event claimed: 1)
 				)
@@ -882,7 +882,8 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(if (< (DoSound sndDISPOSE) 8)
+				;(if (< (DoSound sndDISPOSE) 8)
+				(if (< (DoSound 3) 8)
 					((ScriptID 550 5) setCycle: EndLoop self)
 				else
 					(theAudio number: 8071 loop: 1 play: self)
@@ -901,7 +902,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(Load rsVIEW 0)
+				(Load VIEW 0)
 				(theMusic number: 67 loop: -1 playBed:)
 				(ego
 					init:

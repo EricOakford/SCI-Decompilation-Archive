@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 56)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use KQ5Room)
@@ -284,7 +284,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 591)
 					(event claimed: 1)
 				)
@@ -306,7 +306,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 592)
 					(event claimed: 1)
 				)
@@ -328,11 +328,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 593)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 599)
 					(event claimed: 1)
 				)
@@ -357,7 +357,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 591)
 					(event claimed: 1)
 				)
@@ -384,11 +384,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 594)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(cond 
 						((!= ((inventory at: 24) owner?) 56) (SpeakAudio 600))
 						((not local2) (++ local2) (HandsOff) (curRoom setScript: openCupboard))
@@ -422,11 +422,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 595)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: getPeas)
 					(event claimed: 1)
@@ -480,7 +480,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 596)
 					(event claimed: 1)
 				)
@@ -510,11 +510,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 594)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (== ((inventory at: 24) owner?) 56)
 						(HandsOff)
 						(curRoom setScript: getPeas)

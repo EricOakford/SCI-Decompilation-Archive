@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 58)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use castle)
 (use KQ5Room)
@@ -37,9 +37,9 @@
 		(= global346 140)
 		(= magicDoorX 159)
 		(= magicDoorY 116)
-		(Load rsVIEW 34)
-		(Load rsVIEW 692)
-		(Load rsVIEW 906)
+		(Load VIEW 34)
+		(Load VIEW 692)
+		(Load VIEW 906)
 		(self
 			setFeatures: organ angel doorWay1 doorWay2
 			setRegions: 550
@@ -178,11 +178,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 617)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(cond 
 						(local2 (event claimed: 0))
 						((and (not local0) (not (curRoom script?)))
@@ -213,11 +213,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 618)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 621)
 					(event claimed: 1)
 				)
@@ -239,7 +239,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 619)
 					(event claimed: 1)
 				)
@@ -261,7 +261,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 620)
 					(event claimed: 1)
 				)

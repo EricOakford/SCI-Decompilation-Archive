@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 113)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use DLetter)
@@ -162,7 +162,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(KQPrint 113 0)
 					(event claimed: 1)
 				)
@@ -205,7 +205,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 56)
 					(event claimed: 1)
 				)
@@ -233,7 +233,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 56)
 					(event claimed: 1)
 				)

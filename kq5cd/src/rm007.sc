@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 7)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -204,7 +204,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 217)
 					(event claimed: 1)
 				)
@@ -231,11 +231,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 218)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (!= (bird x?) 108)
 						(SpeakAudio 221)
 						(event claimed: 1)
@@ -261,7 +261,7 @@
 			(
 				(and
 					(MousedOn globalCedric event)
-					(== (event message?) JOY_DOWN)
+					(== (event message?) verbTalk)
 				)
 				(proc762_1 @local80 3034)
 				(event claimed: 1)
@@ -276,20 +276,20 @@
 			)
 			(else
 				(switch (event message?)
-					(JOY_UPRIGHT
+					(verbLook
 						(SpeakAudio 219)
 						(event claimed: 1)
 					)
-					(JOY_RIGHT
+					(verbDo
 						(SpeakAudio 222)
 						(event claimed: 1)
 					)
-					(JOY_DOWN
+					(verbTalk
 						(HandsOff)
 						(curRoom setScript: princeLeaveCD)
 						(event claimed: 1)
 					)
-					(JOY_DOWNRIGHT
+					(verbUse
 						(if
 						(!= (inventory indexOf: (theIconBar curInvIcon?)) 28)
 							(SpeakAudio 224)
@@ -338,19 +338,19 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 220)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 223)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 226)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(if
 					(!= (inventory indexOf: (theIconBar curInvIcon?)) 28)
 						(SpeakAudio 225)
@@ -402,7 +402,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 217)
 					(event claimed: 1)
 				)

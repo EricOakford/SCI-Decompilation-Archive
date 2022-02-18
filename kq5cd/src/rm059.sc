@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 59)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use castle)
@@ -34,7 +34,7 @@
 		(= global356 171)
 		(= magicDoorX 296)
 		(= magicDoorY 172)
-		(Load rsVIEW 896)
+		(Load VIEW 896)
 		(self
 			setFeatures: firePlace birdMan1 birdMan2 table doorWay room
 			setRegions: 550
@@ -60,9 +60,9 @@
 		)
 		(cond 
 			((== henchmanState 5)
-				(Load rsVIEW 896)
-				(Load rsVIEW 904)
-				(Load rsSOUND 135)
+				(Load VIEW 896)
+				(Load VIEW 904)
+				(Load SOUND 135)
 				(curRoom setScript: caughtScript)
 			)
 			((== henchmanState 8)
@@ -148,11 +148,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 627)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 628)
 					(event claimed: 1)
 				)
@@ -179,7 +179,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 607)
 					(event claimed: 1)
 				)
@@ -201,11 +201,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 625)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 629)
 					(event claimed: 1)
 				)
@@ -227,11 +227,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 625)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 629)
 					(event claimed: 1)
 				)
@@ -256,7 +256,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 626)
 					(event claimed: 1)
 				)
@@ -278,11 +278,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 627)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 630)
 					(event claimed: 1)
 				)
@@ -503,7 +503,8 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(if (< (DoSound sndDISPOSE) 8)
+				;(if (< (DoSound sndDISPOSE) 8) 
+				(if (< (DoSound 3) 8)
 					((ScriptID 550 5) setCycle: EndLoop self)
 				else
 					(theAudio number: 8071 loop: 1 play: self)

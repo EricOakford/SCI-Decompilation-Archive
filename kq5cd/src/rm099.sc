@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 99)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Motion)
 (use Game)
@@ -47,7 +47,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Load rsVIEW 99)
+				(Load VIEW 99)
 				(= cycles 1)
 			)
 			(1

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 120)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use KQ5Room)
 (use Sync)
@@ -20,7 +20,7 @@
 	)
 	
 	(method (init &tmp temp0)
-		(Load rsSCRIPT 941)
+		(Load SCRIPT 941)
 		(cond 
 			((== prevRoomNum 122) (self setScript: cartoon3))
 			((== prevRoomNum 121) (LoadMany 128 929 925 918 2) (self setScript: cartoon2))
@@ -198,7 +198,7 @@
 				(cassima setCycle: BegLoop self)
 			)
 			(25
-				(Load rsVIEW 922)
+				(Load VIEW 922)
 				(if (not (== (theMusic prevSignal?) -1)) (-- state))
 				(= cycles 1)
 			)

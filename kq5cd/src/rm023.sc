@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 23)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use KQ5Room)
@@ -379,11 +379,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 358)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 367)
 					(event claimed: 1)
 				)
@@ -405,11 +405,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 359)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(cond 
 						(
 						(and (not local5) (== ((inventory at: 13) owner?) 23))
@@ -449,7 +449,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 360)
 					(event claimed: 1)
 				)
@@ -476,11 +476,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 361)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(cond 
 						(
 						(and (not local4) (== ((inventory at: 15) owner?) 23))
@@ -525,11 +525,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 362)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: getWheel)
 					(event claimed: 1)
@@ -557,7 +557,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (== ((inventory at: 1) owner?) 23)
 						(SpeakAudio 363)
 					else
@@ -565,7 +565,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (== ((inventory at: 1) owner?) 23)
 						(HandsOff)
 						(curRoom setScript: getKey)
@@ -599,11 +599,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 359)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(cond 
 						((== (drawer cel?) 0)
 							(HandsOff)
@@ -645,11 +645,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 365)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: getPouch)
 					(event claimed: 1)

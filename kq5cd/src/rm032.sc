@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 32)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -87,7 +87,7 @@
 			(script (return))
 			(else
 				(switch (event message?)
-					(JOY_DOWNRIGHT
+					(verbUse
 						(if (MousedOn ego event)
 							(switch (inventory indexOf: (theIconBar curInvIcon?))
 								(29
@@ -383,7 +383,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 439)
 					(event claimed: 1)
 				)
@@ -405,7 +405,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 440)
 					(event claimed: 1)
 				)
@@ -430,7 +430,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 441)
 					(event claimed: 1)
 				)
@@ -462,7 +462,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(29
 							(if (not local40)

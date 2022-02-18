@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 21)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use KQ5Room)
@@ -54,7 +54,7 @@
 				(self obstacles: polyListFront)
 			)
 		)
-		(Load rsVIEW 100)
+		(Load VIEW 100)
 		(door init: stopUpd:)
 		(if (Btst 73) (door hide:))
 		(self setFeatures: path21 tree setRegions: 200 551)
@@ -308,7 +308,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 345)
 					(event claimed: 1)
 				)
@@ -330,7 +330,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 346)
 					(event claimed: 1)
 				)
@@ -356,7 +356,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (== ((inventory at: 9) owner?) 21)
 						(SpeakAudio 347)
 					else
@@ -364,7 +364,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(cond 
 						((!= ((inventory at: 9) owner?) 21) (SpeakAudio 348))
 						((Btst 73) (openDoor register: 0) (curRoom setScript: getHeart))
@@ -376,7 +376,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(1
 							(cond 
@@ -430,11 +430,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 342)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: getHeart)
 					(event claimed: 1)

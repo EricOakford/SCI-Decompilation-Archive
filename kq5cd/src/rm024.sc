@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 24)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -140,7 +140,7 @@
 				(and
 					(== (event type?) 16384)
 					(MousedOn ego event)
-					(== (event message?) JOY_DOWNRIGHT)
+					(== (event message?) verbUse)
 				)
 				(event claimed: (localproc_000e))
 			)
@@ -588,11 +588,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 371)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(event claimed: (localproc_000e))
 				)
 			)
@@ -616,7 +616,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 372)
 					(event claimed: 1)
 				)
@@ -648,15 +648,15 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 373)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not local1) (SpeakAudio 377))
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(cond 
 						((not (Btst 13))
 							(event claimed: 1)
@@ -672,7 +672,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(14
 							(if (!= ((inventory at: 6) owner?) 200)
@@ -718,7 +718,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 374)
 					(event claimed: 1)
 				)
@@ -747,7 +747,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (< (self x?) 100)
 						(SpeakAudio 375)
 					else
@@ -755,13 +755,13 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (> (self x?) 100)
 						(SpeakAudio 378)
 						(event claimed: 1)
 					)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(if (> (self x?) 100)
 						(SpeakAudio 385)
 						(event claimed: 1)
