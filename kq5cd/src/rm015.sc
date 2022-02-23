@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 15)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use KQ5Room)
@@ -362,7 +362,7 @@
 				(= local6 1)
 			)
 		)
-		(Load rsVIEW 2 26 28)
+		(Load VIEW 2 26 28)
 		(poly1 points: @local37 size: 4)
 		5
 		(poly2 points: @local45 size: 4)
@@ -938,7 +938,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if local20 (SpeakAudio 305) else (SpeakAudio 306))
 					(event claimed: 1)
 				)
@@ -967,15 +967,15 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 307)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 312)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 314)
 					(event claimed: 1)
 				)
@@ -1005,11 +1005,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 308)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: getBoot)
 					(event claimed: 1)
@@ -1060,11 +1060,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 309)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not local18)
 						(HandsOff)
 						(++ local18)
@@ -1125,7 +1125,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (== (curRoom curPic?) 210)
 						(SpeakAudio 9072)
 					else
@@ -1133,7 +1133,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not local18)
 						(HandsOff)
 						(++ local18)

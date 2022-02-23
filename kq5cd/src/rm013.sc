@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 13)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -61,7 +61,7 @@
 			(self setFeatures: grassRoom)
 		else
 			(theMusic2 number: 803 loop: -1 vol: 127 playBed:)
-			(Load rsVIEW 344)
+			(Load VIEW 344)
 			(chair init: stopUpd:)
 			(body setCycle: Forward cycleSpeed: 3 init:)
 			(oxHead cycleSpeed: 2 init:)
@@ -497,7 +497,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 283)
 					(event claimed: 1)
 				)
@@ -522,11 +522,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 284)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(ego setMotion: PolyPath 186 120)
 					(event claimed: 1)
 				)
@@ -626,15 +626,15 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 286)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 293)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(11
 							(if (ego has: 27)
@@ -665,7 +665,7 @@
 						(28 (event claimed: 0))
 					)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 296)
 					(event claimed: 1)
 				)
@@ -706,7 +706,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(if (not (cast contains: gypsy))
 						(switch (inventory indexOf: (theIconBar curInvIcon?))
 							(11
@@ -743,7 +743,7 @@
 						)
 					)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(if
 					(and (not (cast contains: gypsy)) (not local53))
 						(SpeakAudio 296)
@@ -751,13 +751,13 @@
 						(event claimed: 1)
 					)
 				)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (not (cast contains: gypsy))
 						(SpeakAudio 286)
 						(event claimed: 1)
 					)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not (cast contains: gypsy))
 						(SpeakAudio 293)
 						(event claimed: 1)
@@ -799,15 +799,15 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 287)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 293)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(11
 							(if (ego has: 27)
@@ -842,7 +842,7 @@
 						)
 					)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 296)
 					(event claimed: 1)
 				)
@@ -895,11 +895,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 288)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 294)
 					(event claimed: 1)
 				)
@@ -928,11 +928,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 288)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 294)
 					(event claimed: 1)
 				)
@@ -957,7 +957,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 289)
 					(event claimed: 1)
 				)
@@ -998,11 +998,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 290)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: getTambourine)
 					(event claimed: 1)

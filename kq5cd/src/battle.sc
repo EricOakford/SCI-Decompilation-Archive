@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 124)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -119,7 +119,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Load rsSOUND 892)
+				(Load SOUND 892)
 				(theMusic number: 840 loop: -1 playBed:)
 				(= cycles 1)
 			)
@@ -300,7 +300,7 @@
 		(if (== state 5)
 			(if local40 (= seconds 0))
 			(if local41
-				(Load rsSOUND 842)
+				(Load SOUND 842)
 				(= local41 0)
 				(self cue:)
 			)
@@ -531,7 +531,7 @@
 		(if (== state 5)
 			(if local40 (= seconds 0))
 			(if local41
-				(Load rsSOUND 844)
+				(Load SOUND 844)
 				(= local41 0)
 				(self cue:)
 			)
@@ -886,7 +886,7 @@
 		(if (== state 8)
 			(if local40 (= seconds 0))
 			(if local41
-				(Load rsSOUND 846)
+				(Load SOUND 846)
 				(= local41 0)
 				(self cue:)
 			)
@@ -1119,7 +1119,7 @@
 		(if (== state 4)
 			(if local40 (= seconds 0))
 			(if local41
-				(Load rsSOUND 849)
+				(Load SOUND 849)
 				(= local41 0)
 				(self cue:)
 			)
@@ -1499,7 +1499,7 @@
 		else
 			(HandsOn)
 			(switch (event message?)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(theIconBar disable: 0 1 2 3)
 					(if
 						(OneOf
@@ -1541,7 +1541,7 @@
 							)
 							(theIconBar enable: 5)
 							(repeat
-								(if (== (event type?) evMOUSEBUTTON)
+								(if (== (event type?) mouseDown)
 									(theGame setCursor: 999 1)
 									(CueEvent 0 4 3840 0)
 								else

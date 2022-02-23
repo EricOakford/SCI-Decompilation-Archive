@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 62)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use castle)
 (use KQ5Room)
@@ -30,7 +30,7 @@
 	(method (init)
 		(super init:)
 		(= henchmanState 0)
-		(Load rsVIEW 34)
+		(Load VIEW 34)
 		(self
 			setFeatures: stairs skull doorWay1 doorWay2 theWindows
 			setRegions: 550
@@ -123,11 +123,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 642)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 647)
 					(event claimed: 1)
 				)
@@ -149,7 +149,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 643)
 					(event claimed: 1)
 				)
@@ -171,7 +171,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 644)
 					(event claimed: 1)
 				)
@@ -193,7 +193,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 645)
 					(event claimed: 1)
 				)
@@ -351,7 +351,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 646)
 					(event claimed: 1)
 				)

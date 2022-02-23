@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 4)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -724,7 +724,7 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 194)
 					(event claimed: 1)
 				)
@@ -752,11 +752,11 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 195)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 205)
 					(event claimed: 1)
 				)
@@ -783,7 +783,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(localproc_10fa 0 60)
 					(event claimed: 1)
 				)
@@ -810,7 +810,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(localproc_10fa 2 200)
 					(event claimed: 1)
 				)
@@ -837,7 +837,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(localproc_10fa 1 280)
 					(event claimed: 1)
 				)
@@ -867,7 +867,7 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_RIGHT
+				(verbDo
 					(= global313 1)
 					(HandsOff)
 					(curRoom setScript: openDoor)
@@ -899,7 +899,7 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_RIGHT
+				(verbDo
 					(= global313 2)
 					(HandsOff)
 					(curRoom setScript: openDoor)
@@ -931,7 +931,7 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_RIGHT
+				(verbDo
 					(= global313 3)
 					(HandsOff)
 					(curRoom setScript: openDoor)
@@ -961,7 +961,7 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 196)
 					(event claimed: 1)
 				)
@@ -989,7 +989,7 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 197)
 					(event claimed: 1)
 				)
@@ -1017,7 +1017,7 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 198)
 					(event claimed: 1)
 				)
@@ -1047,15 +1047,15 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 199)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 9065)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(cond 
 						((not local88) (++ local88) (curRoom setScript: talkMan))
 						(local99 (proc762_1 @local109 5607))
@@ -1087,11 +1087,11 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 200)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not (cast contains: fish))
 						(curRoom setScript: lookInBarrel)
 						(event claimed: 1)
@@ -1122,7 +1122,7 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (== ((inventory at: 5) owner?) 4)
 						(SpeakAudio 192)
 					else
@@ -1130,7 +1130,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (== ((inventory at: 5) owner?) 4)
 						(HandsOff)
 						(curRoom setScript: getFish)
@@ -1166,11 +1166,11 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 192)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: getFish)
 					(event claimed: 1)
@@ -1199,15 +1199,15 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 201)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 9066)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(womanWords doit:)
 					(event claimed: 1)
 				)
@@ -1234,15 +1234,15 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 201)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 9066)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(kidWords doit:)
 					(event claimed: 1)
 				)
@@ -1280,15 +1280,15 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 201)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 9066)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(manWords doit:)
 					(event claimed: 1)
 				)
@@ -1317,15 +1317,15 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 201)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 9066)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(womanWords doit:)
 					(event claimed: 1)
 				)
@@ -1355,11 +1355,11 @@
 		else
 			(cls)
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 202)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: getCoin)
 					(event claimed: 1)

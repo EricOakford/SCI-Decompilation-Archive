@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 38)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Waters)
@@ -319,11 +319,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 479)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (and (not (ego has: 21)) (not local16))
 						(++ local16)
 						(SpeakAudio 481)
@@ -357,18 +357,18 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 482)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not local17)
 						(++ local17)
 						(curRoom setScript: hammerCrystal)
 						(event claimed: 1)
 					)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(event claimed: 1)
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(22

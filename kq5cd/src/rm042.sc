@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 42)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -168,7 +168,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (>= (hatch state?) 4)
 						(SpeakAudio 495)
 					else
@@ -176,7 +176,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (>= (hatch state?) 4)
 						(SpeakAudio 502)
 					else
@@ -208,11 +208,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 497)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(ego get: 25)
 					(SolvePuzzle 2)
 					(HandsOff)
@@ -243,13 +243,13 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (>= (hatch state?) 4)
 						(SpeakAudio 498)
 						(event claimed: 1)
 					)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not local0)
 						(++ local0)
 						(SpeakAudio 504)
@@ -281,20 +281,20 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (>= (hatch state?) 4)
 						(SpeakAudio 498)
 						(event claimed: 1)
 					)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not local0)
 						(++ local0)
 						(SpeakAudio 504)
 						(event claimed: 1)
 					)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(28 (event claimed: 0))
 						(else 
@@ -324,7 +324,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (>= (hatch state?) 4)
 						(SpeakAudio 499)
 					else

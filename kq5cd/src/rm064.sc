@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 64)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use castle)
@@ -30,8 +30,8 @@
 	
 	(method (init)
 		(super init:)
-		(Load rsVIEW 706)
-		(Load rsVIEW 710)
+		(Load VIEW 706)
+		(Load VIEW 710)
 		(= global357 274)
 		(= global358 166)
 		(= global355 79)
@@ -194,11 +194,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 658)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 663)
 					(event claimed: 1)
 				)
@@ -225,7 +225,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 659)
 					(event claimed: 1)
 				)
@@ -250,7 +250,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 660)
 					(event claimed: 1)
 				)
@@ -303,7 +303,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (not (Btst 21))
 						(SpeakAudio 661)
 					else
@@ -311,7 +311,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not (Btst 21))
 						(Bset 21)
 						(CastleHandsOff)
@@ -529,7 +529,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (not (Btst 21))
 						(SpeakAudio 661)
 					else
@@ -537,7 +537,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 666)
 					(event claimed: 1)
 				)

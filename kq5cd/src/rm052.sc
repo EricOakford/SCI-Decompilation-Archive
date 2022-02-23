@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 52)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -90,7 +90,7 @@
 		else
 			(lDragon setCycle: Forward init: hide:)
 			(rDragon setCycle: Forward init: hide:)
-			(Load rsVIEW 668)
+			(Load VIEW 668)
 		)
 		(poly1 points: @local1 size: 7)
 		(poly2 points: @local15 size: 6)
@@ -162,7 +162,7 @@
 				(and
 					(== (event type?) 16384)
 					(MousedOn ego event)
-					(== (event message?) JOY_DOWNRIGHT)
+					(== (event message?) verbUse)
 				)
 				(switch (inventory indexOf: (theIconBar curInvIcon?))
 					(21
@@ -468,19 +468,19 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (Btst 35) (SpeakAudio 554) else (SpeakAudio 555))
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 556)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 561)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(21
 							(if (and (ego has: 21) (not (Btst 35)))
@@ -518,7 +518,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 557)
 					(event claimed: 1)
 				)
@@ -540,11 +540,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 558)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(ego setMotion: PolyPath 159 100)
 					(event claimed: 1)
 				)

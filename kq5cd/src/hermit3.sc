@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 112)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use KQ5Room)
 (use Sync)
@@ -21,7 +21,7 @@
 	
 	(method (init)
 		(super init:)
-		(Load rsSCRIPT 941)
+		(Load SCRIPT 941)
 		(if (!= (theMusic number?) 820)
 			(theMusic number: 820 loop: -1 vol: 127 playBed:)
 		)

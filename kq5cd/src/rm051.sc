@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 51)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -41,7 +41,7 @@
 	)
 	
 	(method (init)
-		(Load rsSCRIPT 941)
+		(Load SCRIPT 941)
 		(if (== (theGame detailLevel:) 3)
 			(surf1 setScript: waves)
 		)
@@ -547,7 +547,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 546)
 					(event claimed: 1)
 				)
@@ -569,7 +569,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 547)
 					(event claimed: 1)
 				)
@@ -594,7 +594,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 548)
 					(event claimed: 1)
 				)
@@ -622,11 +622,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 549)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (and (not (Btst 55)) (not local0))
 						(++ local0)
 						(SpeakAudio 552)
@@ -657,11 +657,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 549)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (and (not (Btst 55)) (not local0))
 						(++ local0)
 						(SpeakAudio 552)
@@ -695,11 +695,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 549)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (and (not (Btst 55)) (not local0))
 						(++ local0)
 						(SpeakAudio 552)
@@ -730,11 +730,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 549)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (and (not (Btst 55)) (not local0))
 						(++ local0)
 						(SpeakAudio 552)
@@ -766,11 +766,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 550)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(if (not local3)
 						(proc762_0 @local116 @local125 @local110)
 						(= local3 1)
@@ -804,11 +804,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 551)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: getFish)
 					(event claimed: 1)

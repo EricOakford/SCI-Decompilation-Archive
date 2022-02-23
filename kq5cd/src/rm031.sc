@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 31)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -552,11 +552,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 435)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (or (== local0 1) (== local0 4))
 						(= local2 86)
 						(= local3 128)
@@ -583,11 +583,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 435)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if
 					(or (== local0 6) (== local0 5) (== local0 4))
 						(= local2 177)
@@ -615,11 +615,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 435)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (== local0 6)
 						(if (not (Btst 78)) (Bset 78) (SolvePuzzle 2))
 						(= local2 218)
@@ -647,11 +647,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 436)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if
 					(or (== local0 0) (== local0 2) (== local0 4))
 						(= local2 112)
@@ -679,11 +679,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 436)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if
 						(or
 							(== local0 1)
@@ -716,11 +716,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 436)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if
 					(or (== local0 2) (== local0 6) (== local0 5))
 						(= local2 173)
@@ -754,11 +754,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 436)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if
 					(or (== local0 1) (== local0 2) (== local0 5))
 						(= local2 135)
@@ -796,11 +796,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 436)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if
 						(or
 							(== local0 6)
@@ -842,11 +842,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 436)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if
 					(or (== local0 7) (== local0 3) (== local0 5))
 						(= local2 189)
@@ -877,7 +877,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 437)
 					(event claimed: 1)
 				)
@@ -899,7 +899,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 435)
 					(event claimed: 1)
 				)
@@ -921,11 +921,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 438)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (== local0 0)
 						(HandsOff)
 						(curRoom setScript: climbDownScript)

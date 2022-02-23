@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 3)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Waters)
@@ -41,7 +41,7 @@
 		(super init:)
 		(theAudio number: 7777 doNotStop: 1 loop: -1 play:)
 		(theMusic number: 29 loop: -1 play:)
-		(Load rsVIEW 48)
+		(Load VIEW 48)
 		(cedric init:)
 		(if (== (theGame detailLevel:) 3) (water init:))
 		(wheel init: setCycle: Forward)
@@ -274,7 +274,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 180)
 					(event claimed: 1)
 				)
@@ -301,7 +301,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 180)
 					(event claimed: 1)
 				)
@@ -436,7 +436,7 @@ code_0915:
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 182)
 					(event claimed: 1)
 				)
@@ -458,7 +458,7 @@ code_0915:
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 183)
 					(event claimed: 1)
 				)
@@ -488,7 +488,7 @@ code_0915:
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 184)
 					(event claimed: 1)
 				)
@@ -518,15 +518,15 @@ code_0915:
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 185)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 187)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(proc762_1 @local136 3028)
 					(event claimed: 1)
 				)
@@ -556,11 +556,11 @@ code_0915:
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 186)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(if (not local1)
 						(++ local1)
 						(proc762_1 @local136 3029)
@@ -574,7 +574,7 @@ code_0915:
 					)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(28 (event claimed: 0))
 						(else 

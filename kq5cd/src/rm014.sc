@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 14)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use KQ5Room)
@@ -404,7 +404,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 298)
 					(event claimed: 1)
 				)
@@ -426,7 +426,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 299)
 					(event claimed: 1)
 				)
@@ -454,7 +454,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 300)
 					(event claimed: 1)
 				)
@@ -482,14 +482,14 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(switch (curRoom east?)
 						(13 (SpeakAudio 301))
 						(12 (SpeakAudio 302))
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (== (curRoom east?) 13)
 						(SpeakAudio 766)
 						(event claimed: 1)
@@ -521,11 +521,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 301)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 766)
 					(event claimed: 1)
 				)
@@ -590,11 +590,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 303)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 9118)
 					(event claimed: 1)
 				)

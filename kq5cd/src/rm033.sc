@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 33)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -34,8 +34,8 @@
 		(super init:)
 		(if (== globalCedric 100)
 			(theMusic2 number: 106 loop: -1 playBed:)
-			(Load rsVIEW 520)
-			(Load rsSOUND 83)
+			(Load VIEW 520)
+			(Load SOUND 83)
 			(self setScript: sledRun)
 		else
 			(switch prevRoomNum
@@ -350,7 +350,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 445)
 					(event claimed: 1)
 				)
@@ -372,7 +372,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 446)
 					(event claimed: 1)
 				)
@@ -394,11 +394,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 447)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 450)
 					(event claimed: 1)
 				)
@@ -426,15 +426,15 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 447)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 450)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(29
 							(SpeakAudio 452)
@@ -465,7 +465,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 448)
 					(event claimed: 1)
 				)
@@ -494,11 +494,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 449)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not local0)
 						(++ local0)
 						(SpeakAudio 451)

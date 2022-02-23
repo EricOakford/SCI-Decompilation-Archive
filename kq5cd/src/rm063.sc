@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 63)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use castle)
@@ -65,8 +65,8 @@
 			)
 			((not wizardTimer)
 				(if (> (Random 0 100) 90)
-					(Load rsSOUND 835)
-					(Load rsVIEW 703)
+					(Load SOUND 835)
+					(Load VIEW 703)
 					(= local2 1)
 					(= wizardAngle 135)
 					(= global354 315)
@@ -218,7 +218,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 648)
 					(event claimed: 1)
 				)
@@ -256,10 +256,10 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if local1 (SpeakAudio 649) (event claimed: 1))
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if local1
 						(CastleHandsOff)
 						(curRoom setScript: getWand)
@@ -284,7 +284,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 650)
 					(event claimed: 1)
 				)
@@ -306,7 +306,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (cast contains: (ScriptID 550 7))
 						(SpeakAudio 35)
 					else
@@ -314,7 +314,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (cast contains: (ScriptID 550 7))
 						(SpeakAudio 655)
 					else
@@ -340,7 +340,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 652)
 					(event claimed: 1)
 				)
@@ -377,7 +377,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 653)
 					(event claimed: 1)
 				)
@@ -493,11 +493,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 649)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(CastleHandsOff)
 					(curRoom setScript: getWand)
 					(event claimed: 1)
@@ -586,8 +586,8 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(Load rsSOUND 835)
-				(Load rsVIEW 703)
+				(Load SOUND 835)
+				(Load VIEW 703)
 				(CastleHandsOff)
 				((ScriptID 550 7)
 					setLoop: 1
@@ -725,7 +725,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 654)
 					(event claimed: 1)
 				)
@@ -768,7 +768,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(KQPrint 63 0)
 					(event claimed: 1)
 				)

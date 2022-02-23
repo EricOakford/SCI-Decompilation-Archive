@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 35)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -530,7 +530,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(cond 
 						((Btst 57) (SpeakAudio 466))
 						((!= ((inventory at: 2) owner?) 36) (SpeakAudio 468))
@@ -538,13 +538,13 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (!= ((inventory at: 2) owner?) 36)
 						(SpeakAudio 464)
 						(event claimed: 1)
 					)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(cond 
 						((!= ((inventory at: 2) owner?) 36)
 							(if (Btst 27)
@@ -560,7 +560,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(28 (event claimed: 0))
 						(else 
@@ -592,11 +592,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (Btst 57) (SpeakAudio 461) else (SpeakAudio 462))
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(ego setMotion: PolyPath 257 64)
 					(event claimed: 1)
 				)
@@ -618,7 +618,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 463)
 					(event claimed: 1)
 				)

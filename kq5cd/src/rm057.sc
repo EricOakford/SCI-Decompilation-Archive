@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 57)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use castle)
@@ -43,9 +43,9 @@
 	
 	(method (init)
 		(self setRegions: 550)
-		(Load rsVIEW 690)
-		(Load rsVIEW 686)
-		(Load rsVIEW 688)
+		(Load VIEW 690)
+		(Load VIEW 686)
+		(Load VIEW 688)
 		(= global357 249)
 		(= global358 147)
 		(= global355 46)
@@ -361,11 +361,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 602)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not local2)
 						(++ local2)
 						(SpeakAudio 609)
@@ -393,7 +393,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 603)
 					(event claimed: 1)
 				)
@@ -435,7 +435,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (== ((inventory at: 25) owner?) 57)
 						(SpeakAudio 604)
 					else
@@ -446,7 +446,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (== ((inventory at: 25) owner?) 57)
 						(SpeakAudio 610)
 					else
@@ -457,7 +457,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(25
 							(curRoom setScript: giveLocketScript)
@@ -474,7 +474,7 @@
 						)
 					)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(if (not (princess script?))
 						(if (== ((inventory at: 25) owner?) 57)
 							(switch (++ local5)
@@ -595,7 +595,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 607)
 					(event claimed: 1)
 				)
@@ -617,7 +617,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 608)
 					(event claimed: 1)
 				)

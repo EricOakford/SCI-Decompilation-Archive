@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 30)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -39,7 +39,7 @@
 			setFeatures: rock cliff path30 ledge
 			setRegions: 202
 		)
-		(Load rsSOUND 892)
+		(Load SOUND 892)
 		(branch init: stopUpd:)
 		(if (== ((inventory at: 20) owner?) 30)
 			(rope
@@ -109,7 +109,7 @@
 			(script (return))
 			((MousedOn ego event)
 				(switch (event message?)
-					(JOY_DOWNRIGHT
+					(verbUse
 						(switch (inventory indexOf: (theIconBar curInvIcon?))
 							(26
 								(if (not (Btst 15))
@@ -506,7 +506,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 421)
 					(event claimed: 1)
 				)
@@ -532,11 +532,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 422)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 431)
 					(event claimed: 1)
 				)
@@ -558,7 +558,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 423)
 					(SpeakAudio 424)
 					(event claimed: 1)
@@ -581,7 +581,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (== ((inventory at: 20) owner?) 30)
 						(SpeakAudio 425)
 					else
@@ -589,11 +589,11 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 432)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(20
 							(ego put: 20 30)
@@ -628,7 +628,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (== ((inventory at: 20) owner?) 31)
 						(SpeakAudio 427)
 					else
@@ -636,11 +636,11 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 433)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(20
 							(ego put: 20 31)
@@ -676,7 +676,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (== ((inventory at: 20) owner?) 30)
 						(SpeakAudio 429)
 					else
@@ -684,7 +684,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: climbRope)
 					(event claimed: 1)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 90)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use KQ5Room)
@@ -44,7 +44,7 @@
 		(LoadMany 128 836 838 54 70)
 		(switch prevRoomNum
 			(91
-				(Load rsVIEW 840)
+				(Load VIEW 840)
 				(harpy1 setScript: argueScript)
 			)
 			(50
@@ -61,7 +61,7 @@
 				)
 			)
 			(else 
-				(Load rsVIEW 840)
+				(Load VIEW 840)
 				(theMusic number: 816 loop: -1 playBed:)
 				(self setScript: crtn5Script)
 			)
@@ -96,7 +96,7 @@
 				(and
 					(== (event type?) 16384)
 					(MousedOn ego event)
-					(== (event message?) JOY_DOWNRIGHT)
+					(== (event message?) verbUse)
 				)
 				(switch (inventory indexOf: (theIconBar curInvIcon?))
 					(10
@@ -800,7 +800,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Load rsVIEW 665)
+				(Load VIEW 665)
 				(ego
 					setMotion: PolyPath (+ (fishhook x?) 10) (+ (fishhook y?) 1) self
 				)
@@ -870,17 +870,17 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(cls)
 					(SpeakAudio 745)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(cls)
 					(SpeakAudio 752)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(cls)
 					(SpeakAudio 755)
 					(event claimed: 1)
@@ -914,17 +914,17 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(cls)
 					(SpeakAudio 745)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(cls)
 					(SpeakAudio 752)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(cls)
 					(SpeakAudio 755)
 					(event claimed: 1)
@@ -959,17 +959,17 @@
 		else
 			(harpy1 handleEvent: event)
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(cls)
 					(SpeakAudio 745)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(cls)
 					(SpeakAudio 752)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(cls)
 					(SpeakAudio 755)
 					(event claimed: 1)
@@ -1003,17 +1003,17 @@
 		else
 			(switch (event message?)
 				(harpy1 species event)
-				(JOY_UPRIGHT
+				(verbLook
 					(cls)
 					(SpeakAudio 745)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(cls)
 					(SpeakAudio 752)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(cls)
 					(SpeakAudio 755)
 					(event claimed: 1)
@@ -1271,7 +1271,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (cast contains: harpy2)
 						(SpeakAudio 746)
 					else
@@ -1279,7 +1279,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(10
 							(curRoom setScript: playHarpScript)
@@ -1318,7 +1318,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 748)
 					(event claimed: 1)
 				)
@@ -1346,11 +1346,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 749)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: getHookScript)
 					(event claimed: 1)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 48)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -169,7 +169,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (== view 620)
 						(SpeakAudio 533)
 					else
@@ -177,7 +177,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT (event claimed: 1))
+				(verbDo (event claimed: 1))
 			)
 		)
 	)
@@ -199,7 +199,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 535)
 					(event claimed: 1)
 				)

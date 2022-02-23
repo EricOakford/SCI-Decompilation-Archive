@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 9)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -795,7 +795,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (cast contains: willow)
 						(SpeakAudio 233)
 					else
@@ -803,7 +803,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: getDrink)
 					(event claimed: 1)
@@ -829,7 +829,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 235)
 					(event claimed: 1)
 				)
@@ -884,11 +884,11 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 236)
 					(event claimed: 1)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(if (not (Btst 1))
 						(Bset 1)
 						(HandsOff)
@@ -908,7 +908,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(9
 							(curRoom setScript: changePrincess)
@@ -971,7 +971,7 @@
 	
 	(method (handleEvent event)
 		(switch (event message?)
-			(JOY_DOWNRIGHT
+			(verbUse
 				(switch (inventory indexOf: (theIconBar curInvIcon?))
 					(9
 						(curRoom setScript: changePrincess)
@@ -1050,7 +1050,7 @@
 			(
 				(and
 					(MousedOn globalCedric event)
-					(== (event message?) JOY_DOWN)
+					(== (event message?) verbTalk)
 					(not local113)
 				)
 				(++ local113)
@@ -1067,11 +1067,11 @@
 			)
 			(else
 				(switch (event message?)
-					(JOY_UPRIGHT
+					(verbLook
 						(SpeakAudio 236)
 						(event claimed: 1)
 					)
-					(JOY_DOWN
+					(verbTalk
 						(if (not (Btst 1))
 							(Bset 1)
 							(HandsOff)
@@ -1091,7 +1091,7 @@
 						)
 						(event claimed: 1)
 					)
-					(JOY_DOWNRIGHT
+					(verbUse
 						(switch (inventory indexOf: (theIconBar curInvIcon?))
 							(9
 								(curRoom setScript: changePrincess)
@@ -1153,7 +1153,7 @@
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (cast contains: willow)
 						(SpeakAudio 236)
 					else
@@ -1161,7 +1161,7 @@
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (cast contains: willow)
 						(if (not (Btst 7))
 							(HandsOff)
