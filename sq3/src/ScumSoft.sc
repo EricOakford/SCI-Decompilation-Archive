@@ -105,7 +105,8 @@
 	
 	(method (doit)
 		(if (and (not scumSoftAlerted) (== 700 (Random 1 1400)))
-			(announce cue:)
+			;(announce cue:)
+			(announce changeState: scumSoftAnnouncement)
 		)
 	)
 	
