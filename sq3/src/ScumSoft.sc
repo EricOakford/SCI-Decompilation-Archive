@@ -172,12 +172,13 @@
 	)
 	
 	(method (init)
+		(super init:)
 		(self
 			vaporized: [trashVaporized myID]
 			view: 115
 			ignoreActors: 0
 			setLoop: 4
-			setCel: [trashVaporized (super init:)]
+			setCel: [trashVaporized myID]
 			stopUpd:
 		)
 		(if (and vaporized myID)
