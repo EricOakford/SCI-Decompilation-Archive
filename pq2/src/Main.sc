@@ -506,7 +506,8 @@
 		(= systemWindow (SysWindow new:))
 		(super init:)
 		;(= debugging FALSE)
-		(= debugging TRUE)	;added to enable debug features
+		;(= debugging TRUE)	;added to enable debug features
+		;"kiss angel death" now toggles debugging
 		(= ego egoObj)
 		(User alterEgo: ego blocks: 0 y: 155)
 		(TheMenuBar init:)
@@ -727,7 +728,8 @@
 		(switch (event type?)
 			(saidEvent
 				(cond 
-					((and (Said 'kiss/angel>') (Said '/death'))
+					;((and (Said 'kiss/angel>') (Said '/death'))
+					((Said 'kiss/death<angel')
 						(event claimed: TRUE)
 						(if (^= debugging TRUE)
 							(curRoom setLocales: DEBUG)
@@ -751,7 +753,7 @@
 					)
 					(
 						(or
-							(Said 'fuck,crap,cunt,cocksucker,leak')	;EO: removed kiss to allow debugging
+							(Said 'kiss,fuck,crap,cunt,cocksucker,leak')
 							(Said '/fuck,crap,cunt,cocksucker,leak')
 							(Said 'eat/crap,and,die')
 						)
