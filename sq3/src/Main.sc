@@ -1224,7 +1224,7 @@
 					(= evtX (event x?))
 					(= evtY (event y?))
 					(cond 
-						((== (= evtMod (event modifiers?)) 10)
+						((& (= evtMod (event modifiers?)) 10) ;shift+ALT+click
 							(event claimed: TRUE)
 							((User alterEgo?) setMotion: JumpTo evtX evtY)
 						)

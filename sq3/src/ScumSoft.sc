@@ -105,7 +105,9 @@
 	
 	(method (doit)
 		(if (and (not scumSoftAlerted) (== 700 (Random 1 1400)))
-			(announce cue:)
+			;(announce cue:)
+			(if (== scumSoftAnnouncement 0) (++ scumSoftAnnouncement))
+			(announce changeState: scumSoftAnnouncement)
 		)
 	)
 	
@@ -170,12 +172,13 @@
 	)
 	
 	(method (init)
+		(super init:)
 		(self
 			vaporized: [trashVaporized myID]
 			view: 115
 			ignoreActors: 0
 			setLoop: 4
-			setCel: [trashVaporized (super init:)]
+			setCel: [trashVaporized myID]
 			stopUpd:
 		)
 		(if (and vaporized myID)
