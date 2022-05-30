@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 23)
-(include sci.sh)
+(include game.sh) (include "23.shm")
 (use Main)
 (use DText)
 (use Plane)
@@ -17,82 +17,22 @@
 
 (local
 	local0
-	local1
+	thiefSignResponse
 	theTeller
-	newCast
-	gCursorNumberLoop
-	gCursorNumberCel
-	userCanInput
-	userCanControl
+	tellerCast
+	tellCursorLoop
+	tellCursorCel
+	oldCanInput
+	oldCanControl
 )
-(class TellerIcon of IconI
+(class TellerIcon of IconItem
 	(properties
-		scratch 0
-		heading 0
-		noun 0
-		case 0
-		modNum -1
-		nsLeft 0
 		nsTop 15
-		nsRight 0
-		nsBottom 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $0000
-		state $0000
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		plane 0
-		x 0
-		y 0
-		z 0
-		scaleX 128
-		scaleY 128
-		maxScale 128
-		scaleType 0
-		priority 0
-		fixPriority 0
-		inLeft 0
-		inTop 0
-		inRight 0
-		inBottom 0
-		useInsetRect 0
 		view 935
 		loop 5
 		cel 0
-		bitmap 0
-		yStep 2
-		signal $0101
-		lsLeft 0
-		lsTop 0
-		lsRight 0
-		lsBottom 0
-		brLeft 0
-		brTop 0
-		brRight 0
-		brBottom 0
-		scaleSignal $0000
-		magnifier 0
-		oldScaleX 128
-		type $4000
-		message -1
-		modifiers $0000
-		mainView 0
-		mainLoop 0
-		mainCel 0
-		maskView 0
-		maskLoop 0
-		maskCel 0
-		cursorView -1
-		cursorLoop -1
-		cursorCel -1
+		signal (| VICON RELVERIFY)
 		highlightColor 255
-		lowlightColor 0
-		helpVerb 0
-		object 0
-		selector 0
 		myHandle 0
 		value 0
 		myTeller 0
@@ -102,8 +42,8 @@
 	)
 	
 	(method (init)
-		(= signal (& signal $fff7))
-		(newCast add: self)
+		(&= signal $fff7)
+		(tellerCast add: self)
 		(= plane tellerPlane)
 		(AddScreenItem self)
 		(= nsRight (+ nsLeft (CelWide view loop cel)))
@@ -117,17 +57,17 @@
 		(DisposeClone self)
 	)
 	
-	(method (show &tmp temp0 temp1)
-		(= temp1 (IntArray with: 0 0 0 0))
+	(method (show &tmp temp0 len)
+		(= len (IntArray with: 0 0 0 0))
 		(TextSize
-			(temp1 data?)
+			(len data?)
 			(myHandle data?)
 			(myTeller font?)
 			0
 		)
-		(= nsRight (+ nsLeft (temp1 at: 2) 24))
-		(= nsTop (+ nsTop 5))
-		(= nsBottom (+ nsTop (temp1 at: 3) 10))
+		(= nsRight (+ nsLeft (len at: 2) 24))
+		(+= nsTop 5)
+		(= nsBottom (+ nsTop (len at: 3) 10))
 		(= x (+ nsLeft 17))
 		(= y (+ nsTop 15))
 		(= cel 0)
@@ -143,7 +83,7 @@
 					skip: 254
 					setSize:
 					setPri: 253
-					init: newCast
+					init: tellerCast
 					yourself:
 				)
 			)
@@ -159,7 +99,7 @@
 					skip: 254
 					setSize:
 					setPri: 0
-					init: newCast
+					init: tellerCast
 					yourself:
 				)
 			)
@@ -175,23 +115,23 @@
 					skip: 254
 					setSize:
 					setPri: 254
-					init: newCast
+					init: tellerCast
 					yourself:
 				)
 			)
 		)
-		(temp1 dispose:)
+		(len dispose:)
 	)
 	
-	(method (onMe theObjOrX)
+	(method (onMe obj)
 		(return
 			(if
 				(and
-					(< nsLeft (theObjOrX x?))
-					(< (theObjOrX x?) nsRight)
-					(< nsTop (theObjOrX y?))
+					(< nsLeft (obj x?))
+					(< (obj x?) nsRight)
+					(< nsTop (obj y?))
 				)
-				(< (theObjOrX y?) nsBottom)
+				(< (obj y?) nsBottom)
 			else
 				0
 			)
@@ -290,7 +230,7 @@ code_028c:
 			pushi    1
 			lofsa    {Say Goodbye}
 			push    
-			class    Str
+			class    String
 			send     6
 			sat      temp2
 			pushi    #compare
@@ -343,8 +283,8 @@ code_02f3:
 		)
 	)
 	
-	(method (highlight param1)
-		(if param1
+	(method (highlight tOrF)
+		(if tOrF
 			(highText priority: 255)
 			(= cel 2)
 		else
@@ -358,8 +298,6 @@ code_02f3:
 )
 
 (instance myDText of DText
-	(properties)
-	
 	(method (dispose &tmp planeCasts theBitmap)
 		(= theBitmap 0)
 		(if bitmap (= theBitmap bitmap) (= bitmap 0))
@@ -370,13 +308,11 @@ code_02f3:
 		)
 		(= plane 0)
 		(DisposeClone self)
-		(if theBitmap (Bitmap 1 theBitmap))
+		(if theBitmap (Bitmap MapDispose theBitmap))
 	)
 )
 
 (instance intList of List
-	(properties)
-	
 	(method (dispose)
 		(if elements (DisposeList elements))
 		(= size (= elements 0))
@@ -384,9 +320,8 @@ code_02f3:
 	)
 )
 
-(class Teller of Obj
+(class Teller of Object
 	(properties
-		scratch 0
 		curNoun 0
 		sayNoun 0
 		verb 0
@@ -406,26 +341,28 @@ code_02f3:
 		nextTeller 0
 		parentTeller 0
 		talker 0
-		thiefSign 1
+		thiefSign TRUE
 	)
 	
-	(method (init theClient theModNum theSayNoun theVerb theCurNoun)
+	(method (init obj m n v objNoun)
 		(if
 			(and
-				((= client theClient) actions?)
+				((= client obj) actions?)
 				((client actions?) isKindOf: Teller)
 			)
 			((client actions?) nextTeller: self)
 			(= parentTeller (client actions?))
 		else
-			((= client theClient) actions: self)
+			((= client obj) actions: self)
 			(= parentTeller 0)
 		)
 		(if (> argc 1)
-			(= modNum theModNum)
+			(= modNum m)
 			(if (> argc 2)
-				(= sayNoun theSayNoun)
-				(if (> argc 3) (= verb theVerb))
+				(= sayNoun n)
+				(if (> argc 3)
+					(= verb v)
+				)
 			)
 		else
 			(= modNum curRoomNum)
@@ -433,13 +370,15 @@ code_02f3:
 		((= stack (intList new:))
 			addToFront:
 				(if (== argc 5)
-					(= rootNoun (= curNoun theCurNoun))
+					(= rootNoun (= curNoun objNoun))
 				else
 					(= curNoun (client noun?))
 					(= rootNoun (client noun?))
 				)
 		)
-		(if (not actionVerb) (= actionVerb 2))
+		(if (not actionVerb)
+			(= actionVerb V_TALK)
+		)
 	)
 	
 	(method (dispose)
@@ -461,19 +400,19 @@ code_02f3:
 		(cond 
 			((== theVerb actionVerb)
 				(= tellCursor (theCursor view?))
-				(= gCursorNumberLoop (theCursor loop?))
-				(= gCursorNumberCel (theCursor cel?))
+				(= tellCursorLoop (theCursor loop?))
+				(= tellCursorCel (theCursor cel?))
 				((= theIconBarGetCursor (theIconBar getCursor:))
-					view: 999
+					view: ARROW_CURSOR
 					loop: 0
 					cel: 0
 				)
 				(theGame setCursor: theIconBarGetCursor)
-				(Bset 51)
-				(Bset 50)
-				(= userCanInput (User canInput:))
-				(= userCanControl (User canControl:))
-				(User canControl: 0 canInput: 0)
+				(Bset fHideCursor)
+				(Bset fCantSave)
+				(= oldCanInput (User canInput:))
+				(= oldCanControl (User canControl:))
+				(User canControl: FALSE canInput: FALSE)
 				(while (not (self respond:))
 				)
 				(if (not loopMenu)
@@ -481,20 +420,22 @@ code_02f3:
 						setCursor:
 							(IconBarCursor
 								view: tellCursor
-								loop: gCursorNumberLoop
-								cel: gCursorNumberCel
+								loop: tellCursorLoop
+								cel: tellCursorCel
 								yourself:
 							)
 					)
 				)
 			)
-			((and nextTeller (nextTeller isKindOf: Teller)) (nextTeller doVerb: theVerb))
+			((and nextTeller (nextTeller isKindOf: Teller))
+				(nextTeller doVerb: theVerb)
+			)
 			(else (client doVerb: theVerb))
 		)
-		(return 1)
+		(return TRUE)
 	)
 	
-	(method (respond &tmp theCurNoun temp1)
+	(method (respond &tmp objNoun temp1)
 		(= iconValue 0)
 		(self buildCaseList: showCases:)
 		(if curList (curList dispose:) (= curList 0))
@@ -502,7 +443,10 @@ code_02f3:
 		)
 		(return
 			(cond 
-				((or (not iconValue) (== iconValue -999)) (self clean:) (return 1))
+				((or (not iconValue) (== iconValue -999))
+					(self clean:)
+					(return TRUE)
+				)
 				((== iconValue 999)
 					(FrameOut)
 					(stack delete: curNoun)
@@ -511,200 +455,160 @@ code_02f3:
 				)
 				(else
 					(if (== iconValue -9999)
-						(if local1
-							(messager say: 0 178 0 0 self modNum)
+						(if thiefSignResponse
+							(messager say: NULL V_THIEF_SIGN NULL 0 self modNum)
 						else
-							(messager say: 3 0 15 0 self 23)
+							(messager say: N_THIEFSIGN NULL C_THIEF_SIGN 0 self 23)
 						)
 					else
 						(self sayMessage:)
 					)
 					(if
 						(and
-							(Message msgSIZE modNum curNoun verb iconValue 2)
+							(Message MsgSize modNum curNoun verb iconValue 2)
 							(>
-								(= theCurNoun
-									(Message msgREF_VERB modNum curNoun verb iconValue 2)
+								(= objNoun
+									(Message MsgGetRefNoun modNum curNoun verb iconValue 2)
 								)
 								-1
 							)
 						)
-						(= curNoun theCurNoun)
+						(= curNoun objNoun)
 						(stack addToFront: curNoun)
 					)
-					(return 1)
+					(return TRUE)
 				)
 			)
 		)
 	)
 	
-	(method (sayMessage param1)
-		((User curEvent?) claimed: 1)
+	(method (sayMessage args)
+		((User curEvent?) claimed: TRUE)
 		(switch argc
 			(0
 				(messager say: sayNoun verb iconValue 0 self modNum)
 			)
 			(1
-				(messager say: sayNoun verb [param1 0] 0 self modNum)
+				(messager say: sayNoun verb [args 0] 0 self modNum)
 			)
 			(2
 				(messager
-					say: sayNoun [param1 0] [param1 1] 0 self modNum
+					say: sayNoun [args 0] [args 1] 0 self modNum
 				)
 			)
 			(else 
 				(messager
-					say: [param1 0] [param1 1] [param1 2] 0 self modNum
+					say: [args 0] [args 1] [args 2] 0 self modNum
 				)
 			)
 		)
 	)
 	
-	(method (buildCaseList &tmp temp0)
+	(method (buildCaseList &tmp i)
 		(if curList (curList dispose:))
 		(= curList (intList new:))
-		(= temp0 0)
-		(while (< temp0 150)
-			(if
-				(Message
-					msgGET
-					modNum
-					curNoun
-					verb
-					temp0
-					(self getSeqNum:)
-				)
-				(curList add: temp0)
+		(for ((= i 0)) (< i 150) ((++ i))
+			(if (Message 0 modNum curNoun verb i (self getSeqNum:))
+				(curList add: i)
 			)
-			(++ temp0)
 		)
 	)
 	
-	(method (showCases param1 &tmp temp0 temp1 newTellerIcon temp3 temp4 temp5 temp6 [temp7 3] temp10 temp11 temp12 temp13)
-		(= newCast (Cast new:))
+	(method (showCases param1 &tmp i temp1 newTellerIcon t temp4 theCase temp6 [temp7 3] msgExists theSeq temp12 temp13)
+		(= tellerCast (Cast new:))
 		(= theTeller self)
 		(= temp13 0)
 		(= temp12 150)
 		(= temp1 0)
-		(= temp3 12)
+		(= t 12)
 		(= temp6 0)
 		(= newTellerIcon 0)
 		(= theControls tellerControls)
 		(if (not (theControls plane?))
 			(theControls plane: tellerPlane)
 		)
-		(if title (= temp3 (+ temp3 15)))
-		(= temp0 0)
-		(while (< temp0 (curList size:))
+		(if title
+			(+= t 15)
+		)
+		(for ((= i 0)) (< i (curList size:)) ((++ i))
 			(= temp4 1)
 			(= temp1 0)
 			(while (and temp4 (< temp1 argc))
 				(if
 					(and
-						(== (curList at: temp0) [param1 temp1])
+						(== (curList at: i) [param1 temp1])
 						(not [param1 (+ temp1 1)])
 					)
 					(= temp4 0)
 				)
-				(= temp1 (+ temp1 2))
+				(+= temp1 2)
 			)
 			(if temp4
 				(= temp13 1)
-				(= temp5 (curList at: temp0))
-				(= temp11 (self getSeqNum: temp5))
+				(= theCase (curList at: i))
+				(= theSeq (self getSeqNum: theCase))
 				(if
 					(not
-						(= temp10
-							(Message msgSIZE modNum curNoun verb temp5 temp11)
-						)
+						(= msgExists (Message MsgSize modNum curNoun verb theCase theSeq))
 					)
 					(break)
 				)
 				(= newTellerIcon (TellerIcon new:))
-				(newTellerIcon myHandle: (Str new: temp10))
-				(if (> (= temp10 (+ (* temp10 7) 20)) temp12)
-					(= temp12 temp10)
+				(newTellerIcon myHandle: (String new: msgExists))
+				(if (> (= msgExists (+ (* msgExists 7) 20)) temp12)
+					(= temp12 msgExists)
 				)
-				(Message
-					msgGET
-					modNum
-					curNoun
-					verb
-					temp5
-					temp11
+				(Message MsgGet modNum curNoun verb theCase theSeq
 					((newTellerIcon myHandle?) data?)
 				)
-				(newTellerIcon value: temp5 nsTop: temp3 myTeller: self)
+				(newTellerIcon value: theCase nsTop: t myTeller: self)
 				(theControls add: newTellerIcon)
 				(++ temp6)
-				(= temp3 (+ temp3 15))
+				(+= t 15)
 			)
-			(++ temp0)
 		)
 		(if (not newTellerIcon)
-			(client doVerb: 2)
+			(client doVerb: V_TALK)
 			(theControls dispose:)
 			(return -999)
 		)
 		(if (== client ego)
-			(ego useSkill: 13 10)
+			(ego useSkill: COMM 10)
 			(if
 				(and
-					(or [egoStats 8] [egoStats 9])
+					(or [egoStats STEALTH] [egoStats PICK])
 					thiefSign
 					(== curNoun rootNoun)
 				)
-				(if (Message msgSIZE modNum 0 178 0 1)
-					(= local1 1)
+				(if (Message MsgSize modNum NULL V_THIEF_SIGN NULL 1)
+					(= thiefSignResponse TRUE)
 				else
-					(= local1 0)
+					(= thiefSignResponse FALSE)
 				)
 				(= newTellerIcon (TellerIcon new:))
-				(= temp10 (Message msgSIZE 23 0 0 15 1))
-				(newTellerIcon myHandle: (Str new: (+ temp10 1)))
-				(Message
-					msgGET
-					23
-					0
-					0
-					15
-					1
+				(= msgExists (Message MsgSize TELLER NULL NULL C_THIEF_SIGN 1))
+				(newTellerIcon myHandle: (String new: (+ msgExists 1)))
+				(Message MsgGet TELLER NULL NULL C_THIEF_SIGN 1
 					((newTellerIcon myHandle?) data?)
 				)
-				(newTellerIcon nsTop: temp3 myTeller: self value: -9999)
+				(newTellerIcon nsTop: t myTeller: self value: -9999)
 				(theControls add: newTellerIcon)
-				(= temp3 (+ temp3 15))
+				(+= t 15)
 			)
 		)
 		((= newTellerIcon (TellerIcon new:))
-			nsTop: temp3
+			nsTop: t
 			myTeller: self
 		)
 		(if (not (== curNoun rootNoun))
-			(= temp10 (Message msgSIZE 23 0 0 2 1))
-			(newTellerIcon myHandle: (Str new: (+ temp10 1)))
-			(Message
-				msgGET
-				23
-				0
-				0
-				2
-				1
-				((newTellerIcon myHandle?) data?)
-			)
+			(= msgExists (Message MsgSize TELLER NULL NULL C_SOMETHING_ELSE 1))
+			(newTellerIcon myHandle: (String new: (+ msgExists 1)))
+			(Message MsgGet TELLER NULL NULL C_SOMETHING_ELSE 1 ((newTellerIcon myHandle?) data?))
 			(newTellerIcon value: 999)
 		else
-			(= temp10 (Message msgSIZE 23 0 0 3 1))
-			(newTellerIcon myHandle: (Str new: (+ temp10 1)))
-			(Message
-				msgGET
-				23
-				0
-				0
-				3
-				1
-				((newTellerIcon myHandle?) data?)
-			)
+			(= msgExists (Message MsgSize TELLER NULL NULL C_ENOUGH_ALREADY 1))
+			(newTellerIcon myHandle: (String new: (+ msgExists 1)))
+			(Message MsgGet TELLER NULL NULL C_ENOUGH_ALREADY 1 ((newTellerIcon myHandle?) data?))
 			(newTellerIcon value: -999)
 		)
 		(theControls add: newTellerIcon)
@@ -728,11 +632,11 @@ code_02f3:
 					)
 					10
 				)
-			bottom: (- (+ 110 temp3) (* 7 temp6))
+			bottom: (- (+ 110 t) (* 7 temp6))
 		)
 		(if (and talker temp13)
-			(if (not (Btst 148))
-				(Bset 148)
+			(if (not (Btst fSomeoneTalking))
+				(Bset fSomeoneTalking)
 				(cast eachElementDo: #perform (ScriptID 90 0) 1)
 				(if (not (== curRoomNum 470))
 					((ScriptID 0 21) doit: 100)
@@ -744,28 +648,28 @@ code_02f3:
 				(talker show:)
 				(talkers delete: talker)
 			)
-			(= gTeller self)
-			(Bset 147)
+			(= globalTeller self)
+			(Bset fInPuzzle)
 		)
 		(return (theControls init: show: dispose:))
 	)
 	
 	(method (getSeqNum)
-		(return 1)
+		(return TRUE)
 	)
 	
 	(method (cue)
-		(if (!= (theCursor view?) 999)
+		(if (!= (theCursor view?) ARROW_CURSOR)
 			(= tellCursor (theCursor view?))
-			(= gCursorNumberLoop (theCursor loop?))
-			(= gCursorNumberCel (theCursor cel?))
+			(= tellCursorLoop (theCursor loop?))
+			(= tellCursorCel (theCursor cel?))
 			(theGame
-				setCursor: (IconBarCursor view: 999 loop: 0 cel: 0 yourself:)
+				setCursor: (IconBarCursor view: ARROW_CURSOR loop: 0 cel: 0 yourself:)
 			)
 		)
 		(if local0
 			(= local0 0)
-			(= gTeller 0)
+			(= globalTeller 0)
 			(self clean:)
 			(return)
 		)
@@ -773,41 +677,41 @@ code_02f3:
 	)
 	
 	(method (clean)
-		(Bclr 51)
-		(Bclr 50)
-		(if userCanInput (User canInput: 1))
-		(if userCanControl (User canControl: 1))
+		(Bclr fHideCursor)
+		(Bclr fCantSave)
+		(if oldCanInput (User canInput: TRUE))
+		(if oldCanControl (User canControl: TRUE))
 		(switch tellCursor
 			(941
-				(theIconBar curIcon: (theIconBar at: 1))
+				(theIconBar curIcon: (theIconBar at: ICON_LOOK))
 			)
 			(942
-				(theIconBar curIcon: (theIconBar at: 2))
+				(theIconBar curIcon: (theIconBar at: ICON_DO))
 			)
 			(943
-				(theIconBar curIcon: (theIconBar at: 3))
+				(theIconBar curIcon: (theIconBar at: ICON_TALK))
 			)
 		)
 		(theGame
 			setCursor:
 				(IconBarCursor
 					view: tellCursor
-					loop: gCursorNumberLoop
-					cel: gCursorNumberCel
+					loop: tellCursorLoop
+					cel: tellCursorCel
 					yourself:
 				)
 		)
 		(if talker
-			(= gTeller 0)
-			(Bclr 147)
+			(= globalTeller 0)
+			(Bclr fInPuzzle)
 			(talker dispose: 1)
 			(if (not (== curRoomNum 470))
 				((curRoom plane?)
 					drawPic: (curRoom picture?) (curRoom style?)
 				)
 			)
-			(if (Btst 148)
-				(Bclr 148)
+			(if (Btst fSomeoneTalking)
+				(Bclr fSomeoneTalking)
 				(cast eachElementDo: #perform (ScriptID 90 0) 0)
 				((ScriptID 0 21) doit:)
 			)
@@ -817,7 +721,7 @@ code_02f3:
 
 (instance tellerControls of IconBar
 	(properties
-		state $0000
+		state 0
 	)
 	
 	(method (init)
@@ -835,26 +739,26 @@ code_02f3:
 		(self eachElementDo: #init self)
 	)
 	
-	(method (doit &tmp temp0 temp1 temp2 temp3 temp4)
+	(method (doit &tmp evt eType eMsg eMod temp4)
 		(while
 			(and
-				(& state $0020)
-				(= temp0 ((user curEvent?) new:))
+				(& state IB_ACTIVE)
+				(= evt ((user curEvent?) new:))
 			)
-			(= temp1 (temp0 type?))
-			(= temp2 (temp0 message?))
-			(= temp3 (temp0 modifiers?))
+			(= eType (evt type?))
+			(= eMsg (evt message?))
+			(= eMod (evt modifiers?))
 			(= gameTime (+ tickOffset (GetTime)))
 			(FrameOut)
-			(if (== temp1 32)
-				(= temp1 4)
-				(= temp2 (if (& temp3 $0003) 27 else 13))
-				(= temp3 0)
-				(temp0 type: temp1 message: temp2 modifiers: temp3)
+			(if (== eType joyDown)
+				(= eType keyDown)
+				(= eMsg (if (& eMod shiftDown) ESC else ENTER))
+				(= eMod 0)
+				(evt type: eType message: eMsg modifiers: eMod)
 			)
-			(temp0 localize: plane)
-			(MapKeyToDir temp0)
-			(breakif (self dispatchEvent: temp0))
+			(evt localize: plane)
+			(MapKeyToDir evt)
+			(breakif (self dispatchEvent: evt))
 		)
 	)
 	
@@ -866,53 +770,45 @@ code_02f3:
 		(DisposeClone self)
 	)
 	
-	(method (show &tmp temp0 temp1 theNextNode temp3 temp4 temp5)
+	(method (show &tmp temp0 temp1 node temp3 str temp5)
 		(sounds pause:)
-		(= state (| state $0020))
-		(plane addCast: newCast)
+		(|= state IB_ACTIVE)
+		(plane addCast: tellerCast)
 		(UpdatePlane plane)
 		(if (theTeller title?)
-			(= temp5 (Message msgGET 23 0 0 (theTeller title?) 1))
-			(= temp4 (Str new: (+ temp5 1)))
-			(Message
-				msgGET
-				23
-				0
-				0
-				(theTeller title?)
-				1
-				(temp4 data?)
-			)
+			(= temp5 (Message MsgGet TELLER NULL NULL (theTeller title?) 1))
+			(= str (String new: (+ temp5 1)))
+			(Message MsgGet TELLER NULL NULL (theTeller title?) 1 (str data?))
 			((myDText new:)
 				posn: 16 21
-				text: (temp4 data?)
+				text: (str data?)
 				font: (theTeller font?)
 				fore: 92
 				back: 254
 				skip: 254
 				setSize:
-				init: newCast
+				init: tellerCast
 			)
 			((myDText new:)
 				posn: 15 20
-				text: (temp4 data?)
+				text: (str data?)
 				font: (theTeller font?)
 				fore: 86
 				back: 254
 				skip: 254
 				setSize:
 				setPri: 255
-				init: newCast
+				init: tellerCast
 			)
 		else
-			(= temp4 0)
+			(= str 0)
 		)
 		(= temp0 30)
 		(= temp1 30)
-		(= theNextNode (FirstNode elements))
-		(while theNextNode
-			(= nextNode (NextNode theNextNode))
-			(if (not (= temp3 (NodeValue theNextNode))) (return))
+		(= node (FirstNode elements))
+		(while node
+			(= nextNode (NextNode node))
+			(if (not (= temp3 (NodeValue node))) (return))
 			(if
 				(and
 					(not (& (temp3 signal?) $0080))
@@ -923,28 +819,28 @@ code_02f3:
 			else
 				(temp3 show:)
 			)
-			(= theNextNode nextNode)
+			(= node nextNode)
 		)
 		(self doit: hide:)
 		(= theTeller 0)
 		(= highlightedIcon (= curIcon 0))
-		(if temp4 (temp4 dispose:))
+		(if str (str dispose:))
 	)
 	
-	(method (select theCurIcon param2)
+	(method (select thisIcon param2)
 		(return
-			(if (theCurIcon select: (if (>= argc 2) param2))
-				(if (not (& (theCurIcon signal?) $0002))
-					(= curIcon theCurIcon)
+			(if (thisIcon select: (if (>= argc 2) param2))
+				(if (not (& (thisIcon signal?) IMMEDIATE))
+					(= curIcon thisIcon)
 				)
-				1
+				TRUE
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (highlight theHighlightedIcon param2)
+	(method (highlight thisIcon param2)
 		(if
 			(and
 				highlightedIcon
@@ -953,26 +849,26 @@ code_02f3:
 			(highlightedIcon highlight: 0)
 		)
 		(cond 
-			((not (= highlightedIcon theHighlightedIcon)) 0)
-			((& (theHighlightedIcon signal?) $0004) (= highlightedIcon 0))
+			((not (= highlightedIcon thisIcon)) 0)
+			((& (thisIcon signal?) DISABLED)
+				(= highlightedIcon 0)
+			)
 			(else
-				(theHighlightedIcon highlight: 1)
+				(thisIcon highlight: 1)
 				(if (and (>= argc 2) param2)
 					(theGame
-						setCursor:
-							theCursor
-							1
+						setCursor: theCursor TRUE
 							(+
-								(theHighlightedIcon nsLeft?)
+								(thisIcon nsLeft?)
 								(/
 									(-
-										(theHighlightedIcon nsRight?)
-										(theHighlightedIcon nsLeft?)
+										(thisIcon nsRight?)
+										(thisIcon nsLeft?)
 									)
 									2
 								)
 							)
-							(- (theHighlightedIcon nsBottom?) 3)
+							(- (thisIcon nsBottom?) 3)
 					)
 				)
 			)
@@ -992,16 +888,16 @@ code_02f3:
 		(= eventMessage (event message?))
 		(= eventClaimed (event claimed?))
 		(= theHighlightedIcon (self firstTrue: #onMe event))
-		(if (& eventType evMENUSTART)
+		(if (& eventType direction)
 			(switch eventMessage
-				(JOY_RIGHT (self advance:))
-				(JOY_DOWN (self advance:))
-				(JOY_LEFT (self retreat:))
-				(JOY_UP (self retreat:))
+				(dirE (self advance:))
+				(dirS (self advance:))
+				(dirW (self retreat:))
+				(dirN (self retreat:))
 			)
 		else
 			(switch eventType
-				(evNULL
+				(nullEvt
 					(if theHighlightedIcon
 						(if (!= theHighlightedIcon highlightedIcon)
 							(= oldMouseY 0)
@@ -1011,16 +907,16 @@ code_02f3:
 						(self highlight: 0)
 					)
 				)
-				(evMOUSEBUTTON
+				(mouseDown
 					(if theHighlightedIcon
 						(self select: theHighlightedIcon 1)
 					)
 				)
-				(evKEYBOARD
+				(keyDown
 					(switch eventMessage
-						(KEY_ESCAPE (= eventClaimed 1))
-						(KEY_DELETE (= eventClaimed 1))
-						(KEY_RETURN
+						(ESC (= eventClaimed 1))
+						(DELETE (= eventClaimed 1))
+						(ENTER
 							(if (not theHighlightedIcon)
 								(= theHighlightedIcon highlightedIcon)
 							)
@@ -1033,8 +929,8 @@ code_02f3:
 								(= eventClaimed (& temp6 $0040))
 							)
 						)
-						(KEY_SHIFTTAB (self retreat:))
-						(KEY_TAB (self advance:))
+						(SHIFTTAB (self retreat:))
+						(TAB (self advance:))
 					)
 				)
 			)
@@ -1044,28 +940,26 @@ code_02f3:
 )
 
 (instance tellerPlane of Plane
-	(properties)
-	
-	(method (setBitmap param1 param2 param3 &tmp newCast_2 temp1 temp2 temp3 temp4 temp5 temp6 newView)
-		(= newCast_2 (Cast new:))
-		(self addCast: newCast_2)
+	(method (setBitmap theView theLoop theCel &tmp planeCast temp1 width temp3 height temp5 temp6 newView)
+		(= planeCast (Cast new:))
+		(self addCast: planeCast)
 		((= newView (View new:))
-			view: param1
-			loop: param2
-			cel: param3
+			view: theView
+			loop: theLoop
+			cel: theCel
 			posn: 0 0
-			init: newCast_2
+			init: planeCast
 		)
-		(= temp2 (CelWide param1 param2 param3))
-		(= temp4 (CelHigh param1 param2 param3))
+		(= width (CelWide theView theLoop theCel))
+		(= height (CelHigh theView theLoop theCel))
 		(= temp1 (+ (- right left) 1))
 		(= temp3 (+ (- bottom top) 1))
 		(if (< temp1 250)
-			(= temp5 (/ (* temp1 128) temp2))
+			(= temp5 (/ (* temp1 128) width))
 		else
-			(= temp5 (* (/ (* (/ temp1 2) 128) temp2) 2))
+			(= temp5 (* (/ (* (/ temp1 2) 128) width) 2))
 		)
-		(= temp6 (/ (* temp3 128) temp4))
+		(= temp6 (/ (* temp3 128) height))
 		(newView scaleSignal: 1 scaleX: temp5 scaleY: temp6)
 		(UpdateScreenItem newView)
 	)

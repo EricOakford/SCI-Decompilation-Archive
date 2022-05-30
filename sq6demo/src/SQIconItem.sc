@@ -138,7 +138,7 @@
 		)
 	)
 	(method (doit &tmp event eType eMsg eMod tut temp5)
-		;EO: Tnis has been newly decompiled! It seems to work properly now.
+		;EO: Tnis has been newly decompiled! But it still doesn't work right.
 		(while
 			(and
 				(& state IB_ACTIVE)

@@ -245,7 +245,7 @@
 	combatSpeed
 	global192
 	gCombatSpell_3
-	gTeller
+	globalTeller
 	gSActor
 	global196
 	global197

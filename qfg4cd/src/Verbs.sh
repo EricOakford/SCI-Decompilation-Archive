@@ -44,4 +44,5 @@
 (define V_CURE_POTION 17)
 (define V_RATIONS 19)
 (define V_CLOTH 54)
+(define V_THIEF_SIGN 178)
 

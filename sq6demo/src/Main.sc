@@ -472,7 +472,7 @@
 		)
 		(SetQuitStr (quitStr data?))
 		(quitStr dispose:)
-		(Font USERFONT 640 480)
+		(Font FSetFontRes 640 480)
 		Print
 		DButton
 		StopWalk

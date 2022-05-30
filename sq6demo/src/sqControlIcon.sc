@@ -16,76 +16,10 @@
 )
 
 (local
-	newCast
+	controlCast
 )
 (class sqControlIcon of IconItem
 	(properties
-		scratch 0
-		heading 0
-		noun 0
-		case 0
-		modNum -1
-		nsLeft 0
-		nsTop 0
-		nsRight 0
-		nsBottom 0
-		sightAngle ftrDefault
-		actions 0
-		onMeCheck $0000
-		state $0000
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		plane 0
-		x 0
-		y 0
-		z 0
-		scaleX 128
-		scaleY 128
-		maxScale 128
-		scaleType 0
-		priority 0
-		fixPriority 0
-		inLeft 0
-		inTop 0
-		inRight 0
-		inBottom 0
-		useInsetRect 0
-		view -1
-		loop 0
-		cel 0
-		bitmap 0
-		yStep 2
-		signal RELVERIFY
-		lsLeft 0
-		lsTop 0
-		lsRight 0
-		lsBottom 0
-		brLeft 0
-		brTop 0
-		brRight 0
-		brBottom 0
-		scaleSignal $0000
-		magnifier 0
-		oldScaleX 128
-		type userEvent
-		message -1
-		modifiers $0000
-		mainView 0
-		mainLoop 0
-		mainCel 0
-		maskView 0
-		maskLoop 0
-		maskCel 0
-		cursorView -1
-		cursorLoop -1
-		cursorCel -1
-		highlightColor 0
-		lowlightColor 0
-		helpVerb 0
-		object 0
-		selector 0
 		theObj 0
 	)
 	
@@ -95,85 +29,18 @@
 		)
 	)
 	
-	(method (highlight param1)
-		(if
-		(or (not (& signal IB_ACTIVE)) (== highlightColor -1))
+	(method (highlight tOrF)
+		(if (or (not (& signal IB_ACTIVE)) (== highlightColor -1))
 			(return)
 		)
-		(= cel (* 1 (if argc param1 else 0)))
+		(= cel (* 1 (if argc tOrF else 0)))
 		(UpdateScreenItem self)
 	)
 )
 
 (class SlideBar of sqControlIcon
 	(properties
-		scratch 0
-		heading 0
-		noun 0
-		case 0
-		modNum -1
-		nsLeft 0
-		nsTop 0
-		nsRight 0
-		nsBottom 0
-		sightAngle ftrDefault
-		actions 0
-		onMeCheck $0000
-		state $0000
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		plane 0
-		x 0
-		y 0
-		z 0
-		scaleX 128
-		scaleY 128
-		maxScale 128
-		scaleType 0
-		priority 0
-		fixPriority 0
-		inLeft 0
-		inTop 0
-		inRight 0
-		inBottom 0
-		useInsetRect 0
-		view -1
-		loop 0
-		cel 0
-		bitmap 0
-		yStep 2
 		signal FIXED_POSN
-		lsLeft 0
-		lsTop 0
-		lsRight 0
-		lsBottom 0
-		brLeft 0
-		brTop 0
-		brRight 0
-		brBottom 0
-		scaleSignal $0000
-		magnifier 0
-		oldScaleX 128
-		type userEvent
-		message -1
-		modifiers $0000
-		mainView 0
-		mainLoop 0
-		mainCel 0
-		maskView 0
-		maskLoop 0
-		maskCel 0
-		cursorView -1
-		cursorLoop -1
-		cursorCel -1
-		highlightColor 0
-		lowlightColor 0
-		helpVerb 0
-		object 0
-		selector 0
-		theObj 0
 		maxValue 99
 		minValue 0
 		minX 0
@@ -196,14 +63,14 @@
 		((= indicator1 (View new:))
 			view: 950
 			loop: 11
-			init: newCast
+			init: controlCast
 			posn: 140 y
 			setCel: (/ value 10)
 		)
 		((= indicator2 (View new:))
 			view: 950
 			loop: 11
-			init: newCast
+			init: controlCast
 			posn: 148 y
 			setCel: (mod value 10)
 		)
@@ -212,43 +79,45 @@
 			mainLoop: 9
 			mainCel: 0
 			theObj: self
-			selector: 412
+			selector: #retreat
 			posn: x y
 			noun: noun
 			helpVerb: helpVerb
-			signal: 3
+			signal: (| RELVERIFY IMMEDIATE)
 		)
 		((= plusButton (buttonIcon new:))
 			mainView: 950
 			mainLoop: 10
 			mainCel: 0
 			theObj: self
-			selector: 411
+			selector: #advance
 			posn: (+ x 68) y
 			noun: noun
 			helpVerb: helpVerb
-			signal: 3
+			signal: (| RELVERIFY IMMEDIATE)
 		)
 		(SQ6Controls add: minusButton plusButton)
 	)
 	
 	(method (show)
-		(= signal (| signal IB_ACTIVE))
+		(|= signal IB_ACTIVE)
 		(if (and pMouse (pMouse respondsTo: #stop))
 			(pMouse stop:)
 		)
-		(if (not position) (self valueToPosn: value))
+		(if (not position)
+			(self valueToPosn: value)
+		)
 		(self refresh:)
 	)
 	
-	(method (select param1 &tmp newEvent theTheMinX theMinX)
+	(method (select relVer &tmp event theTheMinX theMinX)
 		(if (& signal DISABLED) (return FALSE))
 		(return
-			(if (and argc param1)
+			(if (and argc relVer)
 				(= theTheMinX 500)
-				(while (!= ((= newEvent (Event new:)) type?) 2)
-					(newEvent localize: (SQ6Controls plane?))
-					(if (!= (= theMinX (newEvent x?)) theTheMinX)
+				(while (!= ((= event (Event new:)) type?) 2)
+					(event localize: (SQ6Controls plane?))
+					(if (!= (= theMinX (event x?)) theTheMinX)
 						(if (< theMinX minX) (= theMinX minX))
 						(if (> theMinX maxX) (= theMinX maxX))
 						(= value (self posnToValue: theMinX))
@@ -258,11 +127,11 @@
 						(FrameOut)
 					)
 					(= theTheMinX theMinX)
-					(newEvent dispose:)
+					(event dispose:)
 				)
 				(self refresh:)
 				(FrameOut)
-				(newEvent dispose:)
+				(event dispose:)
 			else
 				(return TRUE)
 			)
@@ -277,8 +146,10 @@
 	
 	(method (advance)
 		(if (< value maxValue)
-			(= value (+ value 1))
-			(if (> value maxValue) (= value maxValue))
+			(+= value 1)
+			(if (> value maxValue)
+				(= value maxValue)
+			)
 			(self valueToPosn: value)
 			(self refresh:)
 		)
@@ -286,33 +157,39 @@
 	
 	(method (retreat)
 		(if (> value minValue)
-			(= value (- value 1))
-			(if (< value minValue) (= value minValue))
+			(-= value 1)
+			(if (< value minValue)
+				(= value minValue)
+			)
 			(self valueToPosn: value)
 			(self refresh:)
 		)
 	)
 	
-	(method (valueToPosn param1)
+	(method (valueToPosn val)
 		(cond 
-			((>= param1 maxValue) (= position maxX))
-			((<= param1 minValue) (= position minX))
+			((>= val maxValue)
+				(= position maxX)
+			)
+			((<= val minValue)
+				(= position minX)
+			)
 			(else
 				(= position
 					(+
 						minX
-						(/ (* (/ (* (- maxX minX) 10) 99) param1) 10)
+						(/ (* (/ (* (- maxX minX) 10) 99) val) 10)
 					)
 				)
 			)
 		)
 	)
 	
-	(method (posnToValue param1 &tmp theMinValue)
+	(method (posnToValue val &tmp theMinValue)
 		(cond 
-			((<= param1 minX) (= theMinValue minValue))
-			((>= param1 maxX) (= theMinValue maxValue))
-			(else (= theMinValue (/ (* (- param1 minX) 99) 53)))
+			((<= val minX) (= theMinValue minValue))
+			((>= val maxX) (= theMinValue maxValue))
+			(else (= theMinValue (/ (* (- val minX) 99) 53)))
 		)
 		(return theMinValue)
 	)
@@ -329,39 +206,17 @@
 	)
 )
 
-(instance controlWind of Plane
-	(properties)
-)
+(instance controlWind of Plane)
 
 (class SQ6Controls of IconBar
-	(properties
-		scratch 0
-		elements 0
-		size 0
-		nextNode 0
-		underBits 0
-		oldMouseX 0
-		oldMouseY 0
-		curIcon 0
-		highlightedIcon 0
-		prevIcon 0
-		curInvIcon 0
-		useIconItem 0
-		helpIconItem 0
-		walkIconItem 0
-		plane 0
-		state OPENIFONME
-		y 0
-	)
-	
 	(method (init)
 		(= gameControls self)
-		((= newCast (Cast new:)) add:)
+		((= controlCast (Cast new:)) add:)
 		((= plane controlWind)
 			picture: -3
 			priority: (+ (GetHighPlanePri) 1)
 			init: 0 0 0 0
-			addCast: newCast
+			addCast: controlCast
 		)
 		(controlWind setBitmap: 950 13 0 0)
 		(self
@@ -382,7 +237,7 @@
 				textBar
 			curIcon: iconLoad
 			helpIconItem: iconHelp
-			state: 2048
+			state: NOCLICKHELP
 		)
 		(super init:)
 		(plane
@@ -394,87 +249,87 @@
 		)
 		(plane posn: -1 11)
 		(UpdatePlane plane)
-		(testBar init: newCast)
-		(testBar1 init: newCast)
-		(testBar2 init: newCast)
-		(testBar3 init: newCast)
-		(testBar4 init: newCast)
+		(testBar init: controlCast)
+		(testBar1 init: controlCast)
+		(testBar2 init: controlCast)
+		(testBar3 init: controlCast)
+		(testBar4 init: controlCast)
 	)
 	
-	(method (doit &tmp temp0 temp1 temp2 temp3 theGameScript)
+	(method (doit &tmp event eType eMsg eMod tut)
 		(while
 			(and
 				(& state IB_ACTIVE)
-				(= temp0 ((user curEvent?) new:))
+				(= event ((user curEvent?) new:))
 			)
-			(= temp1 (temp0 type?))
-			(= temp2 (temp0 message?))
-			(= temp3 (temp0 modifiers?))
+			(= eType (event type?))
+			(= eMsg (event message?))
+			(= eMod (event modifiers?))
 			(= gameTime (+ tickOffset (GetTime)))
 			(FrameOut)
 			(if (narrator initialized?)
 				(narrator doit:)
-				(narrator handleEvent: temp0)
+				(narrator handleEvent: event)
 			else
 				(if
 					(and
-						(= theGameScript (theGame script?))
-						(theGameScript isKindOf: Tutorial)
+						(= tut (theGame script?))
+						(tut isKindOf: Tutorial)
 					)
-					(theGameScript doit:)
+					(tut doit:)
 				)
-				(if (== temp1 32)
-					(= temp1 4)
-					(= temp2 (if (& temp3 (| RELVERIFY IMMEDIATE)) 27 else 13))
-					(= temp3 0)
-					(temp0 type: temp1 message: temp2 modifiers: temp3)
+				(if (== eType joyDown)
+					(= eType keyDown)
+					(= eMsg (if (& eMod (| RELVERIFY IMMEDIATE)) ESC else ENTER))
+					(= eMod 0)
+					(event type: eType message: eMsg modifiers: eMod)
 				)
-				(temp0 localize: plane)
+				(event localize: plane)
 				(if
 					(and
-						(or (== temp1 1) (and (== temp1 4) (== temp2 13)))
+						(or (== eType mouseDown) (and (== eType keyDown) (== eMsg ENTER)))
 						helpIconItem
-						(& (helpIconItem signal?) $0010)
+						(& (helpIconItem signal?) TRANSLATOR)
 					)
-					(temp0 type: 24576 message: (helpIconItem message?))
+					(event type: (| userEvent helpEvent) message: (helpIconItem message?))
 				)
-				(MapKeyToDir temp0)
-				(breakif (self dispatchEvent: temp0))
+				(MapKeyToDir event)
+				(breakif (self dispatchEvent: event))
 			)
 		)
 	)
 	
-	(method (handleEvent event &tmp temp0 eventType temp2 temp3 theTheCursor theCurIcon theCurInvIcon)
-		(= eventType (event type?))
+	(method (handleEvent event &tmp keyInvoked eType newEvent newCursor oldCursor oldCurIcon oldInvIcon)
+		(= eType (event type?))
 		(cond 
 			((& state DISABLED))
 			(
 				(and
-					(not eventType)
+					(not eType)
 					(& state OPENIFONME)
 					(self shouldOpen: event)
-					(not (= temp0 0))
+					(not (= keyInvoked 0))
 				)
-				(= theTheCursor theCursor)
-				(= theCurIcon curIcon)
-				(= theCurInvIcon curInvIcon)
+				(= oldCursor theCursor)
+				(= oldCurIcon curIcon)
+				(= oldInvIcon curInvIcon)
 				(self show:)
 				(self doit:)
-				(= temp3
+				(= newCursor
 					(if (or (user canControl:) (user canInput:))
 						(self getCursor:)
 					else
 						waitCursor
 					)
 				)
-				(theGame setCursor: temp3 1)
+				(theGame setCursor: newCursor TRUE)
 				(self hide:)
 			)
-			((& eventType mouseDown)
+			((& eType mouseDown)
 				(cond 
 					((& (event modifiers?) shiftDown)
 						(self advanceCurIcon: show: highlight: curIcon hide:)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
 					((& (event modifiers?) ctrlDown)
 						(if (user canControl:)
@@ -506,19 +361,17 @@
 )
 
 (instance buttonIcon of sqControlIcon
-	(properties)
-	
 	(method (doit &tmp temp0)
-		(Eval theObj 69)
+		(Eval theObj #doit)
 	)
 	
-	(method (select &tmp newEvent temp1 temp2)
+	(method (select &tmp event temp1 temp2)
 		(= temp2 15)
 		(= scratch gameTime)
 		(= temp1 1)
-		(while (!= ((= newEvent (Event new:)) type?) mouseUp)
-			(newEvent localize: plane)
-			(if (self onMe: newEvent)
+		(while (!= ((= event (Event new:)) type?) mouseUp)
+			(event localize: plane)
+			(if (self onMe: event)
 				(if temp1 (Eval theObj selector) (FrameOut))
 				(if (< (Abs (- gameTime scratch)) temp2)
 					(= temp1 0)
@@ -528,10 +381,10 @@
 					(= temp2 1)
 				)
 			)
-			(newEvent dispose:)
+			(event dispose:)
 			(= gameTime (+ tickOffset (GetTime)))
 		)
-		(newEvent dispose:)
+		(event dispose:)
 	)
 )
 
@@ -540,7 +393,7 @@
 		noun N_SAVEGAME
 		x 8
 		y 6
-		signal $01c3
+		signal (| HIDEBAR VICON FIXED_POSN IMMEDIATE RELVERIFY)
 		message 0
 		mainView 950
 		helpVerb V_HELP
@@ -561,7 +414,7 @@
 		noun N_RESTOREGAME
 		x 8
 		y 17
-		signal $01c3
+		signal (| HIDEBAR VICON FIXED_POSN IMMEDIATE RELVERIFY)
 		message 0
 		mainView 950
 		mainLoop 1
@@ -581,7 +434,7 @@
 		noun N_ABOUT
 		x 8
 		y 31
-		signal $01c1
+		signal (| HIDEBAR VICON FIXED_POSN RELVERIFY)
 		message 0
 		mainView 950
 		mainLoop 2
@@ -594,7 +447,7 @@
 		noun N_CONTROLHELP
 		x 8
 		y 42
-		signal $0183
+		signal (| VICON FIXED_POSN IMMEDIATE RELVERIFY)
 		message V_HELP
 		mainView 950
 		mainLoop 3
@@ -612,7 +465,7 @@
 		noun N_VOICE
 		x 8
 		y 55
-		signal $0183
+		signal (| VICON FIXED_POSN IMMEDIATE RELVERIFY)
 		message 0
 		mainView 950
 		mainLoop 4
@@ -627,7 +480,7 @@
 	(method (select)
 		(if (super select: &rest)
 			(if (& msgType CD_MSG)
-				(= msgType (& msgType $fffd))
+				(&= msgType (~ CD_MSG))
 				(= mainCel 0)
 				(if (not (& msgType (= cel 1)))
 					(= msgType TEXT_MSG)
@@ -635,7 +488,7 @@
 					(UpdateScreenItem iconText)
 				)
 			else
-				(= msgType (| msgType CD_MSG))
+				(|= msgType CD_MSG)
 				(= mainCel 2)
 				(= cel 3)
 			)
@@ -643,15 +496,14 @@
 		)
 	)
 	
-	(method (highlight param1)
-		(if
-		(or (not (& signal IB_ACTIVE)) (== highlightColor -1))
+	(method (highlight tOrF)
+		(if (or (not (& signal IB_ACTIVE)) (== highlightColor -1))
 			(return)
 		)
 		(cond 
-			((and (& msgType CD_MSG) argc param1) (= cel 3))
+			((and (& msgType CD_MSG) argc tOrF) (= cel 3))
 			((& msgType CD_MSG) (= cel 2))
-			((and argc param1) (= cel 1))
+			((and argc tOrF) (= cel 1))
 			(else (= cel 0))
 		)
 		(UpdateScreenItem self)
@@ -660,7 +512,7 @@
 
 (instance iconText of sqControlIcon
 	(properties
-		noun 9
+		noun N_TEXT
 		x 8
 		y 66
 		signal (| VICON FIXED_POSN IMMEDIATE RELVERIFY) ;$0183
@@ -670,14 +522,16 @@
 	)
 	
 	(method (init)
-		(if (& msgType TEXT_MSG) (= mainCel 2))
+		(if (& msgType TEXT_MSG)
+			(= mainCel 2)
+		)
 		(super init: &rest)
 	)
 	
 	(method (select)
 		(if (super select: &rest)
 			(if (& msgType TEXT_MSG)
-				(= msgType (& msgType $fffe))
+				(&= msgType (~ TEXT_MSG))
 				(= mainCel 0)
 				(= cel 1)
 				(if (not (& msgType CD_MSG))
@@ -686,7 +540,7 @@
 					(UpdateScreenItem iconSpeech)
 				)
 			else
-				(= msgType (| msgType TEXT_MSG))
+				(|= msgType TEXT_MSG)
 				(= mainCel 2)
 				(= cel 3)
 			)
@@ -694,15 +548,14 @@
 		)
 	)
 	
-	(method (highlight param1)
-		(if
-		(or (not (& signal IB_ACTIVE)) (== highlightColor -1))
+	(method (highlight tOrF)
+		(if (or (not (& signal IB_ACTIVE)) (== highlightColor -1))
 			(return)
 		)
 		(cond 
-			((and (& msgType TEXT_MSG) argc param1) (= cel 3))
+			((and (& msgType TEXT_MSG) argc tOrF) (= cel 3))
 			((& msgType TEXT_MSG) (= cel 2))
-			((and argc param1) (= cel 1))
+			((and argc tOrF) (= cel 1))
 			(else (= cel 0))
 		)
 		(UpdateScreenItem self)
@@ -714,7 +567,7 @@
 		noun N_RESTARTGAME
 		x 8
 		y 80
-		signal $01c3
+		signal (| HIDEBAR VICON FIXED_POSN IMMEDIATE RELVERIFY)
 		message 0
 		mainView 950
 		mainLoop 6
@@ -731,10 +584,10 @@
 
 (instance iconQuit of sqControlIcon
 	(properties
-		noun 11
+		noun N_QUITGAME
 		x 8
 		y 91
-		signal $01c3
+		signal (| HIDEBAR VICON FIXED_POSN IMMEDIATE RELVERIFY)
 		message 0
 		mainView 950
 		mainLoop 7
@@ -748,10 +601,10 @@
 
 (instance iconPlay of sqControlIcon
 	(properties
-		noun 12
+		noun N_OK
 		x 8
 		y 102
-		signal $01c3
+		signal (| HIDEBAR VICON FIXED_POSN IMMEDIATE RELVERIFY)
 		message 0
 		mainView 950
 		mainLoop 8
@@ -759,13 +612,13 @@
 	)
 	
 	(method (select &tmp temp0)
-		(return (if (super select: &rest) (return 1) else (return 0)))
+		(return (if (super select: &rest) (return TRUE) else (return FALSE)))
 	)
 )
 
 (instance speedBar of SlideBar
 	(properties
-		noun 13
+		noun N_GAMESPEED
 		x 57
 		y 14
 		mainView 950
@@ -785,7 +638,7 @@
 		(self
 			setPolygon:
 				((Polygon new:)
-					type: 0
+					type: PContainedAccess
 					init: 68 15 124 15 124 22 68 22
 					yourself:
 				)
@@ -815,7 +668,7 @@
 
 (instance musicBar of SlideBar
 	(properties
-		noun 16
+		noun N_MUSVOLUME
 		x 57
 		y 79
 		mainView 950
@@ -837,7 +690,7 @@
 		(self
 			setPolygon:
 				((Polygon new:)
-					type: 0
+					type: PContainedAccess
 					init: 68 80 124 80 124 87 68 87
 					yourself:
 				)
@@ -854,7 +707,7 @@
 
 (instance soundBar of SlideBar
 	(properties
-		noun 15
+		noun N_AUDVOLUME
 		x 57
 		y 58
 		mainView 950
@@ -873,7 +726,7 @@
 		(self
 			setPolygon:
 				((Polygon new:)
-					type: 0
+					type: PContainedAccess
 					init: 68 59 124 59 124 66 68 66
 					yourself:
 				)
@@ -900,7 +753,7 @@
 		minX 68
 		maxX 121
 		inc 8
-		oppose 1
+		oppose TRUE
 	)
 	
 	(method (init)
@@ -910,7 +763,7 @@
 		(self
 			setPolygon:
 				((Polygon new:)
-					type: 0
+					type: PContainedAccess
 					init: 68 102 124 102 124 109 68 109
 					yourself:
 				)
@@ -929,7 +782,7 @@
 
 (instance detailBar of SlideBar
 	(properties
-		noun 14
+		noun N_DETAIL
 		x 57
 		y 36
 		mainView 950
@@ -948,7 +801,7 @@
 		(self
 			setPolygon:
 				((Polygon new:)
-					type: 0
+					type: PTotalAccess
 					init: 68 37 124 37 124 44 68 44
 					yourself:
 				)
@@ -1026,11 +879,11 @@
 )
 
 (instance myP of Print
-	(properties)
-	
 	(method (init)
-		(if (not plane) (= plane (systemPlane new:)))
-		(dialog mouseHiliting: 1)
+		(if (not plane)
+			(= plane (systemPlane new:))
+		)
+		(dialog mouseHiliting: TRUE)
 		(plane picture: -2)
 		(super init: &rest)
 	)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 25)
-(include sci.sh)
+(script# GLORY_CONTROLS)
+(include game.sh)
 (use Main)
 (use Plane)
 (use Print)
@@ -15,10 +15,10 @@
 )
 
 (local
-	newCast
-	local1
+	controlCast
+	cantInput
 )
-(class QGSlider of IconI
+(class QGSlider of IconItem
 	(properties
 		scratch 0
 		heading 0
@@ -95,7 +95,7 @@
 		(= x (- nsLeft 8))
 		(= nsRight (+ nsLeft 23))
 		(= signal (& signal $fff7))
-		(newCast add: self)
+		(controlCast add: self)
 		(= plane controlPlane)
 		(AddScreenItem self)
 	)
@@ -172,7 +172,7 @@
 	)
 )
 
-(class QGControlIcon of IconI
+(class QGControlIcon of IconItem
 	(properties
 		scratch 0
 		heading 0
@@ -246,7 +246,7 @@
 		(= nsRight (+ nsLeft (CelWide view loop cel)))
 		(= nsBottom (+ nsTop (CelHigh view loop cel)))
 		(= signal (& signal $fff7))
-		(newCast add: self)
+		(controlCast add: self)
 		(= plane controlPlane)
 		(AddScreenItem self)
 	)
@@ -373,7 +373,7 @@ code_04e1:
 
 (instance controlPanel of IconBar
 	(properties
-		state $0800
+		state NOCLICKHELP
 	)
 	
 	(method (init)
@@ -384,7 +384,7 @@ code_04e1:
 			priority: (+ (GetHighPlanePri) 1)
 			init:
 			setBitmap: 933 14 0
-			addCast: (= newCast (Cast new:))
+			addCast: (= controlCast (Cast new:))
 		)
 		(self
 			add:
@@ -410,9 +410,9 @@ code_04e1:
 		)
 		(if
 		(or (not (User canInput:)) (not (User canInput:)))
-			(= local1 1)
+			(= cantInput 1)
 		else
-			(= local1 0)
+			(= cantInput 0)
 		)
 		(self eachElementDo: #init self)
 	)
@@ -542,7 +542,7 @@ code_04e1:
 			(= temp3 (== temp0 helpIconItem))
 		)
 		(switch (event type?)
-			(evNULL
+			(nullEvt
 				(if temp0
 					(if (!= temp0 highlightedIcon)
 						(= oldMouseY 0)
@@ -552,13 +552,13 @@ code_04e1:
 					(self highlight: 0)
 				)
 			)
-			(evMOUSEBUTTON
+			(mouseDown
 				(if (and temp0 (self select: temp0 1))
 					(= eventClaimed (& temp2 $0040))
 				)
 			)
-			(evKEYBOARD
-				(if (== (event message?) KEY_ESCAPE) (return 1))
+			(keyDown
+				(if (== (event message?) ESC) (return TRUE))
 			)
 		)
 		(return eventClaimed)
@@ -706,12 +706,12 @@ code_04e1:
 		(= theObj ego)
 		(= selector 358)
 		(= y (+ nsTop (/ (* (Eval theObj selector) 34) 10)))
-		(if local1 (= loop 11))
+		(if cantInput (= loop 11))
 		(super init: &rest)
 	)
 	
 	(method (onMe)
-		(return (if local1 (return 0) else (return (super onMe: &rest))))
+		(return (if cantInput (return 0) else (return (super onMe: &rest))))
 	)
 	
 	(method (select)
@@ -1183,7 +1183,7 @@ code_04e1:
 	)
 )
 
-(instance turnRight of CT
+(instance turnRight of CycleTo
 	(properties)
 	
 	(method (init param1)
@@ -1199,7 +1199,7 @@ code_04e1:
 	)
 )
 
-(instance turnLeft of CT
+(instance turnLeft of CycleTo
 	(properties)
 	
 	(method (init param1)

@@ -18,6 +18,7 @@
 (define GLORY_ABOUT	19)
 (define GLORY_ACTIONS	20)
 (define GLORY_MAGIC	21)
+(define TELLER	23)
 (define GLORY_CONTROLS	25)
 (define EGODEAD	26)
 (define STARTAROOM	27)
