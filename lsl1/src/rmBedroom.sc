@@ -70,7 +70,7 @@
 					(HandsOff)
 					(curRoom setScript: sEveDoesLarry)
 				else
-					(Load rsVIEW 370)
+					(Load VIEW 370)
 					(LoadMany 132 370 801)
 					(HandsOff)
 					(ego init:)

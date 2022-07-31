@@ -174,311 +174,95 @@
 	)
 )
 
-(instance rm150EgoActions of Code	;EO: This was a class, but it is not listed in the class table
-	(properties)
-	
+(instance rm150EgoActions of Code	;EO: This was a class, but it's not listed in the class table
 	(method (doVerb theVerb theItem)
-		(asm
-			lsp      theVerb
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_0467
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      803
-			eq?     
-			bnt      code_044b
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      803
-			eq?     
-			bnt      code_043a
-			pushi    #loop
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      0
-			eq?     
-code_043a:
-			not     
-			bnt      code_044b
-			pushi    2
-			pushi    150
-			pushi    10
-			calle    Print,  4
-			jmp      code_061f
-code_044b:
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      803
-			eq?     
-			bnt      code_061f
-			pushi    2
-			pushi    150
-			pushi    11
-			calle    Print,  4
-			jmp      code_061f
-code_0467:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_0503
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      803
-			eq?     
-			bnt      code_04ad
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      803
-			eq?     
-			bnt      code_0497
-			pushi    #loop
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      0
-			eq?     
-code_0497:
-			not     
-			bnt      code_04ad
-			pushi    #setScript
-			pushi    1
-			lofsa    sGetDressed
-			push    
-			lag      curRoom
-			send     6
-			ldi      1
-			ret     
-			jmp      code_061f
-code_04ad:
-			pushi    1
-			pushi    43
-			callb    Btst,  2
-			bnt      code_04db
-			pushi    1
-			pushi    43
-			callb    Bclr,  2
-			pushi    #put
-			pushi    2
-			pushi    8
-			pushi    0
-			lag      ego
-			send     8
-			pushi    2
-			pushi    87
-			pushi    1
-			callb    SolvePuzzle,  4
-			pushi    2
-			pushi    150
-			pushi    12
-			calle    Print,  4
-			jmp      code_061f
-code_04db:
-			pushi    1
-			pushi    35
-			callb    Btst,  2
-			bnt      code_04f1
-			pushi    2
-			pushi    150
-			pushi    13
-			calle    Print,  4
-			jmp      code_061f
-code_04f1:
-			pushi    #setScript
-			pushi    1
-			lofsa    sGetUndressed
-			push    
-			lag      curRoom
-			send     6
-			ldi      1
-			ret     
-			jmp      code_061f
-code_0503:
-			dup     
-			ldi      10
-			eq?     
-			bnt      code_0571
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      803
-			eq?     
-			bnt      code_0549
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      803
-			eq?     
-			bnt      code_0533
-			pushi    #loop
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      0
-			eq?     
-code_0533:
-			not     
-			bnt      code_0549
-			pushi    #setScript
-			pushi    1
-			lofsa    sScrew
-			push    
-			lag      curRoom
-			send     6
-			ldi      1
-			ret     
-			jmp      code_061f
-code_0549:
-			pushi    1
-			pushi    35
-			callb    Btst,  2
-			bnt      code_055f
-			pushi    2
-			pushi    150
-			pushi    13
-			calle    Print,  4
-			jmp      code_061f
-code_055f:
-			pushi    #setScript
-			pushi    1
-			lofsa    sGetUndressed
-			push    
-			lag      curRoom
-			send     6
-			ldi      1
-			ret     
-			jmp      code_061f
-code_0571:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_061f
-			lsp      theItem
-			dup     
-			ldi      8
-			eq?     
-			bnt      code_061e
-			pushi    1
-			pushi    43
-			callb    Btst,  2
-			bnt      code_0597
-			pushi    2
-			pushi    150
-			pushi    14
-			calle    Print,  4
-			jmp      code_061e
-code_0597:
-			pushi    1
-			pushi    35
-			callb    Btst,  2
-			bnt      code_05ad
-			pushi    2
-			pushi    150
-			pushi    15
-			calle    Print,  4
-			jmp      code_061e
-code_05ad:
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      803
-			eq?     
-			bnt      code_05d7
-			pushi    #loop
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      0
-			eq?     
-			bnt      code_05d7
-			pushi    2
-			pushi    150
-			pushi    16
-			calle    Print,  4
-			jmp      code_061e
-code_05d7:
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      803
-			eq?     
-			not     
-			bnt      code_05f4
-			pushi    2
-			pushi    150
-			pushi    17
-			calle    Print,  4
-			jmp      code_061e
-code_05f4:
-			pushi    2
-			pushi    150
-			pushi    18
-			calle    Print,  4
-			pushi    1
-			pushi    43
-			callb    Bset,  2
-			pushi    #state
-			pushi    1
-			pushi    1
-			pushi    #at
-			pushi    1
-			pushi    8
-			class    Inventory
-			send     6
-			send     6
-			pushi    2
-			pushi    96
-			pushi    10
-			callb    SolvePuzzle,  4
-			ldi      1
-			ret     
-code_061e:
-			toss    
-code_061f:
-			toss    
-			ret     
+		;This has been successfully decompiled. It should be tested.
+		(switch theVerb
+			(verbLook
+				(cond
+					((and (== (ego view?) 803) (== (ego loop?) 0))
+						(Print 150 10)
+					)
+					(else
+						(Print 150 11)
+					)
+				)	
+			)
+			(verbDo
+				(cond
+					((and (== (ego view?) 803) (== (ego loop?) 0))
+						(curRoom setScript: sGetDressed)
+						(return TRUE)
+					)
+					((Btst fWearingLubber)
+						(Bclr fWearingLubber)
+						(ego put: iLubber 0)
+						(SolvePuzzle fRemoveLubber 1)
+						(Print 150 12)
+					)
+					((Btst fScoredHooker)
+						(Print 150 13)
+					)
+					(else
+						(curRoom setScript: sGetUndressed)
+						(return TRUE)
+					)
+				)
+			)
+			(verbZipper
+				(cond
+					((and (== (ego view?) 803) (== (ego loop?) 0))
+						(curRoom setScript: sScrew)
+						(return TRUE)
+					)
+					((Btst fScoredHooker)
+						(Print 150 13)
+					)
+					(else
+						(curRoom setScript: sGetUndressed)
+						(return TRUE)
+					)
+				)
+			)
+			(verbUse
+				(return
+					(switch theItem
+						(iLubber
+							(cond 
+								((Btst fWearingLubber)
+									(Print 150 14)
+								)
+								((Btst fScoredHooker)
+									(Print 150 15)
+								)
+								((and (== (ego view?) 803) (== (ego loop?) 0))
+									(Print 150 16)
+								)
+								((not (== (ego view?) 803))
+									(Print 150 17)
+								)
+								(else
+									(Print 150 18)
+									(Bset fWearingLubber)
+									((Inventory at: iLubber) state: 1)
+									(SolvePuzzle fPutOnLubber 10)
+									(return TRUE)
+								)
+							)
+						)
+					)
+				)
+			)
 		)
 	)
 )
 
 (instance sGetUndressed of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if
-				(and (== (ego view?) 803) (== (ego loop?) 0))
+				(if (and (== (ego view?) 803) (== (ego loop?) 0))
 					(++ state)
 					(= cycles 1)
 				else

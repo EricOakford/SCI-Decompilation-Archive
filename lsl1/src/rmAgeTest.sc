@@ -465,35 +465,35 @@
 			(keyDown
 				(= temp0 (event modifiers?))
 				(switch (event message?)
-					(KEY_a
+					(`a
 						(= selectedAnswer 1)
 						(self cue:)
 					)
-					(KEY_b
+					(`b
 						(= selectedAnswer 2)
 						(self cue:)
 					)
-					(KEY_c
+					(`c
 						(= selectedAnswer 3)
 						(self cue:)
 					)
-					(KEY_d
+					(`d
 						(= selectedAnswer 4)
 						(self cue:)
 					)
-					(KEY_A
+					(`A
 						(= selectedAnswer 1)
 						(self cue:)
 					)
-					(KEY_B
+					(`B
 						(= selectedAnswer 2)
 						(self cue:)
 					)
-					(KEY_C
+					(`C
 						(= selectedAnswer 3)
 						(self cue:)
 					)
-					(KEY_D
+					(`D
 						(= selectedAnswer 4)
 						(self cue:)
 					)
