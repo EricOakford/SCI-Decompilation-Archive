@@ -943,8 +943,6 @@
 )
 
 (instance witchToPot of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if
@@ -1039,144 +1037,45 @@
 			)
 		)
 	)
-	
+
 	(method (handleEvent event)
-		(asm
-			pushi    #claimed
-			pushi    0
-			lap      event
-			send     4
-			bnt      code_1826
-			ret     
-			jmp      code_1913
-code_1826:
-			pushi    1
-			lofsa    'pull,kill/witch[/caldron,brew,liquid]'
-			push    
-			callk    Said,  2
-			bnt      code_18ce
-			pushi    #inRect
-			pushi    4
-			pushi    110
-			pushi    80
-			pushi    124
-			pushi    99
-			lag      ego
-			send     12
-			not     
-			bnt      code_1852
-			pushi    2
-			pushi    65
-			pushi    48
-			calle    Print,  4
-			jmp      code_1913
-code_1852:
-			pushi    #script
-			pushi    0
-			lag      curRoom
-			send     4
-			bnt      code_1883
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    1
-			pushi    0
-			callb    Btst,  2
-			bnt      code_1871
-			ldi      23
-			jmp      code_1873
-code_1871:
-			ldi      16
-code_1873:
-			eq?     
-			bnt      code_1883
-			pushi    2
-			pushi    65
-			pushi    49
-			calle    Print,  4
-			jmp      code_1913
-code_1883:
-			pushi    #claimed
-			pushi    1
-			pushi    1
-			lap      event
-			send     6
-			pushi    #number
-			pushi    1
-			pushi    40
-			pushi    42
-			pushi    0
-			pushi    2
-			pushi    0
-			pushi    21
-			callk    ScriptID,  4
-			send     10
-			pushi    #script
-			pushi    0
-			lofsa    witch
-			send     4
-			push    
-			lofsa    witchPace
-			eq?     
-			bnt      code_18b7
-			pushi    #setScript
-			pushi    1
-			pushi    0
-			lag      curRoom
-			send     6
-			jmp      code_1913
-code_18b7:
-			pushi    #setScript
-			pushi    1
-			pushi    0
-			lofsa    witch
-			send     6
-			pushi    #setScript
-			pushi    1
-			lofsa    shoveWitch
-			push    
-			lag      curRoom
-			send     6
-			jmp      code_1913
-code_18ce:
-			pushi    1
-			lofsa    'pull,kill/witch'
-			push    
-			callk    Said,  2
-			bnt      code_18e5
-			pushi    2
-			pushi    65
-			pushi    50
-			calle    Print,  4
-			jmp      code_1913
-code_18e5:
-			pushi    1
-			lofsa    'shoot/witch[<shot]'
-			push    
-			callk    Said,  2
-			bt       code_18fb
-			pushi    1
-			lofsa    'use/shot,(shot<shot)'
-			push    
-			callk    Said,  2
-			bnt      code_1907
-code_18fb:
-			pushi    2
-			pushi    65
-			pushi    51
-			calle    Print,  4
-			jmp      code_1913
-code_1907:
-			pushi    #handleEvent
-			pushi    1
-			lsp      event
-			super    Script,  6
-			bnt      code_1913
-			ret     
-code_1913:
-			ret     
+		(cond 
+			;EO: This has been successfully decompiled!
+			((event claimed?) (return))
+			((Said 'pull,kill/witch[/caldron,brew,liquid]')
+				(cond 
+					((not (ego inRect: 110 80 124 99))
+						(Print 65 48)
+					)
+					;is this right? It was the undecompilable part.
+					((and (curRoom script?) (== (ego view?) (if (Btst fLittleEgo) 4 else 0)))
+						(Print 65 49)
+					)
+					(else
+						(event claimed: TRUE)
+						((ScriptID 0 21) number: 40 play:)
+						(if (== (witch script?) witchPace)
+							(curRoom setScript: 0)
+						else
+							(witch setScript: 0)
+							(curRoom setScript: shoveWitch)
+						)
+					)
+				)
+			)
+			((Said 'pull,kill/witch')
+				(Print 65 50)
+			)
+			(
+				(or
+					(Said 'shoot/witch[<shot]')
+					(Said 'use/shot,(shot<shot)')
+				)
+				(Print 65 51)
+			)
+			((super handleEvent: event)
+				(return)
+			)
 		)
 	)
 )

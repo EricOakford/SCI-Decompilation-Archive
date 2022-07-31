@@ -616,173 +616,50 @@
 )
 
 (instance openIt of Script
-	(properties)
-	
+	;EO: This script has been successfully decompiled!
 	(method (changeState newState)
-		(asm
-			lap      newState
-			aTop     state
-			push    
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_1014
-			pushi    0
-			callb    HandsOff,  0
-			pushi    #script
-			pushi    0
-			lag      curRoom
-			send     4
-			bnt      code_100c
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    1
-			pushi    0
-			callb    Btst,  2
-			bnt      code_0ff3
-			ldi      23
-			jmp      code_0ff5
-code_0ff3:
-			ldi      16
-code_0ff5:
-			eq?     
-			bnt      code_100c
-			pushi    #cue
-			pushi    0
-			pushi    #script
-			pushi    0
-			lag      curRoom
-			send     4
-			send     4
-			ldi      7
-			aTop     cycles
-			jmp      code_10e4
-code_100c:
-			pushi    #cue
-			pushi    0
-			self     4
-			jmp      code_10e4
-code_1014:
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_105a
-			pushi    #onControl
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-			push    
-			ldi      8192
-			and     
-			bt       code_103d
-			pushi    #onControl
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-			push    
-			ldi      16384
-			and     
-			bnt      code_1052
-code_103d:
-			pushi    #setMotion
-			pushi    4
-			class    MoveTo
-			push    
-			pushi    99
-			pushi    139
-			pushSelf
-			lag      ego
-			send     12
-			jmp      code_10e4
-code_1052:
-			pushi    #cue
-			pushi    0
-			self     4
-			jmp      code_10e4
-code_105a:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_107c
-			pushi    #number
-			pushi    1
-			pushi    22
-			pushi    93
-			pushi    0
-			pushi    42
-			pushi    0
-			pushi    2
-			pushi    0
-			pushi    21
-			callk    ScriptID,  4
-			send     14
-			ldi      3
-			aTop     cycles
-			jmp      code_10e4
-code_107c:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_10ac
-			pushi    3
-			lsg      ego
-			pushi    100
-			pushi    160
-			callb    Face,  6
-			pushi    0
-			callb    RedrawCast,  0
-			pushi    #cel
-			pushi    1
-			pushi    0
-			pushi    168
-			pushi    1
-			pushi    2
-			pushi    131
-			pushi    2
-			class    EndLoop
-			push    
-			pushSelf
-			lofsa    gate
-			send     20
-			jmp      code_10e4
-code_10ac:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_10e4
-			pushi    #ignoreActors
-			pushi    1
-			pushi    1
-			pushi    226
-			pushi    0
-			lofsa    gate
-			send     10
-			pushi    1
-			pushi    fGoatPenOpen
-			callb    Bset,  2
-			pushi    #illegalBits
-			pushi    1
-			pushi    49152
-			lag      ego
-			send     6
-			pushi    #illegalBits
-			pushi    1
-			pushi    49152
-			lag      theGoat
-			send     6
-			pushi    0
-			callb    HandsOn,  0
-			pushi    #dispose
-			pushi    0
-			self     4
-code_10e4:
-			toss    
-			ret     
+		(switch (= state newState)
+			(0
+				(HandsOff)
+				(if (and
+						;is this right? It was the undecompilable part.
+						(curRoom script?)
+						(== (ego view?) (if (Btst fLittleEgo) 4 else 0))
+					)
+					((curRoom script?) cue:)
+					(= cycles 7)
+				else
+					(self cue:)
+				)
+			)
+			(1
+				(if
+					(or
+						(& (ego onControl: origin) cLMAGENTA)
+						(& (ego onControl: origin) cYELLOW)
+					)
+					(ego setMotion: MoveTo 99 139 self)
+				else
+					(self cue:)
+				)
+			)
+			(2
+				((ScriptID 0 21) number: 22 init: play:)
+				(= cycles 3)
+			)
+			(3
+				(Face ego 100 160)
+				(RedrawCast)
+				(gate cel: 0 cycleSpeed: 2 setCycle: EndLoop self)
+			)
+			(4
+				(gate ignoreActors: 1 stopUpd:)
+				(Bset 23)
+				(ego illegalBits: (| cWHITE cYELLOW))
+				(theGoat illegalBits: (| cWHITE cYELLOW))
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )

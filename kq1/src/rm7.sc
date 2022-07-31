@@ -30,330 +30,83 @@
 	)
 	
 	(method (init)
-		(asm
-			pushi    2
-			pushi    128
-			pushi    207
-			callk    Load,  4
-			pushi    31
-			pushi    1
-			lsg      prevRoomNum
-			dup     
-			pToa     north
-			eq?     
-			bnt      code_0027
-			ldi      5
-			jmp      code_0048
-code_0027:
-			dup     
-			pToa     west
-			eq?     
-			bnt      code_0033
-			ldi      3
-			jmp      code_0048
-code_0033:
-			dup     
-			pToa     east
-			eq?     
-			bnt      code_003f
-			ldi      2
-			jmp      code_0048
-code_003f:
-			dup     
-			pToa     south
-			eq?     
-			bnt      code_0048
-			ldi      4
-code_0048:
-			toss    
-			push    
-			self     6
-			pushi    #init
-			pushi    0
-			super    Room,  4
-			lsg      prevRoomNum
-			dup     
-			pToa     north
-			eq?     
-			bnt      code_007c
-			pushi    #posn
-			pushi    2
-			pushi    3
-			pushi    310
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    194
-			callb    proc0_17,  6
-			push    
-			pushi    75
-			lag      ego
-			send     8
-			jmp      code_0153
-code_007c:
-			dup     
-			pToa     south
-			eq?     
-			bnt      code_0094
-			pushi    #posn
-			pushi    2
-			pushi    168
-			pushi    187
-			lag      ego
-			send     8
-			jmp      code_0153
-code_0094:
-			dup     
-			pToa     west
-			eq?     
-			bnt      code_0112
-			lsg      egoInWater
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_00df
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      95
-			lt?     
-			bnt      code_00c1
-			pushi    #posn
-			pushi    2
-			pushi    6
-			pushi    73
-			lag      ego
-			send     8
-			jmp      code_00f8
-code_00c1:
-			pushi    3
-			pushi    147
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    72
-			callb    proc0_18,  6
-			pushi    #x
-			pushi    1
-			pushi    4
-			lag      ego
-			send     6
-			jmp      code_00f8
-code_00df:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_00f8
-			pushi    #y
-			pushi    1
-			pushi    100
-			lag      ego
-			send     6
-			pushi    #x
-			pushi    1
-			pushi    4
-			lag      ego
-			send     6
-code_00f8:
-			toss    
-			pushi    3
-			pushi    198
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pTos     horizon
-			ldi      4
-			add     
-			push    
-			callb    proc0_17,  6
-			jmp      code_0153
-code_0112:
-			dup     
-			pToa     east
-			eq?     
-			bnt      code_0145
-			pushi    #posn
-			pushi    2
-			pushi    314
-			pushi    3
-			pushi    187
-			pushi    3
-			pushi    143
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    118
-			callb    proc0_18,  6
-			push    
-			pushi    67
-			callb    proc0_17,  6
-			push    
-			lag      ego
-			send     8
-			jmp      code_0153
-code_0145:
-			pushi    #posn
-			pushi    2
-			pushi    314
-			pushi    157
-			lag      ego
-			send     8
-code_0153:
-			toss    
-			pushi    #init
-			pushi    0
-			lag      ego
-			send     4
-			lag      egoInWater
-			not     
-			bnt      code_0165
-			pushi    0
-			callb    NormalEgo,  0
-code_0165:
-			pushi    #setRegions
-			pushi    1
-			pushi    603
-			self     6
-			ldi      0
-			sal      i
-code_0172:
-			lsl      i
-			lsg      howFast
-			ldi      1
-			ge?     
-			bnt      code_0181
-			ldi      2
-			jmp      code_0183
-code_0181:
-			ldi      1
-code_0183:
-			lt?     
-			;bnt      code_01e4
-			pushi    5
-			pushi    #superClass
-			pushi    207
-			pushi    168
-			pushi    1
-			pushi    1
-			pushi    66
-			pushi    1
-			pushi    0
-			pushi    4
-			pushi    1
-			lal      i
-			lsli     rippleX
-			pushi    3
-			pushi    1
-			lsli     rippleY
-			pushi    229
-			pushi    1
-			push    
-			pushi    231
-			pushi    1
-			pushi    1
-			pushi    203
-			pushi    1
-			lofsa    {waterfall}
-			push    
-			pushi    93
-			pushi    0
-			pushi    226
-			pushi    0
-			pushi    1
-			lofsa    Ripple
-			push    
-			callk    Clone,  2
-			push    
-			lal      i
-			sali     ripple
-			send     56
-			lsg      howFast
-			ldi      1
-			ge?     
-			bnt      code_01df
-			pushi    #setCycle
-			pushi    1
-			class    Forward
-			push    
-			lal      i
-			lali     ripple
-			send     6
-code_01df:
-			+al      i
-			jmp      code_0172
-code_01e4:
-			pushi    #init
-			pushi    0
-			lofsa    waterfall1
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    waterfall
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    smalltree1
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    smalltree2
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    lake1
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    lake2
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    tree1
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    tree2
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    tree3
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    bush
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    rock1
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    rock2
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    rock3
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    rock4
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    rock5
-			send     4
-			ret     
+		;EO: This has been successfully decompiled!
+		(Load VIEW 207)
+		(self
+			style:
+			(switch prevRoomNum
+				(north WIPEDOWN)
+				(west WIPERIGHT)
+				(east WIPELEFT)
+				(south WIPEUP)
+			)
 		)
+		(super init:)
+		(switch prevRoomNum
+			(north
+				(ego posn: (proc0_17 310 (ego x?) 194) 75)
+			)
+			(south
+				(ego posn: 168 187)
+			)
+			(west
+				(switch egoInWater
+					(0
+						(if (< (ego y?) 95)
+							(ego posn: 6 73)
+						else
+							(proc0_18 147 (ego y?) 72)
+							(ego x: 4)
+						)
+					)
+					(4 (ego y: 100) (ego x: 4))
+				)
+				(proc0_17 198 (ego y?) (+ horizon 4))
+			)
+			(east
+				(ego
+					posn: 314 (proc0_17 187 (proc0_18 143 (ego y?) 118) 67)
+				)
+			)
+			(else  (ego posn: 314 157))
+		)
+		(ego init:)
+		(if (not egoInWater)
+			(NormalEgo)
+		)
+		(self setRegions: 603)
+		(for ((= i 0)) (< i (>= howFast 1)) ((++ i))
+			((= [ripple i] (Clone Ripple))
+				view: 207
+				cycleSpeed: 1
+				setPri: 0
+				x: [rippleX i]
+				y: [rippleY i]
+				setLoop: i
+				ignoreActors: TRUE
+				description: {waterfall}
+				init:
+				stopUpd:
+			)
+			(if (>= howFast 1)
+				([ripple i] setCycle: Forward)
+			)
+		)
+		(waterfall1 init:)
+		(waterfall init:)
+		(smalltree1 init:)
+		(smalltree2 init:)
+		(lake1 init:)
+		(lake2 init:)
+		(tree1 init:)
+		(tree2 init:)
+		(tree3 init:)
+		(bush init:)
+		(rock1 init:)
+		(rock2 init:)
+		(rock3 init:)
+		(rock4 init:)
+		(rock5 init:)
 	)
 	
 	(method (doit &tmp nRoom)

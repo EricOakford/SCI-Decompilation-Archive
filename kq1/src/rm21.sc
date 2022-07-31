@@ -97,313 +97,82 @@
 		(rock2 init:)
 		(bush init:)
 	)
-	
-	(method (doit &tmp temp0)
-		(asm
-			pushi    #contains
-			pushi    1
-			lofsa    witch
-			push    
-			lag      cast
-			send     6
-			bnt      code_028b
-			lsg      theCarrier
-			ldi      2
-			ne?     
-			bnt      code_028b
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    1
-			pushi    0
-			callb    Btst,  2
-			bnt      code_0233
-			ldi      23
-			jmp      code_0235
-code_0233:
-			ldi      16
-code_0235:
-			ne?     
-			bnt      code_028b
-			pushi    1
-			pushi    1
-			callb    Btst,  2
-			not     
-			bnt      code_028b
-			pushi    30
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    #y
-			pushi    0
-			lofsa    witch
-			send     4
-			sub     
-			lt?     
-			bnt      code_028b
-			pprev   
-			ldi      54
-			lt?     
-			bnt      code_028b
-			pushi    1
-			pushi    #x
-			pushi    0
-			lofsa    witch
-			send     4
-			push    
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			sub     
-			push    
-			callk    Abs,  2
-			push    
-			ldi      4
-			lt?     
-			bnt      code_028b
-			pushi    #setScript
-			pushi    1
-			lofsa    witchRide
-			push    
-			lag      curRoom
-			send     6
-			jmp      code_0423
-code_028b:
-			pTos     script
-			lofsa    witchRide
-			eq?     
-			bnt      code_02b6
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      65504
-			lt?     
-			bnt      code_02b6
-			pushi    #dispose
-			pushi    0
-			lag      ego
-			send     4
-			pushi    #newRoom
-			pushi    1
-			pushi    80
-			lag      curRoom
-			send     6
-			jmp      code_0423
-code_02b6:
-			pToa     script
-			bnt      code_02c3
-			pushi    #doit
-			pushi    0
-			send     4
-			jmp      code_0423
-code_02c3:
-			pushi    #edgeHit
-			pushi    0
-			pushi    #alterEgo
-			pushi    0
-			class    User
-			send     4
-			send     4
-			push    
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_02de
-			pToa     north
-			jmp      code_02ff
-code_02de:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_02ea
-			pToa     east
-			jmp      code_02ff
-code_02ea:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_02f6
-			pToa     south
-			jmp      code_02ff
-code_02f6:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_02ff
-			pToa     west
-code_02ff:
-			toss    
-			sat      temp0
-			bnt      code_0314
-			pushi    0
-			callb    FadeBackgroundMusic,  0
-			pushi    #newRoom
-			pushi    1
-			lst      temp0
-			self     6
-			jmp      code_0423
-code_0314:
-			lal      witchTimer
-			not     
-			bnt      code_032c
-			pushi    #has
-			pushi    1
-			pushi    16
-			lag      ego
-			send     6
-			bnt      code_032c
-			ldi      0
-			jmp      code_0423
-code_032c:
-			pushi    #contains
-			pushi    1
-			lofsa    witch
-			push    
-			lag      cast
-			send     6
-			not     
-			bnt      code_03a9
-			pushi    #onControl
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-			push    
-			ldi      4096
-			eq?     
-			bnt      code_03a9
-			lal      witchTimer
-			bnt      code_03a9
-			pushi    1
-			pushi    1
-			callb    Btst,  2
-			not     
-			bnt      code_03a9
-			lal      witchIsHere
-			not     
-			bnt      code_037a
-			ldi      1
-			sal      witchIsHere
-			pushi    #number
-			pushi    1
-			pushi    36
-			pushi    6
-			pushi    1
-			pushi    65535
-			pushi    42
-			pushi    0
-			pushi    2
-			pushi    0
-			pushi    23
-			callk    ScriptID,  4
-			send     16
-code_037a:
-			pushi    #init
-			pushi    0
-			pushi    18
-			pushi    1
-			pushi    0
-			pushi    242
-			pushi    1
-			pushi    1
-			pushi    231
-			pushi    1
-			pushi    1
-			pushi    250
-			pushi    2
-			pushi    10
-			pushi    6
-			pushi    131
-			pushi    1
-			class    Forward
-			push    
-			pushi    127
-			pushi    1
-			lofsa    longSwoop
-			push    
-			lofsa    witch
-			send     42
-			jmp      code_0423
-code_03a9:
-			pushi    #contains
-			pushi    1
-			lofsa    witch
-			push    
-			lag      cast
-			send     6
-			not     
-			bnt      code_0423
-			pushi    #onControl
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-			push    
-			ldi      8192
-			eq?     
-			bnt      code_0423
-			lal      witchTimer
-			bnt      code_0423
-			pushi    1
-			pushi    1
-			callb    Btst,  2
-			not     
-			bnt      code_0423
-			lal      witchIsHere
-			not     
-			bnt      code_03f7
-			ldi      1
-			sal      witchIsHere
-			pushi    #number
-			pushi    1
-			pushi    36
-			pushi    6
-			pushi    1
-			pushi    65535
-			pushi    42
-			pushi    0
-			pushi    2
-			pushi    0
-			pushi    23
-			callk    ScriptID,  4
-			send     16
-code_03f7:
-			pushi    #init
-			pushi    0
-			pushi    18
-			pushi    1
-			pushi    0
-			pushi    242
-			pushi    1
-			pushi    1
-			pushi    231
-			pushi    1
-			pushi    1
-			pushi    250
-			pushi    2
-			pushi    10
-			pushi    6
-			pushi    131
-			pushi    1
-			class    Forward
-			push    
-			pushi    127
-			pushi    1
-			lofsa    shortSwoop
-			push    
-			lofsa    witch
-			send     42
-code_0423:
-			ret     
+	(method (doit &tmp edge)
+		(cond 
+			(
+				(and
+					(cast contains: witch)
+					(!= theCarrier carrierWITCH)
+					(!= (ego view?) (if (Btst fLittleEgo) 23 else 16))
+					(not (Btst fInvisible))
+					(< 30 (- (ego y?) (witch y?)))
+					(< (- (ego y?) (witch y?)) 54)
+					(< (Abs (- (witch x?) (ego x?))) 4)
+				)
+				(curRoom setScript: witchRide)
+			)
+			((and (== script witchRide) (< (ego x?) -32))
+				(ego dispose:)
+				(curRoom newRoom: 80)
+			)
+			(script (script doit:))
+			(
+				(= edge
+					(switch ((User alterEgo?) edgeHit?)
+						(NORTH north)
+						(EAST east)
+						(SOUTH south)
+						(WEST west)
+					)
+				)
+				(FadeBackgroundMusic)
+				(self newRoom: edge)
+			)
+			((and (not witchTimer) (ego has: iMagicShield)) 0)
+			(
+				(and
+					(not (cast contains: witch))
+					(== (ego onControl: origin) cLRED)
+					witchTimer
+					(not (Btst fInvisible))
+				)
+				(if (not witchIsHere)
+					(= witchIsHere TRUE)
+					((ScriptID 0 23) number: 36 loop: -1 play:)
+				)
+				(witch
+					init:
+					illegalBits: 0
+					ignoreHorizon: TRUE
+					ignoreActors: TRUE
+					setStep: 10 6
+					setCycle: Forward
+					setScript: longSwoop
+				)
+			)
+			(
+				(and
+					(not (cast contains: witch))
+					(== (ego onControl: origin) cLMAGENTA)
+					witchTimer
+					(not (Btst fInvisible))
+				)
+				(if (not witchIsHere)
+					(= witchIsHere TRUE)
+					((ScriptID 0 23) number: 36 loop: -1 play:)
+				)
+				(witch
+					init:
+					illegalBits: 0
+					ignoreHorizon: TRUE
+					ignoreActors: TRUE
+					setStep: 10 6
+					setCycle: Forward
+					setScript: shortSwoop
+				)
+			)
 		)
-	)
+	)	
 	
 	(method (handleEvent event)
 		(cond 

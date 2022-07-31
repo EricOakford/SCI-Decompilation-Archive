@@ -115,188 +115,45 @@
 			)
 		)
 	)
-	
-	(method (doit &tmp temp0)
-		(asm
-			pushi    #contains
-			pushi    1
-			lofsa    condor
-			push    
-			lag      cast
-			send     6
-			bnt      code_02ee
-			lsg      theCarrier
-			ldi      1
-			ne?     
-			bnt      code_02ee
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    #y
-			pushi    0
-			lofsa    condor
-			send     4
-			sub     
-			push    
-			ldi      80
-			lt?     
-			bnt      code_02ee
-			pushi    1
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    #x
-			pushi    0
-			lofsa    condor
-			send     4
-			sub     
-			push    
-			callk    Abs,  2
-			push    
-			ldi      5
-			lt?     
-			bnt      code_02ee
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    1
-			pushi    0
-			callb    Btst,  2
-			bnt      code_02b7
-			ldi      17
-			jmp      code_02b9
-code_02b7:
-			ldi      15
-code_02b9:
-			eq?     
-			bnt      code_02ee
-			pushi    #cel
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      5
-			ge?     
-			bnt      code_02ee
-			pushi    #number
-			pushi    1
-			pushi    55
-			pushi    6
-			pushi    1
-			pushi    1
-			pushi    42
-			pushi    0
-			pushi    2
-			pushi    0
-			pushi    23
-			callk    ScriptID,  4
-			send     16
-			pushi    #setScript
-			pushi    1
-			lofsa    birdRide
-			push    
-			lag      curRoom
-			send     6
-			jmp      code_0390
-code_02ee:
-			pTos     script
-			lofsa    birdRide
-			eq?     
-			bnt      code_0316
-			pushi    #edgeHit
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_0316
-			pushi    #dispose
-			pushi    0
-			lag      ego
-			send     4
-			pushi    #newRoom
-			pushi    1
-			pushi    80
-			lag      curRoom
-			send     6
-			jmp      code_0390
-code_0316:
-			pToa     script
-			bnt      code_0323
-			pushi    #doit
-			pushi    0
-			send     4
-			jmp      code_0390
-code_0323:
-			pushi    #onControl
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-			push    
-			ldi      2
-			eq?     
-			bnt      code_0342
-			pushi    0
-			callb    FadeBackgroundMusic,  0
-			pushi    #newRoom
-			pushi    1
-			pushi    50
-			self     6
-			jmp      code_0390
-code_0342:
-			pushi    #edgeHit
-			pushi    0
-			pushi    #alterEgo
-			pushi    0
-			class    User
-			send     4
-			send     4
-			push    
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_035d
-			pToa     north
-			jmp      code_037e
-code_035d:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_0369
-			pToa     east
-			jmp      code_037e
-code_0369:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_0375
-			pToa     south
-			jmp      code_037e
-code_0375:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_037e
-			pToa     west
-code_037e:
-			toss    
-			sat      temp0
-			bnt      code_0390
-			pushi    0
-			callb    FadeBackgroundMusic,  0
-			pushi    #newRoom
-			pushi    1
-			lst      temp0
-			self     6
-code_0390:
-			ret     
+
+	(method (doit &tmp edge)
+		;EO: This has been successfully decompiled!
+		(cond 
+			(
+				(and
+					(cast contains: condor)
+					(!= theCarrier 1)
+					(< (- (ego y?) (condor y?)) 80)
+					(< (Abs (- (ego x?) (condor x?))) 5)
+					;this one line prevented decompilation
+					(== (ego view?) (if (Btst fLittleEgo) 17 else 15))
+					(>= (ego cel?) 5)
+				)
+				((ScriptID 0 23) number: 55 loop: 1 play:)
+				(curRoom setScript: birdRide)
+			)
+			((and (== script birdRide) (ego edgeHit?)) (ego dispose:)
+				(curRoom newRoom: 80)
+			)
+			(script (script doit:))
+			((== (ego onControl: origin) cBLUE)
+				(FadeBackgroundMusic)
+				(self newRoom: 50)
+			)
+			(
+				(= edge
+					(switch ((User alterEgo?) edgeHit?)
+						(NORTH north)
+						(EAST east)
+						(SOUTH south)
+						(WEST west)
+					)
+				)
+				(FadeBackgroundMusic)
+				(self newRoom: edge)
+			)
 		)
-	)
+	)	
 	
 	(method (handleEvent event)
 		(cond 
