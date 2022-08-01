@@ -23,7 +23,7 @@
 			(ego put: iStoutStick -1)
 		)
 		(if (ego has: iVine)
-			(if (Said '</vine')
+			(if (Said 'smoke/vine')	;EO: fixed said spec
 				(Ok)
 				(Print ISLAND 1)
 				(Print ISLAND 2 #at -1 130)
