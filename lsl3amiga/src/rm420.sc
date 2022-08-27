@@ -25,7 +25,8 @@
 	[titleBuf 22]
 	passPage
 	inputPassNum
-	correctPassNum = [0 0 0 741 0 -9725 30004 0 0 18608 25695 -32695 993 0 0 9170 0 0 -16422 -31742 0 0 -11054 -3033]
+	;EO: Some of these numbers did not decompile right. I got the correct numbers from the manual.
+	correctPassNum = [0 0 0 00741 0 55811 30004 0 0 18608 25695 32841 00993 0 0 09170 0 0 49114 33794 0 0 55482 62503]
 )
 (procedure (MaitreDSays theView theLoop theCel)
 	(Print @msgBuf
