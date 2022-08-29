@@ -15,7 +15,7 @@
 )
 
 (local
-	local0
+	lclWindow
 	local1
 	local2
 	thePlanet
@@ -278,7 +278,7 @@
 	)
 	
 	(method (dispose)
-		(if local0 (local0 dispose:))
+		(if lclWindow (lclWindow dispose:))
 		(super dispose:)
 	)
 	
@@ -694,9 +694,7 @@
 	)
 )
 
-(instance reactorScript of Script
-	(properties)
-	
+(instance reactorScript of Script	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -705,7 +703,7 @@
 				(= cycles 15)
 			)
 			(1
-				(if (InRoom iReactor)
+				(if (InRoom iWire)
 					(Print 14 86)
 					(= shipRepairLevel 4)
 					(floorPanel dispose:)
@@ -727,8 +725,6 @@
 )
 
 (instance wireScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -737,7 +733,7 @@
 				(= cycles 15)
 			)
 			(1
-				(if (InRoom iWire)
+				(if (InRoom iReactor)
 					(Print 14 88)
 					(floorPanel dispose:)
 					(= shipRepairLevel 4)
@@ -816,19 +812,17 @@
 	)
 )
 
-(instance arrivalScript of Script
-	(properties)
-	
+(instance arrivalScript of Script	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local0 (Print 14 90 #at -1 130 #width 280 #dispose))
+				(= lclWindow (Print 14 90 #at -1 130 #width 280 #dispose))
 				(theMusic fade:)
 				(= seconds 4)
 			)
 			(1
 				(cls)
-				(= local0 0)
+				(= lclWindow 0)
 				(curRoom newRoom: 17)
 			)
 		)
@@ -840,9 +834,7 @@
 	)
 )
 
-(instance wallCScript of Script
-	(properties)
-	
+(instance wallCScript of Script	
 	(method (doit)
 		(super doit:)
 		(if (== global206 2)

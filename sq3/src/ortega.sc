@@ -32,14 +32,14 @@
 			(= fallingIntoLava FALSE)
 			(curRoom setScript: FallDown)
 		)
-		(if (and global219 (> fryToDeathTimer 1))
+		(if (and aSecondPassed (> fryToDeathTimer 1))
 			(-- fryToDeathTimer)
 		)
 		(if
 			(and
 				(== fryToDeathTimer 1)
 				(!= curRoomNum 62)
-				(== (IsObjectOnControl ego 15) 1)
+				(== (NearControl ego 15) 1)
 				(== (curRoom script?) 0)
 			)
 			(curRoom setScript: FryToDeath)

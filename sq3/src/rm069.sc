@@ -62,7 +62,7 @@
 	(method (doit &tmp egoOnControl [temp1 50])
 		(super doit:)
 		(if local1 (curRoom newRoom: 690))
-		(if global219 (-- local0))
+		(if aSecondPassed (-- local0))
 		(if (and (== local0 1) (not script))
 			(= local0 0)
 			(curRoom setScript: LeaveScript)

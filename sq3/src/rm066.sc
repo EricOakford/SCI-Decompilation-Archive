@@ -189,7 +189,7 @@
 				)
 			)
 		)
-		(if (and global219 local6) (-- local6))
+		(if (and aSecondPassed local6) (-- local6))
 		(if (== local6 1)
 			(= local6 -1)
 			(curRoom setScript: DeadMeat)

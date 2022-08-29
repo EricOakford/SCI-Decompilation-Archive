@@ -176,7 +176,7 @@
 		(if (and (ego inRect: 153 87 319 189) (not egoHits))
 			(ScottScript changeState: 1)
 		)
-		(if global219
+		(if aSecondPassed
 			(-- local18)
 		)
 		(if (not local18)

@@ -120,31 +120,32 @@
 		cel 0
 		priority 13
 		radius 0
-		;EO: these selectors are not in the selector table
-		sel_341 0
-		sel_342 0
-		sel_343 0
+		;EO: these selectors were not in the selector table.
+		; I found the original names in the German Amiga version of the game.
+		radiusDelta 0
+		angle 0
+		angleDelta 0
 		type $0000
 	)
 	
 	(method (doit)
 		(super doit:)
-		(if (< radius sel_341)
-			(self sel_344:)
+		(if (< radius radiusDelta)
+			(self reInit:)
 		else
 			(if (and local8 (> radius 187))
-				(+= radius sel_341)
+				(+= radius radiusDelta)
 			)
-			(-= radius sel_341)
-			(= sel_342 (mod (+ sel_342 sel_343 360) 360))
+			(-= radius radiusDelta)
+			(= angle (mod (+ angle angleDelta 360) 360))
 			(self
-				posn: (+ 160 (CosMult sel_342 radius)) (+ 95 (SinMult sel_342 radius))
+				posn: (+ 160 (CosMult angle radius)) (+ 95 (SinMult angle radius))
 			)
 			(switch type
 				(0
 					(if (and (< radius 50) (< cel (self lastCel:)))
 						(++ cel)
-						(self sel_341: 8)
+						(self radiusDelta: 8)
 					)
 				)
 				(1
@@ -162,7 +163,7 @@
 		)
 	)
 	
-	(method (sel_344)
+	(method (reInit)
 		(switch type
 			(0)
 			(1 (= local5 0))
@@ -180,9 +181,9 @@
 				setLoop: 0
 				setCel: 0
 				radius: 120
-				sel_341: 7
-				sel_342: 125
-				sel_343: -5
+				radiusDelta: 7
+				angle: 125
+				angleDelta: -5
 			)
 		else
 			(if (and (not local5) (not local7) (== 1 (Random 1 2)))
@@ -194,9 +195,9 @@
 					setLoop: 1
 					setCel: 0
 					radius: (+ 187 local8)
-					sel_341: 16
-					sel_342: (* (- (Random 1 72) 1) 5)
-					sel_343: -5
+					radiusDelta: 16
+					angle: (* (- (Random 1 72) 1) 5)
+					angleDelta: -5
 				)
 			else
 				(self
@@ -206,9 +207,9 @@
 					setLoop: 0
 					setCel: 0
 					radius: (+ 187 local8)
-					sel_341: (Random 5 8)
-					sel_342: (* (- (Random 1 72) 1) 5)
-					sel_343: (* (Random 1 2) 5)
+					radiusDelta: (Random 5 8)
+					angle: (* (- (Random 1 72) 1) 5)
+					angleDelta: (* (Random 1 2) 5)
 				)
 			)
 			(if local8

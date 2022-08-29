@@ -27,11 +27,11 @@
 	CantDo 8
 	DontHave 9
 	RedrawCast 10
-	ChangeSoundState 11
+	SoundLoops 11
 	cls 12
 	InRoom 13
 	PutInRoom 14
-	IsObjectOnControl 15
+	NearControl 15
 	proc0_16 16
 	EgoDead 17
 )
@@ -244,11 +244,11 @@
 	global216
 	selectedSector
 	global218
-	global219
+	aSecondPassed
 	global220
 	global221
 	global222
-	global223
+	aMinutePassed
 	global224
 	global225
 	gameSeconds				;elapsed seconds
@@ -694,9 +694,9 @@
 	(Animate (cast elements?) FALSE)
 )
 
-(procedure (ChangeSoundState soundObj theLoop)
-	;seems to change a sound object's loop and state
-	(soundObj loop: theLoop changeState:)
+(procedure (SoundLoops who howMany)
+	;sets the number of loops for a sound object
+	(who loop: howMany changeState:)
 )
 
 (procedure (cls)
@@ -721,16 +721,16 @@
 	)
 )
 
-(procedure (IsObjectOnControl obj event)
-	;check if an object is on a specific control
+(procedure (NearControl obj distance)
+	;check if an object is near a specific control
 	(if (< argc 2)
-		(= event (| keyDown mouseDown))
+		(= distance 5)
 	)
 	(OnControl
-		(- (obj x?) event)
-		(- (obj y?) event)
-		(+ (obj x?) event)
-		(+ (obj y?) event)
+		(- (obj x?) distance)
+		(- (obj y?) distance)
+		(+ (obj x?) distance)
+		(+ (obj y?) distance)
 	)
 )
 
@@ -776,8 +776,7 @@
 
 (instance logFile of File)
 
-(instance SQ3 of Game
-	
+(instance SQ3 of Game	
 	(method (init &tmp versionFile)
 		(super init:)
 		;set up the game's objects and globals
@@ -973,17 +972,17 @@
 				)
 			)
 		else	;end of deaths
-			(= global219 0)
-			(= global223 0)
+			(= aSecondPassed FALSE)
+			(= aMinutePassed FALSE)
 			;let the game's clock tick
 			(if (!= (= thisTime (GetTime SYSTIME1)) oldSysTime)
 				(= oldSysTime thisTime)
 				(+= gameSeconds 1)
-				(= global219 1)
+				(= aSecondPassed TRUE)
 				(if (>= gameSeconds 60)
 					(++ gameMinutes)
 					(= gameSeconds 0)
-					(= global223 1)
+					(= aMinutePassed TRUE)
 					(if (== gameMinutes 60)
 						(++ gameHours)
 						(= gameMinutes 0)
@@ -1224,7 +1223,7 @@
 					(= evtX (event x?))
 					(= evtY (event y?))
 					(cond 
-						((& (= evtMod (event modifiers?)) 10) ;shift+ALT+click
+						((== (= evtMod (event modifiers?)) 10)
 							(event claimed: TRUE)
 							((User alterEgo?) setMotion: JumpTo evtX evtY)
 						)

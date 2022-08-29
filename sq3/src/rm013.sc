@@ -99,7 +99,7 @@
 			)
 			(= local2 0)
 		)
-		(if (and (> local2 2) global219) (-- local2))
+		(if (and (> local2 2) aSecondPassed) (-- local2))
 		(if
 		(and (== (bot script?) botPanelScript) (== local2 2))
 			(= local2 1)

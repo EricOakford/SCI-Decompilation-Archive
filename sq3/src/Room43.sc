@@ -1024,6 +1024,7 @@
 (instance tActions of Script
 	(method (doit)
 		;this has been newly decompiled
+		; and seems to work okay
 		(if (!= curRoomNum newRoomNum) (return))
 		(if (or (== local4 1) (== local4 7))
 			(if (== (terminator cel?) 0)

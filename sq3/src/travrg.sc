@@ -25,7 +25,7 @@
 	)
 	
 	(method (doit &tmp [temp0 50])
-		(if global219
+		(if aSecondPassed
 			(-- global220)
 			(-- global175)
 		)

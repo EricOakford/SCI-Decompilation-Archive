@@ -370,6 +370,7 @@
 
 (instance tActions of Script
 	;this has been newly decompiled
+	; and seems to work okay
 	(method (doit)
 		(if (!= curRoomNum newRoomNum) (return))
 		(if (and (!= global104 0) (== local0 1))
@@ -379,8 +380,7 @@
 				ignoreControl: 2
 			)
 		)
-		(if
-		(and (== local0 7) (& (terminator onControl:) $0002))
+		(if (and (== local0 7) (& (terminator onControl:) $0002))
 			(terminator view: 777 setMotion: 0)
 			(self changeState: 8)
 			(= local0 8)
