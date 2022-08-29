@@ -1,0 +1,26 @@
+;;; Sierra Script
+;;; 205.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 1)
+(define N_GRANDMA 2)
+(define N_FRENCH_QUARTER 3)
+(define N_LAKE 4)
+(define N_NO_GO_GRANDMA 5)
+(define N_BAYOU_ST_JOHN 6)
+(define N_AIRPORT 7)
+(define N_GEDDE 8)
+(define N_TULANE 9)
+(define N_MISSISSIPPI 10)
+(define N_PONTCHARTRAIN 11)
+(define N_CENTRAL_BUSINESS 12)
+(define N_GARDEN_DISTRICT 13)
+(define N_AUDUBON_PARK 14)
+(define N_CITY_PARK 15)
+
+;;; CASES
+
+(define C_PLEASE_SELECT 1)
+

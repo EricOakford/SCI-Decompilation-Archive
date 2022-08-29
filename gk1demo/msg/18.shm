@@ -1,0 +1,17 @@
+;;; Sierra Script
+;;; 18.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_TALK_SELF_1 1)
+(define C_TALK_SELF_2 2)
+(define C_TALK_SELF_3 3)
+(define C_TALK_SELF_4 4)
+(define C_TALK_SELF_5 5)
+(define C_TALK_SELF_6 6)
+
+;;; NOUNS
+
+(define N_GABRIEL 1)
+

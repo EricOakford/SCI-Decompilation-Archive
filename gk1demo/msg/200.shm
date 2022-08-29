@@ -1,0 +1,51 @@
+;;; Sierra Script
+;;; 200.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_NO_GO_DEMO 7)
+(define N_ROOM 1)
+(define N_BOOK_STORE 2)
+(define N_JACKSON_SQUARE 3)
+(define N_CATHEDRAL 4)
+(define N_POLICE 5)
+(define N_NAPOLEON_HOUSE 9)
+(define N_STREETS 8)
+(define N_GREATER_NEW_ORLEANS 6)
+(define N_VOODOO_SHOP 13)
+(define N_MUSEUM 14)
+
+;;; CASES
+
+(define C_PLEASE_SELECT 30)
+(define C_NO_GO_NAPOLEON 26)
+(define C_NO_GO_VOODOO_SHOP 27)
+(define C_BASIN 28)
+(define C_NO_GO_MUSEUM 29)
+(define C_NOPRINT 1)
+(define C_DUMMY2 2)
+(define C_GETTING_LATE 3)
+(define C_BOURBON 4)
+(define C_BURGUNDY 5)
+(define C_CANAL 6)
+(define C_IBERVILLE 7)
+(define C_BIENVILLE 8)
+(define C_CONTI 9)
+(define C_ST_LOUIS 10)
+(define C_TOULOUSE 11)
+(define C_ST_PETER 12)
+(define C_ORLEANS 13)
+(define C_ST_ANN 14)
+(define C_DUMAINE 15)
+(define C_ST_PHILIP 16)
+(define C_URSULINES 17)
+(define C_GOVENOR_NICHOLLS 18)
+(define C_BARRACKS 19)
+(define C_ESPLANADE 20)
+(define C_DECATUR 21)
+(define C_CHARTRES 22)
+(define C_ROYAL 23)
+(define C_DAUPHINE 24)
+(define C_N_RAMPART 25)
+

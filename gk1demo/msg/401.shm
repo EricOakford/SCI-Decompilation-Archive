@@ -1,0 +1,26 @@
+;;; Sierra Script
+;;; 401.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_PEDESTRIAN 6)
+(define N_BENCH 1)
+(define N_CRASH 2)
+(define N_FENCE 3)
+(define N_STATUE 14)
+(define N_MIME 5)
+(define N_LAMPPOST 4)
+(define N_PARK 8)
+(define N_PLANTS 11)
+(define N_TRASH_CAN 12)
+(define N_SIDEWALK 9)
+(define N_NORTH_PATH 13)
+
+;;; CASES
+
+(define C_MIME_FOLLOW_GABRIEL 5)
+(define C_MIME_IDLE 6)
+(define C_MIME_FOLLOW_PEDESTRIAN 7)
+(define C_DEMO 8)
+

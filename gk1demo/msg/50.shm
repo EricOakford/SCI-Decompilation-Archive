@@ -1,0 +1,43 @@
+;;; Sierra Script
+;;; 50.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_GRACE 1)
+(define N_SARGE 2)
+(define N_GABRIEL 8)
+
+;;; CASES
+
+(define C_NOBODY_HERE 103)
+(define C_VOODOO 1)
+(define C_MURDERS 2)
+(define C_NEW_ORLEANS 3)
+(define C_SNAKES 4)
+(define C_ST_JOHN_EVE 5)
+(define C_CABRIT_SANS_COR 6)
+(define C_MARIE_LAVEAU 7)
+(define C_VOODOO_HOUNFOUR 8)
+(define C_ANIMAL_MASKS 9)
+(define C_VEVE 10)
+(define C_DAMBALLAH 11)
+(define C_OGOUN_BADAGRIS 12)
+(define C_BLACK_VOODOO 13)
+(define C_RADA_DRUMS 15)
+(define C_SHATTENJAGER 14)
+(define C_GOING_OUT 16)
+(define C_CRIME_SCENE 17)
+(define C_HIMSELF 18)
+(define C_DETECTIVE_MOSELY 19)
+(define C_ANYTHING 20)
+(define C_LIKE_WORKING 21)
+(define C_PHOTOGRAPHS 22)
+(define C_AFTER_WORK 23)
+(define C_HOW_OLD 24)
+(define C_HERSELF 25)
+(define C_MESSAGES 26)
+(define C_MORE_MESSAGES 27)
+(define C_CANT_THINK 28)
+(define C_RITTER_PHONE 29)
+

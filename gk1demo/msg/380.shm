@@ -1,0 +1,53 @@
+;;; Sierra Script
+;;; 380.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_ALREADY_SITTING 1)
+(define C_FIRST_TIME 2)
+(define C_VISIT_RANDOM_1 3)
+(define C_VISIT_RANDOM_3 4)
+(define C_VISIT_RANDOM_4 5)
+(define C_VISIT_RANDOM_5 6)
+(define C_VISIT_RANDOM_6 7)
+(define C_SIT_DOWN 8)
+(define C_TALK_1 9)
+(define C_TALK_2 10)
+(define C_TALK_3 11)
+(define C_TALK_4 12)
+(define C_TALK_5 13)
+(define C_TALK_6 14)
+(define C_TALK_FIRST 15)
+(define C_GO_TO_ATTIC 16)
+(define C_GO_TO_ATTIC_AGAIN 17)
+(define C_EXIT_1 18)
+(define C_EXIT_2 19)
+(define C_EXIT_3 20)
+(define C_EXIT_4 21)
+(define C_EXIT_5 22)
+(define C_SHOW_SOMETHING 23)
+
+;;; NOUNS
+
+(define N_ROOM 1)
+(define N_EXIT 2)
+(define N_SOFA 3)
+(define N_FIREPLACE 4)
+(define N_STAIRS 5)
+(define N_GRANDPA_PIC 6)
+(define N_GRANDMA_PIC 7)
+(define N_CHAIR 8)
+(define N_FOREG_LAMP 9)
+(define N_FOREG_VASE 10)
+(define N_CLOCK 11)
+(define N_OVERH_LAMP 12)
+(define N_KNIT_BASKET 13)
+(define N_WOOD_BIN 14)
+(define N_MISC_PHOTOS 15)
+(define N_MAGAZINE_BIN 16)
+(define N_POT_PLANT 17)
+(define N_TABLE_LAMP 18)
+(define N_GRANNY 19)
+(define N_ENTER_HOUSE 20)
+

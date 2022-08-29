@@ -1,0 +1,36 @@
+;;; Sierra Script
+;;; 370.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 1)
+
+;;; CASES
+
+(define C_END_DEMO 25)
+(define C_DAY_1 1)
+(define C_COMMENT_1 2)
+(define C_POEM_1 3)
+(define C_DAY_2 4)
+(define C_COMMENT_2 5)
+(define C_COMMENT_3 6)
+(define C_POEM_2 7)
+(define C_DAY_3 8)
+(define C_COMMENT_4 9)
+(define C_MALIA_VISITS 10)
+(define C_POEM_3 11)
+(define C_DAY_4 12)
+(define C_COMMENT_5 13)
+(define C_MALIA_VISITS_AGAIN 14)
+(define C_POEM_4 15)
+(define C_DAY_5 16)
+(define C_COMMENT_6 17)
+(define C_COMMENT_7 18)
+(define C_DAMN 19)
+(define C_POEM_5 20)
+(define C_DAY_6 21)
+(define C_POEM_6 22)
+(define C_DAY_7 23)
+(define C_POEM_7 24)
+

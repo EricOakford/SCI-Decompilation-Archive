@@ -1,0 +1,32 @@
+;;; Sierra Script
+;;; 470.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_ENTER_GABRIEL 1)
+(define C_GET_CLAY 3)
+(define C_WALK_OFF 10)
+(define C_COPY_PATTERN 5)
+(define C_ALREADY_COPIED_PATTERN 6)
+(define C_ALREADY_GOT_CLAY 4)
+
+;;; NOUNS
+
+(define N_LAKE 2)
+(define N_ROOM 1)
+(define N_INTRO 11)
+(define N_CLAY 7)
+(define N_GRASS 14)
+(define N_SAND_INSET 16)
+(define N_PATTERN 10)
+(define N_CAGE_GRASS 9)
+(define N_CAGE_MARKS 12)
+(define N_POLICE_TAPE 15)
+(define N_LAKE_SCALE 13)
+(define N_ROAD 3)
+(define N_REFLECTOR 6)
+(define N_TREE 4)
+(define N_LEFT_GRASS 8)
+(define N_SAND 17)
+

@@ -1,0 +1,24 @@
+;;; Sierra Script
+;;; 440.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_POST_TAPPER 6)
+(define C_POST_TAPPER_AGAIN 7)
+(define C_PRE_TAPPER 8)
+(define C_PRE_TAPPER_AGAIN 9)
+(define C_GAVE_LUCKY_DOG 2)
+(define C_PRE_LUCKY_DOG 3)
+(define C_TALK_TAPPER 4)
+(define C_TALK_TAPPER_AGAIN 5)
+(define C_MIME_ANNOYS_BAND 1)
+
+;;; NOUNS
+
+(define N_BAND 1)
+(define N_BEIGNET_VENDOR 2)
+(define N_TAPPER 3)
+(define N_LUCKY_DOG_VENDOR 4)
+(define N_LUCKY_CART 10)
+

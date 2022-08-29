@@ -1,0 +1,18 @@
+;;; Sierra Script
+;;; 430.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_BAND 1)
+(define N_COP 6)
+(define N_VEIL 12)
+(define N_RADIO 7)
+(define N_BIKE 5)
+
+;;; CASES
+
+(define C_MIME_ANNOYS_COP 11)
+(define C_MIME_RUNS_AWAY 12)
+(define C_STUPID_MIME 33)
+
