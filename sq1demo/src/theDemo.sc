@@ -71,7 +71,7 @@
 					p_width theWidth
 					p_mode theMode
 					p_font theBackFont
-					dsSAVEPIXELS
+					p_save
 				)
 			)
 			(Display [theString 0]

@@ -182,7 +182,8 @@
 			stopUpd:
 		)
 		(if (and vaporized myID)
-			(self addToPic:))
+			(self addToPic:)
+		)
 	)
 	
 	(method (doit)
