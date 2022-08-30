@@ -84,17 +84,20 @@
 								)
 								(Print 53 0)
 							)
-							((Said '/cruncher') (Print 53 1))
-							((Said '/snake') (Print 53 2))
+							;EO: These said specs appear to have been
+							; decompiled wrong. They're fixed now, using the
+							; German Amiga version for reference.
+							((Said '/snake') (Print 53 1))
+							((Said '/tongue') (Print 53 2))
 						)
 					)
-					((Said 'kiss/cruncher') (Print 53 3))
-					((Said 'attack/cruncher') (Print 53 4))
+					((Said 'kiss/snake') (Print 53 3))
+					((Said 'attack/snake') (Print 53 4))
 					((Said 'jog') (Print 53 5))
-					((Said 'feed/cruncher') (Print 53 6))
-					((Said 'converse/cruncher') (Print 53 7))
-					((Said 'bridle/cruncher') (Print 53 8) (theGame changeScore: -5))
-					((Said 'charm/cruncher') (Print 53 9))
+					((Said 'feed/snake') (Print 53 6))
+					((Said 'converse/snake') (Print 53 7))
+					((Said 'bridle/snake') (Print 53 8) (theGame changeScore: -5))
+					((Said 'charm/snake') (Print 53 9))
 				)
 			else
 				FALSE

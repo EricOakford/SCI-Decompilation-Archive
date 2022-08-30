@@ -99,7 +99,7 @@
 							((Said '/banister,banister,beam')
 								(Print 700 21)
 							)
-							((Said '/partition,console[<leech,e,north,w]')
+							((Said '/partition,console[<north,south,east,west]')
 								(Print 700 22)
 							)
 							((Said '[<in,at,through]/debris,heap,iron,garbage,end,debris,scrap')

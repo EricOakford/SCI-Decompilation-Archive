@@ -173,12 +173,12 @@
 			(saidEvent
 				(cond 
 					((Said 'look/leg') (Print 43 0))
-					((Said 'look/feet,s') (Print 43 1))
+					((Said 'look/feet,toe') (Print 43 1))
 					(
 						(or
-							(Said 'devil,s')
-							(Said '/devil,s')
-							(Said '//devil,s')
+							(Said 'jam,toe')
+							(Said '/jam,toe')
+							(Said '//jam,toe')
 						)
 						(Print 43 2)
 					)
@@ -214,7 +214,7 @@
 					((or (Said 'get/cap') (Said 'get<up/cap')) (if (ego has: 6) (Print 43 8) else (Print 43 9)))
 					(
 						(Said
-							'look/box,table,glass,animal,animal,lawn,slime,display'
+							'look/box,table,glass,animal,animal,devil,slime,display'
 						)
 						(if (ego inRect: 189 110 246 130)
 							(Print 43 10)

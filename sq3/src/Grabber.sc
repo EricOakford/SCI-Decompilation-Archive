@@ -127,7 +127,7 @@
 							(Print 703 24)
 						)
 					)
-					((Said '/partition,console[<w,north,leech,w]')
+					((Said '/partition,console[<west,east,north,west]')
 						(Print 703 25)
 					)
 					((Said '/banister,banister,beam[<iron]')

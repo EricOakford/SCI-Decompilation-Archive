@@ -146,7 +146,7 @@
 					)
 					(
 					(or (Said '<up[/ceiling,!*]') (Said '[<up]/ceiling')) (Print 15 13))
-					((Said '/left,partition<w') (Print 15 14))
+					((Said '/left,partition<west') (Print 15 14))
 					((Said 'climb/support,cover') (Print 15 15))
 					((Said '/system,door[<garbage]') (Print 15 16))
 					((Said 'look/ladder')
@@ -158,7 +158,7 @@
 					)
 					(
 					(or (Said '<down[/deck,!*]') (Said '[<down]/deck')) (Print 15 18))
-					((Said '/partition[<leech,north,e]') (Print 15 19))
+					((Said '/partition[<north,east,south]') (Print 15 19))
 					((Said '/heap,artifact,chunk') (Print 15 20))
 					((Said '/support') (Print 15 21))
 					((Said '/cover') (Print 15 22))

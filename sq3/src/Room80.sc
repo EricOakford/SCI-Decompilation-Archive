@@ -78,7 +78,7 @@
 							((Said '/rock,banner,boulder') (Print 80 3))
 							((Said '/craft') (Print 80 4))
 							((or (Said '<up') (Said '/air')) (Print 80 5))
-							((or (Said '<down') (Said '/dirt,pass')) (Print 80 6))
+							((or (Said '<down') (Said '/dirt,lawn')) (Print 80 6))
 						)
 					)
 					((Said 'get,get/rock,banner') (Print 80 7))

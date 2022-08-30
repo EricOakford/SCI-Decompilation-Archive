@@ -84,7 +84,7 @@
 			(saidEvent
 				(if (Said 'look>')
 					(cond 
-						((Said '/door,corridor,partition,pit[<w]') (Print 12 0))
+						((Said '/door,corridor,partition,pit[<west]') (Print 12 0))
 						((Said '[<at,around,in][/area,!*]') (if (== global132 3) (Print 12 1) else (Print 12 2)))
 					)
 				)
