@@ -143,7 +143,7 @@
 					(Said 'break,open/pane,glass,aperture,port,(cavity<port)') (Print 3 13))
 					(
 						(Said
-							'hoist,manipulate,press,drag/craft,chute,bow,bow,tie,bore,acme,jup,2,(craft<flying)'
+							'hoist,manipulate,press,drag/craft,pod,bow,bow,tie,bore,acme,jup,2,(craft<flying)'
 						)
 						(Print 3 14)
 					)

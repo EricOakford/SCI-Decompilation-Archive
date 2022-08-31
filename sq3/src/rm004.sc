@@ -106,9 +106,9 @@
 								)
 								(Print 4 2)
 							)
-							((Said '/jup,craft,2,chute') (Print 4 3))
+							((Said '/jup,craft,2,pod') (Print 4 3))
 							(
-							(Said '[<in,in,through,at]/craft,pane,port,jup,2,chute') (Print 4 4))
+							(Said '[<in,in,through,at]/craft,pane,port,jup,2,pod') (Print 4 4))
 							((Said '/nozzle') (Print 4 5))
 							((Said '/cog,wheel') (Print 4 6))
 							((Said '/box,pulley,dome,pole') (Print 4 7))
@@ -133,9 +133,9 @@
 						)
 						(Print 4 11)
 					)
-					((Said 'climb[<on,up]/craft,chute,jup,2') (Print 4 12))
+					((Said 'climb[<on,up]/craft,pod,jup,2') (Print 4 12))
 					(
-					(Said 'hoist,manipulate,press,drag/craft,chute,jup,2') (Print 4 13))
+					(Said 'hoist,manipulate,press,drag/craft,pod,jup,2') (Print 4 13))
 					(
 						(Said
 							'bite,tickle,buff/appendage,appendage[<android,big,green]'

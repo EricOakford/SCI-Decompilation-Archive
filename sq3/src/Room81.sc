@@ -119,7 +119,7 @@
 								(Print 81 1)
 							)
 							((Said '/guard,man,flunky') (Print 81 2))
-							((Said '/sign,soft,dog,scumsoft') (Print 81 3))
+							((Said '/sign,soft,scum,scumsoft') (Print 81 3))
 							((Said '/door,entrance') (if (< (door y?) 142) (Print 81 4) else (Print 81 5)))
 						)
 					)
@@ -162,9 +162,9 @@
 					)
 					(
 						(or
-							(Said 'enter/soft,scumsoft,dog,sign,building')
-							(Said 'go<in/soft,scumsoft,dog,sign,building')
-							(Said 'go<to/soft,scumsoft,dog,sign,building')
+							(Said 'enter/soft,scumsoft,scum,sign,building')
+							(Said 'go<in/soft,scumsoft,scum,sign,building')
+							(Said 'go<to/soft,scumsoft,scum,sign,building')
 							(Said 'enter/door')
 						)
 						(curRoom newRoom: 85)

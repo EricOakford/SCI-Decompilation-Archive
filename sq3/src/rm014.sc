@@ -521,7 +521,7 @@
 							)
 							(
 								(or
-									(Said '/(comp[<scum]),control')
+									(Said '/(comp[<pilot]),control')
 									(Said '/comp[<comp]')
 								)
 								(cond 
@@ -606,7 +606,7 @@
 					)
 					(
 						(or
-							(Said 'go,look,(turn<on)/(comp[<scum]),control')
+							(Said 'go,look,(turn<on)/(comp[<pilot]),control')
 							(Said '/comp')
 						)
 						(cond 

@@ -127,7 +127,7 @@
 					)
 					(
 						(Said
-							'press,hoist,manipulate,open,get,remove/console,(iron[<mushroom])'
+							'press,hoist,manipulate,open,get,remove/console,(iron[<sheet])'
 						)
 						(Print 6 20)
 					)

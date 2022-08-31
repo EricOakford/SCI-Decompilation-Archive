@@ -88,11 +88,11 @@
 								(Print 5 2)
 							)
 							(
-							(Said '/mog,finger,head,appendage[<android,man]') (Print 5 3))
+							(Said '/skull,finger,head,appendage[<android,man]') (Print 5 3))
 							((Said '[<around,at,in][/area,!*]') (Print 5 4))
 						)
 					)
-					((Said 'converse/man,mog,android') (Print 5 5))
+					((Said 'converse/man,skull,android') (Print 5 5))
 					((Said 'climb,crawl/craft,stage') (Print 5 6))
 					((Said 'crawl/console') (Print 5 7))
 					((Said 'get/toaster') (Print 5 8))

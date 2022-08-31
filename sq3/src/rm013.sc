@@ -179,7 +179,7 @@
 								(Print 13 11)
 							)
 						)
-						((Said '/system,pedestal,bin')
+						((Said '/chute,pedestal,bin')
 							(if climbedOutOfReactorRoom
 								(Print 13 12)
 							else
@@ -228,7 +228,7 @@
 					)
 					(Print 13 24)
 				)
-				(if (Said 'enter,(go<in,in)/system') (Print 13 25))
+				(if (Said 'enter,(go<in,in)/chute') (Print 13 25))
 				(if
 					(or
 						(Said 'enter,board[/device,grabber,chair]')

@@ -159,7 +159,7 @@
 					)
 					((Said 'find,get/card') (Print 90 17))
 					(
-					(Said 'look/device,keylock,latch,card,girder,device')
+					(Said 'look/device,keylock,latch,card,system,device')
 						(if
 						(and (== theHallDoor eHallDoor) (== local3 95))
 							(Print 90 18)
@@ -167,7 +167,7 @@
 							(event claimed: FALSE)
 						)
 					)
-					((Said '*/device,keylock,latch,girder,device')
+					((Said '*/device,keylock,latch,system,device')
 						(if
 						(and (== theHallDoor eHallDoor) (== local3 95))
 							(Print 90 19)

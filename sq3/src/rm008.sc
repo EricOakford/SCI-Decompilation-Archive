@@ -133,7 +133,7 @@
 				(cond 
 					((Said '/scrap,iron,debris,garbage') (Print 8 0))
 					((Said '/handle[<craft,aluminum,door]') (if climbedUpMallard (Print 8 1) else (Print 8 2)))
-					((Said '/chute,(craft<little)')
+					((Said '/pod,(craft<little)')
 						(switch (= podMsg (Random 1 2))
 							(1 (Print 8 3))
 							(2 (Print 8 4))
@@ -147,7 +147,7 @@
 						(and
 							(not climbedUpMallard)
 							(Said
-								'[<in,through,in,in]/cavity[<chute,little,cavity,pyramid]'
+								'[<in,through,in,in]/cavity[<pod,little,cavity,pyramid]'
 							)
 						)
 						(if (ego inRect: 2 64 91 109)
@@ -158,9 +158,9 @@
 					)
 					(
 						(or
-							(Said '<in,in,in/chute,craft')
+							(Said '<in,in,in/pod,craft')
 							(Said '[<at,in,through,in]/pane,port,(cavity<port)')
-							(Said '/cabin,chair[<scum]')
+							(Said '/cabin,chair[<pilot]')
 						)
 						(cond 
 							((ego inRect: 44 105 87 116) (Print 8 11))
@@ -220,7 +220,7 @@
 			(Said '(play[<with]),use[/leggo,domino,artifact]') (Print 8 27))
 			(
 				(Said
-					'hoist,manipulate,press,drag/craft,chute,aluminum[<escape,big,little]'
+					'hoist,manipulate,press,drag/craft,pod,aluminum[<escape,big,little]'
 				)
 				(Print 8 28)
 			)
@@ -266,7 +266,7 @@
 			)
 			(
 				(Said
-					'use,erect,drop,stand,place[<up,on]/ladder/chute,(craft<little)'
+					'use,erect,drop,stand,place[<up,on]/ladder/pod,(craft<little)'
 				)
 				(Print 8 38)
 			)
@@ -290,8 +290,8 @@
 			)
 			(
 				(or
-					(Said 'open,enter,(get<in,in)/door<chute,(craft<little)')
-					(Said 'climb/chute,(craft<little,escape)')
+					(Said 'open,enter,(get<in,in)/door<pod,(craft<little)')
+					(Said 'climb/pod,(craft<little,escape)')
 				)
 				(Print 8 39)
 			)
@@ -337,13 +337,13 @@
 			(
 				(or
 					(Said
-						'enter,(climb<in,through,in,in)/cavity[<chute,little]'
+						'enter,(climb<in,through,in,in)/cavity[<pod,little]'
 					)
 					(Said
-						'reach,appendage<in,in,in/cavity,chute,craft[<little]'
+						'reach,appendage<in,in,in/cavity,pod,craft[<little]'
 					)
 					(Said
-						'reach,appendage<in,in,in/appendage/cavity,chute,craft[<little]'
+						'reach,appendage<in,in,in/appendage/cavity,pod,craft[<little]'
 					)
 				)
 				(if (ego inRect: 2 64 91 109)
@@ -386,7 +386,7 @@
 					(else (Print 8 54))
 				)
 			)
-			((Said 'climb[<in]/chute') (Print 8 55))
+			((Said 'climb[<in]/pod') (Print 8 55))
 			(
 				(or
 					(Said 'climb[<down,off]/ladder,craft,aluminum,aluminum')
@@ -1012,7 +1012,7 @@
 		(cond 
 			(
 			(or (event claimed?) (!= (event type?) saidEvent)) (return))
-			((Said 'look/craft,chute[<little]')
+			((Said 'look/craft,pod[<little]')
 				(switch (= podMsg (Random 1 2))
 					(1 (Print 8 75))
 					(2 (Print 8 76))

@@ -123,7 +123,7 @@
 									(Print 10 3)
 								)
 							)
-							((Said '/tackle,post,device') (if (== howFast 0) (Print 10 4) else (Print 10 5)))
+							((Said '/cruncher,post,device') (if (== howFast 0) (Print 10 4) else (Print 10 5)))
 							((Said '/conduit') (Print 10 6))
 							((Said '[<at,around,in][/area,!*]')
 								(cond 
@@ -136,7 +136,7 @@
 					)
 					(
 						(Said
-							'climb,descend,(climb[<up,down,on,onto])/conduit,sheet[<iron]'
+							'climb,descend,(climb[<up,down,on,onto])/conduit,support[<iron]'
 						)
 						(Print 10 10)
 					)

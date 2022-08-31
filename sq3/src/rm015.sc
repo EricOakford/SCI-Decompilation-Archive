@@ -100,7 +100,7 @@
 					((Said '[<around,at,in][/area,!*]') (if (InRoom iReactor) (Print 15 0) else (Print 15 1)))
 					((Said '/lamp') (if (InRoom iReactor) (Print 15 2) else (Print 15 3)))
 					((Said '/cable') (Print 15 4))
-					((and local0 (Said '/hook')) (Print 15 5))
+					((and local0 (Said '/dog')) (Print 15 5))
 					((and local0 (Said '/mice,animal,animal')) (Print 15 6))
 					((or (Said '/hal<cable') (Said '/cable<hal'))
 						(if (ego inRect: 0 125 38 155)
@@ -147,8 +147,8 @@
 					(
 					(or (Said '<up[/ceiling,!*]') (Said '[<up]/ceiling')) (Print 15 13))
 					((Said '/left,partition<west') (Print 15 14))
-					((Said 'climb/support,cover') (Print 15 15))
-					((Said '/system,door[<garbage]') (Print 15 16))
+					((Said 'climb/wing,cover') (Print 15 15))
+					((Said '/chute,door[<garbage]') (Print 15 16))
 					((Said 'look/ladder')
 						(if (InRoom iLadder)
 							(Print 15 17)
@@ -160,7 +160,7 @@
 					(or (Said '<down[/deck,!*]') (Said '[<down]/deck')) (Print 15 18))
 					((Said '/partition[<north,east,south]') (Print 15 19))
 					((Said '/heap,artifact,chunk') (Print 15 20))
-					((Said '/support') (Print 15 21))
+					((Said '/wing') (Print 15 21))
 					((Said '/cover') (Print 15 22))
 				)
 			)
@@ -219,7 +219,7 @@
 							(Print 15 28)
 						)
 					)
-					((Said '/artifact,support,cover') (Print 15 29))
+					((Said '/artifact,wing,cover') (Print 15 29))
 					((Said '/generator')
 						(if (InRoom iReactor)
 							(if (ego inRect: 0 125 38 155)
@@ -263,11 +263,11 @@
 			)
 			(
 				(Said
-					'climb,crawl[<through,up,on]/partition,cavity,system'
+					'climb,crawl[<through,up,on]/partition,cavity,chute'
 				)
 				(Print 15 33)
 			)
-			((Said 'use,afix,(jar<up)/generator')
+			((Said 'use,afix,(hook<up)/generator')
 				(if (or (ego has: iReactor) (InRoom iReactor))
 					(Print 15 34)
 				else
@@ -288,7 +288,7 @@
 					(Print 15 36)
 				)
 			)
-			((Said 'open/system,door') (Print 15 37))
+			((Said 'open/chute,door') (Print 15 37))
 		)
 	)
 	
