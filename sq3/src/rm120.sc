@@ -196,7 +196,7 @@
 						(and
 							(or
 								(== (event message?) `J)
-								(== (event message?) `J)
+								(== (event message?) `j)
 							)
 							canEgoFight
 						)
@@ -206,7 +206,7 @@
 						(and
 							(or
 								(== (event message?) `M)
-								(== (event message?) `M)
+								(== (event message?) `m)
 							)
 							canEgoFight
 						)
@@ -216,7 +216,7 @@
 						(and
 							(or
 								(== (event message?) `N)
-								(== (event message?) `N)
+								(== (event message?) `n)
 							)
 							canEgoFight
 						)

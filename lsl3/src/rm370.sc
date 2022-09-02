@@ -252,14 +252,14 @@
 				else
 					(Print 370 10)
 					;EO: this input was the undecompilable part.
-					; It should be tested to make sure it works properly.
-					(if (<= inputNum1 0)
+					; It works without issue.
+					(while (<= inputNum1 0)
 						(= inputNum1 (GetNumber {First number:}))
 					)
-					(if (<= inputNum2 0)
+					(while (<= inputNum2 0)
 						(= inputNum2 (GetNumber {Second number:}))
 					)
-					(if (<= inputNum3 0)
+					(while (<= inputNum3 0)
 						(= inputNum3 (GetNumber {Third number:}))
 					)
 					(Printf 370 11 inputNum1 inputNum1 inputNum2 inputNum3)

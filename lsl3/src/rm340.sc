@@ -426,8 +426,9 @@
 	)
 	
 	(method (changeState newState &tmp [str 200] [len 4] temp204 temp205 temp206 temp207 i)
-		;EO: this method has been successfully decompiled!
-		; It should be tested to make sure it works properly.
+		;EO: this method has been successfully decompiled,
+		; but has a problem noted below. Fortunately, this sequence can still
+		; be completed.
 		(switch (= state newState)
 			(0)
 			(1
@@ -475,13 +476,16 @@
 				(= ethnic1Str 0)
 				(= ethnic2Str 0)
 				(= ethnic3Str 0)
-				(if (u> 3 (StrLen @ethnic1Str))
+				;BUG: this doesn't seem to work properly,
+				; as /1, /2, and /3 are printed instead of the
+				; input
+				(while (> 3 (StrLen @ethnic1Str))
 					(GetInput @ethnic1Str 15 {Ethnic group #1:})
 				)
-				(if (u> 3 (StrLen @ethnic2Str))
+				(while (> 3 (StrLen @ethnic2Str))
 					(GetInput @ethnic2Str 15 {Ethnic group #2:})
 				)
-				(if (u> 3 (StrLen @ethnic3Str))
+				(while (> 3 (StrLen @ethnic3Str))
 					(GetInput @ethnic3Str 15 {Ethnic group #3:})
 				)
 				(Print 340 48)
