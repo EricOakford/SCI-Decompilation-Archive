@@ -232,13 +232,12 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				;this appears to be the problematic code
-;;;				(if (< (Random 1 100) 10)
-;;;					(repeat
-;;;						(!= (= local2 (Random 0 7)) local0)
-;;;					)
-;;;					(= local0 local2)
-;;;				)
+				(if (< (Random 1 100) 10)
+					(while
+						(!= (= local2 (Random 0 7)) local0)
+					)
+					(= local0 local2)
+				)
 				(= local1 (Random 1 [local11 [local3 local0]]))
 				(butterfly setMotion: MoveTo
 						[local11 (+ [local3 local0] (- (* local1 2) 1))]
