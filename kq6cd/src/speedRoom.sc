@@ -6,6 +6,7 @@
 (use Game)
 (use Actor)
 (use System)
+(use DebugHandler)
 
 (public
 	speedRoom 0
@@ -28,7 +29,7 @@
 		(if debugging
 			(theIconBar enable:)
 			(theGame handsOn:)
-			(__proc911_1)
+			(proc911_1)
 			(theGame handsOff:)
 		else
 			(self setScript: speedTest)
