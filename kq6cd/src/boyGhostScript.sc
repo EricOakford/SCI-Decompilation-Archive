@@ -31,7 +31,7 @@
 
 (procedure (localproc_0b4d)
 	(if (not ((ScriptID 820 4) cycler?))
-		((ScriptID 820 4) startUpd: setCycle: Fwd)
+		((ScriptID 820 4) startUpd: setCycle: Forward)
 		((ScriptID 820 5) startUpd: setCycle: RandCycle)
 	)
 )
@@ -62,7 +62,7 @@
 					y: 118
 					cycleSpeed: 10
 					show:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -119,14 +119,14 @@
 					view: 763
 					setLoop: 7
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11
-				(boyGhost setCycle: End self)
+				(boyGhost setCycle: EndLoop self)
 			)
 			(12
-				(boyGhost setLoop: 3 cel: 0 posn: 229 70 setCycle: Fwd)
+				(boyGhost setLoop: 3 cel: 0 posn: 229 70 setCycle: Forward)
 				(= seconds 5)
 			)
 			(13
@@ -143,26 +143,26 @@
 			)
 			(15
 				(localproc_0b4d)
-				(boyGhost setCycle: Beg self)
+				(boyGhost setCycle: BegLoop self)
 			)
 			(16
 				(boyGhost
 					setLoop: 4
 					cel: 0
 					posn: 155 88
-					setCycle: CT 10 1 self
+					setCycle: CycleTo 10 1 self
 				)
 			)
 			(17
 				(ego reset: 0)
-				(boyGhost setCycle: End self)
+				(boyGhost setCycle: EndLoop self)
 			)
 			(18
 				(boyGhost
 					setLoop: 5
 					cel: 0
 					posn: 229 88
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(19
@@ -176,7 +176,7 @@
 					cel: 0
 					posn: 85 151
 					show:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(21
@@ -199,7 +199,7 @@
 				(theGame handsOff:)
 				(localproc_0b4d)
 				(if (and (== (boyGhost loop?) 1) (boyGhost cel?))
-					(boyGhost setCycle: Beg self)
+					(boyGhost setCycle: BegLoop self)
 				else
 					(= cycles 1)
 				)
@@ -209,7 +209,7 @@
 					setLoop: 2
 					cel: 0
 					posn: 241 96
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(2
@@ -236,7 +236,7 @@
 				(if local0 (self dispose:) else (= seconds 3))
 			)
 			(5
-				(boyGhost setCycle: CT 0 -1 self)
+				(boyGhost setCycle: CycleTo 0 -1 self)
 			)
 			(6
 				(boyGhost setLoop: 1 cel: 0 posn: 258 117)
@@ -281,7 +281,7 @@
 				(0
 					(boyGhost view: 763 setLoop: 1 x: 258 y: 117)
 					(if (boyGhost cel?)
-						(boyGhost setCycle: Beg self)
+						(boyGhost setCycle: BegLoop self)
 					else
 						(= cycles 1)
 					)
@@ -299,10 +299,10 @@
 					(localproc_0b4d)
 					(if (and (not local1) (== local2 30)) (= local2 0))
 					(if caller (caller cue:) (= caller 0))
-					(boyGhost setCycle: End self)
+					(boyGhost setCycle: EndLoop self)
 				)
 				(3
-					(boyGhost setCycle: CT 2 -1 self)
+					(boyGhost setCycle: CycleTo 2 -1 self)
 				)
 				(4
 					(if (and (not local1) (== local2 30))
@@ -362,7 +362,7 @@
 					cel: 7
 					x: 260
 					y: 118
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(10
@@ -385,7 +385,7 @@
 			(12
 				(ego setPri: 9)
 				(soundFx2 number: 821 loop: 1 play:)
-				((ScriptID 820 3) setPri: 10 setCycle: End self)
+				((ScriptID 820 3) setPri: 10 setCycle: EndLoop self)
 			)
 			(13
 				(localproc_0b12)
@@ -408,7 +408,7 @@
 			)
 			(16
 				(localproc_0b4d)
-				((ScriptID 820 3) setCycle: Beg self)
+				((ScriptID 820 3) setCycle: BegLoop self)
 				(soundFx2 number: 822 loop: 1 play:)
 			)
 			(17
@@ -427,7 +427,7 @@
 			(0
 				(boyGhost view: 763 setLoop: 1 x: 258 y: 117)
 				(if (boyGhost cel?)
-					(boyGhost setCycle: Beg self)
+					(boyGhost setCycle: BegLoop self)
 				else
 					(= cycles 1)
 				)
@@ -436,7 +436,7 @@
 				(KQ6Print posn: -1 10 say: 0 1 0 5 register init: self)
 			)
 			(2
-				(boyGhost setCycle: End self)
+				(boyGhost setCycle: EndLoop self)
 			)
 			(3 (self dispose:))
 		)

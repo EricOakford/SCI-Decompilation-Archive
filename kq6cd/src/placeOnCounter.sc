@@ -44,7 +44,7 @@
 				(= ticks 6)
 			)
 			(3
-				((ScriptID 280 2) setCycle: CT 1 1 self)
+				((ScriptID 280 2) setCycle: CycleTo 1 1 self)
 			)
 			(4 (= ticks 6))
 			(5
@@ -64,7 +64,7 @@
 				(= ticks 6)
 			)
 			(6
-				((ScriptID 280 2) setCycle: CT 3 1 self)
+				((ScriptID 280 2) setCycle: CycleTo 3 1 self)
 			)
 			(7
 				(switch register
@@ -81,7 +81,7 @@
 						((ScriptID 280 2) lastCel:)
 						((ScriptID 280 2) cel?)
 					)
-					((ScriptID 280 2) setCycle: End self)
+					((ScriptID 280 2) setCycle: EndLoop self)
 				else
 					(= cycles 2)
 				)
@@ -145,7 +145,7 @@
 				(= cycles 3)
 			)
 			(1
-				((ScriptID 280 2) setCycle: Beg self)
+				((ScriptID 280 2) setCycle: BegLoop self)
 			)
 			(2 (= cycles 2))
 			(3
@@ -158,7 +158,7 @@
 					setPri: -1
 					loop: 3
 					cel: 1
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(5 0)

@@ -81,11 +81,11 @@
 			)
 			(2
 				(soundFx number: 455 setLoop: 1)
-				(touchGnome setLoop: 1 cel: 0 setCycle: CT 6 1 self)
+				(touchGnome setLoop: 1 cel: 0 setCycle: CycleTo 6 1 self)
 			)
 			(3
 				(soundFx play:)
-				(touchGnome setCycle: End self)
+				(touchGnome setCycle: EndLoop self)
 			)
 			(4
 				(soundFx play:)
@@ -93,17 +93,17 @@
 			)
 			(5
 				(if (== register 68)
-					(touchGnome setLoop: 4 cel: 0 setCycle: End self)
+					(touchGnome setLoop: 4 cel: 0 setCycle: EndLoop self)
 				else
 					(self setScript: failScript 0 register)
 				)
 			)
 			(6
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(touchGnome setLoop: 3)
 				(touchGnome
 					cel: (- (NumCels touchGnome) 1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(7 0)
@@ -137,7 +137,7 @@
 				(cond 
 					(
 					(or ((ScriptID 40 0) alexInvisible?) (== register 31)) (self state: (+ state 1) cue:))
-					(register (ego setCycle: End self))
+					(register (ego setCycle: EndLoop self))
 					(else (= cycles 1))
 				)
 			)
@@ -153,7 +153,7 @@
 			(2
 				(if (not register)
 					(soundFx number: 455 setLoop: 1)
-					(touchGnome setLoop: 1 cel: 0 setCycle: CT 6 1 self)
+					(touchGnome setLoop: 1 cel: 0 setCycle: CycleTo 6 1 self)
 				else
 					(= cycles 1)
 				)
@@ -161,7 +161,7 @@
 			(3
 				(if (not register)
 					(soundFx play:)
-					(touchGnome setCycle: End self)
+					(touchGnome setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
@@ -175,7 +175,7 @@
 				)
 			)
 			(5
-				(touchGnome setLoop: 2 cel: 0 setCycle: End self)
+				(touchGnome setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(6
 				(Bset 59)
@@ -187,13 +187,13 @@
 			)
 			(7
 				(touchGnome cel: 4)
-				(touchGnome setCycle: Beg self)
+				(touchGnome setCycle: BegLoop self)
 			)
 			(8
 				(touchGnome setLoop: 3)
 				(touchGnome
 					cel: (touchGnome lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(Bclr 59)
 			)

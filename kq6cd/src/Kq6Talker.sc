@@ -4,7 +4,7 @@
 (use Main)
 (use Kq6Window)
 (use Print)
-(use DIcon)
+(use Dialog)
 (use Talker)
 
 (public

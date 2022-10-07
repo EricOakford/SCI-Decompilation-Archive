@@ -82,7 +82,7 @@
 			)
 			(3
 				(soundFx number: 453 setLoop: 1 play:)
-				(smellGnome setLoop: 1 cel: 0 setCycle: End self)
+				(smellGnome setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(if (== register 47)
@@ -90,7 +90,7 @@
 						setLoop: 4
 						cel: 0
 						cycleSpeed: 12
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(self setScript: failScript 0 register)
@@ -100,12 +100,12 @@
 				(smellGnome setLoop: 3 cycleSpeed: 6)
 				(smellGnome
 					cel: (smellGnome lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(6
 				(smellGnome cycleSpeed: 6 setLoop: 0 cel: 0)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(7
 				(if ((ScriptID 40 0) alexX?)
@@ -137,7 +137,7 @@
 				(cond 
 					(
 					(or ((ScriptID 40 0) alexInvisible?) (== register 31)) (self state: (+ state 1) cue:))
-					(register (ego setCycle: End self))
+					(register (ego setCycle: EndLoop self))
 					(else (= cycles 1))
 				)
 			)
@@ -149,14 +149,14 @@
 				)
 				(if (!= (ego view?) 900) (ego reset: 1))
 				(if (not register)
-					(smellGnome setLoop: 1 cel: 0 setCycle: End self)
+					(smellGnome setLoop: 1 cel: 0 setCycle: EndLoop self)
 					(soundFx number: 453 setLoop: 1 play:)
 				else
 					(= cycles 1)
 				)
 			)
 			(2
-				(smellGnome setLoop: 2 cel: 0 setCycle: End self)
+				(smellGnome setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(Bset 59)
@@ -170,7 +170,7 @@
 				(smellGnome setLoop: 3 cycleSpeed: 6)
 				(smellGnome
 					cel: (smellGnome lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(Bclr 59)
 			)

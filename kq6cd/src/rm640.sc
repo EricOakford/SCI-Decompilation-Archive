@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use KQ6Print)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Scaler)
 (use MoveCyc)
@@ -208,13 +208,13 @@
 				(if (> (ego x?) 129)
 					(ego
 						setLoop: 6
-						setCycle: Rev
+						setCycle: Reverse
 						setMotion: MoveTo (- (ego x?) 4) (+ (ego y?) 7) self
 					)
 				else
 					(ego
 						setLoop: 3
-						setCycle: Rev
+						setCycle: Reverse
 						setMotion: MoveTo (ego x?) (+ (ego y?) 7) self
 					)
 				)
@@ -711,7 +711,7 @@
 						cel: 0
 						posn: (keyMaster x?) (keyMaster y?)
 						cycleSpeed: 0
-						setCycle: MCyc @local8 self
+						setCycle: MoveCycle @local8 self
 					)
 					(theGlobalSound number: 825 loop: 1)
 				else
@@ -721,7 +721,7 @@
 			(6
 				(if (and (not (ego has: 44)) (not (Btst 115)))
 					(theGlobalSound play:)
-					(boneKey setCycle: MCyc @local45 self)
+					(boneKey setCycle: MoveCycle @local45 self)
 				else
 					(= cycles 1)
 				)
@@ -865,7 +865,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client setCycle: MCyc @local62 self)
+				(client setCycle: MoveCycle @local62 self)
 			)
 			(1
 				(if (== (curRoom script?) playXylophone)

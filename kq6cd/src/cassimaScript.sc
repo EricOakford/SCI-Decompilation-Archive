@@ -53,7 +53,7 @@
 					scaleY: 128
 					posn: 267 165
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -131,7 +131,7 @@
 			)
 			(6
 				(theIconBar enable:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(7
 				(ego posn: 228 157 reset: 0)
@@ -289,12 +289,12 @@
 					posn: 133 79
 					show:
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (= cycles 30))
 			(5
-				(cassHead cycleSpeed: 6 setCycle: Beg self)
+				(cassHead cycleSpeed: 6 setCycle: BegLoop self)
 			)
 			(6
 				(cassHead hide:)
@@ -394,7 +394,7 @@
 					cel: 0
 					posn: 173 83
 					show:
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 			)
 			(1
@@ -407,12 +407,12 @@
 					loop: 4
 					cel: 0
 					posn: 113 86
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(3
-				(cassArm setCycle: End self)
-				(alexArm setCycle: End)
+				(cassArm setCycle: EndLoop self)
+				(alexArm setCycle: EndLoop)
 			)
 			(4
 				(cassHead
@@ -439,13 +439,13 @@
 				(messager say: 5 61 22 2 self)
 			)
 			(8
-				(cassArm setCycle: CT 2 -1 self)
-				(alexArm setCycle: CT 2 -1 self)
+				(cassArm setCycle: CycleTo 2 -1 self)
+				(alexArm setCycle: CycleTo 2 -1 self)
 			)
 			(9 0)
 			(10
-				(alexArm setCycle: Beg self)
-				(cassArm setCycle: Beg self)
+				(alexArm setCycle: BegLoop self)
+				(cassArm setCycle: BegLoop self)
 			)
 			(11 0)
 			(12
@@ -480,7 +480,7 @@
 					x: 172
 					y: 84
 					show:
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 			)
 			(1 (messager say: 5 8 0 1 self))
@@ -492,19 +492,19 @@
 					cel: 0
 					x: 113
 					y: 86
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(3
 				(cassArm cel: 3)
-				(alexArm setCycle: End self)
+				(alexArm setCycle: EndLoop self)
 			)
 			(4
 				(alexArm hide:)
 				(= cycles 2)
 			)
 			(5 (messager say: 5 8 0 2 self))
-			(6 (cassArm setCycle: End self))
+			(6 (cassArm setCycle: EndLoop self))
 			(7
 				(cassArm loop: 1 cel: 0 stopUpd:)
 				(theGame handsOn:)
@@ -530,7 +530,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(cassima cycleSpeed: 8 setCycle: End self)
+				(cassima cycleSpeed: 8 setCycle: EndLoop self)
 			)
 			(1 (self dispose:))
 		)
@@ -548,7 +548,7 @@
 					cel: 0
 					posn: 140 108
 					setPri: 13
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -614,12 +614,12 @@
 					posn: 172 84
 					show:
 					cycleSpeed: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9 (self dispose:))
 			(10
-				(alexArm cel: 1 cycleSpeed: 8 setCycle: Beg self)
+				(alexArm cel: 1 cycleSpeed: 8 setCycle: BegLoop self)
 			)
 			(11
 				(alexArm view: 7832 hide:)

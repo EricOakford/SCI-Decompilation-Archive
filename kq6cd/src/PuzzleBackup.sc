@@ -706,7 +706,7 @@
 					cel: 0
 					cycleSpeed: 12
 					posn: (- (ego x?) 7) (+ (ego y?) 19)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(rCliffs stepDirection: 1)
 			)
@@ -742,7 +742,7 @@
 					cel: 0
 					cycleSpeed: 12
 					posn: (+ (ego x?) temp1) (+ (ego y?) temp2)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -978,7 +978,7 @@
 					cel: 0
 					cycleSpeed: 12
 					posn: (+ (ego x?) temp1) (+ (ego y?) temp2)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(20
@@ -1068,12 +1068,12 @@
 					normal: 0
 					cycleSpeed: 6
 					setLoop: (if (== (ego loop?) 1) 1 else 0)
-					setCycle: CT 10 1 self
+					setCycle: CycleTo 10 1 self
 				)
 			)
 			(2
 				(soundFx number: 306 setLoop: 1 play: self)
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 			)
 			(3 (ego y: 280) (= seconds 2))
 			(4

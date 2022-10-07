@@ -82,13 +82,13 @@
 				)
 			)
 			(4
-				(glint1 init: setCycle: End self)
-				(glint2 init: setCycle: End)
+				(glint1 init: setCycle: EndLoop self)
+				(glint2 init: setCycle: EndLoop)
 			)
 			(5
 				(theMusic number: 746 loop: -1 play:)
-				(glint1 setCycle: Beg self)
-				(glint2 setCycle: Beg)
+				(glint1 setCycle: BegLoop self)
+				(glint2 setCycle: BegLoop)
 			)
 			(6
 				((ScriptID 740 7)
@@ -108,7 +108,7 @@
 				(saladinArm cel: 2 startUpd:)
 				(if
 				(not (= register ((ScriptID 80 0) tstFlag: 709 128)))
-					(saladinArm setCycle: Beg self)
+					(saladinArm setCycle: BegLoop self)
 				else
 					(saladinArm setScript: drawSword self)
 					(= cycles 1)
@@ -124,7 +124,7 @@
 				)
 			)
 			(10
-				(saladinArm setScript: 0 setCycle: End self)
+				(saladinArm setScript: 0 setCycle: EndLoop self)
 			)
 			(11 (= cycles 3))
 			(12
@@ -182,7 +182,7 @@
 				(drawSword caller: 0)
 				(saladinArm setScript: 0)
 				(if (saladinArm cel?)
-					(saladinArm setCycle: Beg self)
+					(saladinArm setCycle: BegLoop self)
 				else
 					(= cycles 1)
 				)
@@ -191,8 +191,8 @@
 				(messager say: 4 13 0 1 self 160)
 			)
 			(2
-				(genieHead init: cel: 1 setCycle: End)
-				(mirror init: cel: 0 cycleSpeed: 15 setCycle: End self)
+				(genieHead init: cel: 1 setCycle: EndLoop)
+				(mirror init: cel: 0 cycleSpeed: 15 setCycle: EndLoop self)
 			)
 			(3
 				(theGame givePoints: 3)

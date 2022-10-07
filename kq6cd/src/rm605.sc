@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use KQ6Print)
-(use NewRoomCue)
+(use KQ6Room)
 (use Polygon)
 
 (public

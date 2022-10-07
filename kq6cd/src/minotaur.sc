@@ -85,7 +85,7 @@
 					((ScriptID 30 0) scarfOnMino: 1)
 					(ego view: 441 normal: 0 setLoop: 0 cel: 0)
 					(UnLoad 128 900)
-					(minotaur cycleSpeed: 6 setCycle: Fwd)
+					(minotaur cycleSpeed: 6 setCycle: Forward)
 					(minoTrigger state: 19 register: 72 cue:)
 					(theGame handsOff:)
 					(theGame givePoints: 3)
@@ -263,7 +263,7 @@
 				(= ticks 6)
 			)
 			(17
-				(minotaur cycleSpeed: 6 setCycle: Fwd)
+				(minotaur cycleSpeed: 6 setCycle: Forward)
 				(= ticks 8)
 			)
 			(18
@@ -386,7 +386,7 @@
 			)
 			(8
 				(if ((ScriptID 30 0) scarfOnMino?)
-					(ego cel: 0 setScript: 0 setCycle: End)
+					(ego cel: 0 setScript: 0 setCycle: EndLoop)
 					(minotaur
 						cel: 6
 						posn: (+ (minotaur x?) 14) (minotaur y?)
@@ -404,7 +404,7 @@
 					cel: 0
 					cycleSpeed: 1
 					posn: (+ (minotaur x?) 22) (+ (minotaur y?) 1)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(UnLoad 128 4442)
 				(= cycles 2)
@@ -489,7 +489,7 @@
 					setLoop: 1
 					posn: (+ (ego x?) 10) (ego y?)
 					cycleSpeed: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 				(minotaur
 					view: 4443
@@ -509,8 +509,8 @@
 				)
 			)
 			(2
-				(ego setCycle: End self)
-				(minotaur setCycle: End self)
+				(ego setCycle: EndLoop self)
+				(minotaur setCycle: EndLoop self)
 			)
 			(3)
 			(4
@@ -641,7 +641,7 @@
 					setLoop: 2
 					cycleSpeed: 12
 					posn: 110 150
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -649,7 +649,7 @@
 			)
 			(5
 				(soundFx2 number: 445 setLoop: -1 play:)
-				(ego setLoop: 3 setCycle: Fwd)
+				(ego setLoop: 3 setCycle: Forward)
 				(Bclr 161)
 				(= seconds 5)
 			)
@@ -660,7 +660,7 @@
 					setLoop: 1
 					cel: 0
 					cycleSpeed: 6
-					setCycle: CT 2 1
+					setCycle: CycleTo 2 1
 				)
 				(ego
 					posn: 119 149
@@ -675,7 +675,7 @@
 			)
 			(8
 				(ego setHeading: 90)
-				(celeste setCycle: End self)
+				(celeste setCycle: EndLoop self)
 			)
 			(9
 				(myConv

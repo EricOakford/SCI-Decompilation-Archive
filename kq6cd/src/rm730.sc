@@ -143,7 +143,7 @@
 		((ScriptID 80 6) noun: 4)
 		(super init: &rest)
 		(ego init:)
-		(candles setCycle: Fwd init:)
+		(candles setCycle: Forward init:)
 		(switch prevRoomNum
 			(740
 				(ego
@@ -317,7 +317,7 @@
 			(1
 				(soundFx2 number: 901 loop: 1 play:)
 				(soundFx number: 731 loop: -1 play:)
-				(kitchenDoor setCycle: End self)
+				(kitchenDoor setCycle: EndLoop self)
 			)
 			(2
 				(soundFx2 stop:)
@@ -331,7 +331,7 @@
 			)
 			(5
 				(soundFx stop:)
-				(kitchenDoor setCycle: Beg self)
+				(kitchenDoor setCycle: BegLoop self)
 			)
 			(6
 				(messager say: 8 5 0 3 self oneOnly: 0)
@@ -465,7 +465,7 @@
 				)
 				(throneDoor startUpd: cel: 2 stopUpd:)
 				(ego
-					setCycle: Rev
+					setCycle: Reverse
 					setLoop: -1
 					setLoop: 6
 					setMotion: MoveTo 141 131 self
@@ -473,20 +473,20 @@
 			)
 			(5
 				(ego setCycle: StopWalk -1)
-				(saladin setCycle: CT 2 1 self)
+				(saladin setCycle: CycleTo 2 1 self)
 			)
 			(6
 				(DisposeScript 969)
 				(soundFx2 number: 901 loop: 1 play:)
-				(saladin setCycle: End self)
-				(throneDoor setCycle: End)
+				(saladin setCycle: EndLoop self)
+				(throneDoor setCycle: EndLoop)
 			)
 			(7 (= cycles 20))
 			(8
 				(soundFx2 stop:)
-				(saladin setLoop: 7 cel: 9 setPri: 9 setCycle: Beg self)
+				(saladin setLoop: 7 cel: 9 setPri: 9 setCycle: BegLoop self)
 				(soundFx2 number: 652 setLoop: 1 play:)
-				(throneDoor setCycle: Beg throneDoor)
+				(throneDoor setCycle: BegLoop throneDoor)
 			)
 			(9
 				(= register (if (Btst 72) 11 else 10))
@@ -507,7 +507,7 @@
 					setLoop: 1
 					cel: 0
 					posn: 140 133
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(13
@@ -541,24 +541,24 @@
 			)
 			(15
 				(theMusic number: 705 setLoop: 1 play:)
-				(saladin setLoop: 4 cel: 0 setCycle: End self)
+				(saladin setLoop: 4 cel: 0 setCycle: EndLoop self)
 				(theGlobalSound number: 756 setLoop: 1 play:)
 			)
 			(16
-				(saladin cycleSpeed: 8 setCycle: CT 2 -1 self)
+				(saladin cycleSpeed: 8 setCycle: CycleTo 2 -1 self)
 			)
 			(17
 				(ego
 					setLoop: 8
 					cel: 0
 					cycleSpeed: 5
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(18 (= cycles 10))
 			(19
 				(theGlobalSound number: 971 setLoop: 1 play: self)
-				(ego cycleSpeed: 8 setCycle: End self)
+				(ego cycleSpeed: 8 setCycle: EndLoop self)
 			)
 			(20 (EgoDead 32))
 		)
@@ -604,11 +604,11 @@
 					scaleX: 90
 					scaleY: 90
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3 (= seconds 3))
-			(4 (ego setCycle: Beg self))
+			(4 (ego setCycle: BegLoop self))
 			(5
 				(ego posn: 173 127 reset: 5 setSpeed: 8)
 				(= cycles 3)
@@ -643,11 +643,11 @@
 					x: 38
 					y: 175
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6 (messager say: 1 0 8 2 self))
-			(7 (ego setCycle: Beg self))
+			(7 (ego setCycle: BegLoop self))
 			(8
 				(ego reset: 4 posn: 19 166 setSpeed: 8)
 				(= cycles 4)
@@ -675,7 +675,7 @@
 					cel: 0
 					setPri: 9
 					posn: 140 133
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -685,7 +685,7 @@
 			(4
 				(roomConv add: -1 6 61 21 4 init: self)
 			)
-			(5 (saladin setCycle: Beg self))
+			(5 (saladin setCycle: BegLoop self))
 			(6
 				(roomConv
 					add: -1 6 61 21 5
@@ -700,7 +700,7 @@
 					setLoop: 7
 					cel: 0
 					posn: 160 123
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(soundFx2 number: 652 setLoop: 1 play:)
 			)
@@ -736,7 +736,7 @@
 				(= cycles 8)
 			)
 			(13
-				(throneDoor setCycle: End self)
+				(throneDoor setCycle: EndLoop self)
 				(soundFx2 number: 901 setLoop: 1 play:)
 			)
 			(14
@@ -772,7 +772,7 @@
 			(0
 				(theGame handsOff:)
 				(soundFx2 number: 901 loop: 1 play:)
-				(throneDoor setCycle: End self)
+				(throneDoor setCycle: EndLoop self)
 			)
 			(1
 				(soundFx2 stop:)
@@ -837,10 +837,10 @@
 					scaleX: 128
 					scaleY: 128
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(2 (ego setCycle: Beg self))
+			(2 (ego setCycle: BegLoop self))
 			(3 (messager say: 7 5 0 0 self))
 			(4
 				(ego reset: 0)

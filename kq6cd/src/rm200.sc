@@ -2,7 +2,7 @@
 (script# 200)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Inset)
 (use Scaler)
@@ -224,7 +224,7 @@
 						(if
 							(and
 								(not ((ego cycler?) isKindOf: StopWalk))
-								(not ((ego cycler?) isKindOf: Rev))
+								(not ((ego cycler?) isKindOf: Reverse))
 							)
 							(ego setCycle: StopWalk -1)
 						)
@@ -251,7 +251,7 @@
 							setMotion: 0
 							normal: 0
 							setSpeed: 8
-							setCycle: Rev
+							setCycle: Reverse
 						)
 						(repeat
 							(ego y: (- (ego y?) 1))
@@ -579,7 +579,7 @@
 					cel: 0
 					normal: 0
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 					heading: 200
 					setMotion: MoveFwd 200
 				)
@@ -605,19 +605,19 @@
 					loop: 1
 					cel: 8
 					setScale: 0
-					setCycle: CT 5 -1 self
+					setCycle: CycleTo 5 -1 self
 				)
 			)
 			(1
 				(plank cel: 0 hide:)
-				(ego loop: 2 cel: 5 setCycle: CT 3 -1 self)
+				(ego loop: 2 cel: 5 setCycle: CycleTo 3 -1 self)
 				(soundFx2 number: 200 loop: 1 play:)
 			)
 			(2
 				(plank show: stopUpd:)
 				(= cycles 1)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(chest dispose:)
 				(ego
@@ -651,7 +651,7 @@
 					loop: 2
 					cel: 0
 					setScale: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(1
@@ -663,14 +663,14 @@
 				(plank cel: 1 hide:)
 				(= cycles 1)
 			)
-			(3 (ego setCycle: CT 4 1 self))
+			(3 (ego setCycle: CycleTo 4 1 self))
 			(4
 				(plank show: stopUpd:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(5 (= cycles 2))
 			(6
-				(ego loop: 1 cel: 5 setCycle: End self)
+				(ego loop: 1 cel: 5 setCycle: EndLoop self)
 			)
 			(7
 				(ego
@@ -699,7 +699,7 @@
 			(0 (= seconds (Random 2 7)))
 			(1
 				(= state -1)
-				(client cel: 0 setCycle: End self)
+				(client cel: 0 setCycle: EndLoop self)
 			)
 		)
 	)
@@ -723,7 +723,7 @@
 					loop: 3
 					cel: 0
 					setScale: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (= ticks 12))
@@ -743,7 +743,7 @@
 				(soundFx2 number: 905 loop: 1 play: self)
 			)
 			(9 (= ticks 12))
-			(10 (ego setCycle: Beg self))
+			(10 (ego setCycle: BegLoop self))
 			(11
 				(ego
 					posn: 240 132
@@ -815,7 +815,7 @@
 					view: 201
 					loop: 4
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(royalRing dispose:)
 			)
@@ -848,7 +848,7 @@
 	(method (init)
 		(self
 			cel: 0
-			setCycle: End
+			setCycle: EndLoop
 			setScript: (Clone objectGlitter)
 			approachVerbs: 5
 		)
@@ -883,7 +883,7 @@
 	(method (init)
 		(self
 			cel: 0
-			setCycle: End
+			setCycle: EndLoop
 			setScript: (Clone objectGlitter)
 			sightAngle: 360
 			setPri: 15
@@ -1037,9 +1037,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(wave cel: 0 setCycle: End self)
+				(wave cel: 0 setCycle: EndLoop self)
 			)
-			(1 (wave setCycle: Beg self))
+			(1 (wave setCycle: BegLoop self))
 			(2
 				(wave hide:)
 				(= seconds (Random 3 8))

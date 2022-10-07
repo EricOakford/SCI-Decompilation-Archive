@@ -31,7 +31,7 @@
 					normal: 0
 					setLoop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -42,7 +42,7 @@
 					setLoop: 2
 					cel: 0
 					lastCel:
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(3

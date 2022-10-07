@@ -7,7 +7,7 @@
 (use n342)
 (use n343)
 (use nightMare)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use Scaler)
@@ -453,17 +453,17 @@
 					normal: 0
 					posn: 257 237
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(ego cel: 0 posn: 228 223 setCycle: End self)
+				(ego cel: 0 posn: 228 223 setCycle: EndLoop self)
 			)
 			(2
-				(ego cel: 0 posn: 199 209 setCycle: End self)
+				(ego cel: 0 posn: 199 209 setCycle: EndLoop self)
 			)
 			(3
-				(ego cel: 0 posn: 175 195 setCycle: End self)
+				(ego cel: 0 posn: 175 195 setCycle: EndLoop self)
 			)
 			(4
 				(ego
@@ -472,7 +472,7 @@
 					cel: 5
 					posn: 164 194
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -527,7 +527,7 @@
 						setScale: Scaler 100 5 105 65
 						setPri: 8
 						cycleSpeed: 12
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 			)
@@ -560,12 +560,12 @@
 					posn: 331 108
 					cycleSpeed: 8
 					moveSpeed: 8
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 294 116 self
 				)
 			)
 			(1
-				(ego setLoop: 5 cel: 0 setCycle: End self)
+				(ego setLoop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(theGame handsOn:)
@@ -616,7 +616,7 @@
 					cycleSpeed: 10
 					setPri: 7
 					posn: 285 133
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(5
@@ -627,7 +627,7 @@
 					cycleSpeed: 8
 					moveSpeed: 8
 					posn: 290 117
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 331 106 self
 				)
 			)
@@ -683,7 +683,7 @@
 					normal: 0
 					posn: 15 146
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3 (curRoom newRoom: 440))
@@ -710,10 +710,10 @@
 					normal: 0
 					posn: 119 115
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(ego reset: 7 posn: 127 113)
 				(= ticks 18)
@@ -771,17 +771,17 @@
 					cel: 0
 					normal: 0
 					posn: 178 184
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
-				(ego cel: 0 normal: 0 posn: 198 197 setCycle: End self)
+				(ego cel: 0 normal: 0 posn: 198 197 setCycle: EndLoop self)
 			)
 			(7
-				(ego cel: 0 normal: 0 posn: 218 209 setCycle: End self)
+				(ego cel: 0 normal: 0 posn: 218 209 setCycle: EndLoop self)
 			)
 			(8
-				(ego cel: 0 normal: 0 posn: 239 220 setCycle: End self)
+				(ego cel: 0 normal: 0 posn: 239 220 setCycle: EndLoop self)
 			)
 			(9 (ego y: 280) (= cycles 4))
 			(10 (curRoom newRoom: 300))
@@ -818,7 +818,7 @@
 					cel: 0
 					normal: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -836,7 +836,7 @@
 					loop: 1
 					cel: 0
 					posn: 247 128
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
@@ -871,7 +871,7 @@
 					normal: 0
 					cycleSpeed: 1
 					setPri: 15
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 3)
 			)

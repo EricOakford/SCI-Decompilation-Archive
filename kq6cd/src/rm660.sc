@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use rgDead)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Scaler)
 (use PolyPath)
@@ -117,12 +117,12 @@
 					setLoop: 0
 					cel: 0
 					posn: 89 187
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(2
 				(splashSound play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(3 (ego dispose:) (= cycles 2))
 			(4 (messager say: 3 3 0 1 self))
@@ -158,23 +158,23 @@
 			)
 			(3 (messager say: 6 0 9 2 self))
 			(4
-				(charon view: 667 setLoop: 0 setCycle: End self)
+				(charon view: 667 setLoop: 0 setCycle: EndLoop self)
 				(theGlobalSound number: 662 loop: 1 play:)
 			)
 			(5
-				(charon setLoop: 1 setCycle: Fwd)
+				(charon setLoop: 1 setCycle: Forward)
 				(ego
 					normal: 0
 					view: 749
 					setLoop: 3
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
-				(ego setLoop: 5 cel: 0 setCycle: End)
+				(ego setLoop: 5 cel: 0 setCycle: EndLoop)
 				(charon setLoop: 0)
-				(charon cel: (charon lastCel:) setCycle: Beg self)
+				(charon cel: (charon lastCel:) setCycle: BegLoop self)
 			)
 			(7 (messager say: 6 0 9 3 self))
 			(8 (EgoDead 39))
@@ -205,9 +205,9 @@
 					setLoop: 0
 					cel: 0
 					posn: 110 150
-					setCycle: End self
+					setCycle: EndLoop self
 				)
-				(charon setCycle: End)
+				(charon setCycle: EndLoop)
 			)
 			(4
 				(fx number: 661 loop: 1 play:)
@@ -216,7 +216,7 @@
 					setPri: 12
 					posn: (- (ego x?) 2) (- (ego y?) 1)
 				)
-				(charon setCycle: Beg self)
+				(charon setCycle: BegLoop self)
 			)
 			(5 (= seconds 1))
 			(6 (messager say: 2 7 0 2 self))
@@ -230,13 +230,13 @@
 					view: 661
 					setLoop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(10 (= ticks 15))
 			(11
 				(boat dispose:)
-				(charon view: 668 setLoop: 0 cel: 0 setCycle: End self)
+				(charon view: 668 setLoop: 0 cel: 0 setCycle: EndLoop self)
 				(UnLoad 128 663)
 			)
 			(12
@@ -298,12 +298,12 @@
 					setLoop: 0
 					cel: 0
 					posn: 110 189
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(2
 				(fx number: 924 loop: 1 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(3 (= cycles 2))
 			(4
@@ -388,7 +388,7 @@
 				(charonHead
 					posn: (- (charon x?) 5) (- (charon y?) 43)
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= cycles 15)
 			)
@@ -428,7 +428,7 @@
 			)
 			(3
 				(if (!= (charon cel?) 3)
-					(charon setCycle: End self)
+					(charon setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
@@ -437,7 +437,7 @@
 				(charonHead
 					posn: (- (charon x?) 5) (- (charon y?) 43)
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= cycles 15)
 			)
@@ -616,10 +616,10 @@
 					(!= cel 3)
 					(not cycler)
 				)
-				(self setCycle: End)
+				(self setCycle: EndLoop)
 			)
 			(
-			(and (> (self distanceTo: ego) 40) cel (not cycler)) (self setCycle: Beg))
+			(and (> (self distanceTo: ego) 40) cel (not cycler)) (self setCycle: BegLoop))
 		)
 	)
 	

@@ -24,7 +24,7 @@
 	local1
 	local2
 )
-(class Kq6InvItem of InvI
+(class Kq6InvItem of InvItem
 	(properties
 		view 970
 		loop 0
@@ -139,7 +139,7 @@
 					(and
 						(inventory curIcon?)
 						(!= (inventory curIcon?) self)
-						((inventory curIcon?) isKindOf: InvI)
+						((inventory curIcon?) isKindOf: InvItem)
 						(= temp0 (Message msgGET modNum noun theVerb 0 1))
 						(!= (messager findTalker: temp0) -1)
 					)
@@ -223,7 +223,7 @@
 	)
 )
 
-(instance KqInv of Inv
+(instance KqInv of Inventory
 	(properties
 		normalHeading {Alexander is carrying}
 		empty {nothing.}
@@ -331,7 +331,7 @@
 		)
 		(if window (window dispose:))
 		(if
-		(and (IsObject curIcon) (curIcon isKindOf: InvI))
+		(and (IsObject curIcon) (curIcon isKindOf: InvItem))
 			(if (not (theIconBar curInvIcon?))
 				(theIconBar enable: (theIconBar useIconItem?))
 			)
@@ -440,7 +440,7 @@
 				((= theCurIcon
 					(self at: (mod (+ (self indexOf: theCurIcon) 1) size))
 				)
-					isKindOf: InvI
+					isKindOf: InvItem
 				)
 			)
 			(breakif (!= (theCurIcon cursor?) -1))
@@ -468,7 +468,7 @@
 		(= invFirst (self first:))
 		(while invFirst
 			(if
-			((= temp9 (NodeValue invFirst)) isKindOf: InvI)
+			((= temp9 (NodeValue invFirst)) isKindOf: InvItem)
 				(if (temp9 ownedBy: param1)
 					(if temp72 (temp9 view: 972) else (temp9 view: 970))
 					(temp9 signal: (& (temp9 signal?) $fffb))
@@ -601,7 +601,7 @@
 						(not
 							(& ((= temp9 (NodeValue invFirst)) signal?) $0004)
 						)
-						(temp9 isKindOf: InvI)
+						(temp9 isKindOf: InvItem)
 					)
 					(if (not (& (temp9 signal?) $0080))
 						(temp9
@@ -679,7 +679,7 @@
 		(= invFirst (self first:))
 		(while invFirst
 			(if
-			(not ((= temp9 (NodeValue invFirst)) isKindOf: InvI))
+			(not ((= temp9 (NodeValue invFirst)) isKindOf: InvItem))
 				(temp9 nsTop: 0)
 				(= temp6
 					(CelWide (temp9 view?) (temp9 loop?) (temp9 cel?))
@@ -2178,7 +2178,7 @@
 	)
 )
 
-(class InvIconItem of IconI
+(class InvIconItem of IconItem
 	(properties
 		view -1
 		loop -1

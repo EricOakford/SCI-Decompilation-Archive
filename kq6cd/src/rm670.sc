@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use KQ6Print)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use GatePanel)
 (use Conv)
@@ -108,10 +108,10 @@
 			setScale: Scaler 90 80 250 50
 		)
 		(self setScript: enterRoomScript)
-		(torch1 setCycle: Fwd ignoreActors: 1 init:)
-		(torch2 setCycle: Fwd ignoreActors: 1 init:)
-		(shimmer1 setCycle: Fwd ignoreActors: 1 init:)
-		(shimmer2 setCycle: Fwd ignoreActors: 1 init:)
+		(torch1 setCycle: Forward ignoreActors: 1 init:)
+		(torch2 setCycle: Forward ignoreActors: 1 init:)
+		(shimmer1 setCycle: Forward ignoreActors: 1 init:)
+		(shimmer2 setCycle: Forward ignoreActors: 1 init:)
 		(gate init: ignoreHorizon: 1 ignoreActors: 1)
 		(path init:)
 		(river init:)
@@ -364,7 +364,7 @@
 					setLoop: 0
 					cel: 0
 					posn: 210 48
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 0)
@@ -454,7 +454,7 @@
 				(theMusic pause: 1)
 				(gateMorph number: 671 loop: 1 play: self)
 				(gate view: 675 setLoop: 0)
-				(gate cel: (gate lastCel:) setCycle: Beg self)
+				(gate cel: (gate lastCel:) setCycle: BegLoop self)
 			)
 			(7 0)
 			(8
@@ -469,7 +469,7 @@
 					posn: 216 36
 					ignoreActors: 1
 					setPri: 5
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(gateMorph number: 342 loop: 1 play: self)
 			)
@@ -523,11 +523,11 @@
 					cycleSpeed: 5
 					setScale: 0
 					posn: (+ (gate x?) 3) (+ (gate y?) 20)
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(5
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(eatSound play:)
 			)
 			(6
@@ -569,11 +569,11 @@
 					setScale: 0
 					posn: (+ (gate x?) 3) (+ (gate y?) 20)
 					setScale: 0
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(4
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(eatSound play:)
 			)
 			(5
@@ -603,7 +603,7 @@
 					cel: 0
 					posn: 178 82
 					setScale: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (messager say: 2 5 4 1 self))
@@ -667,11 +667,11 @@
 					cel: 0
 					cycleSpeed: 5
 					posn: (+ (gate x?) 3) (+ (gate y?) 20)
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(3
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(eatSound play:)
 			)
 			(4
@@ -714,12 +714,12 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 3
-					setCycle: CT 8 1 self
+					setCycle: CycleTo 8 1 self
 				)
 			)
 			(3
 				(splashSound play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(4 (ego dispose:) (= cycles 2))
 			(5

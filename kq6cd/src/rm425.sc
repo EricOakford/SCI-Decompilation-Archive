@@ -110,15 +110,15 @@
 			)
 			(3 (glint init:))
 			(4
-				(genie view: 442 setLoop: 6 cel: 0 setCycle: End self)
+				(genie view: 442 setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(5 (= seconds 2))
-			(6 (genie setCycle: Beg self))
+			(6 (genie setCycle: BegLoop self))
 			(7
 				(messager say: 1 0 20 0 self 400)
 			)
 			(8
-				(genie view: 442 setLoop: 3 cel: 0 setCycle: End self)
+				(genie view: 442 setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(9
 				(genie view: 442 setLoop: 4 cel: 0)
@@ -174,7 +174,7 @@
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(20
@@ -227,17 +227,17 @@
 					setLoop: 5
 					cel: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(30 (genie setCycle: Beg self))
+			(30 (genie setCycle: BegLoop self))
 			(31
 				(genie
 					view: 442
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(32
@@ -295,14 +295,14 @@
 		(self
 			posn: (+ (genie x?) 3) (- (genie y?) 44)
 			setPri: 15
-			setCycle: End self
+			setCycle: EndLoop self
 		)
 		(super init:)
 	)
 	
 	(method (cue)
 		(if (> cel 0)
-			(self setCycle: Beg self)
+			(self setCycle: BegLoop self)
 		else
 			(self dispose:)
 			(genieMeeting cue:)

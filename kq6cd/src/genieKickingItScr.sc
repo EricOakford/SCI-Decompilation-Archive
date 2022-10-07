@@ -35,17 +35,17 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client loop: 0 cel: 0 setCycle: End self)
+				(client loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(1 (= seconds (Random 5 10)))
 			(2
-				(client loop: 1 cel: 0 setCycle: End self)
+				(client loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(3 (= ticks 60))
 			(4
 				(if (or (not (- (Random 0 2) 1)) (not local1))
 					(= local1 1)
-					(genieEye init: cel: 0 setCycle: End self)
+					(genieEye init: cel: 0 setCycle: EndLoop self)
 				else
 					(= state (+ state 2))
 					(= cycles 2)
@@ -57,7 +57,7 @@
 				(= cycles 2)
 			)
 			(7 (= ticks (Random 60 120)))
-			(8 (client setCycle: Beg self))
+			(8 (client setCycle: BegLoop self))
 			(9
 				(= state -1)
 				(= seconds (Random 10 15))

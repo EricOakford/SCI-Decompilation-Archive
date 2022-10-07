@@ -7,7 +7,7 @@
 (local
 	local0
 )
-(class Audio of Obj
+(class Audio of Object
 	(properties
 		number 0
 		loop 1

@@ -41,7 +41,7 @@
 					view: 717
 					setPri: 2
 					setLoop: 3
-					setLoop: Grooper
+					setLoop: GradualLooper
 					posn: 294 198
 					setStep: 5 3
 					setSpeed: 3
@@ -61,7 +61,7 @@
 					loop: 1
 					cel: 0
 					posn: 247 150
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -104,14 +104,14 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 8
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 			)
 			(8
 				(messager say: 1 0 3 2 self oneOnly: 0)
 			)
 			(9
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 				(= ticks 3)
 			)
 			(10
@@ -141,7 +141,7 @@
 				(jollo
 					view: 717
 					setLoop: 2
-					setLoop: Grooper
+					setLoop: GradualLooper
 					posn: 250 135
 					scaleX: 110
 					scaleY: 110

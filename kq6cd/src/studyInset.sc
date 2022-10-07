@@ -65,7 +65,7 @@
 					(messager say: 4 1 9 9 self oneOnly: 0)
 					(theMusic fadeTo: 810 -1)
 				)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(5
 				(theGame handsOn:)
@@ -195,29 +195,29 @@
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (= seconds (Random 3 5)))
-			(2 (vizier setCycle: Beg self))
+			(2 (vizier setCycle: BegLoop self))
 			(3
 				(= start state)
-				(vizier setLoop: 7 cel: 0 setCycle: End self)
+				(vizier setLoop: 7 cel: 0 setCycle: EndLoop self)
 			)
 			(4 (= seconds 2))
 			(5
 				(if register
-					(vizier setLoop: 8 cel: 0 setCycle: CT 1 1 self)
+					(vizier setLoop: 8 cel: 0 setCycle: CycleTo 1 1 self)
 				else
-					(vizier setCycle: Beg self)
+					(vizier setCycle: BegLoop self)
 				)
 			)
 			(6
 				(if register
 					(feather init:)
-					(vizier setCycle: End self)
+					(vizier setCycle: EndLoop self)
 				else
-					(vizier setLoop: 0 cycleSpeed: 20 setCycle: Rev)
+					(vizier setLoop: 0 cycleSpeed: 20 setCycle: Reverse)
 					(self dispose:)
 				)
 			)
@@ -242,7 +242,7 @@
 					scaleY: 128
 					x: 164
 					y: 169
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -260,7 +260,7 @@
 			(3
 				(cast eachElementDo: #hide)
 				(curRoom drawPic: 802 10)
-				(candles setCycle: Fwd init:)
+				(candles setCycle: Forward init:)
 				(door init:)
 				(desk addToPic:)
 				(background addToPic:)
@@ -274,7 +274,7 @@
 				)
 			)
 			(4 (self dispose:))
-			(5 (vizier setCycle: End self))
+			(5 (vizier setCycle: EndLoop self))
 			(6
 				(feet dispose:)
 				(vizier
@@ -299,7 +299,7 @@
 					setScale: 0
 					scaleX: 128
 					scaleY: 128
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(8

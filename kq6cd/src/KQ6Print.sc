@@ -5,7 +5,7 @@
 (use Intrface)
 (use Kq6Talker)
 (use Print)
-(use DIcon)
+(use Dialog)
 (use System)
 
 

@@ -24,7 +24,7 @@
 	)
 )
 
-(class rgDead of Rgn
+(class rgDead of Region
 	(properties
 		script 0
 		number 0

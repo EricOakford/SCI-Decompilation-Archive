@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use Kq6Sound)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Scaler)
 (use MoveCyc)
@@ -36,9 +36,9 @@
 		(theIconBar disable:)
 		(Seagull init:)
 		(Bset 59)
-		(water init: setCycle: Fwd)
-		(water2 init: setCycle: Fwd)
-		(water3 init: setCycle: Fwd)
+		(water init: setCycle: Forward)
+		(water2 init: setCycle: Forward)
+		(water3 init: setCycle: Forward)
 		(if (== deathReason 35)
 			(theMusic number: 921 setLoop: 1 play:)
 			(self setScript: gnomesDeath)
@@ -69,15 +69,15 @@
 					ignoreHorizon: 1
 					illegalBits: 0
 					ignoreActors: 1
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 140 155 self
 				)
 			)
 			(1
 				(localMusic number: 923 setLoop: 1 play:)
-				(ego setCel: 0 setLoop: 1 setCycle: CT 4 1 self)
+				(ego setCel: 0 setLoop: 1 setCycle: CycleTo 4 1 self)
 			)
-			(2 (ego setCycle: End self))
+			(2 (ego setCycle: EndLoop self))
 			(3
 				(ego setLoop: 3 setCel: 0)
 				(= seconds 4)
@@ -96,34 +96,34 @@
 					cycleSpeed: 8
 					setStep: 3 2
 					setMotion: MoveTo 140 83
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(6 (ego setCycle: Beg self))
+			(6 (ego setCycle: BegLoop self))
 			(7
 				(localMusic number: 920 setLoop: 1 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
-			(8 (ego setCycle: Beg self))
+			(8 (ego setCycle: BegLoop self))
 			(9
 				(localMusic number: 920 setLoop: 1 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(10 (= cycles 1))
 			(11
 				(localMusic number: 919 loop: -1 play:)
-				(ego cel: 0 setLoop: 3 setCycle: End self)
+				(ego cel: 0 setLoop: 3 setCycle: EndLoop self)
 			)
 			(12
 				(Seagull dispose:)
 				(= cycles 2)
 			)
-			(13 (ego setCycle: Beg self))
-			(14 (ego setCycle: End self))
-			(15 (ego setCycle: Beg self))
-			(16 (ego setCycle: End self))
+			(13 (ego setCycle: BegLoop self))
+			(14 (ego setCycle: EndLoop self))
+			(15 (ego setCycle: BegLoop self))
+			(16 (ego setCycle: EndLoop self))
 			(17
-				(ego setLoop: 3 setCycle: End self)
+				(ego setLoop: 3 setCycle: EndLoop self)
 			)
 			(18
 				(Seagull dispose:)
@@ -145,7 +145,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if local0 (genie init: setCycle: Fwd cycleSpeed: 5))
+				(if local0 (genie init: setCycle: Forward cycleSpeed: 5))
 				(localMusic flags: 1 number: 920 loop: -1 play:)
 				(ego
 					setScale: Scaler 100 26 159 80
@@ -160,10 +160,10 @@
 					cycleSpeed: 8
 					init:
 					setMotion: MoveTo 140 83
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(1 (ego setCycle: Beg self))
+			(1 (ego setCycle: BegLoop self))
 			(2
 				(if local0
 					(messager say: 1 0 2 1 self)
@@ -187,11 +187,11 @@
 			)
 			(5
 				(localMusic number: 920 loop: 1 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(6
 				(localMusic number: 919 loop: -1 play:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(7
 				(if local0
@@ -200,9 +200,9 @@
 					(messager say: 1 0 1 2 self)
 				)
 			)
-			(8 (ego setCycle: End self))
+			(8 (ego setCycle: EndLoop self))
 			(9
-				(ego cel: 0 setLoop: 3 setCycle: End self)
+				(ego cel: 0 setLoop: 3 setCycle: EndLoop self)
 			)
 			(10
 				(Seagull dispose:)
@@ -298,7 +298,7 @@
 				(if (== local1 1)
 					(self cue:)
 				else
-					(self setCycle: MCyc @local2 self)
+					(self setCycle: MoveCycle @local2 self)
 					(= local1 1)
 				)
 			)
@@ -306,7 +306,7 @@
 				(if (== local1 2)
 					(self cue:)
 				else
-					(self setCycle: MCyc @local147 self)
+					(self setCycle: MoveCycle @local147 self)
 					(= local1 2)
 				)
 			)
@@ -314,7 +314,7 @@
 				(if (== local1 3)
 					(self cue:)
 				else
-					(self setCycle: MCyc @local228 self)
+					(self setCycle: MoveCycle @local228 self)
 					(= local1 3)
 				)
 			)
@@ -322,7 +322,7 @@
 				(if (== local1 4)
 					(self cue:)
 				else
-					(self setCycle: MCyc @local389 self)
+					(self setCycle: MoveCycle @local389 self)
 					(= local1 4)
 				)
 			)

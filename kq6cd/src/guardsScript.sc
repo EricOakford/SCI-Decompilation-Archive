@@ -46,7 +46,7 @@
 					scaleX: 128
 					scaleY: 128
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -80,7 +80,7 @@
 				(guard2 dispose: delete:)
 				(saladin dispose: delete:)
 				(proc800_1)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(6
 				(theIconBar enable:)

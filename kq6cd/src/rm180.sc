@@ -2,7 +2,7 @@
 (script# 180)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Motion)
 (use Actor)
 (use System)
@@ -46,7 +46,7 @@
 				(theGame handsOff:)
 				(= seconds 2)
 			)
-			(1 (ego setCycle: CT 2 1 self))
+			(1 (ego setCycle: CycleTo 2 1 self))
 			(2 (= ticks 60))
 			(3 (ego cel: 3) (= ticks 30))
 			(4 (ego cel: 2) (= ticks 30))
@@ -57,7 +57,7 @@
 			)
 			(7 (messager say: 1 0 3 1 self))
 			(8
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 				((ScriptID 1015 6) talkWidth: 150 x: 70 y: 40)
 			)
 			(9 (= seconds 2))
@@ -80,8 +80,8 @@
 				(theIconBar disable: 6)
 				(= cycles 2)
 			)
-			(11 (body setCycle: End self))
-			(12 (ego setCycle: Beg self))
+			(11 (body setCycle: EndLoop self))
+			(12 (ego setCycle: BegLoop self))
 			(13
 				(ego
 					reset: 0
@@ -91,7 +91,7 @@
 					setPri: 13
 					posn: 21 177
 				)
-				(cassima init: setPri: 14 setCycle: Beg self)
+				(cassima init: setPri: 14 setCycle: BegLoop self)
 			)
 			(14
 				(cassima view: 784 setLoop: 0 posn: 29 188 addToPic:)
@@ -104,17 +104,17 @@
 			(16
 				(cassima dispose:)
 				(ego dispose:)
-				(body setCycle: End self)
+				(body setCycle: EndLoop self)
 			)
 			(17
 				(messager say: 1 0 2 2 self)
 			)
-			(18 (body setCycle: End self))
+			(18 (body setCycle: EndLoop self))
 			(19
 				(messager say: 1 0 2 3 self)
 			)
 			(20
-				(body setCycle: End self)
+				(body setCycle: EndLoop self)
 				(rightGuard cel: 3)
 			)
 			(21
@@ -122,17 +122,17 @@
 			)
 			(22
 				(leftGuard cel: 0)
-				(body setLoop: 1 cel: 0 setCycle: End self)
+				(body setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(23
-				(body setLoop: 2 cel: 0 setCycle: End self)
+				(body setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(24 (= ticks 30))
 			(25
-				(body setCycle: CT 1 -1 self)
+				(body setCycle: CycleTo 1 -1 self)
 			)
-			(26 (body setCycle: End self))
-			(27 (body setCycle: Beg self))
+			(26 (body setCycle: EndLoop self))
+			(27 (body setCycle: BegLoop self))
 			(28
 				(rightGuard
 					setLoop: 3
@@ -171,7 +171,7 @@
 					setLoop: 0
 					cel: 0
 					posn: 115 150
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(theGlobalSound number: 0 stop:)
 				(theGlobalSound number: 652 setLoop: 1 play:)

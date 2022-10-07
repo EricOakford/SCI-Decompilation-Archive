@@ -42,14 +42,14 @@
 					cel: 0
 					cycleSpeed: 5
 					posn: 264 151
-					setCycle: End
+					setCycle: EndLoop
 				)
 				((ScriptID 270 2)
 					view: 2771
 					loop: 5
 					cel: 0
 					posn: 307 152
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3 (= cycles 2))
@@ -61,7 +61,7 @@
 					loop: 0
 					cel: 0
 					posn: 300 161
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(6
@@ -69,14 +69,14 @@
 				(= cycles 2)
 			)
 			(7
-				((ScriptID 270 2) setCycle: CT 7 1 self)
+				((ScriptID 270 2) setCycle: CycleTo 7 1 self)
 			)
 			(8
-				(ego loop: 3 cel: 0 setCycle: CT 2 1 self)
+				(ego loop: 3 cel: 0 setCycle: CycleTo 2 1 self)
 			)
 			(9
-				((ScriptID 270 2) setCycle: End self)
-				(ego setCycle: End self)
+				((ScriptID 270 2) setCycle: EndLoop self)
+				(ego setCycle: EndLoop self)
 			)
 			(10 0)
 			(11 (= cycles 2))

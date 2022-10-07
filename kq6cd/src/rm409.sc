@@ -4,7 +4,7 @@
 (use Main)
 (use rLab)
 (use n404)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use RandCyc)
 (use PolyPath)
@@ -322,7 +322,7 @@
 	)
 	
 	(method (init)
-		(self setCycle: Fwd checkDetail:)
+		(self setCycle: Forward checkDetail:)
 		(super init:)
 	)
 )
@@ -476,7 +476,7 @@
 					ignoreActors: 1
 					cycleSpeed: 12
 					posn: (+ (ego x?) 6) (+ (ego y?) 3)
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(4
@@ -495,7 +495,7 @@
 						setLoop: 4
 						cel: 0
 						posn: (+ (ego x?) 3) (ego y?)
-						setCycle: CT 5 1 self
+						setCycle: CycleTo 5 1 self
 					)
 				else
 					(self cue:)
@@ -548,7 +548,7 @@
 			(17
 				(if local1
 					(ego cel: 6)
-					(tapestry setCycle: Beg self)
+					(tapestry setCycle: BegLoop self)
 				else
 					(self cue:)
 				)
@@ -556,7 +556,7 @@
 			(18
 				(if local1
 					(soundFx2 number: 909 setLoop: 1 play:)
-					(door setCycle: End self)
+					(door setCycle: EndLoop self)
 					(rLab hiddenDoorOpen: 1)
 					((curRoom obstacles?) dispose:)
 					(= local0 54)
@@ -627,7 +627,7 @@
 				)
 			)
 			(22
-				(if local1 (self cue:) else (ego setCycle: Beg self))
+				(if local1 (self cue:) else (ego setCycle: BegLoop self))
 			)
 			(23
 				(theGame handsOn:)

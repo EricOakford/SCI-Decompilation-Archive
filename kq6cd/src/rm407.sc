@@ -308,7 +308,7 @@
 					setStep: 2 1
 					setLoop: 0
 					normal: 0
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 1
 					setMotion: MoveTo 160 144 self
 				)
@@ -335,12 +335,12 @@
 					cel: 0
 					posn: 159 149
 					cycleSpeed: 3
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 				(mino dispose:)
 			)
 			(20
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(theMusic stop:)
 				(soundFx2 number: 402 setLoop: 1 play:)
 			)
@@ -376,7 +376,7 @@
 					setLoop: 0
 					normal: 0
 					posn: 254 162
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(2
@@ -429,7 +429,7 @@
 			)
 			(3
 				(theHole dispose:)
-				(ego cycleSpeed: 6 setCycle: Beg self)
+				(ego cycleSpeed: 6 setCycle: BegLoop self)
 			)
 			(4
 				(ego posn: 242 162 reset: 6)
@@ -465,7 +465,7 @@
 					cel: 0
 					normal: 0
 					posn: 246 163
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -478,7 +478,7 @@
 				(theGame givePoints: 1)
 				(self setScript: holie self)
 			)
-			(5 (ego setCycle: Beg self))
+			(5 (ego setCycle: BegLoop self))
 			(6
 				(ego posn: 234 162 reset: 0)
 				(= cycles 4)
@@ -495,7 +495,7 @@
 					view: 232
 					setLoop: 6
 					setPri: 13
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 315 93 self
 				)
 			)
@@ -535,19 +535,19 @@
 				(= seconds 2)
 			)
 			(2
-				(minoInset setCycle: CT 3 1 self)
-				(tapeMove setCycle: CT 3 1)
+				(minoInset setCycle: CycleTo 3 1 self)
+				(tapeMove setCycle: CycleTo 3 1)
 			)
 			(3
 				(soundFx2 number: 408 setLoop: 1 play: self)
 			)
 			(4
 				(soundFx2 number: 909 setLoop: 1 play:)
-				(sDoor setCycle: End self)
+				(sDoor setCycle: EndLoop self)
 			)
 			(5
-				(minoInset setCycle: End self)
-				(tapeMove setCycle: End)
+				(minoInset setCycle: EndLoop self)
+				(tapeMove setCycle: EndLoop)
 			)
 			(6
 				(holeInset dispose:)
@@ -583,7 +583,7 @@
 				(soundFx2 number: 483 setLoop: 1 play:)
 				(theHole
 					setPri: 13
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 315 93 self
 				)
 			)

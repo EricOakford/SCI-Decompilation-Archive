@@ -2,7 +2,7 @@
 (script# 350)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use Scaler)
@@ -184,14 +184,14 @@
 					setLoop: 1
 					cel: 0
 					cycleSpeed: 8
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(riteGuard
 					view: 345
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (messager say: 4 2 8 2 self))
@@ -203,8 +203,8 @@
 			)
 			(3
 				(ego setLoop: -1)
-				(leftGuard setCycle: Beg)
-				(riteGuard setCycle: Beg self)
+				(leftGuard setCycle: BegLoop)
+				(riteGuard setCycle: BegLoop self)
 			)
 			(4
 				(theGame handsOn:)
@@ -264,7 +264,7 @@
 					view: 351
 					posn: 160 164
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(UnLoad 128 900)
 			)
@@ -275,7 +275,7 @@
 					cycleSpeed: 6
 					moveSpeed: 6
 					posn: 160 164
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(UnLoad 128 351)
 			)
@@ -283,7 +283,7 @@
 				(dummyEgo
 					view: 353
 					posn: 162 103
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 3
 					setStep: 15 12
 					setMotion: MoveTo (ego x?) -50 self
@@ -297,7 +297,7 @@
 					setLoop: 1
 					setStep: 3 2
 					posn: 230 -20
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 139 7 self
 				)
 			)

@@ -251,7 +251,7 @@
 					setLoop: 1
 					cycleSpeed: 6
 					posn: 193 153
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(3
@@ -260,7 +260,7 @@
 			(4
 				(theGame givePoints: 1)
 				(theSkull dispose:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(5
 				((curRoom obstacles?) dispose:)

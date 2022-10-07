@@ -81,7 +81,7 @@
 			)
 			(2
 				(if (== register 37)
-					(soundGnome setLoop: 4 cel: 0 setCycle: End self)
+					(soundGnome setLoop: 4 cel: 0 setCycle: EndLoop self)
 				else
 					(self setScript: failScript 0 register)
 				)
@@ -90,12 +90,12 @@
 				(soundGnome setLoop: 3 cycleSpeed: 6)
 				(soundGnome
 					cel: (soundGnome lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(4
 				(soundGnome setLoop: 0 cel: 0)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(5
 				(if ((ScriptID 40 0) alexX?)
@@ -127,7 +127,7 @@
 				(cond 
 					(
 					(or ((ScriptID 40 0) alexInvisible?) (== register 31)) (self state: (+ state 1) cue:))
-					(register (ego setCycle: End self))
+					(register (ego setCycle: EndLoop self))
 					(else (= cycles 1))
 				)
 			)
@@ -141,10 +141,10 @@
 				(= cycles 2)
 			)
 			(2
-				(soundGnome setLoop: 2 cel: 0 setCycle: End self)
+				(soundGnome setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(soundGnome setCycle: Beg self)
+				(soundGnome setCycle: BegLoop self)
 			)
 			(4
 				(Bset 59)
@@ -158,7 +158,7 @@
 				(soundGnome setLoop: 3 cycleSpeed: 6)
 				(soundGnome
 					cel: (soundGnome lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(Bclr 59)
 			)

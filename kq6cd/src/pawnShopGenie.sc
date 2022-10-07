@@ -91,14 +91,14 @@
 			(1
 				(pawnShopGenie
 					cycleSpeed: (Random 30 75)
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(2 (= ticks (Random 60 120)))
 			(3
 				(if
 				(and (> (ego x?) 67) (OneOf (Random 0 2) 0 1))
-					(eye init: cel: 0 cycleSpeed: 12 setCycle: End self)
+					(eye init: cel: 0 cycleSpeed: 12 setCycle: EndLoop self)
 				else
 					(self cue:)
 				)
@@ -109,7 +109,7 @@
 				(= ticks (Random 60 120))
 			)
 			(6
-				(pawnShopGenie setCycle: End self)
+				(pawnShopGenie setCycle: EndLoop self)
 			)
 			(7 (= state -1) (= ticks 25))
 		)

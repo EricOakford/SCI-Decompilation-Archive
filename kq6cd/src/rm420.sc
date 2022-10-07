@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use rLab)
-(use NewRoomCue)
+(use KQ6Room)
 (use Conv)
 (use Scaler)
 (use PolyPath)
@@ -470,8 +470,8 @@
 			)
 			(2
 				(ego setHeading: 90)
-				(eastDoor setCycle: End)
-				(westDoor setCycle: End self)
+				(eastDoor setCycle: EndLoop)
+				(westDoor setCycle: EndLoop self)
 				(soundFx2 number: 426 setLoop: 1 play:)
 			)
 			(3
@@ -488,7 +488,7 @@
 			)
 			(5
 				(ceiling startUpd: y: (+ (ceiling y?) 1))
-				(gears setCycle: Fwd)
+				(gears setCycle: Forward)
 				(= cycles 4)
 			)
 			(6 (messager say: 1 0 1 2 self))
@@ -652,7 +652,7 @@
 			)
 			(19 (= seconds 2))
 			(20
-				(theSkull setLoop: 6 setCycle: End self)
+				(theSkull setLoop: 6 setCycle: EndLoop self)
 				(soundFx2 number: 423 setLoop: 1 play: self)
 			)
 			(21
@@ -660,7 +660,7 @@
 				(theGlobalSound number: 421 setLoop: -1 play: self)
 			)
 			(22
-				(gears setCycle: Fwd)
+				(gears setCycle: Forward)
 				(messager say: 6 51 4 5 self)
 			)
 			(23
@@ -687,7 +687,7 @@
 				(messager say: 1 0 3 1 self)
 			)
 			(1
-				(ceiling setPri: 12 setCycle: CT 3 1 self)
+				(ceiling setPri: 12 setCycle: CycleTo 3 1 self)
 				(ego
 					view: 421
 					normal: 0
@@ -696,28 +696,28 @@
 					cycleSpeed: 6
 					setPri: 14
 					posn: (- (ego x?) 2) (+ (ego y?) 4)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(ceiling cel: (+ (ceiling cel?) 1))
-				(ego setPri: 13 setLoop: 3 cel: 0 setCycle: End self)
+				(ego setPri: 13 setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(ceiling cel: (+ (ceiling cel?) 1))
-				(ego setLoop: 4 cel: 0 setCycle: CT 4 1 self)
+				(ego setLoop: 4 cel: 0 setCycle: CycleTo 4 1 self)
 			)
 			(4 (messager say: 1 0 3 2 self))
 			(5
 				(ceiling setPri: 14 cel: (+ (ceiling cel?) 1))
-				(ego setCycle: CT 7 1 self)
+				(ego setCycle: CycleTo 7 1 self)
 			)
 			(6
 				(ceiling cel: (+ (ceiling cel?) 1))
-				(ego setCycle: CT 8 1 self)
+				(ego setCycle: CycleTo 8 1 self)
 			)
 			(7 (messager say: 1 0 3 3 self))
-			(8 (ceiling setCycle: End self))
+			(8 (ceiling setCycle: EndLoop self))
 			(9
 				(theMusic stop:)
 				(theGlobalSound stop:)
@@ -860,7 +860,7 @@
 			)
 			(17
 				(gears setCycle: 0 stopUpd:)
-				(cog init: setCycle: End self)
+				(cog init: setCycle: EndLoop self)
 				(ego reset: 0 posn: 155 134)
 			)
 			(18
@@ -870,8 +870,8 @@
 				(theGame givePoints: 2)
 				(cog dispose:)
 				(soundFx2 number: 426 setLoop: 1 play:)
-				(eastDoor setCycle: Beg)
-				(westDoor setCycle: Beg self)
+				(eastDoor setCycle: BegLoop)
+				(westDoor setCycle: BegLoop self)
 			)
 			(20
 				(messager say: 6 39 0 4 self)

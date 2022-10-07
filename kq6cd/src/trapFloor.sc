@@ -70,7 +70,7 @@
 					setLoop: (ego cel?)
 					normal: 0
 					cycleSpeed: 1
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 3)
 			)

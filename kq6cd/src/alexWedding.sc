@@ -65,7 +65,7 @@
 					cel: 0
 					cycleSpeed: 4
 					posn: 167 62
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(8 (= cycles 5))
@@ -93,7 +93,7 @@
 				(= seconds 3)
 			)
 			(12
-				(extraProp setCycle: End self)
+				(extraProp setCycle: EndLoop self)
 			)
 			(13
 				(extraProp dispose:)
@@ -121,13 +121,13 @@
 					cel: 0
 					posn: 135 144
 					cycleSpeed: 8
-					setCycle: End
+					setCycle: EndLoop
 				)
 				((ScriptID 740 1)
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 8
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(= seconds 3)
 			)
@@ -160,7 +160,7 @@
 					scaleSignal: 1
 					scaleX: 117
 					scaleY: 117
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(22
@@ -171,7 +171,7 @@
 				)
 			)
 			(23
-				((ScriptID 740 4) setCycle: End self)
+				((ScriptID 740 4) setCycle: EndLoop self)
 			)
 			(24
 				((ScriptID 740 4)
@@ -196,14 +196,14 @@
 				)
 			)
 			(26
-				((ScriptID 740 12) setLoop: 2 cel: 0 setCycle: End self)
+				((ScriptID 740 12) setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(27
 				(messager say: 1 0 12 2 self 743)
 			)
 			(28
 				(++ state)
-				((ScriptID 740 12) setCycle: Beg self)
+				((ScriptID 740 12) setCycle: BegLoop self)
 			)
 			(29
 				((ScriptID 740 7)
@@ -221,17 +221,17 @@
 					setLoop: 1
 					cel: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if local0
 					((ScriptID 740 12)
 						setLoop: 3
 						cel: 0
-						setCycle: End (ScriptID 740 12)
+						setCycle: EndLoop (ScriptID 740 12)
 					)
 				)
 				(if (Btst 15)
-					((ScriptID 740 11) setLoop: 2 cel: 0 setCycle: Fwd)
+					((ScriptID 740 11) setLoop: 2 cel: 0 setCycle: Forward)
 				)
 				(theMusic
 					number: (if global169 1744 else 744)
@@ -249,7 +249,7 @@
 							view: 746
 							setLoop: 0
 							cel: 0
-							setCycle: End self
+							setCycle: EndLoop self
 						)
 					)
 					((and (not (Btst 15)) (not local0))
@@ -257,7 +257,7 @@
 							view: 7461
 							setLoop: 0
 							cel: 0
-							setCycle: End self
+							setCycle: EndLoop self
 						)
 					)
 					(else
@@ -268,12 +268,12 @@
 							scaleSignal: 1
 							scaleX: 115
 							scaleY: 115
-							setCycle: End self
+							setCycle: EndLoop self
 						)
 					)
 				)
-				((ScriptID 740 21) setCycle: End (ScriptID 740 21))
-				((ScriptID 740 22) setCycle: End (ScriptID 740 22))
+				((ScriptID 740 21) setCycle: EndLoop (ScriptID 740 21))
+				((ScriptID 740 22) setCycle: EndLoop (ScriptID 740 22))
 				((ScriptID 740 11) cel: 0 stopUpd:)
 			)
 			(34
@@ -291,13 +291,13 @@
 				(= seconds 3)
 			)
 			(35
-				((ScriptID 740 1) setCycle: Beg self)
+				((ScriptID 740 1) setCycle: BegLoop self)
 			)
 			(36
 				(if (not (Btst 15))
 					((ScriptID 740 1) setLoop: 0 cel: 0)
 				else
-					((ScriptID 740 1) setLoop: 2 setCycle: End)
+					((ScriptID 740 1) setLoop: 2 setCycle: EndLoop)
 				)
 				((ScriptID 740 21) cue: 99)
 				((ScriptID 740 22) cue: 99)
@@ -369,7 +369,7 @@
 			)
 			(42
 				(if (== ((ScriptID 740 1) loop?) 2)
-					((ScriptID 740 1) setCycle: Beg self)
+					((ScriptID 740 1) setCycle: BegLoop self)
 				else
 					(= cycles 2)
 				)
@@ -408,7 +408,7 @@
 				(messager say: 1 0 3 1 self 743)
 			)
 			(47
-				((ScriptID 740 1) setLoop: 2 cel: 0 setCycle: End self)
+				((ScriptID 740 1) setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(48
 				(narrator keepWindow: 1 modeless: 0)
@@ -420,20 +420,20 @@
 				(DisposeScript 1026)
 				(DisposeScript 1004)
 				(if (and local0 ((ScriptID 80 0) tstFlag: 710 16))
-					((ScriptID 740 16) setCycle: Fwd)
-					((ScriptID 740 17) setCycle: Fwd)
-					((ScriptID 740 19) view: 7472 setLoop: 1 setCycle: Fwd)
-					((ScriptID 740 18) view: 7472 setLoop: 0 setCycle: Fwd)
-					((ScriptID 740 20) view: 7472 setLoop: 2 setCycle: Fwd)
-					(clap1 init: setCycle: Fwd)
-					(clap2 init: setCycle: Fwd)
+					((ScriptID 740 16) setCycle: Forward)
+					((ScriptID 740 17) setCycle: Forward)
+					((ScriptID 740 19) view: 7472 setLoop: 1 setCycle: Forward)
+					((ScriptID 740 18) view: 7472 setLoop: 0 setCycle: Forward)
+					((ScriptID 740 20) view: 7472 setLoop: 2 setCycle: Forward)
+					(clap1 init: setCycle: Forward)
+					(clap2 init: setCycle: Forward)
 					((ScriptID 740 14)
 						view: 7471
 						setLoop: 2
 						cel: 0
 						posn: 236 189
 						setPri: 15
-						setCycle: End (ScriptID 740 14)
+						setCycle: EndLoop (ScriptID 740 14)
 					)
 					((ScriptID 740 15)
 						view: 7471
@@ -441,7 +441,7 @@
 						cel: 0
 						posn: 248 186
 						setPri: 14
-						setCycle: End (ScriptID 740 15)
+						setCycle: EndLoop (ScriptID 740 15)
 					)
 				)
 				(cond 
@@ -450,7 +450,7 @@
 							view: 746
 							setLoop: 0
 							cel: 0
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 					((not (Btst 15)) ((ScriptID 740 4) setScript: clap 0 0))
@@ -462,18 +462,18 @@
 							scaleSignal: 1
 							scaleX: 115
 							scaleY: 115
-							setCycle: Fwd
+							setCycle: Forward
 						)
 					)
 				)
 				(if (Btst 15)
 					((ScriptID 740 11)
 						setLoop: 2
-						setCycle: End (ScriptID 740 11)
+						setCycle: EndLoop (ScriptID 740 11)
 					)
 				)
-				((ScriptID 740 21) setCycle: End (ScriptID 740 21))
-				((ScriptID 740 22) setCycle: End (ScriptID 740 22))
+				((ScriptID 740 21) setCycle: EndLoop (ScriptID 740 21))
+				((ScriptID 740 22) setCycle: EndLoop (ScriptID 740 22))
 				(if (== ((inventory at: 25) owner?) 740)
 					(self setScript: (ScriptID 752 2) self (ScriptID 740 3))
 				else
@@ -502,12 +502,12 @@
 				(if (== ((inventory at: 25) owner?) 740)
 					(= cycles 2)
 				else
-					((ScriptID 740 1) setLoop: 1 cel: 0 setCycle: End)
+					((ScriptID 740 1) setLoop: 1 cel: 0 setCycle: EndLoop)
 				)
 				(theMusic number: 747 setLoop: 1 play: curRoom)
 			)
 			(54
-				((ScriptID 740 3) cycleSpeed: 10 setCycle: End self)
+				((ScriptID 740 3) cycleSpeed: 10 setCycle: EndLoop self)
 			)
 			(55
 				((ScriptID 740 1)
@@ -515,15 +515,15 @@
 					setLoop: 1
 					cel: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ScriptID 740 3) cel: 0)
 			)
 			(56
-				((ScriptID 740 3) setCycle: End self)
+				((ScriptID 740 3) setCycle: EndLoop self)
 			)
 			(57
-				((ScriptID 740 1) setLoop: 2 cel: 0 setCycle: End)
+				((ScriptID 740 1) setLoop: 2 cel: 0 setCycle: EndLoop)
 				((ScriptID 740 3) view: 7020 setLoop: 0 cel: 0 stopUpd:)
 			)
 		)
@@ -537,7 +537,7 @@
 		(switch (= state newState)
 			(0
 				(if (!= ((ScriptID 740 1) loop?) 2)
-					((ScriptID 740 1) setLoop: 2 cel: 0 setCycle: End self)
+					((ScriptID 740 1) setLoop: 2 cel: 0 setCycle: EndLoop self)
 				else
 					(= cycles 2)
 				)
@@ -551,7 +551,7 @@
 					view: 7451
 					setLoop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -563,14 +563,14 @@
 					setLoop: 1
 					cel: 0
 					posn: 221 145
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
 				(messager say: 1 0 9 3 self 743)
 			)
 			(7
-				((ScriptID 740 12) setLoop: 2 cel: 0 setCycle: End self)
+				((ScriptID 740 12) setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(8
 				(SetSynonyms 2 {CASSIMA})
@@ -584,7 +584,7 @@
 					setCel: 255
 					posn: 216 144
 					cycleSpeed: 10
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(10
@@ -605,7 +605,7 @@
 					cel: 0
 					posn: 228 145
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(13
@@ -614,7 +614,7 @@
 					setLoop: 1
 					cel: 0
 					posn: 178 139
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(14
@@ -629,7 +629,7 @@
 					setLoop: 2
 					cel: 0
 					posn: 227 146
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(17
@@ -700,18 +700,18 @@
 					scaleSignal: 1
 					scaleX: 105
 					scaleY: 105
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				((ScriptID 740 4) setLoop: 1 setCycle: Fwd)
+				((ScriptID 740 4) setLoop: 1 setCycle: Forward)
 				(if register (= seconds 3))
 			)
 			(2
 				((ScriptID 740 4)
 					setLoop: 0
 					setCel: 255
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(3
@@ -720,7 +720,7 @@
 					cel: 0
 					setLoop: 0
 					setScale: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (self init:))

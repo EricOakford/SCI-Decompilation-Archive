@@ -364,7 +364,7 @@
 	)
 )
 
-(class Kq6IconItem of IconI
+(class Kq6IconItem of IconItem
 	(properties
 		view -1
 		loop -1

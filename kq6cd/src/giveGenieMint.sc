@@ -46,7 +46,7 @@
 					cel: 0
 					cycleSpeed: 8
 					looper: 0
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(2
@@ -55,11 +55,11 @@
 					loop: 6
 					cel: 0
 					cycleSpeed: 7
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(3
-				((ScriptID 750 4) setCycle: Beg self)
+				((ScriptID 750 4) setCycle: BegLoop self)
 			)
 			(4
 				(messager say: 5 67 0 2 self)
@@ -90,7 +90,7 @@
 				(self setScript: (ScriptID 752 1) self (ScriptID 750 4))
 			)
 			(10
-				((ScriptID 750 4) setCycle: CT 1 1 self)
+				((ScriptID 750 4) setCycle: CycleTo 1 1 self)
 			)
 			(11 (= cycles 2))
 			(12
@@ -103,7 +103,7 @@
 					looper: 0
 					setScale: Scaler 102 76 189 139
 				)
-				((ScriptID 750 4) setCycle: End self)
+				((ScriptID 750 4) setCycle: EndLoop self)
 			)
 			(13
 				(messager say: 5 67 0 4 self)
@@ -119,7 +119,7 @@
 					loop: 2
 					cel: 8
 					cycleSpeed: 4
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(17 (= cycles 10))
@@ -128,7 +128,7 @@
 				(= cycles 8)
 			)
 			(19
-				((ScriptID 750 4) setCycle: CT 5 1 self)
+				((ScriptID 750 4) setCycle: CycleTo 5 1 self)
 			)
 			(20 (= cycles 10))
 			(21
@@ -138,7 +138,7 @@
 				(messager say: 5 67 0 8 self)
 			)
 			(23
-				((ScriptID 750 4) cycleSpeed: 6 setCycle: End self)
+				((ScriptID 750 4) cycleSpeed: 6 setCycle: EndLoop self)
 			)
 			(24
 				(theGlobalSound number: 707 setLoop: 1 play:)
@@ -148,12 +148,12 @@
 					cel: 1
 					x: (- ((ScriptID 750 4) x?) 13)
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(25
 				(theGlobalSound number: 708 setLoop: 1 play:)
-				(dazzleBall init: setCycle: Fwd)
+				(dazzleBall init: setCycle: Forward)
 				(= cycles 2)
 			)
 			(26
@@ -185,7 +185,7 @@
 					loop: 15
 					cel: 0
 					cycleSpeed: 7
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theGlobalSound number: 0 stop:)
 				(theGlobalSound number: 753 setLoop: 1 play: self)
@@ -211,12 +211,12 @@
 					cel: 0
 					signal: 16384
 					init:
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(34
 				(theGlobalSound number: 652 setLoop: 1 play:)
-				((ScriptID 750 3) setCycle: End self)
+				((ScriptID 750 3) setCycle: EndLoop self)
 			)
 			(35
 				(messager say: 5 67 0 13 self)

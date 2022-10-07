@@ -56,13 +56,13 @@
 	)
 	
 	(method (init)
-		(self setPri: 15 setCycle: End self)
+		(self setPri: 15 setCycle: EndLoop self)
 		(super init:)
 	)
 	
 	(method (cue)
 		(if (== cel 2)
-			(self setPri: 15 setCycle: Beg self)
+			(self setPri: 15 setCycle: BegLoop self)
 		else
 			((genie script?) cue:)
 			(self dispose:)
@@ -144,7 +144,7 @@
 			)
 			(2
 				(soundFx2 number: 943 setLoop: 1 play:)
-				(genie setLoop: 2 cel: 0 setCycle: End self)
+				(genie setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(messager say: 1 0 7 2 self 340)
@@ -182,7 +182,7 @@
 				(genie
 					setLoop: 3
 					posn: (- (genie x?) 1) (- (genie y?) 25)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -191,7 +191,7 @@
 					setMotion: MoveTo (+ (ego x?) 12) (- (ego y?) 27) self
 				)
 			)
-			(5 (genie setCycle: Beg self))
+			(5 (genie setCycle: BegLoop self))
 			(6
 				(genie
 					setLoop: 5
@@ -203,11 +203,11 @@
 					normal: 0
 					setLoop: 6
 					cel: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(7
-				(genie setCycle: End self)
+				(genie setCycle: EndLoop self)
 				(ego cel: 3)
 			)
 			(8
@@ -220,7 +220,7 @@
 					setLoop: 2
 					cel: 0
 					posn: (+ (ego x?) 13) (- (ego y?) 2)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(10
@@ -259,11 +259,11 @@
 				(= seconds 1)
 			)
 			(4
-				(genie setLoop: 1 cel: 0 setCycle: End self)
+				(genie setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
-			(5 (genie setCycle: Beg self))
-			(6 (genie setCycle: End self))
-			(7 (genie setCycle: Beg self))
+			(5 (genie setCycle: BegLoop self))
+			(6 (genie setCycle: EndLoop self))
+			(7 (genie setCycle: BegLoop self))
 			(8 (= seconds 2))
 			(9
 				(messager say: 1 0 1 3 0 340)
@@ -275,10 +275,10 @@
 				(= cycles 6)
 			)
 			(12
-				(genie setLoop: 5 cel: 0 setCycle: End self)
+				(genie setLoop: 5 cel: 0 setCycle: EndLoop self)
 				(soundFx2 number: 348 setLoop: 1 play:)
 			)
-			(13 (genie setCycle: Beg self))
+			(13 (genie setCycle: BegLoop self))
 			(14
 				(genie setLoop: 0 posn: 260 116)
 				(= seconds 2)
@@ -288,17 +288,17 @@
 			)
 			(16 (= cycles 2))
 			(17
-				(genie setLoop: 3 cel: 0 posn: 259 89 setCycle: End self)
+				(genie setLoop: 3 cel: 0 posn: 259 89 setCycle: EndLoop self)
 			)
 			(18
 				(soundFx2 number: 347 setLoop: -1 play:)
-				(genie setCycle: Beg self)
+				(genie setCycle: BegLoop self)
 			)
 			(19
 				(genie
 					setLoop: 4
 					cel: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (- (genie x?) 30) (- (genie y?) 20) self
 				)
 			)
@@ -333,7 +333,7 @@
 				)
 			)
 			(26
-				(genie setLoop: 3 cel: 3 posn: 259 89 setCycle: Beg self)
+				(genie setLoop: 3 cel: 3 posn: 259 89 setCycle: BegLoop self)
 			)
 			(27
 				(soundFx2 stop:)
@@ -392,7 +392,7 @@
 				(theGame handsOff:)
 				(if (not (curRoom script?)) (Face ego genie))
 				(soundFx2 number: 943 setLoop: 1 play:)
-				(genie setLoop: 2 cel: 0 setCycle: End self)
+				(genie setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(41
 				(messager say: 1 0 7 2 0 340)

@@ -46,13 +46,13 @@
 			(3 0)
 			(4
 				(soundFx2 client: 0)
-				((ScriptID 280 2) setCycle: End self)
+				((ScriptID 280 2) setCycle: EndLoop self)
 			)
 			(5
-				((ScriptID 280 2) setCycle: Beg self)
+				((ScriptID 280 2) setCycle: BegLoop self)
 			)
 			(6
-				((ScriptID 280 2) loop: 2 cel: 0 setCycle: End self)
+				((ScriptID 280 2) loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(7 (messager say: 1 0 8 2 self))
 			(8 (messager say: 1 0 8 3 self))
@@ -64,7 +64,7 @@
 					posn: 135 136
 					loop: 7
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11 (= cycles 2))
@@ -113,16 +113,16 @@
 					view: 934
 					loop: 0
 					cel: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(3
 				(soundFx2 number: 925 loop: 1 play: self)
 			)
-			(4 (ego setCycle: End self))
+			(4 (ego setCycle: EndLoop self))
 			(5 (= ticks 30))
 			(6
-				(ego posn: 147 141 loop: 1 cel: 0 setCycle: End self)
+				(ego posn: 147 141 loop: 1 cel: 0 setCycle: EndLoop self)
 				(soundFx number: 926 loop: 1 play:)
 			)
 			(7
@@ -134,7 +134,7 @@
 					view: 282
 					loop: 3
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
@@ -142,7 +142,7 @@
 					posn: 171 110
 					loop: 4
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(10 (= ticks 30))
@@ -155,7 +155,7 @@
 					posn: 171 110
 					loop: 5
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(13
@@ -172,14 +172,14 @@
 					posn: 113 144
 					loop: 6
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(17
 				(messager say: 2 14 10 3 self)
 			)
 			(18
-				((ScriptID 280 2) loop: 2 cel: 0 setCycle: End self)
+				((ScriptID 280 2) loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(19
 				(messager say: 2 14 10 4 self oneOnly: 0)
@@ -191,7 +191,7 @@
 					posn: 135 136
 					loop: 7
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(21 (= cycles 2))
@@ -243,7 +243,7 @@
 				((ScriptID 281 0)
 					view: 289
 					posn: 88 129
-					setLoop: Grooper
+					setLoop: GradualLooper
 					loop: 3
 				)
 				(= cycles 2)
@@ -259,7 +259,7 @@
 					view: 2821
 					loop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
@@ -269,7 +269,7 @@
 				(messager say: 2 14 9 5 self 280)
 			)
 			(11
-				(ego loop: 1 cel: 0 setCycle: End self)
+				(ego loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(12
 				(ego
@@ -279,13 +279,13 @@
 					view: 934
 					loop: 0
 					cel: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(13
 				(soundFx2 number: 925 loop: 1 play: self)
 			)
-			(14 (ego setCycle: End self))
+			(14 (ego setCycle: EndLoop self))
 			(15
 				(theGlobalSound fade:)
 				(= ticks 30)
@@ -294,7 +294,7 @@
 				(messager say: 2 14 9 6 self 280)
 			)
 			(17
-				(ego posn: 147 141 loop: 1 cel: 0 setCycle: End self)
+				(ego posn: 147 141 loop: 1 cel: 0 setCycle: EndLoop self)
 				(soundFx number: 926 loop: 1 play:)
 			)
 			(18
@@ -304,7 +304,7 @@
 					view: 282
 					loop: 3
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(19 (= ticks 120))
@@ -314,7 +314,7 @@
 					setPri: 14
 					loop: 4
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(21
@@ -325,7 +325,7 @@
 				(messager say: 2 14 9 7 self 280)
 			)
 			(23
-				((ScriptID 280 2) loop: 5 cel: 0 setCycle: End self)
+				((ScriptID 280 2) loop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(24
 				(messager say: 2 14 9 8 self 280)
@@ -336,12 +336,12 @@
 					view: 2833
 					loop: 0
 					cel: 0
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= ticks 90)
 			)
 			(26
-				((ScriptID 281 0) setCycle: End self)
+				((ScriptID 281 0) setCycle: EndLoop self)
 			)
 			(27
 				((ScriptID 281 0)
@@ -384,8 +384,8 @@
 			(3 0)
 			(4
 				(cond 
-					((> ((ScriptID 281 0) cel?) 3) ((ScriptID 281 0) setCycle: CT 3 -1 self))
-					((< ((ScriptID 281 0) cel?) 3) ((ScriptID 281 0) setCycle: CT 3 1 self))
+					((> ((ScriptID 281 0) cel?) 3) ((ScriptID 281 0) setCycle: CycleTo 3 -1 self))
+					((< ((ScriptID 281 0) cel?) 3) ((ScriptID 281 0) setCycle: CycleTo 3 1 self))
 					(else (= ticks 1))
 				)
 			)
@@ -396,13 +396,13 @@
 					view: 283
 					loop: 5
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
 				(messager say: 5 13 0 2 self)
 			)
-			(7 (ego setCycle: Beg self))
+			(7 (ego setCycle: BegLoop self))
 			(8 (= cycles 2))
 			(9 (ego reset: 7) (= cycles 2))
 			(10
@@ -436,7 +436,7 @@
 				)
 			)
 			(1
-				((ScriptID 280 3) setPri: 14 setCycle: End self)
+				((ScriptID 280 3) setPri: 14 setCycle: EndLoop self)
 				(soundFx2 number: 901 loop: 1 play:)
 			)
 			(2
@@ -444,7 +444,7 @@
 			)
 			(3
 				((ScriptID 281 0) dispose:)
-				((ScriptID 280 3) setPri: -1 setCycle: Beg self)
+				((ScriptID 280 3) setPri: -1 setCycle: BegLoop self)
 			)
 			(4
 				(soundFx2 number: 902 loop: 1 play:)
@@ -482,23 +482,23 @@
 					loop: 0
 					cel: 0
 					posn: 187 134
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
 				(UnLoad 128 289)
-				((ScriptID 281 0) loop: 1 cel: 0 setCycle: End self)
+				((ScriptID 281 0) loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(5
-				((ScriptID 281 0) cel: 0 setCycle: End self)
+				((ScriptID 281 0) cel: 0 setCycle: EndLoop self)
 			)
 			(6
-				((ScriptID 281 0) setCycle: Beg self)
+				((ScriptID 281 0) setCycle: BegLoop self)
 			)
 			(7
 				((ScriptID 281 0)
 					cel: ((ScriptID 281 0) lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(8 (= cycles 2))
@@ -511,7 +511,7 @@
 					loop: 2
 					cel: 0
 					posn: 190 134
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11
@@ -535,7 +535,7 @@
 					loop: 1
 					posn: 51 124
 				)
-				((ScriptID 280 3) setPri: 14 setCycle: End)
+				((ScriptID 280 3) setPri: 14 setCycle: EndLoop)
 				(soundFx2 number: 901 loop: 1 play:)
 				(= ticks 12)
 			)
@@ -545,7 +545,7 @@
 			)
 			(15
 				((ScriptID 281 0) dispose:)
-				((ScriptID 280 3) setCycle: Beg self)
+				((ScriptID 280 3) setCycle: BegLoop self)
 			)
 			(16
 				(UnLoad 128 289)
@@ -571,7 +571,7 @@
 				((ScriptID 281 0)
 					view: 289
 					loop: 0
-					setLoop: Grooper
+					setLoop: GradualLooper
 					cycleSpeed: 6
 					setCycle: StopWalk -1
 					ignoreActors:
@@ -658,7 +658,7 @@
 				(ego view: 2832 loop: 0 cel: 0 setSpeed: 6 normal: 0)
 				(= cycles 2)
 			)
-			(4 (ego setCycle: End self))
+			(4 (ego setCycle: EndLoop self))
 			(5 (= cycles 2))
 			(6
 				(messager say: 5 67 0 2 self)
@@ -677,23 +677,23 @@
 				(= cycles 2)
 			)
 			(9
-				((ScriptID 281 0) setCycle: End self)
+				((ScriptID 281 0) setCycle: EndLoop self)
 			)
 			(10
-				(ego setCycle: Beg)
-				((ScriptID 281 0) loop: 1 cel: 0 setCycle: End self)
+				(ego setCycle: BegLoop)
+				((ScriptID 281 0) loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(11
 				(ego reset: 1)
-				((ScriptID 281 0) cel: 0 setCycle: End self)
+				((ScriptID 281 0) cel: 0 setCycle: EndLoop self)
 			)
 			(12
-				((ScriptID 281 0) setCycle: Beg self)
+				((ScriptID 281 0) setCycle: BegLoop self)
 			)
 			(13
 				((ScriptID 281 0)
 					cel: ((ScriptID 281 0) lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(14
@@ -704,7 +704,7 @@
 					view: 2835
 					loop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(16
@@ -723,7 +723,7 @@
 					loop: 1
 					posn: 51 124
 				)
-				((ScriptID 280 3) setPri: 14 setCycle: End)
+				((ScriptID 280 3) setPri: 14 setCycle: EndLoop)
 				(soundFx2 number: 901 loop: 1 play:)
 				(= ticks 12)
 			)
@@ -732,7 +732,7 @@
 			)
 			(19
 				((ScriptID 281 0) dispose:)
-				((ScriptID 280 3) setCycle: Beg self)
+				((ScriptID 280 3) setCycle: BegLoop self)
 			)
 			(20
 				(soundFx2 number: 902 loop: 1 play:)

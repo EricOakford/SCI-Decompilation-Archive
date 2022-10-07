@@ -133,11 +133,11 @@
 				(messager say: 1 0 38 2 self)
 			)
 			(4
-				((ScriptID 740 2) setCycle: CT 5 1 self)
+				((ScriptID 740 2) setCycle: CycleTo 5 1 self)
 			)
 			(5 (= ticks 90))
 			(6
-				((ScriptID 740 2) setCycle: CT 10 1 self)
+				((ScriptID 740 2) setCycle: CycleTo 10 1 self)
 			)
 			(7
 				(Bset 59)
@@ -152,7 +152,7 @@
 				(messager say: 1 0 38 5 self)
 			)
 			(10
-				((ScriptID 740 2) setCycle: End self)
+				((ScriptID 740 2) setCycle: EndLoop self)
 			)
 			(11
 				(Bclr 59)
@@ -187,7 +187,7 @@
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 8
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 				(theGlobalSound number: 0 stop:)
 				(theGlobalSound number: 756 setLoop: 1 play:)
@@ -199,7 +199,7 @@
 			(18
 				(theGlobalSound number: 0 stop:)
 				(theGlobalSound number: 652 setLoop: 1 play:)
-				((ScriptID 740 5) setCycle: End self)
+				((ScriptID 740 5) setCycle: EndLoop self)
 			)
 			(19
 				(switch register

@@ -2,7 +2,7 @@
 (script# 100)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Motion)
 (use Actor)
 (use System)
@@ -76,7 +76,7 @@
 				(theMusic number: 2 loop: 1 play: self)
 				(= seconds 5)
 			)
-			(4 (six setCycle: End))
+			(4 (six setCycle: EndLoop))
 			(5
 				(theGame handsOn:)
 				(= seconds 10)
@@ -459,9 +459,9 @@ code_04a8:
 					)
 				)
 			)
-			(2 (glint init: setCycle: End))
+			(2 (glint init: setCycle: EndLoop))
 			(3
-				(glint posn: 148 143 setCycle: End)
+				(glint posn: 148 143 setCycle: EndLoop)
 			)
 			(4 (= cycles 1))
 			(5

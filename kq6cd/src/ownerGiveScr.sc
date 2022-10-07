@@ -40,11 +40,11 @@
 				)
 			)
 			(1
-				((ScriptID 280 2) setCycle: CT 2 1 self)
+				((ScriptID 280 2) setCycle: CycleTo 2 1 self)
 			)
 			(2 (= cycles 2))
 			(3
-				((ScriptID 280 2) setCycle: Beg self)
+				((ScriptID 280 2) setCycle: BegLoop self)
 			)
 			(4 (= cycles 2))
 			(5
@@ -52,7 +52,7 @@
 				(= cycles 2)
 			)
 			(6
-				((ScriptID 280 2) setCycle: CT 1 1 self)
+				((ScriptID 280 2) setCycle: CycleTo 1 1 self)
 			)
 			(7 (= cycles 2))
 			(8
@@ -67,11 +67,11 @@
 				)
 				(= cycles 2)
 			)
-			(9 (ego setCycle: CT 2 1 self))
+			(9 (ego setCycle: CycleTo 2 1 self))
 			(10 (= cycles 2))
 			(11
-				((ScriptID 280 2) setCycle: Beg self)
-				(ego setCycle: End self)
+				((ScriptID 280 2) setCycle: BegLoop self)
+				(ego setCycle: EndLoop self)
 			)
 			(12 0)
 			(13
@@ -146,8 +146,8 @@
 				(= cycles 2)
 			)
 			(1
-				(ego setCycle: CT 2 1 self)
-				(if register (arm setCycle: CT 2 1))
+				(ego setCycle: CycleTo 2 1 self)
+				(if register (arm setCycle: CycleTo 2 1))
 			)
 			(2 (= cycles 2))
 			(3
@@ -172,8 +172,8 @@
 				(= cycles 2)
 			)
 			(5
-				(ego setCycle: End self)
-				(if register (arm setCycle: End arm))
+				(ego setCycle: EndLoop self)
+				(if register (arm setCycle: EndLoop arm))
 			)
 			(6 (= cycles 2))
 			(7
@@ -212,7 +212,7 @@
 				)
 				(= cycles 2)
 			)
-			(1 (ego setCycle: CT 2 1 self))
+			(1 (ego setCycle: CycleTo 2 1 self))
 			(2 (= cycles 2))
 			(3 (client cue:))
 			(4
@@ -220,13 +220,13 @@
 				(= cycles 2)
 			)
 			(5
-				((ScriptID 280 2) setCycle: CT 1 1 self)
+				((ScriptID 280 2) setCycle: CycleTo 1 1 self)
 			)
 			(6 (= cycles 2))
 			(7
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(if (& register $4000)
-					((ScriptID 280 2) setCycle: End self)
+					((ScriptID 280 2) setCycle: EndLoop self)
 				else
 					(= state (+ state 3))
 					(self cue:)
@@ -236,7 +236,7 @@
 			(9 (= cycles 2))
 			(10 (client cue:))
 			(11
-				((ScriptID 280 2) setCycle: Beg self)
+				((ScriptID 280 2) setCycle: BegLoop self)
 			)
 			(12
 				(if (not (& register $4000)) 0 else (self cue:))
@@ -248,7 +248,7 @@
 						view: 286
 						loop: 1
 						cel: 1
-						setCycle: CT 2 1 self
+						setCycle: CycleTo 2 1 self
 					)
 				else
 					(= state (+ state 2))
@@ -257,7 +257,7 @@
 			)
 			(15 (= cycles 2))
 			(16
-				((ScriptID 280 2) setCycle: Beg self)
+				((ScriptID 280 2) setCycle: BegLoop self)
 			)
 			(17 (= cycles 2))
 			(18
@@ -299,7 +299,7 @@
 				(= cycles 2)
 			)
 			(1
-				(ego setCycle: CT 2 (if register -1 else 1) self)
+				(ego setCycle: CycleTo 2 (if register -1 else 1) self)
 			)
 			(2 (= cycles 2))
 			(3
@@ -312,9 +312,9 @@
 			)
 			(4
 				(if register
-					(ego setCycle: Beg self put: 0)
+					(ego setCycle: BegLoop self put: 0)
 				else
-					(ego setCycle: End self get: 0)
+					(ego setCycle: EndLoop self get: 0)
 				)
 			)
 			(5 (= cycles 2))

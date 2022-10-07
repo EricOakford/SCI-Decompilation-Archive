@@ -5,7 +5,7 @@
 (use CryBaby)
 (use n482)
 (use n483)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Print)
 (use Conv)
@@ -286,18 +286,18 @@
 			(3 (wallFlowerDance cue:))
 			(0
 				((ScriptID 40 0) flowerDance: 0)
-				(flower1 setLoop: 0 setCycle: Beg)
-				(flower2 setLoop: 1 setCycle: Beg)
-				(flower3 setLoop: 2 setCycle: Beg)
-				(flower4 setLoop: 3 setCycle: Beg)
-				(snap setCycle: Beg)
+				(flower1 setLoop: 0 setCycle: BegLoop)
+				(flower2 setLoop: 1 setCycle: BegLoop)
+				(flower3 setLoop: 2 setCycle: BegLoop)
+				(flower4 setLoop: 3 setCycle: BegLoop)
+				(snap setCycle: BegLoop)
 			)
 			(else 
-				(flower1 setCycle: Beg)
-				(flower2 setCycle: Beg)
-				(flower3 setCycle: Beg)
-				(flower4 setCycle: Beg flower1)
-				(snap setCycle: Beg)
+				(flower1 setCycle: BegLoop)
+				(flower2 setCycle: BegLoop)
+				(flower3 setCycle: BegLoop)
+				(flower4 setCycle: BegLoop flower1)
+				(snap setCycle: BegLoop)
 			)
 		)
 	)
@@ -333,7 +333,7 @@
 				cel: 5
 				posn: 274 57
 				cycleSpeed: 6
-				setCycle: Beg self
+				setCycle: BegLoop self
 			)
 			(soundFx2 number: 483 setLoop: 1 play:)
 		else
@@ -1126,7 +1126,7 @@
 			)
 			(1
 				(if (== prevRoomNum 490)
-					(gates cycleSpeed: 4 setCycle: Beg self)
+					(gates cycleSpeed: 4 setCycle: BegLoop self)
 				else
 					(self cue:)
 				)
@@ -1182,7 +1182,7 @@
 					setLoop: 1
 					posn: 142 107
 					cycleSpeed: 8
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 				(UnLoad 128 900)
 			)
@@ -1193,8 +1193,8 @@
 					(rotTomato addToPic:)
 				)
 				(soundFx2 number: 906 setLoop: 1 play:)
-				(ego setCycle: End self)
-				(gates signal: 26624 cycleSpeed: 3 init: setCycle: End)
+				(ego setCycle: EndLoop self)
+				(gates signal: 26624 cycleSpeed: 3 init: setCycle: EndLoop)
 			)
 			(4 (curRoom newRoom: 490))
 		)
@@ -1213,14 +1213,14 @@
 			)
 			(1
 				(soundFx number: 484 setLoop: 1 play: self)
-				(flower1 view: 4852 cel: 2 setCycle: CT 6 1)
-				(flower2 view: 4852 cel: 2 setCycle: CT 6 1)
-				(flower3 view: 4852 cel: 2 setCycle: CT 6 1)
-				(flower4 view: 4852 cel: 2 setCycle: CT 6 1)
+				(flower1 view: 4852 cel: 2 setCycle: CycleTo 6 1)
+				(flower2 view: 4852 cel: 2 setCycle: CycleTo 6 1)
+				(flower3 view: 4852 cel: 2 setCycle: CycleTo 6 1)
+				(flower4 view: 4852 cel: 2 setCycle: CycleTo 6 1)
 			)
 			(2
 				(Face ego snap)
-				(snap setCycle: Fwd)
+				(snap setCycle: Forward)
 				(soundFx2 number: 482 setLoop: 2 play: self)
 			)
 			(3
@@ -1242,7 +1242,7 @@
 				(flower3 view: 4851 stopUpd:)
 				(flower4 view: 4851 stopUpd:)
 				(UnLoad 128 4852)
-				(snap setCycle: Beg)
+				(snap setCycle: BegLoop)
 			)
 			(6
 				(theGame handsOn:)
@@ -1280,7 +1280,7 @@
 			)
 			(1
 				(soundFx2 number: 482 setLoop: 1 play: self)
-				(snap setCycle: Fwd)
+				(snap setCycle: Forward)
 			)
 			(2
 				(snap setCycle: 0 cel: 0 stopUpd:)
@@ -1292,7 +1292,7 @@
 			(4
 				(ego
 					setLoop: (ego cel?)
-					setCycle: Rev
+					setCycle: Reverse
 					setMotion: PolyPath (- (ego x?) 5) (ego y?) self
 				)
 			)
@@ -1314,7 +1314,7 @@
 				(theGame handsOff:)
 				(ego setMotion: 0)
 				(soundFx2 number: 482 setLoop: 1 play: self)
-				(snap setCycle: Fwd)
+				(snap setCycle: Forward)
 				(= ticks 12)
 			)
 			(1
@@ -1325,7 +1325,7 @@
 					loop: 0
 					cel: 0
 					posn: (- (ego x?) 13) (+ (ego y?) 2)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (= cycles 2))
@@ -1445,7 +1445,7 @@
 			)
 			(4
 				(soundFx2 number: 482 setLoop: 1 play: self)
-				(snap setCycle: Fwd)
+				(snap setCycle: Forward)
 			)
 			(5
 				(snap setCycle: 0 cel: 0 stopUpd:)
@@ -1461,7 +1461,7 @@
 			(7
 				(ego
 					setLoop: (ego cel?)
-					setCycle: Rev
+					setCycle: Reverse
 					setMotion: PolyPath (- (ego x?) 15) (ego y?) self
 				)
 			)
@@ -1530,7 +1530,7 @@
 						show:
 						cel: 0
 						setLoop: (Random 0 1)
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 			)
@@ -1598,7 +1598,7 @@
 					(>= state 6)
 				)
 				(danceMusic prevSignal: 0)
-				(snap setCycle: Osc local1 snap)
+				(snap setCycle: Oscillate local1 snap)
 			)
 		)
 		(super doit:)
@@ -1653,10 +1653,10 @@
 					(hiw setLoop: 1 setCycle: Walk setMotion: MoveTo 238 70)
 				)
 				((ScriptID 40 0) flowerDance: 1)
-				(flower1 view: 4852 cel: 2 setCycle: Fwd)
-				(flower2 view: 4852 cel: 2 setCycle: Fwd)
-				(flower3 view: 4852 cel: 6 setCycle: Fwd)
-				(flower4 view: 4852 cel: 6 setCycle: Fwd)
+				(flower1 view: 4852 cel: 2 setCycle: Forward)
+				(flower2 view: 4852 cel: 2 setCycle: Forward)
+				(flower3 view: 4852 cel: 6 setCycle: Forward)
+				(flower4 view: 4852 cel: 6 setCycle: Forward)
 				(if
 					(and
 						(== ((inventory at: 18) owner?) curRoomNum)
@@ -1685,9 +1685,9 @@
 			(6
 				(theMusic stop:)
 				(danceMusic number: 486 setLoop: 1 flags: 0 play:)
-				(ego setCycle: Fwd)
+				(ego setCycle: Forward)
 			)
-			(7 (ego setCycle: End self))
+			(7 (ego setCycle: EndLoop self))
 			(8
 				(ego reset: 0 posn: (ego x?) (- (ego y?) 2))
 				(= cycles 6)
@@ -1793,7 +1793,7 @@
 			)
 			(3
 				(soundFx2 number: 482 setLoop: 1 play: self)
-				(snap setCycle: Fwd)
+				(snap setCycle: Forward)
 			)
 			(4
 				(snap setCycle: 0 cel: 0 stopUpd:)

@@ -415,7 +415,7 @@
 	)
 	
 	(method (init)
-		(self setCycle: Fwd)
+		(self setCycle: Forward)
 		(super init:)
 	)
 )
@@ -434,7 +434,7 @@
 	)
 	
 	(method (init)
-		(self setCycle: Fwd)
+		(self setCycle: Forward)
 		(super init:)
 	)
 )
@@ -607,13 +607,13 @@
 		(switch (= state newState)
 			(0
 				(if (> (theGame detailLevel:) (wave detailLevel:))
-					(wave show: cel: 0 setCycle: End self)
+					(wave show: cel: 0 setCycle: EndLoop self)
 				else
 					(= state (+ state 1))
 					(self cue:)
 				)
 			)
-			(1 (wave setCycle: Beg self))
+			(1 (wave setCycle: BegLoop self))
 			(2
 				(= state -1)
 				(wave hide:)
@@ -687,7 +687,7 @@
 					cel: 0
 					normal: 0
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5 (curRoom newRoom: 135))
@@ -736,11 +736,11 @@
 						setLoop: 3
 					)
 				)
-				(ego cel: 0 setCycle: End self)
+				(ego cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(if (== (ego view?) 301)
-					(ego setCycle: Beg self)
+					(ego setCycle: BegLoop self)
 				else
 					(self cue:)
 				)
@@ -770,7 +770,7 @@
 				)
 				(= cycles 4)
 			)
-			(6 (ego setCycle: End self))
+			(6 (ego setCycle: EndLoop self))
 			(7
 				(Bclr 59)
 				(soundFx number: 306 setLoop: 1 play:)
@@ -785,7 +785,7 @@
 				(if (== register 0)
 					(self setScript: bounceButt self)
 				else
-					(ego setLoop: 2 setCycle: End self)
+					(ego setLoop: 2 setCycle: EndLoop self)
 				)
 				(soundFx stop:)
 				(theGlobalSound number: 307 setLoop: 1 play:)
@@ -796,7 +796,7 @@
 						setLoop: 4
 						cel: 0
 						posn: (- (ego x?) 55) (+ (ego y?) 19)
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(messager say: 4 3 9 1 self)
@@ -981,7 +981,7 @@
 						setLoop: 5
 						cel: 0
 						posn: (+ (ego x?) 18) (+ (ego y?) 7)
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(self cue:)
@@ -1008,7 +1008,7 @@
 					y: (+ (ego y?) 11)
 					setLoop: 0
 					cel: 5
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(3
@@ -1103,7 +1103,7 @@
 						setPri: (ego priority?)
 						posn: 89 135
 						cycleSpeed: 6
-						setCycle: CT 2 1 self
+						setCycle: CycleTo 2 1 self
 					)
 				else
 					(ego
@@ -1114,7 +1114,7 @@
 						setPri: (ego priority?)
 						posn: (- (ego x?) 2) (+ (ego y?) 11)
 						cycleSpeed: 6
-						setCycle: CT 3 1 self
+						setCycle: CycleTo 3 1 self
 					)
 				)
 				(theGame givePoints: 1)
@@ -1125,7 +1125,7 @@
 				else
 					(stench dispose:)
 				)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(4
 				(if (== register feather)

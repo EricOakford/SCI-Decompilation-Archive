@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use KQ6Print)
-(use NewRoomCue)
+(use KQ6Room)
 (use CartoonScript)
 (use Kq6Procs)
 (use Inset)
@@ -260,7 +260,7 @@
 				)
 				(= cycles 2)
 			)
-			(1 (ego setCycle: End self))
+			(1 (ego setCycle: EndLoop self))
 			(2
 				(ego reset: 1 posn: 200 81)
 				(= ticks 10)
@@ -294,22 +294,22 @@
 					loop: 0
 					cycleSpeed: 10
 					setScale: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(soundFx2 number: 230 y: 1 play:)
-				(ego loop: 1 cel: 0 setCycle: CT 2 1 self)
+				(ego loop: 1 cel: 0 setCycle: CycleTo 2 1 self)
 			)
 			(3 (= cycles 2))
 			(4
 				(soundFx2 number: 230 loop: 1 play:)
-				(ego setCycle: CT 4 1 self)
+				(ego setCycle: CycleTo 4 1 self)
 			)
 			(5 (= cycles 2))
 			(6
 				(soundFx2 number: 230 loop: 1 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(7
 				(if (not (-- register))
@@ -320,15 +320,15 @@
 			)
 			(8
 				(soundFx2 number: 230 y: 1 play:)
-				(ego loop: 2 cel: 0 setCycle: CT 4 1 self)
+				(ego loop: 2 cel: 0 setCycle: CycleTo 4 1 self)
 			)
 			(9
 				(soundFx2 number: 230 loop: 1 play:)
-				(ego setCycle: CT 8 1 self)
+				(ego setCycle: CycleTo 8 1 self)
 			)
 			(10
 				(soundFx2 number: 230 loop: 1 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(11
 				(if (not (-- register))
@@ -338,21 +338,21 @@
 				(= cycles 2)
 			)
 			(12
-				(ego loop: 3 cel: 0 setCycle: End self)
+				(ego loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(13
 				(soundFx2 number: 230 y: 1 play:)
-				(ego loop: 4 cel: 0 setCycle: CT 2 1 self)
+				(ego loop: 4 cel: 0 setCycle: CycleTo 2 1 self)
 			)
 			(14 (= cycles 2))
 			(15
 				(soundFx2 number: 230 loop: 1 play:)
-				(ego setCycle: CT 4 1 self)
+				(ego setCycle: CycleTo 4 1 self)
 			)
 			(16 (= cycles 2))
 			(17
 				(soundFx2 number: 230 loop: 1 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(18
 				(if (not (-- register))
@@ -362,7 +362,7 @@
 				(= cycles 2)
 			)
 			(19
-				(ego loop: 5 cel: 0 setCycle: End self)
+				(ego loop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(20
 				(magicDoor init:)
@@ -425,34 +425,34 @@
 					loop: 0
 					cel: 0
 					setScale: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5 (= register 60) (self cue:))
 			(6 (= ticks register))
 			(7
-				(ego cel: 0 loop: 1 setCycle: End self)
+				(ego cel: 0 loop: 1 setCycle: EndLoop self)
 				(= register (- register 15))
 				(if (!= (++ local1) 4) (= state (- state 2)))
 			)
 			(8 (= ticks 45))
 			(9
-				(ego cycleSpeed: 9 loop: 2 cel: 0 setCycle: End self)
+				(ego cycleSpeed: 9 loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(10 (= ticks 35))
 			(11
-				(magicDoor loop: 1 cel: 0 setCycle: End self)
+				(magicDoor loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(12
-				(magicDoor loop: 2 cel: 0 setCycle: End self)
+				(magicDoor loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(13
-				(magicDoor loop: 3 setCycle: End self)
+				(magicDoor loop: 3 setCycle: EndLoop self)
 				(ego reset: 7 setScale: Scaler 100 58 140 58)
 			)
 			(14
 				(soundFx2 number: 231 loop: 1 play:)
-				(magicDoor loop: 4 setCycle: End self)
+				(magicDoor loop: 4 setCycle: EndLoop self)
 			)
 			(15
 				(magicDoor view: 233 loop: 8 cel: 0)
@@ -508,7 +508,7 @@
 			)
 			(5
 				(soundFx2 number: 901 loop: 1 play: self)
-				(ego setCycle: CT 2 1 self)
+				(ego setCycle: CycleTo 2 1 self)
 				(magicDoor hide:)
 			)
 			(6
@@ -522,7 +522,7 @@
 			)
 			(9
 				(theGame givePoints: 2)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(10 (curRoom newRoom: 710))
 		)
@@ -546,7 +546,7 @@
 					loop: 4
 					cel: 0
 					posn: 89 140
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -554,7 +554,7 @@
 			)
 			(3 (= cycles 3))
 			(4
-				(ego loop: 4 setCycle: Beg self)
+				(ego loop: 4 setCycle: BegLoop self)
 			)
 			(5
 				(ego posn: 97 140 reset: 7)
@@ -580,12 +580,12 @@
 					view: 232
 					loop: 1
 					cel: 0
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(1
 				(holeOnWall init:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(2
 				(ego posn: 94 139 reset: 7)
@@ -617,12 +617,12 @@
 					view: 232
 					loop: 1
 					cel: 6
-					setCycle: CT 5 -1 self
+					setCycle: CycleTo 5 -1 self
 				)
 			)
 			(1
 				(holeOnWall dispose:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(2 (= cycles 2))
 			(3

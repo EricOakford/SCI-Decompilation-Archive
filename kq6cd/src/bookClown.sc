@@ -43,14 +43,14 @@
 					view: 2721
 					loop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(messager say: 10 2 register 2 self)
 			)
 			(3
-				((ScriptID 274 0) setCycle: Beg self)
+				((ScriptID 274 0) setCycle: BegLoop self)
 			)
 			(4
 				(theGame handsOn:)
@@ -92,7 +92,7 @@
 					view: 274
 					loop: 0
 					cel: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(5
@@ -101,7 +101,7 @@
 				(= cycles 2)
 			)
 			(6
-				((ScriptID 274 0) setCycle: CT 5 1 self)
+				((ScriptID 274 0) setCycle: CycleTo 5 1 self)
 			)
 			(7
 				(messager say: 10 2 register 2 self)
@@ -131,7 +131,7 @@
 					view: 274
 					loop: 0
 					cel: 5
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(15
@@ -167,7 +167,7 @@
 					view: 2721
 					loop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -179,7 +179,7 @@
 			)
 			(4
 				(script cue:)
-				((ScriptID 274 0) setCycle: Beg)
+				((ScriptID 274 0) setCycle: BegLoop)
 			)
 			(5 (= cycles 2))
 			(6
@@ -203,11 +203,11 @@
 					view: 272
 					loop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (client cue:))
-			(2 (ego setCycle: Beg self))
+			(2 (ego setCycle: BegLoop self))
 			(3
 				(if register (client cue:) else (= cycles 2))
 			)

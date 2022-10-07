@@ -2,7 +2,7 @@
 (script# 580)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Inset)
 (use Conv)
@@ -261,7 +261,7 @@
 					cel: 0
 					cycleSpeed: 10
 					posn: 206 131
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -348,7 +348,7 @@
 					setLoop: 0
 					setCel: 0
 					posn: (- (ego x?) 2) (ego y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
@@ -420,11 +420,11 @@
 					setSpeed: 3
 					setPri: (- (cage priority?) 1)
 					posn: (- (ego x?) 18) (+ (ego y?) 2)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
-				(ego view: 581 setLoop: 1 setPri: -1 setCycle: End self)
+				(ego view: 581 setLoop: 1 setPri: -1 setCycle: EndLoop self)
 			)
 			(7
 				(cage
@@ -464,7 +464,7 @@
 			)
 			(11 0)
 			(12
-				(headDruid view: 587 setLoop: 0 cel: 0 setCycle: End self)
+				(headDruid view: 587 setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(13
 				(headDruid view: 5808)
@@ -498,7 +498,7 @@
 					view: 5804
 					setLoop: 0
 					posn: 208 133
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: -1
 				)
 				(rope dispose:)
@@ -526,20 +526,20 @@
 					setLoop: 0
 					cycleSpeed: 5
 					posn: 170 54
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(19
 				(fx0 stop:)
 				(UnLoad 128 5807)
-				(cage cel: 0 setCycle: End self)
+				(cage cel: 0 setCycle: EndLoop self)
 			)
 			(20
 				(druid3 setCycle: 0 setPri: 12 stopUpd:)
-				(cage setLoop: 1 cel: 6 setCycle: End self)
+				(cage setLoop: 1 cel: 6 setCycle: EndLoop self)
 			)
 			(21
-				(cage cel: 0 setCycle: End self)
+				(cage cel: 0 setCycle: EndLoop self)
 			)
 			(22
 				(cage view: 5802 setLoop: 0 setCel: 0)
@@ -600,7 +600,7 @@
 			(9 (messager say: 1 0 7 0 self))
 			(10
 				(theMusic number: 561 loop: 1 play: self)
-				(inEgo setLoop: 1 cel: 0 setCycle: End)
+				(inEgo setLoop: 1 cel: 0 setCycle: EndLoop)
 			)
 			(11
 				(= temp0 100)
@@ -669,14 +669,14 @@
 					setLoop: 1
 					cel: 0
 					cycleSpeed: 15
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(9 (inEgo setCycle: End self))
+			(9 (inEgo setCycle: EndLoop self))
 			(10
 				(inFlame dispose:)
 				(fx0 stop:)
-				(inEgo setCycle: End self)
+				(inEgo setCycle: EndLoop self)
 			)
 			(11
 				(ego put: 5 580)
@@ -704,7 +704,7 @@
 					setLoop: 7
 					cel: 0
 					cycleSpeed: 15
-					setCycle: Osc 2 self
+					setCycle: Oscillate 2 self
 				)
 			)
 			(16
@@ -713,7 +713,7 @@
 			)
 			(17 (= seconds 2))
 			(18
-				(inEgo setCycle: Osc 2 self)
+				(inEgo setCycle: Oscillate 2 self)
 			)
 			(19
 				(inEgo setCycle: 0 stopUpd:)
@@ -721,7 +721,7 @@
 			)
 			(20 (= seconds 2))
 			(21
-				(inEgo setCycle: Osc 2 self)
+				(inEgo setCycle: Oscillate 2 self)
 			)
 			(22
 				(inEgo setCycle: 0 stopUpd:)
@@ -729,24 +729,24 @@
 			)
 			(23
 				(theGame givePoints: 2)
-				(inEgo view: 5821 setLoop: 0 cel: 0 setCycle: End self)
+				(inEgo view: 5821 setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(24
 				(inEgo
 					view: 582
 					setLoop: 5
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(25 (inEgo setCycle: End self))
-			(26 (inEgo setCycle: End self))
-			(27 (inEgo setCycle: End self))
+			(25 (inEgo setCycle: EndLoop self))
+			(26 (inEgo setCycle: EndLoop self))
+			(27 (inEgo setCycle: EndLoop self))
 			(28
-				(inEgo cel: 0 setCycle: End self)
+				(inEgo cel: 0 setCycle: EndLoop self)
 			)
 			(29
-				(inEgo setLoop: 6 setCycle: End self)
+				(inEgo setLoop: 6 setCycle: EndLoop self)
 			)
 			(30
 				(inEgo setCycle: 0 stopUpd:)
@@ -757,10 +757,10 @@
 			)
 			(32
 				(fx1 number: 565 loop: -1 play:)
-				(inBillow show: setCycle: End self)
+				(inBillow show: setCycle: EndLoop self)
 			)
 			(33
-				(inBillow setLoop: 1 cel: 0 setCycle: Fwd)
+				(inBillow setLoop: 1 cel: 0 setCycle: Forward)
 				(= seconds 3)
 			)
 			(34
@@ -1107,7 +1107,7 @@
 	(method (init)
 		(super init: &rest)
 		(inEgo init: setPri: 14)
-		(inFire init: setCycle: Fwd cycleSpeed: 10 setPri: 14)
+		(inFire init: setCycle: Forward cycleSpeed: 10 setPri: 14)
 		(inFlame init: setPri: 13 hide:)
 		(inBillow init: setPri: 14 hide:)
 		(if (and (ego has: 19) (== global161 15))

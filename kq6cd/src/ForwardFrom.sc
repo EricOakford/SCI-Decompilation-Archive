@@ -7,7 +7,7 @@
 	ForwardFrom 0
 )
 
-(class ForwardFrom of Fwd
+(class ForwardFrom of Forward
 	(properties
 		client 0
 		caller 0

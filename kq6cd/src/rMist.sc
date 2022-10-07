@@ -10,7 +10,7 @@
 	rMist 0
 )
 
-(class rMist of Rgn
+(class rMist of Region
 	(properties
 		script 0
 		number 0

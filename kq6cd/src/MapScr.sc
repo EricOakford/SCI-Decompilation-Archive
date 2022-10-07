@@ -93,7 +93,7 @@
 					view: 207
 					setLoop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (= seconds 2))
@@ -203,7 +203,7 @@
 						view: 207
 						setLoop: 2
 						lastCel:
-						setCycle: Beg self
+						setCycle: BegLoop self
 					)
 				else
 					(= seconds 2)
@@ -224,7 +224,7 @@
 					(self dispose:)
 				else
 					(mapSound loop: 1 number: 947 play:)
-					(ego cel: 0 setLoop: 0 setCycle: End self)
+					(ego cel: 0 setLoop: 0 setCycle: EndLoop self)
 				)
 			)
 			(5 (= seconds 1))
@@ -348,7 +348,7 @@
 			ignoreHorizon: 1
 			posn: x y
 			init:
-			setCycle: End MapScr
+			setCycle: EndLoop MapScr
 		)
 		(mapSound number: 131 loop: 1 play:)
 	)

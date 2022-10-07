@@ -96,7 +96,7 @@
 		(doorFrame1ATP addToPic:)
 		(doorFrame2ATP addToPic:)
 		(fireplaceATP addToPic:)
-		(fireplace setCycle: Fwd init:)
+		(fireplace setCycle: Forward init:)
 		(wardrobeDoor init:)
 		(bedATP addToPic:)
 		(switch prevRoomNum
@@ -176,7 +176,7 @@
 			)
 			(1
 				(ego setPri: 13)
-				(door setCycle: Beg self)
+				(door setCycle: BegLoop self)
 			)
 			(2
 				(soundFx2 number: 902 loop: 1 play:)
@@ -218,7 +218,7 @@
 					scaleX: 128
 					scaleY: 128
 					posn: 151 154
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(1
@@ -241,7 +241,7 @@
 				((ScriptID 80 0) setFlag: 711 4096)
 				(trunkLid hide:)
 				(soundFx2 number: 904 loop: 1 play:)
-				(ego cel: 4 setCycle: End self)
+				(ego cel: 4 setCycle: EndLoop self)
 			)
 			(3
 				(soundFx2 stop:)
@@ -252,12 +252,12 @@
 			)
 			(4
 				(soundFx2 number: 905 loop: 1 play:)
-				(ego setCycle: CT 3 -1 self)
+				(ego setCycle: CycleTo 3 -1 self)
 			)
 			(5
 				(trunkLid show:)
 				(soundFx2 stop:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(6
 				(theGame handsOn:)
@@ -287,7 +287,7 @@
 					scaleX: 128
 					scaleY: 128
 					cycleSpeed: 8
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(2
@@ -298,7 +298,7 @@
 			)
 			(3
 				(theGame handsOff:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(4
 				(ego
@@ -331,15 +331,15 @@
 					setScale: 0
 					scaleX: 128
 					scaleY: 128
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(soundFx2 number: 901 loop: 1 play:)
 			)
 			(1
-				(ego loop: 1 cel: 5 setCycle: CT 2 -1 self)
+				(ego loop: 1 cel: 5 setCycle: CycleTo 2 -1 self)
 			)
 			(2
-				(ego setCycle: Beg)
+				(ego setCycle: BegLoop)
 				(soundFx2 number: 902 loop: 1 play:)
 				(= ticks 60)
 			)
@@ -371,7 +371,7 @@
 			(1 (Face ego door self))
 			(2
 				(soundFx2 number: 901 loop: 1 play:)
-				(door setCycle: CT 2 1 self)
+				(door setCycle: CycleTo 2 1 self)
 			)
 			(3
 				(soundFx2 stop:)
@@ -379,7 +379,7 @@
 			)
 			(4
 				(soundFx2 number: 901 loop: 1 play:)
-				(door setCycle: End self)
+				(door setCycle: EndLoop self)
 			)
 			(5
 				(soundFx2 stop:)
@@ -419,12 +419,12 @@
 						cel: 0
 						posn: 58 162
 						cycleSpeed: 8
-						setCycle: CT 2 1 self
+						setCycle: CycleTo 2 1 self
 					)
 				)
 				(1
 					(theGlobalSound number: 901 loop: 1 play:)
-					(ego setCycle: End self)
+					(ego setCycle: EndLoop self)
 				)
 				(2
 					(if (!= prevRoomNum 810)
@@ -434,7 +434,7 @@
 						(= cycles 1)
 					)
 				)
-				(3 (ego setCycle: CT 1 -1 self))
+				(3 (ego setCycle: CycleTo 1 -1 self))
 				(4
 					(= local1 1)
 					(ego cel: 0)
@@ -442,7 +442,7 @@
 				)
 				(5
 					(theGlobalSound number: 783 loop: 1 play:)
-					(ego loop: 2 cel: 0 setCycle: CT 8 1 self)
+					(ego loop: 2 cel: 0 setCycle: CycleTo 8 1 self)
 				)
 				(6
 					(ego cel: 9)
@@ -488,7 +488,7 @@
 				(theGame handsOff:)
 				(ego setPri: -1)
 				(soundFx2 number: 901 loop: 1 play:)
-				(self setCycle: End self)
+				(self setCycle: EndLoop self)
 			)
 			(1
 				(if local0
@@ -724,7 +724,7 @@
 	)
 	
 	(method (init)
-		(self setCycle: Fwd)
+		(self setCycle: Forward)
 		(super init: &rest)
 	)
 )

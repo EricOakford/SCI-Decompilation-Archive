@@ -46,7 +46,7 @@
 					setMotion: JumpTo 150 154 self
 				)
 			)
-			(1 (ego setCycle: End self))
+			(1 (ego setCycle: EndLoop self))
 			(2
 				(soundFx2 number: 960 setLoop: 1 play: self)
 			)
@@ -60,7 +60,7 @@
 			(4
 				(if (not ((ScriptID 80 0) tstFlag: 711 64))
 					(soundFx2 number: 902 loop: 1 play:)
-					((ScriptID 820 3) setCycle: Beg self)
+					((ScriptID 820 3) setCycle: BegLoop self)
 				else
 					(= state (+ state 2))
 					(= cycles 1)
@@ -100,7 +100,7 @@
 			(8
 				((ScriptID 80 0) setFlag: 711 64)
 				(if (not register) (= register self))
-				(ego loop: 1 cel: 0 setCycle: End self)
+				(ego loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(9
 				(if local0 (= state 11))
@@ -135,7 +135,7 @@
 				(messager say: 1 0 13 0 self)
 			)
 			(1
-				((ScriptID 820 3) setCycle: Beg self)
+				((ScriptID 820 3) setCycle: BegLoop self)
 			)
 			(2
 				(soundFx2 number: 822 loop: 1 play:)
@@ -153,7 +153,7 @@
 		(switch (= state newState)
 			(0 (messager say: 1 0 1 2 self))
 			(1
-				(ego loop: 1 cel: 0 setCycle: End self)
+				(ego loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(ego reset: 7 posn: 132 149)
@@ -180,7 +180,7 @@
 				(messager say: 1 0 11 0 self)
 			)
 			(1
-				((ScriptID 820 3) setCycle: Beg self)
+				((ScriptID 820 3) setCycle: BegLoop self)
 			)
 			(2
 				(soundFx2 number: 822 loop: 1 play:)
@@ -203,7 +203,7 @@
 			)
 			(4
 				(soundFx2 number: 821 loop: 1 play:)
-				((ScriptID 820 3) setCycle: End self)
+				((ScriptID 820 3) setCycle: EndLoop self)
 			)
 			(5
 				(soundFx2 stop:)
@@ -213,11 +213,11 @@
 					cel: 0
 					cycleSpeed: 8
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
-				(jollo posn: 87 148 setLoop: 1 cel: 0 setCycle: End self)
+				(jollo posn: 87 148 setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(7 (messager say: 1 0 9 2 self))
 			(8 (Face ego jollo self))
@@ -231,7 +231,7 @@
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(12

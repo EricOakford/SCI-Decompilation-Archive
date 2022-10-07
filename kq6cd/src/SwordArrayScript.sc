@@ -32,7 +32,7 @@
 						loop: 6
 						cel: 0
 						posn: 178 132
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(self cue:)
@@ -99,7 +99,7 @@
 					loop: 0
 					cel: 0
 					posn: 159 149
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(3
@@ -111,7 +111,7 @@
 					loop: 1
 					cel: 0
 					posn: 140 153
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(5
@@ -127,8 +127,8 @@
 				)
 			)
 			(7
-				(ego setCycle: End self)
-				((ScriptID 750 6) setCycle: End (ScriptID 750 6))
+				(ego setCycle: EndLoop self)
+				((ScriptID 750 6) setCycle: EndLoop (ScriptID 750 6))
 			)
 			(8
 				(messager say: 6 23 15 11 self)
@@ -146,7 +146,7 @@
 			(12 (proc750_5 1) (= cycles 1))
 			(13
 				(theGame handsOff:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(14
 				(messager say: 1 0 6 1 self)
@@ -170,7 +170,7 @@
 					setLoop: 0
 					cel: 0
 					posn: 153 150
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(28
@@ -181,12 +181,12 @@
 			)
 			(29
 				(theMusic number: 752 setLoop: -1 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(30
-				(ego setLoop: 1 cel: 0 setCycle: CT 7 1 self)
+				(ego setLoop: 1 cel: 0 setCycle: CycleTo 7 1 self)
 			)
-			(31 (ego setCycle: End self))
+			(31 (ego setCycle: EndLoop self))
 			(32
 				((ScriptID 750 3)
 					init:
@@ -257,7 +257,7 @@
 					init: self
 				)
 			)
-			(38 (ego setCycle: End self))
+			(38 (ego setCycle: EndLoop self))
 			(39
 				((ScriptID 750 1)
 					add: -1 6 23 10 8
@@ -376,30 +376,30 @@
 					(= cycles 2)
 				)
 			)
-			(1
+			(2 ;fix "Already encountered a case for '1'". Renumber the remaining states
 				(ego view: 755 posn: 151 154 setLoop: 0 cel: 6)
 				(= cycles 8)
 			)
-			(2 (ego cel: 5) (= cycles 8))
-			(3
+			(3 (ego cel: 5) (= cycles 8))
+			(4
 				(ego
 					posn: 165 163
 					view: 7504
 					setLoop: 6
 					cel: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
-			)
-			(4
-				(theGlobalSound number: 0 stop:)
-				(theGlobalSound number: 756 setLoop: 1 play:)
-				(ego setCycle: End self)
 			)
 			(5
 				(theGlobalSound number: 0 stop:)
-				(theGlobalSound number: 971 setLoop: 1 play: self)
+				(theGlobalSound number: 756 setLoop: 1 play:)
+				(ego setCycle: EndLoop self)
 			)
 			(6
+				(theGlobalSound number: 0 stop:)
+				(theGlobalSound number: 971 setLoop: 1 play: self)
+			)
+			(7
 				(if (not register)
 					((ScriptID 750 1)
 						add: -1 6 23 16 2
@@ -410,40 +410,40 @@
 					(= cycles 2)
 				)
 			)
-			(7
+			(8
 				(if register
 					(messager say: 1 0 6 3 self)
 				else
 					(= cycles 2)
 				)
 			)
-			(8
+			(9
 				(ego
 					view: 7513
 					posn: 161 150
 					setLoop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theGlobalSound number: 0 stop:)
 				(theGlobalSound number: 652 setLoop: 1 play:)
 			)
-			(9
-				(ego setLoop: 1 cel: 0 setCycle: CT 6 1 self)
-			)
 			(10
-				(theGlobalSound number: 0 stop:)
-				(theGlobalSound number: 652 setLoop: 1 play:)
-				(ego setCycle: End self)
+				(ego setLoop: 1 cel: 0 setCycle: CycleTo 6 1 self)
 			)
 			(11
+				(theGlobalSound number: 0 stop:)
+				(theGlobalSound number: 652 setLoop: 1 play:)
+				(ego setCycle: EndLoop self)
+			)
+			(12
 				(if register
 					(messager say: 1 0 6 4 self)
 				else
 					(= cycles 2)
 				)
 			)
-			(12
+			(13
 				(if (== ((inventory at: 8) owner?) 870)
 					(EgoDead 41)
 				else

@@ -258,7 +258,7 @@
 			(1 (ego setHeading: 0 self))
 			(2
 				(soundFx2 number: 901 loop: 1 play:)
-				(guardDoor setCycle: End self)
+				(guardDoor setCycle: EndLoop self)
 			)
 			(3
 				(soundFx2 stop:)
@@ -418,7 +418,7 @@
 			(0 (= cycles 2))
 			(1
 				(soundFx2 number: 909 loop: 1 play:)
-				(hiddenDoor setCycle: Beg self)
+				(hiddenDoor setCycle: BegLoop self)
 			)
 			(2
 				(soundFx2 stop:)
@@ -457,19 +457,19 @@
 					setScale:
 					scaleX: 107
 					scaleY: 107
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 				(arm startUpd:)
 			)
 			(2
 				(soundFx2 number: 720 loop: 1 play:)
 				(arm cel: 1 stopUpd:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 				(hiddenDoor startUpd:)
 			)
 			(3
 				(soundFx2 number: 909 loop: 1 play:)
-				(hiddenDoor setCycle: End self)
+				(hiddenDoor setCycle: EndLoop self)
 			)
 			(4
 				(soundFx2 stop:)
@@ -534,7 +534,7 @@
 					setScale:
 					scaleX: 106
 					scaleY: 106
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(10
@@ -618,7 +618,7 @@
 								)
 							)
 						)
-						(self cue: 1 setCycle: End)
+						(self cue: 1 setCycle: EndLoop)
 					)
 					(
 						(and
@@ -644,7 +644,7 @@
 								)
 							)
 						)
-						(self setCycle: Beg self)
+						(self setCycle: BegLoop self)
 					)
 					(else 0)
 				)

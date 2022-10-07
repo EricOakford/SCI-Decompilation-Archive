@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use rgDead)
-(use NewRoomCue)
+(use KQ6Room)
 (use Inset)
 (use Scaler)
 (use RandCyc)
@@ -201,9 +201,9 @@
 				)
 				(= cycles 1)
 			)
-			(1 (ego setCycle: CT 7 1 self))
+			(1 (ego setCycle: CycleTo 7 1 self))
 			(2
-				(ego setPri: 8 x: (+ (ego x?) 2) setCycle: End self)
+				(ego setPri: 8 x: (+ (ego x?) 2) setCycle: EndLoop self)
 			)
 			(3
 				(ego posn: (- (ego x?) 2) (- (ego y?) 11) reset: 3)
@@ -292,7 +292,7 @@
 						setLoop: 0
 						cel: 0
 						cycleSpeed: 5
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(ego
@@ -302,7 +302,7 @@
 						cel: 0
 						setPri: 8
 						cycleSpeed: 5
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 			)
@@ -416,7 +416,7 @@
 					cycleSpeed: 6
 					cel: 0
 					posn: 277 131
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(scrape play:)
 			)
@@ -495,7 +495,7 @@
 		(switch (= state newState)
 			(0 (= cycles (Random 90 300)))
 			(1
-				(ghost show: setCycle: End self)
+				(ghost show: setCycle: EndLoop self)
 			)
 			(2 (ghost hide:) (= cycles 1))
 			(3 (self init:))
@@ -514,11 +514,11 @@
 				)
 				(theMusic number: 651 loop: 1 play:)
 				((ScriptID 70 0) setIt: 4)
-				(knightGhost init: cycleSpeed: 10 setCycle: End self)
+				(knightGhost init: cycleSpeed: 10 setCycle: EndLoop self)
 			)
 			(1
 				(ego hide:)
-				(knightGhost loop: 1 cel: 0 setPri: -1 setCycle: End self)
+				(knightGhost loop: 1 cel: 0 setPri: -1 setCycle: EndLoop self)
 			)
 			(2
 				(ego show:)
@@ -527,7 +527,7 @@
 					cel: 0
 					posn: 201 127
 					setPri: 4
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3

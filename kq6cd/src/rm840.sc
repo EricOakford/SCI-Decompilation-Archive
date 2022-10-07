@@ -522,7 +522,7 @@
 			)
 			(3
 				(soundFx2 number: 901 loop: 1 play:)
-				(grandHallDoor priority: 10 setCycle: End self)
+				(grandHallDoor priority: 10 setCycle: EndLoop self)
 			)
 			(4
 				(soundFx2 stop:)
@@ -532,7 +532,7 @@
 			)
 			(5
 				(jollo hide:)
-				(grandHallDoor priority: 0 setCycle: Beg self)
+				(grandHallDoor priority: 0 setCycle: BegLoop self)
 			)
 			(6
 				(soundFx2 number: 902 loop: 1 play:)
@@ -575,7 +575,7 @@
 			)
 			(1
 				(soundFx2 number: 901 loop: 1 play:)
-				(clownDoor setCycle: End self)
+				(clownDoor setCycle: EndLoop self)
 			)
 			(2
 				(soundFx2 stop:)
@@ -588,7 +588,7 @@
 			)
 			(4
 				(jollo dispose:)
-				(clownDoor setCycle: Beg self)
+				(clownDoor setCycle: BegLoop self)
 			)
 			(5
 				(soundFx2 number: 902 loop: 1 play:)
@@ -661,7 +661,7 @@
 		(switch (= param1 (++ yStep))
 			(0
 				(theGame handsOff:)
-				(self ignoreActors: setCycle: End self)
+				(self ignoreActors: setCycle: EndLoop self)
 				(soundFx number: 901 setLoop: 1 play:)
 			)
 			(1
@@ -718,7 +718,7 @@
 								)
 							)
 						)
-						(self setCycle: Beg self)
+						(self setCycle: BegLoop self)
 					)
 					(
 						(and
@@ -740,7 +740,7 @@
 								)
 							)
 						)
-						(self cue: 1 setCycle: End)
+						(self cue: 1 setCycle: EndLoop)
 					)
 					(else 0)
 				)

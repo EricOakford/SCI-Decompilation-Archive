@@ -241,20 +241,20 @@
 					cel: 0
 					cycleSpeed: 10
 					posn: 105 148
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (= seconds 3))
 			(3
 				(drape hide:)
-				(ego loop: 1 cel: 0 posn: 104 148 setCycle: End self)
+				(ego loop: 1 cel: 0 posn: 104 148 setCycle: EndLoop self)
 			)
 			(4
 				(drape posn: 95 141 0 cel: 1 show: stopUpd:)
-				(ego loop: 2 cel: 0 posn: 92 150 setCycle: End self)
+				(ego loop: 2 cel: 0 posn: 92 150 setCycle: EndLoop self)
 			)
 			(5 (= seconds 2))
-			(6 (ego setCycle: Beg self))
+			(6 (ego setCycle: BegLoop self))
 			(7
 				(ego
 					posn: (drape approachX?) (drape approachY?)
@@ -285,7 +285,7 @@
 					cel: 0
 					cycleSpeed: 8
 					posn: 104 148
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1

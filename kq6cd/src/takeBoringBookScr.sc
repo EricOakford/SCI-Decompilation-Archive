@@ -32,19 +32,19 @@
 					loop: 0
 					cel: 0
 					normal: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(1
 				(boringBook dispose:)
 				(= cycles 2)
 			)
-			(2 (ego setCycle: End self))
+			(2 (ego setCycle: EndLoop self))
 			(3 (= cycles 2))
 			(4 (messager say: 2 5 4 1 self))
 			(5
 				(if register
-					((ScriptID 270 2) view: 276 cel: 0 setCycle: CT 4 1 self)
+					((ScriptID 270 2) view: 276 cel: 0 setCycle: CycleTo 4 1 self)
 				else
 					(++ state)
 					(self cue:)
@@ -56,7 +56,7 @@
 			)
 			(8
 				(if register
-					((ScriptID 270 2) setCycle: Beg self)
+					((ScriptID 270 2) setCycle: BegLoop self)
 				else
 					(++ state)
 					(= cycles 1)
@@ -100,8 +100,9 @@
 		(self approachVerbs: 5 1)
 	)
 	
-	(method (doVerb theVerb)
-		((ScriptID 270 1) doVerb: theVerb &rest)
+	(method (doVerb theVerb &tmp theScript)
+		(= theScript (ScriptID 270 1))
+		(theScript doVerb: theVerb &rest)
 	)
 	
 	(method (onMe event &tmp temp0)

@@ -4,7 +4,7 @@
 (use Main)
 (use CastleRoom)
 (use Kq6Procs)
-(use n926)
+(use FlipPoly)
 (use Scaler)
 (use PolyPath)
 (use Polygon)
@@ -276,7 +276,7 @@
 		)
 		(switch prevRoomNum
 			(750
-				(proc926_0)
+				(FlipPoly)
 				(ego posn: 256 19)
 				(= theRegister 1)
 				(= local0 2)
@@ -288,8 +288,8 @@
 			(else 
 				(rglow init: posn: 228 81 setLoop: 0)
 				(lglow init: posn: 96 73 setLoop: 2)
-				(rflame init: posn: 229 73 setLoop: 4 setCycle: Fwd)
-				(lflame init: posn: 97 71 setLoop: 4 setCycle: Fwd)
+				(rflame init: posn: 229 73 setLoop: 4 setCycle: Forward)
+				(lflame init: posn: 97 71 setLoop: 4 setCycle: Forward)
 				(ego loop: 2 posn: 159 125)
 				(vizier init:)
 				(= local0 1)
@@ -403,8 +403,8 @@
 						(rTimer client: rglow)
 						(lglow init: posn: 90 81 setLoop: 1)
 						(lTimer client: lglow)
-						(rflame init: posn: 222 71 setLoop: 4 setCycle: Fwd)
-						(lflame init: posn: 90 73 setLoop: 4 setCycle: Fwd)
+						(rflame init: posn: 222 71 setLoop: 4 setCycle: Forward)
+						(lflame init: posn: 90 73 setLoop: 4 setCycle: Forward)
 					else
 						(if (addToPics contains: stairs)
 							(stairs dispose:)
@@ -415,8 +415,8 @@
 						(rTimer client: rglow)
 						(lglow init: posn: 96 73 setLoop: 2)
 						(lTimer client: lglow)
-						(rflame init: posn: 229 73 setLoop: 4 setCycle: Fwd)
-						(lflame init: posn: 97 71 setLoop: 4 setCycle: Fwd)
+						(rflame init: posn: 229 73 setLoop: 4 setCycle: Forward)
+						(lflame init: posn: 97 71 setLoop: 4 setCycle: Forward)
 					)
 					(= cycles 2)
 				)
@@ -515,7 +515,7 @@
 					cel: 0
 					loop: (mod (ego cel?) 4)
 					cycleSpeed: 8
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(1
@@ -534,14 +534,14 @@
 						)
 					)
 				)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(2
 				(if (> (ego loop?) 2)
 					(ego
 						loop: (+ 4 (== (ego loop?) 3))
 						cycleSpeed: 10
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(= cycles 1)

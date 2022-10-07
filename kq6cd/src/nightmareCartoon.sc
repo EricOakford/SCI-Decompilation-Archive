@@ -36,7 +36,7 @@
 			(0
 				(Cursor showCursor: 1)
 				(ego hide:)
-				(nightmare init: setCycle: End self)
+				(nightmare init: setCycle: EndLoop self)
 				(soundFx2 number: 346 loop: 1 play:)
 			)
 			(1 (= ticks 120))
@@ -52,7 +52,7 @@
 					setSpeed: 6
 					setPri: 15
 					posn: 180 80
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3 (= cycles 2))
@@ -81,7 +81,7 @@
 					loop: 0
 					cel: 0
 					posn: 174 123
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(soundFx2 number: 346 loop: 1 play:)
 			)

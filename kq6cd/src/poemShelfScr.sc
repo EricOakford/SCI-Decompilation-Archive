@@ -24,9 +24,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (ego setCycle: CT 1 -1 self))
+			(0 (ego setCycle: CycleTo 1 -1 self))
 			(1 (= cycles 2))
-			(2 (ego setCycle: End self))
+			(2 (ego setCycle: EndLoop self))
 			(3 (= cycles 2))
 			(4 (self dispose:))
 		)
@@ -55,11 +55,11 @@
 					loop: 2
 					cel: 0
 					normal: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				(ego loop: 3 cel: 0 setCycle: End self)
+				(ego loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(if (!= ((inventory at: 47) owner?) 270)
@@ -102,7 +102,7 @@
 						view: 279
 						setLoop: 6
 						cel: 0
-						setCycle: Fwd
+						setCycle: Forward
 						setMotion: MoveTo 281 120 poem
 					)
 				)
@@ -112,7 +112,7 @@
 				(ego loop: 2 cel: (ego lastCel:))
 				(= cycles 2)
 			)
-			(6 (ego setCycle: Beg self))
+			(6 (ego setCycle: BegLoop self))
 			(7
 				(ego reset: 3)
 				(if (not register) (theGame givePoints: 1))
@@ -149,7 +149,7 @@
 					loop: 1
 					cel: 0
 					normal: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(1
@@ -157,7 +157,7 @@
 				(ego get: 47)
 				(= cycles 2)
 			)
-			(2 (ego setCycle: End self))
+			(2 (ego setCycle: EndLoop self))
 			(3 (= cycles 2))
 			(4 (ego reset: 7) (= cycles 2))
 			(5
@@ -212,7 +212,7 @@
 	
 	(method (cue)
 		(if (not (++ local0))
-			(self setCycle: End self)
+			(self setCycle: EndLoop self)
 		else
 			(self view: 270 setLoop: 2 cel: 1)
 			(= local1 1)

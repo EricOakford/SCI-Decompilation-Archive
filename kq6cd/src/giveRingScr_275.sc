@@ -30,7 +30,7 @@
 					view: 2722
 					loop: 3
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -43,7 +43,7 @@
 					view: 273
 					loop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -52,7 +52,7 @@
 			)
 			(5 (self dispose:))
 			(6
-				((ScriptID 274 0) loop: 1 cel: 0 setCycle: End self)
+				((ScriptID 274 0) loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(7
 				((ScriptID 274 0) stopUpd:)
@@ -64,7 +64,7 @@
 					view: 2731
 					loop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(10
@@ -73,7 +73,7 @@
 			)
 			(11 (self dispose:))
 			(12
-				((ScriptID 274 0) loop: 1 cel: 0 setCycle: End self)
+				((ScriptID 274 0) loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(13
 				((ScriptID 274 0) stopUpd:)
@@ -110,7 +110,7 @@
 					view: 272
 					loop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (ego stopUpd:) (= cycles 2))
@@ -127,7 +127,7 @@
 					view: 2721
 					loop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -141,7 +141,7 @@
 					(messager say: 10 70 11 3 self)
 				)
 			)
-			(7 (ego setCycle: Beg self))
+			(7 (ego setCycle: BegLoop self))
 			(8 (ego stopUpd:) (= cycles 2))
 			(9
 				(roomConv
@@ -186,7 +186,7 @@
 					view: 274
 					loop: 0
 					cel: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(14
@@ -202,7 +202,7 @@
 				(= cycles 2)
 			)
 			(16
-				((ScriptID 274 0) setCycle: End self)
+				((ScriptID 274 0) setCycle: EndLoop self)
 				(ego
 					posn: ((ScriptID 274 0) approachX?) ((ScriptID 274 0) approachY?)
 					reset: 1

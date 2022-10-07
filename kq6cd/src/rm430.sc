@@ -57,11 +57,12 @@
 		(super init: &rest)
 	)
 	
-	(method (doVerb theVerb)
+	(method (doVerb theVerb &tmp theScript)
 		(switch theVerb
 			(5 (ego setScript: getCoins))
 			(else 
-				((ScriptID 30 4) doVerb: theVerb &rest)
+				(= theScript (ScriptID 30 4))
+				(theScript doVerb: theVerb &rest)
 			)
 		)
 	)
@@ -81,14 +82,15 @@
 		cycleSpeed 15
 	)
 	
-	(method (doVerb theVerb)
+	(method (doVerb theVerb &tmp theScript)
 		(switch theVerb
 			(5 (ego setScript: getCoins))
 			(1
 				(messager say: 13 1 0 0 0 400)
 			)
 			(else 
-				((ScriptID 30 4) doVerb: theVerb &rest)
+				(= theScript (ScriptID 30 4))
+				(theScript doVerb: theVerb &rest)
 			)
 		)
 	)
@@ -117,7 +119,7 @@
 		(super init:)
 	)
 	
-	(method (doVerb theVerb)
+	(method (doVerb theVerb &tmp theScript)
 		(switch theVerb
 			(7
 				(messager say: 13 7 0 1 0 400)
@@ -133,7 +135,8 @@
 				(if (cast contains: theDeadMansCoin)
 					(theDeadMansCoin doVerb: theVerb &rest)
 				else
-					((ScriptID 30 4) doVerb: theVerb &rest)
+					(= theScript (ScriptID 30 4))
+					(theScript doVerb: theVerb &rest)
 				)
 			)
 		)
@@ -156,13 +159,13 @@
 					setLoop: 5
 					cel: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				(ego setLoop: 4 cel: 0 setCycle: End self)
+				(ego setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(if (!= ((inventory at: 7) owner?) curRoomNum)
 					(messager say: 8 5 0 1 self 400)
@@ -196,7 +199,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(theGlint setCycle: Beg self)
+				(theGlint setCycle: BegLoop self)
 			)
 			(1
 				(theGlint hide:)

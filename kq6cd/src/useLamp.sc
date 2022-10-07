@@ -40,7 +40,7 @@
 					loop: 0
 					cel: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -69,7 +69,7 @@
 					ignoreActors: 1
 					x: (+ ((ScriptID 750 4) x?) 32)
 					y: (- ((ScriptID 750 4) y?) 8)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
@@ -85,7 +85,7 @@
 				(messager say: 5 92 0 4 self)
 			)
 			(8
-				(ego setCycle: CT 1 -1)
+				(ego setCycle: CycleTo 1 -1)
 				((ScriptID 750 2) dispose:)
 				(if global169
 					(curRoom drawPic: 750 15)
@@ -120,18 +120,18 @@
 					cel: 0
 					x: 164
 					y: 140
-					setCycle: CT 8 1 self
+					setCycle: CycleTo 8 1 self
 				)
 				(theGlobalSound number: 0 stop:)
 				(theGlobalSound number: 652 setLoop: 1 play:)
 			)
 			(11
-				(ego view: 703 setLoop: 0 cel: 0 setCycle: End)
-				((ScriptID 750 3) setCycle: End)
+				(ego view: 703 setLoop: 0 cel: 0 setCycle: EndLoop)
+				((ScriptID 750 3) setCycle: EndLoop)
 				(jar init: setCycle: Walk)
 				(self setScript: jarGoesFlying self)
 			)
-			(12 (ego setCycle: Beg self))
+			(12 (ego setCycle: BegLoop self))
 			(13
 				(if (ego looper?) ((ego looper?) dispose:))
 				(ego
@@ -200,15 +200,15 @@
 					scaleSignal: 1
 					scaleX: 132
 					scaleY: 132
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(3
-				((ScriptID 750 3) setCycle: End self)
+				((ScriptID 750 3) setCycle: EndLoop self)
 				(theGlobalSound number: 756 setLoop: 1 play:)
 			)
 			(4
-				((ScriptID 750 3) setLoop: 1 cel: 0 setCycle: End self)
+				((ScriptID 750 3) setLoop: 1 cel: 0 setCycle: EndLoop self)
 				(theGlobalSound number: 756 setLoop: 1 play:)
 			)
 			(5 (= ticks 30))
@@ -216,7 +216,7 @@
 				((ScriptID 750 3)
 					setLoop: 2
 					cel: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(7
@@ -228,7 +228,7 @@
 				(messager say: 6 23 16 3 self)
 			)
 			(9
-				((ScriptID 750 3) setCycle: End self)
+				((ScriptID 750 3) setCycle: EndLoop self)
 				(theGlobalSound number: 652 setLoop: 1 play:)
 			)
 			(10 (EgoDead 41))

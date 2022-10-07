@@ -80,18 +80,18 @@
 			)
 			(2
 				(soundFx number: 454 setLoop: 1 play:)
-				(tasteGnome setLoop: 1 cel: 0 setCycle: End self)
+				(tasteGnome setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(if (== register 63)
-					(tasteGnome setLoop: 4 cel: 0 setCycle: End self)
+					(tasteGnome setLoop: 4 cel: 0 setCycle: EndLoop self)
 				else
 					(self setScript: failScript 0 register)
 				)
 			)
 			(4
 				(tasteGnome setLoop: 0 cel: 0)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(5
 				(if ((ScriptID 40 0) alexX?)
@@ -125,7 +125,7 @@
 				(cond 
 					(
 					(or ((ScriptID 40 0) alexInvisible?) (== register 31)) (self state: (+ state 1) cue:))
-					(register (ego setCycle: End self))
+					(register (ego setCycle: EndLoop self))
 					(else (= cycles 1))
 				)
 			)
@@ -140,17 +140,17 @@
 			)
 			(2
 				(if (not register)
-					(tasteGnome setCycle: Beg self)
+					(tasteGnome setCycle: BegLoop self)
 					(soundFx number: 454 setLoop: 1 play:)
 				else
 					(= cycles 1)
 				)
 			)
 			(3
-				(tasteGnome setLoop: 2 setCycle: End self)
+				(tasteGnome setLoop: 2 setCycle: EndLoop self)
 			)
 			(4
-				(tasteGnome setCycle: Beg self)
+				(tasteGnome setCycle: BegLoop self)
 			)
 			(5
 				(if (not register)

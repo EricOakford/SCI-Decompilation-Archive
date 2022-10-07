@@ -24,7 +24,7 @@
 	)
 )
 
-(class rgCrown of Rgn
+(class rgCrown of Region
 	(properties
 		script 0
 		number 0

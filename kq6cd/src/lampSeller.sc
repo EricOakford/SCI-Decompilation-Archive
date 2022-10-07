@@ -93,7 +93,7 @@
 			)
 			(1
 				(if (not (curRoom script?))
-					((ScriptID 241 0) loop: 2 cel: 0 setCycle: End)
+					((ScriptID 241 0) loop: 2 cel: 0 setCycle: EndLoop)
 					(if (& msgType $0002)
 						(if (<= (ego y?) 130)
 							(= cycles 1)
@@ -125,7 +125,7 @@
 					loop: 0
 					cel: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(= state -1)
 			)
@@ -139,7 +139,7 @@
 				(= ticks 45)
 			)
 			(7
-				((ScriptID 241 0) loop: 5 cel: 0 setCycle: End self)
+				((ScriptID 241 0) loop: 5 cel: 0 setCycle: EndLoop self)
 				(= state -1)
 			)
 		)

@@ -15,7 +15,7 @@
 	local0
 	local1
 )
-(instance speedRoom of Rm
+(instance speedRoom of Room
 	(properties
 		picture 98
 	)
@@ -66,7 +66,7 @@
 					posn: 20 99
 					setStep: 1 1
 					setSpeed: 0
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 					setMotion: MoveTo 100 100 self
 				)

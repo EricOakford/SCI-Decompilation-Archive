@@ -27,14 +27,14 @@
 					cel: 0
 					setLoop: 2
 					cycleSpeed: 5
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				(ego cel: 0 setLoop: 0 setCycle: End self)
+				(ego cel: 0 setLoop: 0 setCycle: EndLoop self)
 			)
 			(3
-				(ego setLoop: 1 setCycle: Fwd)
+				(ego setLoop: 1 setCycle: Forward)
 				(= seconds 4)
 			)
 			(4
@@ -44,18 +44,18 @@
 				(messager say: 1 42 0 2 self 0)
 			)
 			(6
-				(ego setLoop: 2 lastCel: setCycle: Beg self)
+				(ego setLoop: 2 lastCel: setCycle: BegLoop self)
 			)
 			(7 (= seconds 1))
 			(8
 				(localMusic loop: 1 number: 961 play:)
-				(ego setLoop: 3 cycleSpeed: 10 setCycle: End self)
+				(ego setLoop: 3 cycleSpeed: 10 setCycle: EndLoop self)
 			)
 			(9
-				(ego setCel: 0 setCycle: CT 5 1 self)
+				(ego setCel: 0 setCycle: CycleTo 5 1 self)
 			)
 			(10 (= cycles 15))
-			(11 (ego setCycle: Beg self))
+			(11 (ego setCycle: BegLoop self))
 			(12 (= cycles 15))
 			(13
 				(ego reset: 2)

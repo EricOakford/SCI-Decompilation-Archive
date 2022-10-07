@@ -36,7 +36,7 @@
 					view: 221
 					loop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3 (= cycles 2))
@@ -44,7 +44,7 @@
 				(messager say: 5 70 register 2 self)
 			)
 			(5
-				((ScriptID 220 3) setCycle: Beg self)
+				((ScriptID 220 3) setCycle: BegLoop self)
 			)
 			(6
 				((ScriptID 220 3)
@@ -60,7 +60,7 @@
 			(9
 				(messager say: 5 70 register 3 self)
 			)
-			(10 (ego setCycle: Beg self))
+			(10 (ego setCycle: BegLoop self))
 			(11
 				(messager say: 5 70 register 4 self)
 			)
@@ -73,7 +73,7 @@
 			)
 			(13
 				(ego reset: 7)
-				((ScriptID 220 4) setCycle: Beg)
+				((ScriptID 220 4) setCycle: BegLoop)
 				((ScriptID 220 3) setHeading: 0 self)
 			)
 			(14

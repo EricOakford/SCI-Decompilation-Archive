@@ -284,7 +284,7 @@ code_01d8:
 			pushi    0
 			pushi    162
 			pushi    2
-			class    End
+			class    EndLoop
 			push    
 			pushSelf
 			pToa     register
@@ -383,7 +383,7 @@ code_0218:
 			pushi    0
 			pushi    162
 			pushi    1
-			class    Fwd
+			class    Forward
 			push    
 			pushi    300
 			pushi    4
@@ -437,7 +437,7 @@ code_02a5:
 			pushi    0
 			pushi    162
 			pushi    2
-			class    End
+			class    EndLoop
 			push    
 			pushSelf
 			lofsa    projectile
@@ -519,7 +519,7 @@ code_0366:
 			bnt      code_037a
 			pushi    #setCycle
 			pushi    2
-			class    Beg
+			class    BegLoop
 			push    
 			pushSelf
 			pToa     register
@@ -560,7 +560,7 @@ code_0391:
 					cel: 0
 					loop: (mod (ego cel?) 4)
 					cycleSpeed: 8
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(1
@@ -573,14 +573,14 @@ code_0391:
 						(3 0)
 					)
 				)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(2
 				(if (> (ego loop?) 2)
 					(ego
 						loop: (+ 4 (== (ego loop?) 3))
 						cycleSpeed: 10
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(= cycles 1)
@@ -613,12 +613,12 @@ code_0391:
 					posn: (register x?) (+ (register y?) 1) 1
 					init:
 					cycleSpeed: 8
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(2
 				(register init: show:)
-				(smoke cycleSpeed: 10 setCycle: End self)
+				(smoke cycleSpeed: 10 setCycle: EndLoop self)
 			)
 			(3
 				(smoke dispose:)
@@ -645,12 +645,12 @@ code_0391:
 					priority: (register priority?)
 					posn: (register x?) (+ (register y?) 1) 1
 					init:
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(2
 				(register hide:)
-				(smoke setCycle: End self)
+				(smoke setCycle: EndLoop self)
 			)
 			(3
 				(smoke dispose:)

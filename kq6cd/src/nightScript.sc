@@ -38,7 +38,7 @@
 				else
 					(ego setLoop: 0)
 				)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(1
 				(messager say: 1 37 0 0 self 0)
@@ -46,9 +46,9 @@
 			(2
 				(localMusic4 number: 931 loop: 1 play: self)
 				(if local0
-					(ego setLoop: 7 setCycle: Fwd)
+					(ego setLoop: 7 setCycle: Forward)
 				else
-					(ego setLoop: 6 setCycle: Fwd)
+					(ego setLoop: 6 setCycle: Forward)
 				)
 			)
 			(3

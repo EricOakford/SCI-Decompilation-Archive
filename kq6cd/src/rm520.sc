@@ -2,7 +2,7 @@
 (script# 520)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Scaler)
 (use PolyPath)
@@ -127,7 +127,7 @@
 			(boilingPond
 				init:
 				signal: (| (boilingPond signal?) $1000)
-				setCycle: Fwd
+				setCycle: Forward
 				setPri: 9
 				ignoreActors: 1
 				cycleSpeed: 12
@@ -142,7 +142,7 @@
 				posn: 141 125
 				cycleSpeed: 12
 				ignoreActors: 1
-				setCycle: Fwd
+				setCycle: Forward
 			)
 		)
 		(finishedPond init:)
@@ -341,7 +341,7 @@
 					setLoop: 3
 					posn: 110 154
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -381,7 +381,7 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (messager say: 4 5 4 1 self))
@@ -424,15 +424,15 @@
 					setLoop: 1
 					cel: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
-				(splash init: setPri: 10 setCycle: CT 3 1 self)
+				(splash init: setPri: 10 setCycle: CycleTo 3 1 self)
 			)
 			(5
 				(pondWalk number: 923 loop: 1 play:)
-				(splash setCycle: End self)
+				(splash setCycle: EndLoop self)
 			)
 			(6
 				(splash dispose:)
@@ -453,7 +453,7 @@
 						cel: 0
 						posn: 92 150
 						cycleSpeed: 24
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 					(boilFx stop:)
 				)
@@ -466,7 +466,7 @@
 					view: 525
 					setLoop: 0
 					posn: 141 125
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(self dispose:)
 			)
@@ -565,7 +565,7 @@
 			)
 			(2
 				(boilDeath play:)
-				(ego setLoop: 0 cel: 0 cycleSpeed: 24 setCycle: End self)
+				(ego setLoop: 0 cel: 0 cycleSpeed: 24 setCycle: EndLoop self)
 			)
 			(3
 				(ego hide:)
@@ -650,7 +650,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 10))
-			(1 (client setCycle: End self))
+			(1 (client setCycle: EndLoop self))
 			(2
 				(client dispose:)
 				(self dispose:)
@@ -665,16 +665,16 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(bunny setCycle: Fwd setMotion: MoveTo 206 179 self)
+				(bunny setCycle: Forward setMotion: MoveTo 206 179 self)
 			)
 			(1
-				(bunny setLoop: 3 setCycle: End self)
+				(bunny setLoop: 3 setCycle: EndLoop self)
 			)
-			(2 (bunny setCycle: End self))
+			(2 (bunny setCycle: EndLoop self))
 			(3
 				(bunny
 					setLoop: 2
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 244 207 self
 				)
 			)

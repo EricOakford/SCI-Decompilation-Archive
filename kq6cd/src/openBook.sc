@@ -51,11 +51,11 @@
 					cel: 0
 					setLoop: 2
 					cycleSpeed: 5
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				(ego cel: 0 setLoop: 0 setCycle: End self)
+				(ego cel: 0 setLoop: 0 setCycle: EndLoop self)
 			)
 			(3
 				(client setScript: (ScriptID 190 1))
@@ -428,19 +428,19 @@
 					cel: 0
 					setLoop: 0
 					cycleSpeed: 5
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 13)
 			)
 			(2
 				(if modelessDialog (modelessDialog dispose:))
 				(localSound number: 945 loop: 1 play:)
-				(ego cel: 0 setLoop: 1 setCycle: CT 2 1 self)
+				(ego cel: 0 setLoop: 1 setCycle: CycleTo 2 1 self)
 			)
-			(3 (ego setCycle: CT 0 -1 self))
-			(4 (ego setCycle: CT 2 1 self))
-			(5 (ego setCycle: CT 0 -1 self))
-			(6 (ego setCycle: End self))
+			(3 (ego setCycle: CycleTo 0 -1 self))
+			(4 (ego setCycle: CycleTo 2 1 self))
+			(5 (ego setCycle: CycleTo 0 -1 self))
+			(6 (ego setCycle: EndLoop self))
 			(7
 				(messager say: 3 0 9 3 self 0)
 			)

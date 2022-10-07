@@ -84,11 +84,11 @@
 						stopUpd:
 					)
 				)
-				((ScriptID 740 1) init: cel: 4 setCycle: Beg self)
+				((ScriptID 740 1) init: cel: 4 setCycle: BegLoop self)
 			)
 			(1 (messager say: 1 0 3 1 self))
 			(2
-				((ScriptID 740 2) setCycle: End self)
+				((ScriptID 740 2) setCycle: EndLoop self)
 			)
 			(3
 				(Bset 59)
@@ -152,12 +152,12 @@
 				((ScriptID 740 7) init: self)
 			)
 			(1
-				((ScriptID 740 1) setScript: 0 setCycle: Beg)
-				((ScriptID 740 2) setCycle: End self)
+				((ScriptID 740 1) setScript: 0 setCycle: BegLoop)
+				((ScriptID 740 2) setCycle: EndLoop self)
 			)
 			(2 (= cycles 10))
 			(3
-				((ScriptID 740 2) setCycle: Beg)
+				((ScriptID 740 2) setCycle: BegLoop)
 				(ego setSpeed: 8 setStep: 5 3 setMotion: MoveTo 158 146)
 				((ScriptID 740 5)
 					view: 7361
@@ -239,7 +239,7 @@
 					(= gEgo ego)
 					(= gKillDog 0)
 				)
-				(gEgo setCycle: End self)
+				(gEgo setCycle: EndLoop self)
 			)
 			(5
 				(if (!= gEgo (ScriptID 740 5))
@@ -293,7 +293,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gEgo setLoop: 2 cel: 0 setCycle: End self)
+				(gEgo setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(1
 				(gEgo setPri: (+ (gEgo priority?) 1) addToPic:)
@@ -316,7 +316,7 @@
 					setLoop: 0
 					cel: 0
 					setPri: (+ ((ScriptID 740 8) priority?) 1)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -346,7 +346,7 @@
 					stopUpd:
 				)
 				(if (== client kingQueenEntry)
-					(king loop: 3 cel: 0 setCycle: End king)
+					(king loop: 3 cel: 0 setCycle: EndLoop king)
 				)
 				((ScriptID 740 1)
 					view: 7412
@@ -354,7 +354,7 @@
 					cel: 0
 					posn: 152 134
 					setPri: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if (not (Btst 10))
 					((ScriptID 740 4)
@@ -364,7 +364,7 @@
 						cel: 0
 						cycleSpeed: 6
 						setPri: 13
-						setCycle: End (ScriptID 740 4)
+						setCycle: EndLoop (ScriptID 740 4)
 					)
 				)
 				(UnLoad 128 741)
@@ -395,7 +395,7 @@
 					setLoop: 0
 					cel: 0
 					setPri: 9
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -433,10 +433,10 @@
 				(if (not ((ScriptID 740 1) cel?))
 					((ScriptID 740 1)
 						setLoop: (Random 0 1)
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
-					((ScriptID 740 1) setCycle: Beg self)
+					((ScriptID 740 1) setCycle: BegLoop self)
 				)
 			)
 			(1
@@ -509,7 +509,7 @@
 					x: 133
 					y: 143
 					setScale: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(UnLoad 128 7441)
 			)
@@ -524,7 +524,7 @@
 					setLoop: 0
 					cel: 0
 					setPri: 9
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(9
@@ -532,7 +532,7 @@
 					init:
 					posn: 164 107
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(10

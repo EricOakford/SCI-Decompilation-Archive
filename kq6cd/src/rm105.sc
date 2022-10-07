@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use Audio)
-(use NewRoomCue)
+(use KQ6Room)
 (use Sync)
 (use RandCyc)
 (use LoadMany)

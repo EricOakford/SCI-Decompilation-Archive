@@ -2,7 +2,7 @@
 (script# 560)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Scaler)
 (use PolyPath)
@@ -403,10 +403,10 @@
 					setLoop: 1
 					cel: 0
 					cycleSpeed: 14
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
-			(2 (ego setCycle: End self))
+			(2 (ego setCycle: EndLoop self))
 			(3
 				(theGame givePoints: 1)
 				(ego get: 6 reset:)
@@ -440,7 +440,7 @@
 					cel: 0
 					setLoop: 0
 					setSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2

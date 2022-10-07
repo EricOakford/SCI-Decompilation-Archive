@@ -8,7 +8,7 @@
 	rWonder 0
 )
 
-(class rWonder of Rgn
+(class rWonder of Region
 	(properties
 		script 0
 		number 0

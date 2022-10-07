@@ -2,7 +2,7 @@
 (script# 410)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Scaler)
 (use PolyPath)
@@ -782,7 +782,7 @@
 						(WordAt register 5)
 					)
 					(curRoom setScript: killEgo)
-					(client setCycle: End client)
+					(client setCycle: EndLoop client)
 				else
 					((= [newASpike (WordAt register 11)] (aSpike new:))
 						x: (WordAt register 5)
@@ -806,7 +806,7 @@
 					)
 					(curRoom setScript: killEgo)
 					([newASpike (WordAt register 11)] dispose:)
-					(client setCycle: End client)
+					(client setCycle: EndLoop client)
 				else
 					([newASpike (WordAt register 11)]
 						x: (WordAt register (WordAt register 15))
@@ -865,7 +865,7 @@
 					cycleSpeed: 2
 					setLoop: temp0
 					posn: (+ (ego x?) temp1) (+ (ego y?) temp2)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (= seconds 2))

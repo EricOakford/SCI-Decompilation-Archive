@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use AnimatePrint)
-(use NewRoomCue)
+(use KQ6Room)
 (use CartoonScript)
 (use Kq6Procs)
 (use Conv)
@@ -52,8 +52,8 @@
 		)
 		(kingarm init: stopUpd:)
 		(queenHand init:)
-		(candle1 init: setCycle: Fwd)
-		(candle2 init: setCycle: Fwd)
+		(candle1 init: setCycle: Forward)
+		(candle2 init: setCycle: Forward)
 		(cond 
 			((and (Btst 1) (not (Btst 3)))
 				(if (== msgType 2)
@@ -169,10 +169,10 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 2 4)))
 			(1
-				(client show: setCycle: End self)
+				(client show: setCycle: EndLoop self)
 			)
 			(2 (= cycles 2))
-			(3 (client setCycle: Beg self))
+			(3 (client setCycle: BegLoop self))
 			(4 (= cycles 2))
 			(5
 				(client hide:)
@@ -302,11 +302,11 @@
 		(switch (= state newState)
 			(0 (= seconds 2))
 			(1
-				(kingarm setLoop: 2 setCycle: End)
+				(kingarm setLoop: 2 setCycle: EndLoop)
 				(AzurePrint addText: 1 0 1 1 init:)
 			)
 			(2
-				(kingarm setCycle: Beg)
+				(kingarm setCycle: BegLoop)
 				(= cycles 2)
 			)
 			(3
@@ -322,11 +322,11 @@
 			)
 			(8 (= cycles 2))
 			(9
-				(kingarm setLoop: 1 setCycle: End)
+				(kingarm setLoop: 1 setCycle: EndLoop)
 				(AzurePrint addText: 1 0 1 5 init:)
 			)
 			(10
-				(kingarm setCycle: Beg)
+				(kingarm setCycle: BegLoop)
 				(= cycles 2)
 			)
 			(11
@@ -342,11 +342,11 @@
 			)
 			(14 (= cycles 2))
 			(15
-				(kingarm setLoop: 2 setCycle: End)
+				(kingarm setLoop: 2 setCycle: EndLoop)
 				(AzurePrint addText: 1 0 1 8 init:)
 			)
 			(16
-				(kingarm setCycle: Beg)
+				(kingarm setCycle: BegLoop)
 				(= cycles 2)
 			)
 			(17
@@ -354,11 +354,11 @@
 			)
 			(18 (= cycles 2))
 			(19
-				(kingarm setLoop: 2 setCycle: End)
+				(kingarm setLoop: 2 setCycle: EndLoop)
 				(AzurePrint addText: 1 0 1 10 init:)
 			)
 			(20
-				(kingarm setCycle: Beg)
+				(kingarm setCycle: BegLoop)
 				(Bset 2)
 				(cond 
 					(
@@ -396,7 +396,7 @@
 				(if (== msgType 2)
 					(messager say: 1 0 2 2 self)
 				else
-					(kingarm setLoop: 2 setCycle: End)
+					(kingarm setLoop: 2 setCycle: EndLoop)
 					(AzurePrint addText: 1 0 2 2 init:)
 				)
 			)
@@ -463,19 +463,19 @@
 				(= cycles 2)
 			)
 			(2
-				(kingarm setLoop: 2 setCycle: End)
+				(kingarm setLoop: 2 setCycle: EndLoop)
 				(AzurePrint addText: 1 0 3 2 init:)
 			)
 			(3
-				(kingarm setCycle: Beg)
+				(kingarm setCycle: BegLoop)
 				(= cycles 2)
 			)
 			(4
-				(kingarm setLoop: 1 setCycle: End)
+				(kingarm setLoop: 1 setCycle: EndLoop)
 				(AzurePrint addText: 1 0 3 3 init:)
 			)
 			(5
-				(kingarm setCycle: Beg)
+				(kingarm setCycle: BegLoop)
 				(= cycles 2)
 			)
 			(6
@@ -543,11 +543,11 @@
 		(switch (= state newState)
 			(0 (= seconds 2))
 			(1
-				(kingarm setLoop: 1 setCycle: End)
+				(kingarm setLoop: 1 setCycle: EndLoop)
 				(AzurePrint addText: 1 0 4 1 init:)
 			)
 			(2
-				(kingarm setCycle: Beg)
+				(kingarm setCycle: BegLoop)
 				(= cycles 2)
 			)
 			(3
@@ -559,11 +559,11 @@
 			)
 			(6 (= cycles 2))
 			(7
-				(kingarm setLoop: 1 setCycle: End)
+				(kingarm setLoop: 1 setCycle: EndLoop)
 				(AzurePrint addText: 1 0 4 4 init:)
 			)
 			(8
-				(kingarm setCycle: Beg)
+				(kingarm setCycle: BegLoop)
 				(= cycles 2)
 			)
 			(9
@@ -571,11 +571,11 @@
 			)
 			(10 (= cycles 2))
 			(11
-				(kingarm setLoop: 1 setCycle: End)
+				(kingarm setLoop: 1 setCycle: EndLoop)
 				(AzurePrint addText: 1 0 4 6 init:)
 			)
 			(12
-				(kingarm setCycle: Beg)
+				(kingarm setCycle: BegLoop)
 				(= cycles 2)
 			)
 			(13
@@ -612,7 +612,7 @@
 					setLoop: 1
 					setScale: Scaler 50 49 190 0
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 174 14 self
 				)
 			)
@@ -644,7 +644,7 @@
 					setLoop: 1
 					setScale: Scaler 50 49 190 0
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 280 -15 self
 				)
 			)
@@ -668,7 +668,7 @@
 					setLoop: 1
 					setScale: Scaler 50 49 190 0
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 280 -15 self
 				)
 			)

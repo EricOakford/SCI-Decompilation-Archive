@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use n451)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use Scaler)
@@ -52,7 +52,7 @@
 				view: 450
 				loop: 5
 				init:
-				setCycle: Fwd
+				setCycle: Forward
 				checkDetail:
 			)
 		)
@@ -183,7 +183,7 @@
 				((ScriptID 40 0) oysterDozing?)
 			)
 			(oyster setCel: 2)
-			(snooze4 init: setCycle: Fwd)
+			(snooze4 init: setCycle: Forward)
 		else
 			(oyster setCel: 0)
 			(oyBlink
@@ -212,9 +212,9 @@
 		(shimmer1 init:)
 		(shimmer2 init:)
 		(snoreSong play:)
-		(snooze1 init: setCycle: Fwd)
+		(snooze1 init: setCycle: Forward)
 		(if (== ((inventory at: 50) owner?) curRoomNum)
-			(mySentence init: setCycle: Fwd setScript: sentenceFloat)
+			(mySentence init: setCycle: Forward setScript: sentenceFloat)
 		)
 		(theMusic number: 915 setLoop: -1 play:)
 		(ego setScale: Scaler 100 30 126 70 actions: egoDoVerb)
@@ -559,14 +559,14 @@
 			(1
 				(theGlobalSound number: 961 setLoop: 1 play:)
 				(oysterGuts init:)
-				(oyster setPri: 12 setLoop: 1 cel: 0 setCycle: End self)
+				(oyster setPri: 12 setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(pearlGlint init: setCycle: End self)
+				(pearlGlint init: setCycle: EndLoop self)
 			)
 			(3
 				(pearlGlint dispose:)
-				(oyster setCycle: Beg self)
+				(oyster setCycle: BegLoop self)
 			)
 			(4
 				(oysterGuts dispose:)
@@ -712,7 +712,7 @@
 	)
 	
 	(method (init)
-		(self setCycle: Fwd)
+		(self setCycle: Forward)
 		(super init:)
 	)
 )
@@ -731,7 +731,7 @@
 	)
 	
 	(method (init)
-		(self setCycle: Fwd)
+		(self setCycle: Forward)
 		(super init:)
 	)
 )
@@ -992,7 +992,7 @@
 					setLoop: 0
 					cel: 0
 					posn: 146 128
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(UnLoad 128 454)
 			)
@@ -1128,7 +1128,7 @@
 					setLoop: 1
 					cel: 0
 					posn: 110 128
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(tmpGnome dispose:)
 				(UnLoad 128 4593)
@@ -1152,7 +1152,7 @@
 					setLoop: 1
 					cel: 0
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ScriptID 40 0) alexInvisible: 0)
 			)
@@ -1174,9 +1174,9 @@
 			(35
 				(theGame handsOn:)
 				(snoreSong play:)
-				(snooze1 init: setCycle: Fwd checkDetail:)
+				(snooze1 init: setCycle: Forward checkDetail:)
 				(if ((ScriptID 40 0) oysterDozing?)
-					(snooze4 init: setCycle: Fwd checkDetail:)
+					(snooze4 init: setCycle: Forward checkDetail:)
 				)
 				(NextAct)
 				(Bset 42)
@@ -1205,7 +1205,7 @@
 			(1 (gnomeGroup stopUpd:))
 			(2
 				(theGlobalSound number: 452 setLoop: 1 play:)
-				(register setLoop: 3 cel: 0 setCycle: End self)
+				(register setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(theGame handsOn:)
@@ -1278,7 +1278,7 @@
 							x: egoX
 							y: egoY
 							cycleSpeed: 0
-							setCycle: CT temp4 1 self
+							setCycle: CycleTo temp4 1 self
 						)
 						(UnLoad 128 900)
 					)
@@ -1332,13 +1332,13 @@
 					cel: 0
 					setLoop: 5
 					y: 125
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (register EOLx?) 125 self
 				)
 			)
 			(2
 				(register loop: 0 cel: 2 setCycle: 0)
-				(gnomeGroup setCycle: End self)
+				(gnomeGroup setCycle: EndLoop self)
 			)
 			(3
 				(register y: 126 cel: 0)
@@ -1359,7 +1359,7 @@
 		(switch (= state newState)
 			(0
 				(if ((ScriptID 40 0) alexInvisible?)
-					(ego view: 452 setLoop: 1 cel: 0 setCycle: End self)
+					(ego view: 452 setLoop: 1 cel: 0 setCycle: EndLoop self)
 					((ScriptID 40 0) alexInvisible: 0)
 				else
 					(self cue:)
@@ -1402,7 +1402,7 @@
 					cel: 0
 					posn: 200 138
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 				)
 			)
 			(1
@@ -1416,7 +1416,7 @@
 					normal: 0
 					show:
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -1454,7 +1454,7 @@
 			)
 			(1
 				(soundFx number: 930 setLoop: 1 play:)
-				(ego cel: 0 setCycle: End self)
+				(ego cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(if (< local4 4) (++ local4) (= state (- state 2)))
@@ -1463,9 +1463,9 @@
 			(3
 				(soundFx number: 931 setLoop: 1 play: self)
 				(UnLoad 132 930)
-				(ego setLoop: 6 cel: 0 cycleSpeed: 0 setCycle: Fwd)
+				(ego setLoop: 6 cel: 0 cycleSpeed: 0 setCycle: Forward)
 				(if (== local5 2)
-					((ScriptID 456 0) setLoop: 1 setCycle: Fwd)
+					((ScriptID 456 0) setLoop: 1 setCycle: Forward)
 				)
 			)
 			(4
@@ -1498,12 +1498,12 @@
 					normal: 0
 					posn: (+ (ego x?) 2) (+ (ego y?) 1)
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(UnLoad 128 900)
 			)
 			(2
-				(ego setLoop: 6 cel: 0 setCycle: End self)
+				(ego setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(ego put: 51 450)
@@ -1534,7 +1534,7 @@
 			)
 			(1
 				(soundFx number: 942 setLoop: 1 play: self)
-				(ego setCycle: Fwd)
+				(ego setCycle: Forward)
 			)
 			(2
 				(if ((ScriptID 40 0) alexX?)
@@ -1679,7 +1679,7 @@
 					normal: 0
 					cycleSpeed: 6
 					posn: (ego x?) (+ (ego y?) 15)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
@@ -1848,13 +1848,13 @@
 					setPri: (ego priority?)
 					posn: (- (ego x?) 2) (+ (ego y?) 11)
 					cycleSpeed: 6
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(1
 				(mySentence dispose:)
 				(soundFx number: 924 setLoop: 1 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(2
 				(theGame givePoints: 1)

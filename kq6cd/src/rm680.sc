@@ -2,7 +2,7 @@
 (script# 680)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Scaler)
 (use RandCyc)
@@ -489,13 +489,13 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 3 10)))
 			(1
-				(client show: setLoop: 4 cel: 0 setCycle: End self)
+				(client show: setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(2 (= cycles (Random 5 10)))
-			(3 (rArm setCycle: End self))
+			(3 (rArm setCycle: EndLoop self))
 			(4
 				(rArm cel: 0)
-				(client setLoop: 5 cel: 0 setCycle: End self)
+				(client setLoop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(5 (client hide:) (self init:))
 		)
@@ -509,13 +509,13 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 3 10)))
 			(1
-				(client show: setLoop: 3 cel: 0 setCycle: End self)
+				(client show: setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(2 (= cycles (Random 5 10)))
-			(3 (lArm setCycle: End self))
+			(3 (lArm setCycle: EndLoop self))
 			(4
 				(lArm cel: 0)
-				(client setLoop: 6 cel: 0 setCycle: End self)
+				(client setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(5 (client hide:) (self init:))
 		)
@@ -529,10 +529,10 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 10 30)))
 			(1
-				(client show: setLoop: 0 cel: 0 setCycle: End self)
+				(client show: setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(client setLoop: 1 cel: 0 setCycle: End self)
+				(client setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(3 (client hide:) (self init:))
 		)
@@ -600,8 +600,8 @@
 				(ego setMotion: PolyPath 155 153 self)
 			)
 			(2
-				(rGuard setCycle: End self)
-				(lGuard setCycle: End self)
+				(rGuard setCycle: EndLoop self)
+				(lGuard setCycle: EndLoop self)
 			)
 			(3 0)
 			(4
@@ -645,7 +645,7 @@
 					cycleSpeed: 10
 					ignoreActors: 1
 					ignoreHorizon: 1
-					setCycle: MCyc @local4 self 1
+					setCycle: MoveCycle @local4 self 1
 				)
 			)
 			(2 (= cycles 5))
@@ -669,12 +669,12 @@
 					setPri: 5
 					posn: 147 80
 					ignoreActors: 1
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 1)
 			)
 			(6
-				(lArm setLoop: 4 cel: 0 setCycle: End self)
+				(lArm setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(7
 				(Bclr 91)
@@ -696,7 +696,7 @@
 					moveSpeed: 10
 					setStep: 10 10
 					ignoreActors: 1
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 73 129 self
 				)
 			)
@@ -705,7 +705,7 @@
 				(poolGhoulRight setMotion: MoveTo 124 166 self)
 			)
 			(12
-				(poolGhoulRight view: 685 setLoop: 0 setCycle: End self)
+				(poolGhoulRight view: 685 setLoop: 0 setCycle: EndLoop self)
 				(UnLoad 128 6801)
 			)
 			(13
@@ -753,10 +753,10 @@
 				)
 			)
 			(19
-				(poolGhoulRight setLoop: 2 setCycle: End self)
+				(poolGhoulRight setLoop: 2 setCycle: EndLoop self)
 			)
 			(20
-				(poolGhoulRight setLoop: 3 cel: 0 setCycle: End self)
+				(poolGhoulRight setLoop: 3 cel: 0 setCycle: EndLoop self)
 				(lArm dispose:)
 			)
 			(21
@@ -780,7 +780,7 @@
 					setPri: (+ (poolGhoulRight priority?) 1)
 					posn: (poolGhoulRight x?) (poolGhoulRight y?)
 					setScale: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(23

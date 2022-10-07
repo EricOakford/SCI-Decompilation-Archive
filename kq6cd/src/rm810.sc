@@ -423,7 +423,7 @@ code_03ea:
 					(secretDoor cel: 3)
 					(= cycles 1)
 				else
-					(secretDoor setCycle: End self)
+					(secretDoor setCycle: EndLoop self)
 				)
 			)
 			(1
@@ -439,9 +439,9 @@ code_03ea:
 				)
 				(if local53
 					(++ state)
-					(ego cel: 9 setCycle: Beg self)
+					(ego cel: 9 setCycle: BegLoop self)
 				else
-					(ego cel: 0 setCycle: End self)
+					(ego cel: 0 setCycle: EndLoop self)
 				)
 			)
 			(2
@@ -462,7 +462,7 @@ code_03ea:
 					)
 					((ego scaler?) doit:)
 					(= local53 0)
-					(secretDoor setCycle: Beg self)
+					(secretDoor setCycle: BegLoop self)
 				else
 					(curRoom newRoom: 781)
 				)

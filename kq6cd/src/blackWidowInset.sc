@@ -2,7 +2,7 @@
 (script# 461)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use Feature)
@@ -146,7 +146,7 @@
 	)
 	
 	(method (init)
-		(self sightAngle: 180 setCycle: Fwd)
+		(self sightAngle: 180 setCycle: Forward)
 		(super init: &rest)
 	)
 	
@@ -265,7 +265,7 @@
 			)
 			(1
 				(soundFx2 number: 467 setLoop: 1 play:)
-				(looseThread setCycle: End self)
+				(looseThread setCycle: EndLoop self)
 			)
 			(2
 				(theGame handsOn:)

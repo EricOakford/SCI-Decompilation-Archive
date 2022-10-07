@@ -70,7 +70,7 @@
 			)
 			(3
 				(localMusic number: 942 setLoop: 1 play: self)
-				(ego setCycle: Fwd)
+				(ego setCycle: Forward)
 			)
 			(4
 				(ego

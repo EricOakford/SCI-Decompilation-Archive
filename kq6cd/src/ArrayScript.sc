@@ -41,13 +41,13 @@
 				(= arrayScriptGetValue (self getValue:))
 				(= arrayScriptGetValue_2 (self getValue:))
 				(ego
-					setCycle: CT arrayScriptGetValue arrayScriptGetValue_2 self
+					setCycle: CycleTo arrayScriptGetValue arrayScriptGetValue_2 self
 				)
 			)
-			(-4092 (ego setCycle: Beg self))
-			(-4094 (ego setCycle: End self))
-			(-4088 (ego setCycle: Fwd))
-			(-4080 (ego setCycle: Rev))
+			(-4092 (ego setCycle: BegLoop self))
+			(-4094 (ego setCycle: EndLoop self))
+			(-4088 (ego setCycle: Forward))
+			(-4080 (ego setCycle: Reverse))
 			(-4064
 				(= cycles (self getValue:))
 			)
@@ -93,14 +93,6 @@
 				(= arrayScriptGetValue (self getValue:))
 				(= arrayScriptGetValue_2 (self getValue:))
 				(UnLoad arrayScriptGetValue arrayScriptGetValue_2)
-				(self cue:)
-			)
-			(-14
-				(theGame handsOn:)
-				(self cue:)
-			)
-			(-15
-				(theGame handsOff:)
 				(self cue:)
 			)
 			(-1 (self dispose:))

@@ -2,7 +2,7 @@
 (script# 460)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use Scaler)
@@ -489,7 +489,7 @@
 						setLoop: 4
 						cel: 0
 						cycleSpeed: 6
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(ego
@@ -499,11 +499,11 @@
 						normal: 0
 						posn: (- (register approachX?) 2) (+ (register approachY?) 1)
 						cycleSpeed: 6
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 			)
-			(2 (ego setCycle: Beg self))
+			(2 (ego setCycle: BegLoop self))
 			(3
 				(ego
 					posn: (- (ego x?) 2) (ego y?)
@@ -536,14 +536,14 @@
 					(ego setMotion: PolyPath 107 142 self)
 				)
 				(wormOut play:)
-				(bookworm init: setCycle: End)
+				(bookworm init: setCycle: EndLoop)
 			)
 			(1
 				(if (!= register bookWormBookPile) (ego setHeading: 45))
 				(= cycles 10)
 			)
 			(2
-				(bookworm setLoop: 4 cel: 0 setCycle: End self)
+				(bookworm setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(bookworm setLoop: 5 cel: 14)
@@ -554,7 +554,7 @@
 			)
 			(5
 				(wormIn play:)
-				(bookworm setLoop: 5 cel: 14 setCycle: Beg self)
+				(bookworm setLoop: 5 cel: 14 setCycle: BegLoop self)
 			)
 			(6
 				(theGame handsOn:)
@@ -578,17 +578,17 @@
 				(cond 
 					((== register callBooks)
 						(wormOut play:)
-						(bookworm init: setCycle: End self)
+						(bookworm init: setCycle: EndLoop self)
 						(self cue:)
 					)
 					((== register bookWormBookPile)
 						(wormOut play:)
-						(bookworm init: setCycle: End self)
+						(bookworm init: setCycle: EndLoop self)
 						(self cue:)
 					)
 					(else
 						(wormOut play:)
-						(bookworm init: setCycle: End self)
+						(bookworm init: setCycle: EndLoop self)
 						(ego setMotion: PolyPath 107 142 self)
 					)
 				)
@@ -599,7 +599,7 @@
 				(= cycles 10)
 			)
 			(3
-				(bookworm setLoop: 4 cel: 0 setCycle: End self)
+				(bookworm setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(myConv
@@ -612,7 +612,7 @@
 				)
 			)
 			(5
-				(bookworm setLoop: 2 cel: 0 setCycle: End self)
+				(bookworm setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(6
 				(bookworm cel: 0)
@@ -641,7 +641,7 @@
 				(myConv add: -1 5 5 4 9 add: -1 5 5 4 10 init: self)
 			)
 			(15
-				(bookworm setLoop: 2 cel: 0 setCycle: End self)
+				(bookworm setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(16
 				(bookworm cel: 0)
@@ -656,7 +656,7 @@
 					(participle4U start: 5)
 					(curRoom setScript: participle4U)
 				else
-					(bookworm setLoop: 2 cel: 0 setCycle: End self)
+					(bookworm setLoop: 2 cel: 0 setCycle: EndLoop self)
 				)
 			)
 			(19
@@ -667,7 +667,7 @@
 				(myConv add: -1 5 5 4 13 add: -1 5 5 4 14 init: self)
 			)
 			(21
-				(bookworm setLoop: 2 cel: 0 setCycle: End self)
+				(bookworm setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(22
 				(bookworm cel: 0)
@@ -677,7 +677,7 @@
 				(myConv add: -1 5 5 4 15 add: -1 5 5 4 16 init: self)
 			)
 			(24
-				(bookworm setLoop: 2 cel: 0 setCycle: End self)
+				(bookworm setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(25
 				(bookworm cel: 0)
@@ -688,7 +688,7 @@
 			)
 			(27
 				(wormIn play:)
-				(bookworm setLoop: 5 cel: 14 setCycle: Beg self)
+				(bookworm setLoop: 5 cel: 14 setCycle: BegLoop self)
 			)
 			(28
 				(theGame handsOn:)
@@ -710,17 +710,17 @@
 				(cond 
 					((== register callBooks)
 						(wormOut play:)
-						(bookworm init: setCycle: End self)
+						(bookworm init: setCycle: EndLoop self)
 						(self cue:)
 					)
 					((== register bookWormBookPile)
 						(wormOut play:)
-						(bookworm init: setCycle: End self)
+						(bookworm init: setCycle: EndLoop self)
 						(self cue:)
 					)
 					(else
 						(wormOut play:)
-						(bookworm init: setCycle: End self)
+						(bookworm init: setCycle: EndLoop self)
 						(ego setMotion: PolyPath 107 142 self)
 					)
 				)
@@ -732,7 +732,7 @@
 			)
 			(3 (messager say: 5 5 5 1 self))
 			(4
-				(bookworm setLoop: 2 cel: 0 setCycle: End self)
+				(bookworm setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(bookworm cel: 0)
@@ -748,7 +748,7 @@
 				)
 			)
 			(7
-				(bookworm setLoop: 2 cel: 0 setCycle: End self)
+				(bookworm setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(8
 				(bookworm cel: 0)
@@ -797,14 +797,14 @@
 					setLoop: 3
 					cel: 0
 					normal: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (ego reset: 6) (= cycles 8))
 			(3 (messager say: 1 0 2 1 self))
 			(4
 				(wormIn play:)
-				(bookworm setLoop: 5 cel: 14 setCycle: Beg self)
+				(bookworm setLoop: 5 cel: 14 setCycle: BegLoop self)
 			)
 			(5
 				(bookworm dispose:)
@@ -854,12 +854,12 @@
 			(0
 				(theGame handsOff:)
 				(wormOut play:)
-				(bookworm init: setCycle: End self)
+				(bookworm init: setCycle: EndLoop self)
 			)
 			(1 (messager say: 5 2 8 2 self))
 			(2
 				(wormIn play:)
-				(bookworm setCycle: Beg self)
+				(bookworm setCycle: BegLoop self)
 			)
 			(3
 				(theGame handsOn:)
@@ -906,7 +906,7 @@
 			)
 			(1
 				(wormIn play:)
-				(bookworm setLoop: 5 setCycle: Beg self)
+				(bookworm setLoop: 5 setCycle: BegLoop self)
 			)
 			(2
 				(theGame handsOn:)
@@ -942,7 +942,7 @@
 			)
 			(3
 				(wormOut play:)
-				(bookworm init: setCycle: End self)
+				(bookworm init: setCycle: EndLoop self)
 			)
 			(4
 				(messager say: 5 94 0 2 self)
@@ -960,12 +960,12 @@
 					cycleSpeed: 8
 					posn: 96 136
 					setPri: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7
 				(parti init:)
-				(bookworm setLoop: 3 cel: 0 setCycle: End self)
+				(bookworm setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(8
 				(ego posn: 98 134 reset: 0)
@@ -1000,7 +1000,7 @@
 			(15
 				(self setScript: dipthIn self)
 			)
-			(16 (parti setCycle: End self))
+			(16 (parti setCycle: EndLoop self))
 			(17
 				(myConv
 					add: -1 4 94 0 7
@@ -1012,11 +1012,11 @@
 			(18
 				(parti dispose:)
 				(wormIn play:)
-				(bookworm setLoop: 5 cel: 14 setCycle: Beg self)
+				(bookworm setLoop: 5 cel: 14 setCycle: BegLoop self)
 			)
 			(19
 				(wormOut play:)
-				(bookworm init: setLoop: 1 cel: 0 setCycle: End self)
+				(bookworm init: setLoop: 1 cel: 0 setCycle: EndLoop self)
 				(ego
 					posn: 98 134
 					reset: 6
@@ -1038,14 +1038,14 @@
 					setLoop: 4
 					cel: 0
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(24
 				(theGame givePoints: 2)
 				(wormIn play:)
-				(bookworm setLoop: 5 setCycle: Beg self)
-				(ego cycleSpeed: 1 setCycle: Beg)
+				(bookworm setLoop: 5 setCycle: BegLoop self)
+				(ego cycleSpeed: 1 setCycle: BegLoop)
 			)
 			(25
 				(bookworm dispose:)
@@ -1191,13 +1191,13 @@
 					normal: 0
 					cycleSpeed: 8
 					posn: 61 174
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 			)
 			(3
 				(soundFx2 number: 468 setLoop: 1 play:)
 				(scrapOfPaper dispose:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(Bset 136)
 			)
 			(4
@@ -1220,7 +1220,7 @@
 					cel: 0
 					cycleSpeed: 6
 					posn: 58 173
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6 0)
@@ -1277,7 +1277,7 @@
 						normal: 0
 						cycleSpeed: 8
 						posn: 70 189
-						setCycle: CT 8 1 self
+						setCycle: CycleTo 8 1 self
 					)
 				else
 					(ego
@@ -1287,10 +1287,10 @@
 						normal: 0
 						cycleSpeed: 8
 						posn: 65 189
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
-				(widow setCycle: End self)
+				(widow setCycle: EndLoop self)
 			)
 			(4)
 			(5
@@ -1333,7 +1333,7 @@
 			)
 			(8
 				(if (== register 3)
-					(ego view: 462 setLoop: 1 cel: 0 setCycle: End self)
+					(ego view: 462 setLoop: 1 cel: 0 setCycle: EndLoop self)
 				else
 					(self cue:)
 				)
@@ -1342,17 +1342,17 @@
 				(theGlobalSound stop:)
 				(theMusic number: 466 setLoop: 1 play: self)
 				(if (== register 3)
-					(ego view: 462 setLoop: 2 cel: 0 setCycle: End self)
+					(ego view: 462 setLoop: 2 cel: 0 setCycle: EndLoop self)
 				else
 					(ego
 						view: 462
 						setLoop: 6
 						cel: 0
 						posn: 63 187
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
-				(widow setCycle: End self)
+				(widow setCycle: EndLoop self)
 			)
 			(10)
 			(11)
@@ -1406,7 +1406,7 @@
 		(switch (= state newState)
 			(0
 				(client
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (Random 5 50) (Random 5 60) self
 				)
 			)
@@ -1415,13 +1415,13 @@
 					setLoop: 13
 					cel: 0
 					posn: (+ (client x?) 6) (client y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(client
 					setLoop: 12
-					setCycle: Fwd
+					setCycle: Forward
 					posn: (- (client x?) 9) (+ (client y?) 14)
 				)
 				(= ticks 2)
@@ -1436,14 +1436,14 @@
 					setLoop: 14
 					cel: 0
 					posn: (- (client x?) 6) (client y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
 				(client
 					setLoop: 11
 					posn: (+ (client x?) 12) (+ (client y?) 14)
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= ticks 2)
 			)
@@ -1490,7 +1490,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(oxymoron init: setCycle: CT 4 1 self)
+				(oxymoron init: setCycle: CycleTo 4 1 self)
 			)
 			(1
 				(oxyBook init:)
@@ -1520,7 +1520,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(dipthong init: setCycle: CT 4 1 self)
+				(dipthong init: setCycle: CycleTo 4 1 self)
 			)
 			(1
 				(dipBook init:)
@@ -1557,7 +1557,7 @@
 			)
 			(2
 				(oxyBook dispose:)
-				(oxymoron posn: 279 57 setCycle: Beg self)
+				(oxymoron posn: 279 57 setCycle: BegLoop self)
 			)
 			(3
 				(oxymoron dispose:)
@@ -1582,7 +1582,7 @@
 			)
 			(2
 				(dipBook dispose:)
-				(dipthong posn: 234 45 setCycle: Beg self)
+				(dipthong posn: 234 45 setCycle: BegLoop self)
 			)
 			(3
 				(dipthong dispose:)

@@ -32,13 +32,13 @@
 					setCel: 0
 					setLoop: 0
 					cycleSpeed: 10
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(4
 				(messager say: 1 83 0 2 self 0)
 			)
-			(5 (ego setCycle: End self))
+			(5 (ego setCycle: EndLoop self))
 			(6
 				(messager say: 1 83 0 3 self 0)
 			)
@@ -50,7 +50,7 @@
 				(messager say: 1 83 0 4 self 0)
 			)
 			(9 (= seconds 2))
-			(10 (ego setCycle: End self))
+			(10 (ego setCycle: EndLoop self))
 			(11
 				(messager say: 1 83 0 5 self 0)
 			)

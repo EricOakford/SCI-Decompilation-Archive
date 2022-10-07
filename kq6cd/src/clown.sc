@@ -87,7 +87,7 @@
 			)
 			(1 (= seconds (Random 5 20)))
 			(2
-				(client cel: 0 setCycle: End self)
+				(client cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(client stopUpd:)
@@ -141,13 +141,13 @@
 					cel: 0
 					posn: 72 135
 					cycleSpeed: 6
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(soundFx2 number: 901 loop: 1 play:)
-				((ScriptID 270 4) setCycle: End self)
+				((ScriptID 270 4) setCycle: EndLoop self)
 			)
 			(3
-				((ScriptID 270 4) setCycle: Beg self)
+				((ScriptID 270 4) setCycle: BegLoop self)
 			)
 			(4
 				(clown dispose:)

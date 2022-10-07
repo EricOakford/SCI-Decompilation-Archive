@@ -239,7 +239,7 @@
 					scaleX: 142
 					scaleY: 142
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -256,7 +256,7 @@
 				(keyDownHandler delete: self)
 				((ScriptID 80 5) sightAngle: 40)
 				((ScriptID 80 6) sightAngle: 40)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(6
 				(ego

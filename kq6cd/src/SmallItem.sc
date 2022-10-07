@@ -2,7 +2,7 @@
 (script# 280)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Scaler)
 (use Polygon)
@@ -207,13 +207,13 @@
 					scaleX: 117
 					scaleY: 117
 					scaleSignal: 1
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(4
 				(soundFx2 number: 901 loop: 1 play:)
-				(shopDoor setCycle: End self)
-				(ego setCycle: End self)
+				(shopDoor setCycle: EndLoop self)
+				(ego setCycle: EndLoop self)
 			)
 			(5 0)
 			(6 (= cycles 1))
@@ -229,7 +229,7 @@
 		(switch (= state newState)
 			(0 (= ticks 45))
 			(1
-				(client cycleSpeed: 8 setCycle: Beg self)
+				(client cycleSpeed: 8 setCycle: BegLoop self)
 			)
 			(2 (= cycles 2))
 			(3
@@ -278,7 +278,7 @@
 			)
 			(1
 				(if register
-					(client setCycle: End self)
+					(client setCycle: EndLoop self)
 				else
 					(= ticks 1)
 				)
@@ -298,11 +298,11 @@
 				(= cycles 1)
 			)
 			(4
-				(client view: 285 loop: 0 cel: 0 setCycle: End self)
+				(client view: 285 loop: 0 cel: 0 setCycle: EndLoop self)
 				(= state 1)
 			)
 			(5
-				(client view: 2852 loop: 0 cel: 0 setCycle: End)
+				(client view: 2852 loop: 0 cel: 0 setCycle: EndLoop)
 				(= seconds 10)
 			)
 			(6
@@ -310,7 +310,7 @@
 					view: 2853
 					loop: 0
 					cel: 0
-					setCycle: End (if register else removeOwnerScr)
+					setCycle: EndLoop (if register else removeOwnerScr)
 				)
 				(= state 1)
 			)
@@ -571,7 +571,7 @@
 					loop: 0
 					posn: 176 133
 					get: 23
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (= cycles 2))

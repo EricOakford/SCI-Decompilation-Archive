@@ -8,7 +8,7 @@
 	EgoGroop 0
 )
 
-(class EgoGroop of Grooper
+(class EgoGroop of GradualLooper
 	(properties
 		client 0
 		oldCycler 0
@@ -33,7 +33,7 @@
 		(asm
 			pushi    #cue
 			pushi    0
-			super    Grooper,  4
+			super    GradualLooper,  4
 			ldi      1
 			aTop     dontHead
 			pushi    #view

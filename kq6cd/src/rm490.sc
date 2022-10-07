@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use Kq6Sound)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Talker)
 (use Kq6Procs)
 (use Conv)
@@ -305,7 +305,7 @@
 	
 	(method (init)
 		(if (cast contains: redQueen)
-			(self setCycle: End self)
+			(self setCycle: EndLoop self)
 		else
 			(self view: 4900 setLoop: 0 cel: 3 stopUpd:)
 		)
@@ -463,7 +463,7 @@
 					setLoop: 0
 					cel: 0
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(redKnight
 					signal: 18432
@@ -471,7 +471,7 @@
 					setLoop: 1
 					cel: 0
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(8)
@@ -483,12 +483,12 @@
 				(= cycles 2)
 			)
 			(10
-				(redQueen view: 495 setLoop: 1 cel: 0 setCycle: End self)
+				(redQueen view: 495 setLoop: 1 cel: 0 setCycle: EndLoop self)
 				(whiteQueen
 					view: 497
 					setLoop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11)
@@ -505,7 +505,7 @@
 					setLoop: 0
 					cel: 3
 					init:
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(redKnight
 					signal: 18432
@@ -513,7 +513,7 @@
 					setLoop: 1
 					cel: 3
 					init:
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(UnLoad 128 492)
 				(UnLoad 128 493)
@@ -557,15 +557,15 @@
 			(1 (= seconds 2))
 			(2
 				(Bclr 59)
-				(redQueen view: 495 setLoop: 2 cel: 0 setCycle: End self)
+				(redQueen view: 495 setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(redQueen view: 495 setLoop: 1 cel: 3 setCycle: Beg self)
+				(redQueen view: 495 setLoop: 1 cel: 3 setCycle: BegLoop self)
 				(whiteQueen
 					view: 497
 					setLoop: 1
 					cel: 3
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(4)
@@ -579,14 +579,14 @@
 			)
 			(7
 				(Bset 59)
-				(redQueen view: 495 setLoop: 1 cel: 0 setCycle: End self)
+				(redQueen view: 495 setLoop: 1 cel: 0 setCycle: EndLoop self)
 				(if (not (soundFx2 handle?))
 					(soundFx2 number: 493 setLoop: 1 play:)
 				)
 			)
 			(8 (messager say: 1 0 2 9 self))
 			(9
-				(redQueen cel: 3 setCycle: Beg self)
+				(redQueen cel: 3 setCycle: BegLoop self)
 			)
 			(10 (= ticks 30))
 			(11
@@ -600,7 +600,7 @@
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 0
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(13
@@ -615,12 +615,12 @@
 				(myConv add: -1 1 0 2 11 add: -1 1 0 2 12 init: self)
 			)
 			(16
-				(redQueen view: 495 setLoop: 1 cel: 0 setCycle: End self)
+				(redQueen view: 495 setLoop: 1 cel: 0 setCycle: EndLoop self)
 				(whiteQueen
 					view: 497
 					setLoop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(17)
@@ -673,12 +673,12 @@
 				)
 			)
 			(1
-				(redQueen view: 4951 setLoop: 1 cel: 3 setCycle: Beg self)
+				(redQueen view: 4951 setLoop: 1 cel: 3 setCycle: BegLoop self)
 				(whiteQueen
 					view: 497
 					setLoop: 1
 					cel: 3
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(UnLoad 128 494)
 				(UnLoad 128 496)
@@ -730,13 +730,13 @@
 					cel: 0
 					posn: 172 140
 					cycleSpeed: 10
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(4
 				(theGame givePoints: 1)
 				(redScarf dispose:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(5
 				(ego
@@ -822,7 +822,7 @@
 						cel: 0
 						setPri: 7
 						posn: 177 148
-						setCycle: End
+						setCycle: EndLoop
 					)
 				else
 					(redQueen
@@ -831,7 +831,7 @@
 						cel: 0
 						setPri: 7
 						posn: 177 148
-						setCycle: End
+						setCycle: EndLoop
 					)
 				)
 				(whiteQueen
@@ -840,17 +840,17 @@
 					cel: 0
 					setPri: 7
 					posn: 143 148
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(redQueen posn: 177 138 cel: 0 setCycle: End self)
-				(whiteQueen posn: 143 138 cel: 0 setCycle: End self)
+				(redQueen posn: 177 138 cel: 0 setCycle: EndLoop self)
+				(whiteQueen posn: 143 138 cel: 0 setCycle: EndLoop self)
 			)
 			(2)
 			(3
-				(redQueen posn: 177 116 cel: 0 setCycle: End self)
-				(whiteQueen posn: 143 116 cel: 0 setCycle: End self)
+				(redQueen posn: 177 116 cel: 0 setCycle: EndLoop self)
+				(whiteQueen posn: 143 116 cel: 0 setCycle: EndLoop self)
 			)
 			(4)
 			(5
@@ -858,13 +858,13 @@
 					posn: 177 116
 					cel: 0
 					setPri: 9
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(whiteQueen
 					posn: 143 116
 					cel: 0
 					setPri: 9
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6)
@@ -1009,7 +1009,7 @@
 					cel: 0
 					posn: 176 124
 					cycleSpeed: 10
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(whiteQueen
 					view: 496
@@ -1017,7 +1017,7 @@
 					cel: 0
 					posn: 143 124
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -1165,7 +1165,7 @@
 					cel: 0
 					setLoop: 2
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(whiteKnight
 					signal: 18432
@@ -1173,7 +1173,7 @@
 					cel: 0
 					setLoop: 2
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1)
@@ -1534,17 +1534,17 @@
 				(= cycles 4)
 			)
 			(3
-				(ego setCycle: CT 4 1 self)
-				(whiteQueen view: 497 setLoop: 0 cel: 0 setCycle: CT 3 1)
+				(ego setCycle: CycleTo 4 1 self)
+				(whiteQueen view: 497 setLoop: 0 cel: 0 setCycle: CycleTo 3 1)
 			)
 			(4
 				(theGame givePoints: 1)
 				(messager say: 6 46 0 1 self)
 			)
-			(5 (ego setCycle: End self))
+			(5 (ego setCycle: EndLoop self))
 			(6
 				(ego reset: 7)
-				(whiteQueen setCycle: Beg self)
+				(whiteQueen setCycle: BegLoop self)
 			)
 			(7
 				(messager say: 6 46 0 2 self)
@@ -1554,7 +1554,7 @@
 					view: 497
 					setLoop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
@@ -1566,7 +1566,7 @@
 				(messager say: 6 46 0 3 self)
 			)
 			(11
-				(redQueen view: 4951 setLoop: 1 cel: 0 setCycle: End self)
+				(redQueen view: 4951 setLoop: 1 cel: 0 setCycle: EndLoop self)
 				(if (not (soundFx2 handle?))
 					(soundFx2 number: 493 setLoop: 1 play:)
 				)
@@ -1579,12 +1579,12 @@
 				(messager say: 6 46 0 4 self)
 			)
 			(14
-				(redQueen view: 4951 setLoop: 1 cel: 3 setCycle: Beg self)
+				(redQueen view: 4951 setLoop: 1 cel: 3 setCycle: BegLoop self)
 				(whiteQueen
 					view: 497
 					setLoop: 1
 					cel: 3
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(15)
@@ -1604,19 +1604,19 @@
 					cel: 0
 					normal: 0
 					cycleSpeed: 10
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 				(whiteQueen
 					view: 497
 					setLoop: 0
 					cel: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(19)
 			(20
-				(whiteQueen setCycle: Beg self)
-				(ego setCycle: End self)
+				(whiteQueen setCycle: BegLoop self)
+				(ego setCycle: EndLoop self)
 			)
 			(21)
 			(22
@@ -1703,7 +1703,7 @@
 						cel: 0
 						normal: 0
 						cycleSpeed: 8
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 					(= local51 1)
 				else
@@ -1713,7 +1713,7 @@
 			(8 (= seconds 2))
 			(9
 				(if local51
-					(ego cycleSpeed: register setCycle: Beg self)
+					(ego cycleSpeed: register setCycle: BegLoop self)
 				else
 					(= cycles 2)
 				)

@@ -2,7 +2,7 @@
 (script# 500)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use PolyPath)
@@ -54,12 +54,12 @@
 					yourself:
 				)
 		)
-		(water1 setCycle: Fwd init:)
-		(water2 setCycle: Fwd init:)
-		(water3 setCycle: Fwd init:)
-		(water4 setCycle: Fwd init:)
-		(water5 setCycle: Fwd init:)
-		(plant setCycle: Fwd init:)
+		(water1 setCycle: Forward init:)
+		(water2 setCycle: Forward init:)
+		(water3 setCycle: Forward init:)
+		(water4 setCycle: Forward init:)
+		(water5 setCycle: Forward init:)
+		(plant setCycle: Forward init:)
 		(theMusic number: 915 loop: -1 flags: 1 play:)
 		(theGlobalSound number: 917 flags: 1 loop: -1 play:)
 		(super init: &rest)
@@ -89,7 +89,7 @@
 			)
 			(deer init: setScript: deerScript)
 		else
-			(raccoon init: setLoop: 14 setCycle: End raccoon)
+			(raccoon init: setLoop: 14 setCycle: EndLoop raccoon)
 		)
 	)
 	
@@ -433,7 +433,7 @@
 					cycleSpeed: 10
 					setPri: 14
 					ignoreHorizon: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -442,13 +442,13 @@
 					setLoop: 1
 					cel: 0
 					posn: (- (dangle x?) 1) (dangle y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
-				(dangle setLoop: 0 cel: 0 setCycle: End self)
+				(dangle setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
-			(5 (dangle setCycle: End self))
+			(5 (dangle setCycle: EndLoop self))
 			(6
 				(dangle hide:)
 				(ego put: 50 500 get: 29 reset: 4 show:)
@@ -484,7 +484,7 @@
 					cel: 0
 					normal: 0
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: PolyPath (ego x?) 190 self
 				)
 			)
@@ -501,9 +501,9 @@
 		(switch (= state newState)
 			(0 (= seconds 2))
 			(1
-				(dangle setLoop: (Random 1 3) setCycle: End self)
+				(dangle setLoop: (Random 1 3) setCycle: EndLoop self)
 			)
-			(2 (dangle setCycle: End self))
+			(2 (dangle setCycle: EndLoop self))
 			(3 (self init:))
 		)
 	)
@@ -515,7 +515,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 2 5)))
-			(1 (deer setCycle: End self))
+			(1 (deer setCycle: EndLoop self))
 			(2
 				(deer setCel: 0)
 				(= cycles 1)

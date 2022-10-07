@@ -5,7 +5,7 @@
 (use rgCrown)
 (use walkEgoInScr)
 (use KQ6Print)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use Scaler)
@@ -293,14 +293,14 @@
 			(0
 				(guard1
 					view: 725
-					setLoop: Grooper
+					setLoop: GradualLooper
 					setCycle: Walk
 					setMotion: MoveTo 108 97 self
 				)
 			)
 			(1 (guard1 setHeading: 0 self))
 			(2
-				(castleDoor setCycle: Beg self)
+				(castleDoor setCycle: BegLoop self)
 			)
 			(3
 				(soundFx2 number: 223 loop: 1 play:)
@@ -335,7 +335,7 @@
 			(0
 				(guard1
 					view: 725
-					setLoop: Grooper
+					setLoop: GradualLooper
 					setCycle: Walk
 					setMotion: MoveTo 112 105 self
 				)
@@ -345,7 +345,7 @@
 			)
 			(2 (guard1 setHeading: 0 self))
 			(3
-				(castleDoor setCycle: End self)
+				(castleDoor setCycle: EndLoop self)
 				(soundFx2 number: 222 loop: 1 play:)
 			)
 			(4
@@ -376,7 +376,7 @@
 			)
 			(8 (guard1 setHeading: 0 self))
 			(9
-				(castleDoor setCycle: Beg self)
+				(castleDoor setCycle: BegLoop self)
 			)
 			(10
 				(soundFx2 number: 223 loop: 1 play:)
@@ -416,11 +416,11 @@
 				(if (not local0)
 					(guard1 loop: 2)
 					(guard2 loop: 3)
-					(guard1 setCycle: End)
-					(guard2 setCycle: End self)
+					(guard1 setCycle: EndLoop)
+					(guard2 setCycle: EndLoop self)
 				else
-					(guard1 setCycle: Beg)
-					(guard2 setCycle: Beg self)
+					(guard1 setCycle: BegLoop)
+					(guard2 setCycle: BegLoop self)
 				)
 			)
 			(2
@@ -491,12 +491,12 @@
 					view: 221
 					loop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (= cycles 1))
 			(5
-				(ego loop: 2 cel: 0 setCycle: End self)
+				(ego loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(6 (= cycles 1))
 			(7
@@ -569,14 +569,14 @@
 				(guard2
 					view: 725
 					posn: 139 108
-					setLoop: Grooper
+					setLoop: GradualLooper
 					loop: 1
 					setCycle: Walk
 					setMotion: DPath 120 108 108 97 self
 				)
 			)
 			(1
-				(castleDoor setCycle: End self)
+				(castleDoor setCycle: EndLoop self)
 				(soundFx2 number: 222 loop: 1 play:)
 			)
 			(2
@@ -596,7 +596,7 @@
 			(7 (guard2 setHeading: 0 self))
 			(8 (= cycles 2))
 			(9
-				(castleDoor setCycle: Beg self)
+				(castleDoor setCycle: BegLoop self)
 			)
 			(10
 				(soundFx2 number: 223 loop: 1 play:)
@@ -726,7 +726,7 @@
 						view: 221
 						loop: 0
 						cel: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(self cue:)
@@ -763,7 +763,7 @@
 					view: 221
 					loop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
@@ -773,7 +773,7 @@
 					(self cue:)
 				)
 			)
-			(7 (ego setCycle: Beg self))
+			(7 (ego setCycle: BegLoop self))
 			(8
 				(if (not (Btst 64))
 					(messager say: 5 40 register 3 self)
@@ -814,7 +814,7 @@
 					view: 221
 					loop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -832,7 +832,7 @@
 						self
 				)
 			)
-			(2 (ego setCycle: Beg self))
+			(2 (ego setCycle: BegLoop self))
 			(3
 				(if register
 					(self cue:)
@@ -862,7 +862,7 @@
 			)
 			(1
 				(ego
-					setCycle: Rev
+					setCycle: Reverse
 					setLoop: 3
 					setMotion: MoveTo 125 123 self
 				)
@@ -913,7 +913,7 @@
 						view: 221
 						loop: 0
 						cel: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(self cue:)
@@ -925,7 +925,7 @@
 			)
 			(6
 				(if (== register 70)
-					(ego setCycle: Beg self)
+					(ego setCycle: BegLoop self)
 				else
 					(= state (+ state 2))
 					(= cycles 2)
@@ -1236,7 +1236,7 @@
 		(self
 			setScale: Scaler 64 94 103 95
 			setPri: 1
-			setLoop: Grooper
+			setLoop: GradualLooper
 			setCycle: StopWalk -1
 			ignoreActors:
 		)

@@ -79,20 +79,20 @@
 				(self setScript: (ScriptID 450 2) self register)
 			)
 			(2
-				(sightGnome setLoop: 1 cel: 0 setCycle: CT 2 1 self)
+				(sightGnome setLoop: 1 cel: 0 setCycle: CycleTo 2 1 self)
 			)
 			(3
 				(soundFx number: 456 setLoop: 1 play:)
-				(sightGnome setCycle: CT 5 1 self)
+				(sightGnome setCycle: CycleTo 5 1 self)
 			)
 			(4
 				(soundFx play:)
-				(sightGnome setCycle: End self)
+				(sightGnome setCycle: EndLoop self)
 			)
 			(5
 				(soundFx play:)
 				(if (== register 83)
-					(sightGnome setLoop: 4 cel: 0 setCycle: End self)
+					(sightGnome setLoop: 4 cel: 0 setCycle: EndLoop self)
 				else
 					(self setScript: failScript 0 register)
 				)
@@ -121,7 +121,7 @@
 			(0
 				(cond 
 					((== register 31) (self state: (+ state 1) cue:))
-					(register (ego setCycle: End self))
+					(register (ego setCycle: EndLoop self))
 					(else (= cycles 1))
 				)
 			)
@@ -135,19 +135,19 @@
 				(= cycles 2)
 			)
 			(2
-				(sightGnome setLoop: 2 cel: 0 setCycle: CT 2 1 self)
+				(sightGnome setLoop: 2 cel: 0 setCycle: CycleTo 2 1 self)
 			)
 			(3
 				(soundFx number: 456 setLoop: 1 play:)
-				(sightGnome setCycle: CT 4 1 self)
+				(sightGnome setCycle: CycleTo 4 1 self)
 			)
 			(4
 				(soundFx play:)
-				(sightGnome setCycle: CT 9 1 self)
+				(sightGnome setCycle: CycleTo 9 1 self)
 			)
 			(5
 				(soundFx number: 459 setLoop: 1 play:)
-				(sightGnome setCycle: End self)
+				(sightGnome setCycle: EndLoop self)
 			)
 			(6
 				(Bset 59)

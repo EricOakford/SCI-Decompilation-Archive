@@ -195,7 +195,7 @@
 					setScale: 0
 					scaler: 0
 					cycleSpeed: 9
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1

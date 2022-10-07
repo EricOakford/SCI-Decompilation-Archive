@@ -161,14 +161,15 @@
 		(super dispose:)
 	)
 	
-	(method (setScript newScript)
+	(method (setScript newScript &tmp theCaller)
 		(if (IsObject newScript)
 			(if (hideEgo caller?)
 				(waitForEgoToHide
 					register: (+ (waitForEgoToHide register?) 1)
 				)
 				(newScript next: waitForEgoToHide)
-				((hideEgo caller?) setScript: newScript &rest)
+				(= theCaller (hideEgo caller?))
+				(theCaller setScript: newScript &rest)
 			else
 				(super setScript: newScript &rest)
 			)
@@ -395,12 +396,12 @@
 					y: 118
 					cycleSpeed: 8
 					normal: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(portrait show: posn: 214 111 stopUpd:)
-				(ego loop: 2 cel: 0 x: 216 y: 118 setCycle: End self)
+				(ego loop: 2 cel: 0 x: 216 y: 118 setCycle: EndLoop self)
 			)
 			(3
 				(if (or (== next waitForEgoToHide) (not next))
@@ -436,12 +437,12 @@
 					y: 118
 					cycleSpeed: 8
 					normal: 0
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(2
 				(portrait hide:)
-				(ego loop: 1 cel: 6 x: 216 y: 118 setCycle: Beg self)
+				(ego loop: 1 cel: 6 x: 216 y: 118 setCycle: BegLoop self)
 			)
 			(3
 				(portrait posn: 223 87 show: stopUpd:)
@@ -561,12 +562,12 @@
 					view: 884
 					loop: 0
 					cel: 0
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(8
 				(bird dispose:)
-				((ScriptID 80 5) setCycle: End self)
+				((ScriptID 80 5) setCycle: EndLoop self)
 			)
 			(9 (self dispose:))
 			(10
@@ -682,7 +683,7 @@
 					scaleX: 128
 					scaleY: 128
 					cycleSpeed: 8
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(1 (= cycles 5))
@@ -696,7 +697,7 @@
 					(nail dispose:)
 				)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(ego reset: 6 posn: 204 110)
 				(if (not (Bset 88)) (theGame givePoints: 1))
@@ -727,7 +728,7 @@
 					scaleY: 128
 					normal: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (= seconds 2))
@@ -740,7 +741,7 @@
 			(4
 				(theGame handsOff:)
 				(= register 0)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(5
 				(ego
@@ -824,7 +825,7 @@
 					y: 128
 					normal: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -842,7 +843,7 @@
 				)
 				(= cycles 3)
 			)
-			(6 (ego setCycle: End self))
+			(6 (ego setCycle: EndLoop self))
 			(7
 				(if (== client curRoom)
 					(= state (- start 1))
@@ -854,15 +855,15 @@
 			(8
 				(= state 12)
 				(= register 1)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(9
-				(ego loop: 2 cel: 0 setCycle: End self)
+				(ego loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(10 (= seconds 2))
-			(11 (ego setCycle: Beg self))
+			(11 (ego setCycle: BegLoop self))
 			(12
-				(ego loop: 0 cel: 4 setCycle: Beg self)
+				(ego loop: 0 cel: 4 setCycle: BegLoop self)
 			)
 			(13
 				(= start 0)
@@ -1156,7 +1157,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(self setCycle: Fwd)
+		(self setCycle: Forward)
 	)
 )
 

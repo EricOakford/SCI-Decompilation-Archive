@@ -67,7 +67,7 @@
 				(ego setHeading: 315)
 				(soundFx2 number: 901 loop: 1 play:)
 				(soundFx number: 731 loop: -1 play:)
-				((ScriptID 730 1) setCycle: End self)
+				((ScriptID 730 1) setCycle: EndLoop self)
 			)
 			(1
 				(soundFx2 stop:)
@@ -79,24 +79,24 @@
 					ignoreActors:
 					illegalBits: 0
 					cel: 0
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(3
 				((ScriptID 730 1) cel: 0 stopUpd:)
 				(soundFx stop:)
 				(soundFx2 number: 902 loop: 1 play:)
-				(waiter cel: 5 setCycle: End self)
+				(waiter cel: 5 setCycle: EndLoop self)
 			)
 			(4
 				(waiter
 					posn: 104 143
 					setLoop: (+ (waiter loop?) 1)
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(5 (self dispose:))
-			(6 (waiter setCycle: End self))
+			(6 (waiter setCycle: EndLoop self))
 			(7
 				(waiter
 					setCycle: Walk
@@ -111,14 +111,14 @@
 					setLoop: (+ (waiter loop?) 1)
 					posn: 227 144
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(soundFx2 number: 901 loop: 1 play:)
 				((ScriptID 730 2) hide:)
 			)
 			(9
 				(waiter dispose: setCycle: 0)
-				((ScriptID 730 2) show: cel: 3 setCycle: Beg self)
+				((ScriptID 730 2) show: cel: 3 setCycle: BegLoop self)
 			)
 			(10
 				(soundFx2 number: 902 loop: 1 play:)
@@ -139,14 +139,14 @@
 					setLoop: 1
 					cel: 0
 					posn: 251 168
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(14
-				(ego setLoop: 2 cel: 0 posn: 253 169 setCycle: End self)
+				(ego setLoop: 2 cel: 0 posn: 253 169 setCycle: EndLoop self)
 			)
 			(15
-				(ego setLoop: 3 cel: 0 posn: 264 169 setCycle: End self)
+				(ego setLoop: 3 cel: 0 posn: 264 169 setCycle: EndLoop self)
 			)
 			(16
 				(ego reset: 0 posn: 260 165)

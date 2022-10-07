@@ -625,7 +625,7 @@
 		(super cue:)
 		(switch (++ local1)
 			(1 (pTimer setReal: self 5))
-			(2 (self setCycle: Beg self))
+			(2 (self setCycle: BegLoop self))
 			(3 (self addToPic:))
 		)
 	)
@@ -654,11 +654,11 @@
 				(self cel: 3)
 				(bTimer setCycle: self 5)
 			)
-			(4 (self setCycle: Beg self))
+			(4 (self setCycle: BegLoop self))
 			(5 (bTimer setReal: self 3))
 			(6
 				(= local2 0)
-				(self setCycle: End self)
+				(self setCycle: EndLoop self)
 			)
 		)
 	)
@@ -744,13 +744,13 @@
 	(method (cue)
 		(super cue:)
 		(switch (++ local5)
-			(1 (self setCycle: Beg self))
+			(1 (self setCycle: BegLoop self))
 			(2
 				(cTimer setReal: self (Random 2 4))
 			)
 			(3
 				(= local5 0)
-				(self setCycle: End self)
+				(self setCycle: EndLoop self)
 			)
 		)
 	)
@@ -809,13 +809,13 @@
 				(self cel: 3)
 				(lgTimer setReal: self (Random 1 2))
 			)
-			(4 (self setCycle: Beg self))
+			(4 (self setCycle: BegLoop self))
 			(5
 				(lgTimer setReal: self (Random 2 3))
 			)
 			(6
 				(= local4 0)
-				(self setCycle: End self)
+				(self setCycle: EndLoop self)
 			)
 			(100
 				(= local4 0)
@@ -850,13 +850,13 @@
 				(self cel: 2)
 				(rgTimer setReal: self (Random 1 2))
 			)
-			(4 (self setCycle: Beg self))
+			(4 (self setCycle: BegLoop self))
 			(5
 				(rgTimer setReal: self (Random 2 3))
 			)
 			(6
 				(= local3 0)
-				(self setCycle: End self)
+				(self setCycle: EndLoop self)
 			)
 			(100
 				(= local3 0)
@@ -973,12 +973,12 @@
 			(0
 				(theIconBar disable: 6)
 				(theMusic number: 742 loop: -1 play:)
-				(vizier cycleSpeed: 6 setCycle: CT 9 1 self)
+				(vizier cycleSpeed: 6 setCycle: CycleTo 9 1 self)
 			)
 			(1
 				(door hide:)
 				(door approachVerbs: 5)
-				(vizier setCycle: End self)
+				(vizier setCycle: EndLoop self)
 			)
 			(2
 				(door show: cel: 1 stopUpd:)

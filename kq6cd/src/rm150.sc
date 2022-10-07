@@ -2,7 +2,7 @@
 (script# 150)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Conv)
 (use Motion)
 (use Actor)
@@ -63,10 +63,10 @@
 					(= local1 1)
 					(= local2 1)
 					(if (Random 0 1)
-						(eye1 init: cel: 0 setCycle: End self)
+						(eye1 init: cel: 0 setCycle: EndLoop self)
 						(= local0 1)
 					else
-						(eye2 init: cel: 0 setCycle: End self)
+						(eye2 init: cel: 0 setCycle: EndLoop self)
 						(= local0 0)
 					)
 				else
@@ -184,7 +184,7 @@
 			(3
 				(if (not local2)
 					(if (cast contains: genie) (genie dispose:))
-					(eye1 init: cel: 0 setCycle: End self)
+					(eye1 init: cel: 0 setCycle: EndLoop self)
 				else
 					(++ state)
 					(= cycles 1)
@@ -196,7 +196,7 @@
 			)
 			(5
 				(soundFx2 number: 756 loop: 1 play:)
-				(swordArm setCycle: End)
+				(swordArm setCycle: EndLoop)
 				(theMusic fade:)
 			)
 		)

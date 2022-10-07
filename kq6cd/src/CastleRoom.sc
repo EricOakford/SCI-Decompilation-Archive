@@ -2,7 +2,7 @@
 (script# 80)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Scaler)
 (use PolyPath)
@@ -267,7 +267,7 @@
 		(super init: &rest)
 		(self
 			setCycle: StopWalk -1
-			setLoop: Grooper
+			setLoop: GradualLooper
 			setStep: 4 2
 			ignoreHorizon:
 			illegalBits: 0
@@ -306,7 +306,7 @@
 	)
 )
 
-(class rgCastle of Rgn
+(class rgCastle of Region
 	(properties
 		script 0
 		number 0

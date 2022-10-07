@@ -396,7 +396,7 @@
 			(1
 				(soundFx2 number: 821 loop: 1 play:)
 				(ego setPri: (ego priority?))
-				(register setCycle: End)
+				(register setCycle: EndLoop)
 				(ego
 					view: 711
 					normal: 0
@@ -404,7 +404,7 @@
 					cel: 0
 					cycleSpeed: 8
 					posn: (+ (ego x?) 2) (+ (ego y?) 7)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (ego dispose:) (= cycles 4))
@@ -445,7 +445,7 @@
 			(3 (messager say: 2 5 4 1 self))
 			(4
 				(soundFx2 number: 901 loop: 1 play:)
-				(treasureDoor cycleSpeed: 10 setCycle: End self)
+				(treasureDoor cycleSpeed: 10 setCycle: EndLoop self)
 			)
 			(5
 				(soundFx2 stop:)

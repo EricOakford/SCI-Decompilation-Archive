@@ -6,7 +6,7 @@
 (use KQ6Print)
 (use Kq6Window)
 (use Print)
-(use Slider)
+(use SlideIcon)
 (use IconBar)
 (use GControl)
 (use System)

@@ -2,7 +2,7 @@
 (script# 510)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use Scaler)
@@ -568,13 +568,13 @@
 				(= ticks 1)
 			)
 			(4
-				(glint1 setCycle: End self)
-				(glint2 setCycle: End self)
+				(glint1 setCycle: EndLoop self)
+				(glint2 setCycle: EndLoop self)
 			)
 			(5 0)
 			(6
-				(glint1 setCycle: Beg self)
-				(glint2 setCycle: Beg self)
+				(glint1 setCycle: BegLoop self)
+				(glint2 setCycle: BegLoop self)
 			)
 			(7 0)
 			(8
@@ -627,13 +627,13 @@
 				(= ticks 1)
 			)
 			(3
-				(glint1 setCycle: End self)
-				(glint2 setCycle: End self)
+				(glint1 setCycle: EndLoop self)
+				(glint2 setCycle: EndLoop self)
 			)
 			(4 0)
 			(5
-				(glint1 setCycle: Beg self)
-				(glint2 setCycle: Beg self)
+				(glint1 setCycle: BegLoop self)
+				(glint2 setCycle: BegLoop self)
 			)
 			(6 0)
 			(7
@@ -674,13 +674,13 @@
 					cycleSpeed: 10
 					setHeading: 0
 					normal: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(3
 				(brick dispose:)
 				(theGame givePoints: 1)
-				(ego get: 2 setCycle: End self)
+				(ego get: 2 setCycle: EndLoop self)
 			)
 			(4
 				(ego setHeading: 180 reset:)
@@ -748,7 +748,7 @@
 			)
 			(4
 				(fx number: 511 loop: 1 play: self)
-				(archer setCel: 0 cycleSpeed: 10 setLoop: 2 setCycle: End)
+				(archer setCel: 0 cycleSpeed: 10 setLoop: 2 setCycle: EndLoop)
 			)
 			(5
 				(if register
@@ -756,7 +756,7 @@
 				else
 					(fx number: 512 loop: 1 play:)
 				)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(6
 				(if register (ego reset: 7 setCycle: Walk))
@@ -821,47 +821,47 @@
 			)
 			(1
 				(fx number: 511 loop: 1 play: self)
-				(archer setCel: 0 cycleSpeed: 10 setLoop: 2 setCycle: End)
+				(archer setCel: 0 cycleSpeed: 10 setLoop: 2 setCycle: EndLoop)
 			)
 			(2
 				(fx number: 512 loop: 1 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(3
-				(genie cycleSpeed: 15 setLoop: 7 setCycle: End self)
+				(genie cycleSpeed: 15 setLoop: 7 setCycle: EndLoop self)
 			)
 			(4
-				(genie setLoop: 8 cel: 0 setCycle: End self)
+				(genie setLoop: 8 cel: 0 setCycle: EndLoop self)
 			)
 			(5 (= cycles 2))
-			(6 (genie setCycle: Beg self))
+			(6 (genie setCycle: BegLoop self))
 			(7 (= cycles 2))
-			(8 (genie setCycle: End self))
+			(8 (genie setCycle: EndLoop self))
 			(9 (= cycles 2))
-			(10 (genie setCycle: Beg self))
+			(10 (genie setCycle: BegLoop self))
 			(11 (= cycles 2))
-			(12 (genie setCycle: End self))
+			(12 (genie setCycle: EndLoop self))
 			(13 (= cycles 2))
-			(14 (genie setCycle: Beg self))
+			(14 (genie setCycle: BegLoop self))
 			(15 (= cycles 2))
 			(16
 				(glint1
 					show:
 					setPri: (+ (genie priority?) 1)
 					posn: (+ (genie x?) 1) (- (genie y?) 41)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(glint2
 					show:
 					setPri: (+ (genie priority?) 1)
 					posn: (- (genie x?) 1) (- (genie y?) 41)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(17 0)
 			(18
-				(glint1 setCycle: Beg self)
-				(glint2 setCycle: Beg self)
+				(glint1 setCycle: BegLoop self)
+				(glint2 setCycle: BegLoop self)
 			)
 			(19 0)
 			(20
@@ -886,7 +886,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(genie setLoop: 7 setCel: 0 setCycle: End self)
+				(genie setLoop: 7 setCel: 0 setCycle: EndLoop self)
 			)
 			(1
 				(genie setLoop: 8 setCel: 0)
@@ -909,13 +909,13 @@
 				(= ticks 1)
 			)
 			(4
-				(glint1 setCycle: End self)
-				(glint2 setCycle: End self)
+				(glint1 setCycle: EndLoop self)
+				(glint2 setCycle: EndLoop self)
 			)
 			(5 0)
 			(6
-				(glint1 setCycle: Beg self)
-				(glint2 setCycle: Beg self)
+				(glint1 setCycle: BegLoop self)
+				(glint2 setCycle: BegLoop self)
 			)
 			(7 0)
 			(8
@@ -933,12 +933,12 @@
 			)
 			(10
 				(fx number: 943 loop: 1 play:)
-				(genie cycleSpeed: 3 setLoop: 5 setCycle: End self)
+				(genie cycleSpeed: 3 setLoop: 5 setCycle: EndLoop self)
 			)
 			(11
 				(genie
 					posn: (+ (ego x?) 33) (- (ego y?) 5)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(fx number: 943 loop: 1 play:)
 			)
@@ -955,16 +955,16 @@
 					cycleSpeed: 15
 					setLoop: 10
 					cel: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 				(ego cel: 1)
 			)
 			(16
-				(genie setCycle: End self)
+				(genie setCycle: EndLoop self)
 				(ego put: 31 0 cel: 0)
 			)
 			(17
-				(genie cycleSpeed: 3 setLoop: 5 setCycle: End self)
+				(genie cycleSpeed: 3 setLoop: 5 setCycle: EndLoop self)
 				(fx number: 943 loop: 1 play:)
 			)
 			(18
@@ -990,20 +990,20 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(genie setLoop: 0 cycleSpeed: 10 setCycle: Fwd)
+				(genie setLoop: 0 cycleSpeed: 10 setCycle: Forward)
 				(= seconds 4)
 			)
-			(1 (genie setCycle: End self))
+			(1 (genie setCycle: EndLoop self))
 			(2
-				(genie setLoop: 1 setCycle: Fwd)
+				(genie setLoop: 1 setCycle: Forward)
 				(= seconds 4)
 			)
-			(3 (genie setCycle: End self))
+			(3 (genie setCycle: EndLoop self))
 			(4
-				(genie setLoop: 2 setCycle: Fwd)
+				(genie setLoop: 2 setCycle: Forward)
 				(= seconds 4)
 			)
-			(5 (genie setCycle: End self))
+			(5 (genie setCycle: EndLoop self))
 			(6 (self init:))
 		)
 	)
@@ -1050,22 +1050,22 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(genie cycleSpeed: 15 setLoop: 7 setCycle: End self)
+				(genie cycleSpeed: 15 setLoop: 7 setCycle: EndLoop self)
 			)
 			(1
-				(genie setLoop: 8 cel: 0 setCycle: End self)
+				(genie setLoop: 8 cel: 0 setCycle: EndLoop self)
 			)
-			(2 (genie setCycle: Beg self))
+			(2 (genie setCycle: BegLoop self))
 			(3 (= cycles 2))
-			(4 (genie setCycle: End self))
+			(4 (genie setCycle: EndLoop self))
 			(5 (= cycles 2))
-			(6 (genie setCycle: Beg self))
+			(6 (genie setCycle: BegLoop self))
 			(7 (= cycles 2))
-			(8 (genie setCycle: End self))
+			(8 (genie setCycle: EndLoop self))
 			(9 (= cycles 2))
 			(10
 				(fx number: 943 loop: 1 play:)
-				(genie cycleSpeed: 3 setLoop: 5 setCycle: End self)
+				(genie cycleSpeed: 3 setLoop: 5 setCycle: EndLoop self)
 			)
 			(11
 				(genieSong fade:)
@@ -1086,7 +1086,7 @@
 			)
 			(1
 				(fx number: 484 loop: 1 play:)
-				(roses setCycle: CT 11 1 self)
+				(roses setCycle: CycleTo 11 1 self)
 			)
 			(2
 				(roses setLoop: 1)
@@ -1133,33 +1133,33 @@
 				(messager say: 15 16 0 1 self)
 			)
 			(2
-				(roses cycleSpeed: 50 setLoop: 0 cel: 0 setCycle: CT 8 1)
+				(roses cycleSpeed: 50 setLoop: 0 cel: 0 setCycle: CycleTo 8 1)
 				(ego
 					view: 531
 					normal: 0
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
 				(messager say: 15 16 0 2 self)
 			)
 			(4
-				(ego setLoop: 1 setCycle: End self)
+				(ego setLoop: 1 setCycle: EndLoop self)
 			)
 			(5
-				(ego setLoop: 0 setCycle: End self)
+				(ego setLoop: 0 setCycle: EndLoop self)
 			)
 			(6
 				(messager say: 15 16 0 3 self)
 			)
 			(7
-				(ego setLoop: 1 setCycle: End self)
+				(ego setLoop: 1 setCycle: EndLoop self)
 			)
 			(8
-				(ego setLoop: 0 setCycle: End self)
+				(ego setLoop: 0 setCycle: EndLoop self)
 			)
 			(9 (= cycles 7))
 			(10
@@ -1196,7 +1196,7 @@
 					normal: 0
 					setLoop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1

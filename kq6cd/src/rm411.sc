@@ -164,10 +164,10 @@
 					normal: 0
 					cycleSpeed: 6
 					setLoop: temp0
-					setCycle: CT 10 1 self
+					setCycle: CycleTo 10 1 self
 				)
 			)
-			(5 (ego setCycle: End self))
+			(5 (ego setCycle: EndLoop self))
 			(6
 				(if local0
 					(Bset 59)

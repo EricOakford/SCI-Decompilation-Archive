@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 690)
-(include sci.sh)
+(include system.sh)
 (use Main)
 (use rgDead)
 (use KQ6Print)
@@ -36,7 +36,7 @@
 	)
 	
 	(method (init)
-		(Load rsVIEW 691)
+		(Load VIEW 691)
 		(flame init: setCycle: Forward)
 		(alex init:)
 		(lord init:)
@@ -312,10 +312,10 @@
 							(theGame restore:)
 						)
 						(2
-							(theGame restart: TRUE)
+							(theGame restart: 1)
 						)
 						(3
-							(= quit TRUE)
+							(= quit 1)
 							(break)
 						)
 					)

@@ -40,7 +40,7 @@
 				(= minWindSpeed (Random 3 12))
 				(= curWindSpeed minWindSpeed)
 				(= intervalDuration (Random 10 30))
-				(client cycleSpeed: curWindSpeed setCycle: Fwd)
+				(client cycleSpeed: curWindSpeed setCycle: Forward)
 				(self cue:)
 			)
 			(3 (= cycles intervalDuration))

@@ -47,7 +47,7 @@
 					loop: 1
 					cel: 0
 					setPri: 11
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((inventory at: 0) owner: -1)
 			)
@@ -65,11 +65,11 @@
 				(messager say: 4 2 13 6 self)
 			)
 			(10
-				((ScriptID 280 2) loop: 2 cel: 0 setCycle: CT 4 1 self)
+				((ScriptID 280 2) loop: 2 cel: 0 setCycle: CycleTo 4 1 self)
 			)
 			(11
 				((ScriptID 280 1) init:)
-				((ScriptID 280 2) setCycle: End self)
+				((ScriptID 280 2) setCycle: EndLoop self)
 			)
 			(12
 				((ScriptID 280 2) setPri: -1 view: 280 loop: 8 cel: 0)
@@ -215,7 +215,7 @@
 					reset:
 					setSpeed: 6
 					setLoop: 0
-					setCycle: Rev
+					setCycle: Reverse
 					setMotion: MoveTo (- (ego x?) 10) (ego y?) self
 				)
 			)

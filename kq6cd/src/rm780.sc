@@ -99,7 +99,7 @@
 		(otherFireplace addToPic:)
 		(bed addToPic:)
 		(chair init:)
-		(fire setCycle: Fwd init:)
+		(fire setCycle: Forward init:)
 		((ego scaler?) doit:)
 		(self setScript: enterRoom)
 		(if (Btst 10) (theMusic fadeTo: 780 -1))
@@ -142,7 +142,7 @@
 					(ego setMotion: MoveTo 64 157 self)
 				)
 			)
-			(1 (door setCycle: Beg self))
+			(1 (door setCycle: BegLoop self))
 			(2
 				(soundFx2 number: 902 setLoop: 1 play:)
 				(door stopUpd:)
@@ -225,7 +225,7 @@
 			)
 			(8
 				(chair priority: 1)
-				(theClown priority: 0 loop: 2 cel: 2 setCycle: Beg self)
+				(theClown priority: 0 loop: 2 cel: 2 setCycle: BegLoop self)
 			)
 			(9
 				(= local2 0)
@@ -242,11 +242,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(theClown loop: 2 cel: 0 setCycle: CT 2 1 self)
+				(theClown loop: 2 cel: 0 setCycle: CycleTo 2 1 self)
 			)
 			(1
 				(chair priority: 0)
-				(theClown priority: 1 setCycle: End self)
+				(theClown priority: 1 setCycle: EndLoop self)
 			)
 			(2 (self dispose:))
 		)
@@ -323,7 +323,7 @@
 					loop: 0
 					cel: 0
 					posn: 242 154 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -340,29 +340,29 @@
 					loop: 1
 					cel: 0
 					posn: 227 152 0
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(2 (self dispose:))
 			(3
-				(theClown setCycle: End self)
+				(theClown setCycle: EndLoop self)
 			)
 			(4
 				(theClown
 					loop: 2
 					cel: 6
 					posn: 221 151
-					setCycle: CT 3 -1 self
+					setCycle: CycleTo 3 -1 self
 				)
 			)
 			(5 (self dispose:))
 			(6
-				(theClown loop: 2 cel: 3 setCycle: Beg self)
+				(theClown loop: 2 cel: 3 setCycle: BegLoop self)
 			)
 			(7 (= cycles 10))
 			(8
 				(soundFx2 number: 901 loop: 1 play:)
-				(door setCycle: End self)
+				(door setCycle: EndLoop self)
 			)
 			(9
 				(soundFx2 stop:)
@@ -386,7 +386,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(theClown loop: 2 cel: 0 setCycle: CT 2 1 self)
+				(theClown loop: 2 cel: 0 setCycle: CycleTo 2 1 self)
 			)
 			(1 (theClown doVerb: register))
 			(2
@@ -396,7 +396,7 @@
 					cel: 2
 					priority: 0
 					posn: 232 144
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(3
@@ -531,7 +531,7 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (ego setCycle: CT 1 1 self))
+			(0 (ego setCycle: CycleTo 1 1 self))
 			(1
 				(chair priority: 0)
 				(theClown
@@ -539,16 +539,16 @@
 					loop: 5
 					cel: 0
 					priority: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(ego cel: 3)
-				(theClown setCycle: CT 2 -1 self)
+				(theClown setCycle: CycleTo 2 -1 self)
 			)
 			(3
-				(ego setCycle: End)
-				(theClown loop: 9 setCycle: End self)
+				(ego setCycle: EndLoop)
+				(theClown loop: 9 setCycle: EndLoop self)
 			)
 			(4
 				(ego
@@ -558,7 +558,7 @@
 				(= seconds 3)
 			)
 			(5
-				(theClown loop: 6 setCycle: CT 5 1 self)
+				(theClown loop: 6 setCycle: CycleTo 5 1 self)
 			)
 			(6
 				(theClown loop: 5 cel: 0)
@@ -584,7 +584,7 @@
 			)
 			(8
 				(soundFx2 number: 901 loop: 1 play:)
-				(door setCycle: End self)
+				(door setCycle: EndLoop self)
 			)
 			(9
 				(soundFx2 stop:)
@@ -592,7 +592,7 @@
 			)
 			(10
 				(theClown hide:)
-				(door setCycle: Beg self)
+				(door setCycle: BegLoop self)
 			)
 			(11
 				(soundFx2 number: 902 loop: 1 play:)
@@ -627,10 +627,10 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (ego setCycle: CT 1 1 self))
+			(0 (ego setCycle: CycleTo 1 1 self))
 			(1
-				(ego setCycle: Beg)
-				(theClown view: 788 loop: 4 cel: 0 setCycle: End self)
+				(ego setCycle: BegLoop)
+				(theClown view: 788 loop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(ego
@@ -736,7 +736,7 @@
 			(5
 				(theGame handsOff:)
 				(soundFx2 number: 901 loop: 1 play:)
-				(door setCycle: End self)
+				(door setCycle: EndLoop self)
 			)
 			(1
 				(if (not local1)
@@ -909,7 +909,7 @@
 	)
 	
 	(method (init)
-		(self setCycle: Fwd)
+		(self setCycle: Forward)
 		(super init: &rest)
 	)
 )

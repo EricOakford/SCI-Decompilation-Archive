@@ -54,7 +54,7 @@
 			(0
 				(ego hide:)
 				(Bset 72)
-				((ScriptID 220 5) setCycle: End self)
+				((ScriptID 220 5) setCycle: EndLoop self)
 			)
 			(1
 				(self setScript: egoScr)

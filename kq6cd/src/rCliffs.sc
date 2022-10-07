@@ -2,7 +2,7 @@
 (script# 21)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Feature)
 (use Motion)
@@ -51,7 +51,7 @@
 	)
 )
 
-(class rCliffs of Rgn
+(class rCliffs of Region
 	(properties
 		script 0
 		number 0
@@ -260,7 +260,7 @@
 						0
 					)
 				init:
-				setCycle: End RockStep
+				setCycle: EndLoop RockStep
 			)
 			(rockList add: [newRockStep rockCount])
 			(self rockCount: (+ (self rockCount?) 1))
@@ -954,7 +954,7 @@
 							cel: 0
 							cycleSpeed: 7
 							posn: (+ (register x?) 9) (+ (ego y?) 18)
-							setCycle: End self
+							setCycle: EndLoop self
 						)
 						(rCliffs stepDirection: 3)
 					)
@@ -964,7 +964,7 @@
 							cel: 0
 							cycleSpeed: 7
 							posn: (+ (register x?) 8) (+ (ego y?) 18)
-							setCycle: End self
+							setCycle: EndLoop self
 						)
 						(rCliffs stepDirection: 4)
 					)
@@ -1046,7 +1046,7 @@
 					cel: 2
 					posn: (+ (register x?) 7) (+ (register y?) 9)
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -1122,7 +1122,7 @@
 						setLoop: (Random 1 2)
 						cel: 0
 						posn: (- (register x?) 2) (+ (register y?) 10)
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(ego
@@ -1130,7 +1130,7 @@
 						setLoop: 6
 						cycleSpeed: 10
 						posn: (+ (register x?) 20) (+ (register y?) 11)
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 			)
@@ -1159,7 +1159,7 @@
 							setLoop: 4
 							cycleSpeed: 12
 							posn: (+ (register x?) 7) (+ (ego y?) 7)
-							setCycle: End self
+							setCycle: EndLoop self
 						)
 					)
 					((== (register corner?) 1)
@@ -1167,7 +1167,7 @@
 							setLoop: 5
 							cycleSpeed: 12
 							posn: (+ (register x?) 10) (+ (ego y?) 5)
-							setCycle: End self
+							setCycle: EndLoop self
 						)
 					)
 					(else (self cue:))
@@ -1245,10 +1245,10 @@
 					(ego
 						cycleSpeed: 10
 						setLoop: (Random 1 2)
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
-					(ego setLoop: 6 cycleSpeed: 10 setCycle: End self)
+					(ego setLoop: 6 cycleSpeed: 10 setCycle: EndLoop self)
 				)
 			)
 			(1
@@ -1337,11 +1337,11 @@
 						setLoop: 3
 					)
 				)
-				(ego cel: 0 setCycle: End self)
+				(ego cel: 0 setCycle: EndLoop self)
 			)
 			(1
 				(if (== (ego view?) 301)
-					(ego setCycle: Beg self)
+					(ego setCycle: BegLoop self)
 				else
 					(self cue:)
 				)
@@ -1379,7 +1379,7 @@
 				(messager say: 3 5 3 1 self 21)
 			)
 			(2
-				([newRockStep 6] setCycle: Beg self)
+				([newRockStep 6] setCycle: BegLoop self)
 				(soundFx number: 300 setLoop: 1 play:)
 			)
 			(3
@@ -1394,12 +1394,12 @@
 					normal: 0
 					cycleSpeed: 6
 					setLoop: 0
-					setCycle: CT 10 1 self
+					setCycle: CycleTo 10 1 self
 				)
 			)
 			(5
 				(soundFx number: 306 setLoop: 1 play: self)
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 			)
 			(6 (ego y: 280) (= seconds 2))
 			(7

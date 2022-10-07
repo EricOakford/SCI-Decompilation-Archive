@@ -28,11 +28,11 @@
 			)
 			(1
 				(theGlobalSound number: 231 setLoop: 1 play:)
-				(magicDoor cycleSpeed: 8 setCycle: CT 6 1 self)
+				(magicDoor cycleSpeed: 8 setCycle: CycleTo 6 1 self)
 			)
 			(2
 				(ego show:)
-				(magicDoor cel: 7 setCycle: End self)
+				(magicDoor cel: 7 setCycle: EndLoop self)
 			)
 			(3
 				(magicDoor dispose:)

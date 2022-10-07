@@ -5,11 +5,11 @@
 (use rgCrown)
 (use walkEgoInScr)
 (use KQ6Print)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Print)
 (use Inset)
-(use PAvoider)
+(use PAvoid)
 (use Scaler)
 (use PolyPath)
 (use Polygon)
@@ -273,7 +273,7 @@
 					(ego posn: 160 130 scaleX: 107 scaleY: 107)
 					(= thePshopDoor bshopDoor)
 				)
-				(ego setScale: setCycle: End self)
+				(ego setScale: setCycle: EndLoop self)
 			)
 			(1
 				(if (== register 1)
@@ -281,9 +281,9 @@
 				else
 					(ego setPri: 9 posn: 171 115)
 				)
-				(ego loop: 0 cel: 0 setCycle: End self)
+				(ego loop: 0 cel: 0 setCycle: EndLoop self)
 				(soundFx2 number: 901 loop: 1 play:)
-				(thePshopDoor cel: 0 setCycle: CT 4 1 self)
+				(thePshopDoor cel: 0 setCycle: CycleTo 4 1 self)
 			)
 			(2 0)
 			(3
@@ -317,13 +317,13 @@
 				(= cycles 2)
 			)
 			(1
-				(thePshopDoor setCycle: Beg self)
+				(thePshopDoor setCycle: BegLoop self)
 			)
 			(2 (= cycles 2))
 			(3
 				(thePshopDoor stopUpd:)
 				(soundFx2 number: 902 loop: 1 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(4
 				(if (not (cast contains: clown)) (theGame handsOn:))
@@ -352,12 +352,12 @@
 					cycleSpeed: 9
 					loop: 1
 					cel: 0
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(2
 				(soundFx number: 241 loop: 1 play:)
-				(pshopDoor setCycle: End self)
+				(pshopDoor setCycle: EndLoop self)
 			)
 			(3
 				(soundFx2 number: 902 loop: 1 play:)
@@ -396,7 +396,7 @@
 				)
 				(= cycles 2)
 			)
-			(1 (ego setCycle: CT 2 1 self))
+			(1 (ego setCycle: CycleTo 2 1 self))
 			(2
 				(soundFx number: 241 loop: -1 play:)
 				(ego setCycle: (ScriptID 231 0) 3)
@@ -417,7 +417,7 @@
 						self
 				)
 			)
-			(4 (ego setCycle: Beg self))
+			(4 (ego setCycle: BegLoop self))
 			(5 (= cycles 2))
 			(6
 				(ego
@@ -457,7 +457,7 @@
 					loop: 1
 					cel: 0
 					posn: 159 123 78
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -465,18 +465,18 @@
 				(= ticks 60)
 			)
 			(3
-				(client loop: 3 cel: 0 setCycle: End self)
+				(client loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(4 (= ticks 60))
 			(5
-				(client loop: 3 setCycle: Beg self)
+				(client loop: 3 setCycle: BegLoop self)
 			)
 			(6 (= ticks 60))
 			(7
-				(client loop: 3 setCycle: End self)
+				(client loop: 3 setCycle: EndLoop self)
 			)
 			(8
-				(client loop: 2 cel: 0 setCycle: End self)
+				(client loop: 2 cel: 0 setCycle: EndLoop self)
 				(= state -1)
 			)
 			(9
@@ -485,7 +485,7 @@
 					loop: 5
 					cel: 0
 					posn: 198 123 90
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(10
@@ -493,19 +493,19 @@
 				(= ticks (Random 45 120))
 			)
 			(11
-				(client loop: 6 cel: 0 setCycle: End self)
+				(client loop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(12 (= ticks (Random 45 120)))
 			(13
-				(client loop: 6 cel: 0 setCycle: Beg self)
+				(client loop: 6 cel: 0 setCycle: BegLoop self)
 			)
 			(14 (= ticks (Random 45 120)))
 			(15
-				(client loop: 6 cel: 0 setCycle: End self)
+				(client loop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(16 (= ticks (Random 45 120)))
 			(17
-				(client loop: 7 cel: 0 setCycle: End self)
+				(client loop: 7 cel: 0 setCycle: EndLoop self)
 				(= state -1)
 			)
 			(18
@@ -514,7 +514,7 @@
 					posn: 247 122 84
 					loop: 9
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(19
@@ -522,20 +522,20 @@
 				(= ticks (Random 45 120))
 			)
 			(20
-				(client loop: 12 cel: 0 setCycle: End self)
+				(client loop: 12 cel: 0 setCycle: EndLoop self)
 			)
 			(21 (= ticks (Random 45 120)))
-			(22 (client setCycle: Beg self))
+			(22 (client setCycle: BegLoop self))
 			(23 (= ticks (Random 45 120)))
 			(24
-				(client loop: 10 cel: 0 setCycle: End self)
+				(client loop: 10 cel: 0 setCycle: EndLoop self)
 			)
 			(25
-				(client loop: 11 cel: 0 setCycle: Fwd)
+				(client loop: 11 cel: 0 setCycle: Forward)
 				(= ticks 80)
 			)
 			(26
-				(client loop: 13 cel: 0 setCycle: End self)
+				(client loop: 13 cel: 0 setCycle: EndLoop self)
 				(= state -1)
 			)
 		)

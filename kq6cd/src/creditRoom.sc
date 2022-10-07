@@ -4,7 +4,7 @@
 (use Main)
 (use ButtonActor)
 (use KQ6Print)
-(use NewRoomCue)
+(use KQ6Room)
 (use User)
 (use Actor)
 (use System)

@@ -2,7 +2,7 @@
 (script# 550)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use Scaler)
@@ -218,10 +218,10 @@
 					yourself:
 				)
 		)
-		(water1 init: setCycle: Fwd)
-		(water2 init: setCycle: Fwd)
-		(water3 init: setCycle: Fwd)
-		(water4 init: setCycle: Fwd)
+		(water1 init: setCycle: Forward)
+		(water2 init: setCycle: Forward)
+		(water3 init: setCycle: Forward)
+		(water4 init: setCycle: Forward)
 		(oceanSound number: 915 loop: -1 flags: 1 play:)
 		(theGlobalSound number: 550 flags: 1 loop: -1 play:)
 		(ocean1 init:)
@@ -574,7 +574,7 @@
 					cycleSpeed: 10
 					cel: 0
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6 (messager say: 1 0 2 4 self))
@@ -618,7 +618,7 @@
 					setLoop: 1
 					cel: 0
 					cycleSpeed: 6
-					setCycle: Osc
+					setCycle: Oscillate
 				)
 				(if (> (ego y?) 137)
 					(ego setMotion: PolyPath 267 220 self)

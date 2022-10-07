@@ -2,7 +2,7 @@
 (script# 290)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use PolyPath)
 (use Polygon)
@@ -92,7 +92,7 @@
 		(ego init: reset: 2 posn: 151 119 setScale: 0)
 		(walkHandler addToFront: self)
 		(ferryman init:)
-		(door init: cel: 5 setCycle: Beg door)
+		(door init: cel: 5 setCycle: BegLoop door)
 		(genericFeatures init:)
 		(table init:)
 		(if (== ((inventory at: 34) owner?) curRoomNum)
@@ -140,7 +140,7 @@
 					view: 294
 					loop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -154,7 +154,7 @@
 					posn: 176 144
 					normal: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (= cycles 2))
@@ -185,14 +185,14 @@
 					posn: 178 144
 					cel: 0
 					normal: 0
-					setCycle: CT 8 1 self
+					setCycle: CycleTo 8 1 self
 				)
 			)
 			(1
 				(messager say: 6 5 (if (Btst 17) 13 else 12) 0 self)
 			)
 			(2 (= cycles 2))
-			(3 (ego setCycle: End self))
+			(3 (ego setCycle: EndLoop self))
 			(4
 				(ferryman view: 291 loop: 4 cel: 0 posn: 134 145 show:)
 				(ego reset: 7 posn: 167 142 ignoreActors: setScale: 0)
@@ -203,8 +203,8 @@
 			)
 			(6 (ego setHeading: 0 self))
 			(7
-				(ferryman setCycle: End self)
-				(door setCycle: End self)
+				(ferryman setCycle: EndLoop self)
+				(door setCycle: EndLoop self)
 				(soundFx2 number: 901 loop: 1 play:)
 			)
 			(8 0)
@@ -334,13 +334,13 @@
 				(messager say: 4 5 0 0 self)
 			)
 			(1
-				(ego loop: 2 cel: 0 setPri: 11 setCycle: CT 3 1 self)
+				(ego loop: 2 cel: 0 setPri: 11 setCycle: CycleTo 3 1 self)
 			)
 			(2
 				(rabbitsFoot dispose:)
 				(= cycles 2)
 			)
-			(3 (ego setCycle: End self))
+			(3 (ego setCycle: EndLoop self))
 			(4 (ego cel: 0) (= cycles 1))
 			(5
 				(theGame givePoints: 1)

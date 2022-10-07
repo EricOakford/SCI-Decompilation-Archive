@@ -2,7 +2,7 @@
 (script# 145)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use TimedCue)
@@ -103,7 +103,7 @@
 	(method (init theCaller)
 		(if argc (= caller theCaller))
 		(super init: &rest)
-		(self setCycle: End self)
+		(self setCycle: EndLoop self)
 	)
 	
 	(method (cue)
@@ -306,19 +306,19 @@
 					loop: 1
 					cel: 0
 					cycleSpeed: 15
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
 				(theMusic pause:)
 				(theGlobalSound number: 147 loop: 1 play:)
-				(vizier cycleSpeed: 15 setCycle: End)
-				(genie view: 1462 loop: 0 cel: 0 setCycle: End self)
+				(vizier cycleSpeed: 15 setCycle: EndLoop)
+				(genie view: 1462 loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(theGlobalSound number: 960 loop: 1 play:)
 				(genie hide:)
-				(vizier setCycle: Beg)
+				(vizier setCycle: BegLoop)
 				(ScriptID 1013)
 				(= seconds 3)
 			)
@@ -330,7 +330,7 @@
 					cel: 0
 					x: 205
 					y: 137
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -353,9 +353,9 @@
 				(theGlobalSound number: 943 loop: 1 play:)
 				(genie view: 1465 posn: 186 99 loop: 0 cycleSpeed: 8)
 				(if register
-					(genie cel: 6 setCycle: Beg self)
+					(genie cel: 6 setCycle: BegLoop self)
 				else
-					(genie cel: 0 setCycle: End self)
+					(genie cel: 0 setCycle: EndLoop self)
 				)
 			)
 			(1 (= ticks 60))

@@ -328,7 +328,7 @@
 			)
 			(1
 				(= local79 0)
-				(genie setCycle: Beg self)
+				(genie setCycle: BegLoop self)
 			)
 			(2 (self dispose:))
 		)
@@ -382,10 +382,10 @@
 					loop: 6
 					cel: 0
 					cycleSpeed: 7
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
-			(11 (genie setCycle: Beg self))
+			(11 (genie setCycle: BegLoop self))
 			(12
 				(roomConv add: -1 1 0 1 8 init: self)
 			)
@@ -458,7 +458,7 @@
 					setPri: 2
 					scaleX: 128
 					scaleY: 128
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(6
@@ -468,7 +468,7 @@
 				else
 					(curRoom drawPic: 750 100)
 				)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(7
 				(ego
@@ -476,7 +476,7 @@
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(8
@@ -486,7 +486,7 @@
 					setLoop: 3
 					cel: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
@@ -537,14 +537,14 @@
 					posn: 203 151
 					setLoop: 6
 					cel: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 				(theMusic number: 705 setLoop: 1 play:)
 			)
 			(14
 				(theGlobalSound number: 0 stop:)
 				(theGlobalSound number: 756 setLoop: 1 play: self)
-				(vizier setCycle: End self)
+				(vizier setCycle: EndLoop self)
 			)
 			(15)
 			(16
@@ -559,18 +559,18 @@
 					setLoop: 0
 					cel: 0
 					posn: 198 139
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(18
 				(messager say: 6 23 16 3 self)
 			)
 			(19
-				(vizier setLoop: 1 cel: 0 setCycle: CT 5 1 self)
+				(vizier setLoop: 1 cel: 0 setCycle: CycleTo 5 1 self)
 			)
 			(20
 				(theGlobalSound number: 652 setLoop: 1 play:)
-				(vizier setCycle: End self)
+				(vizier setCycle: EndLoop self)
 			)
 			(21 (EgoDead 41))
 		)
@@ -591,9 +591,9 @@
 					(= register (Random 0 7))
 				)
 				(if (< register (cassima cel?))
-					(cassima setCycle: CT register -1 self)
+					(cassima setCycle: CycleTo register -1 self)
 				else
-					(cassima setCycle: CT register 1 self)
+					(cassima setCycle: CycleTo register 1 self)
 				)
 			)
 			(2
@@ -626,7 +626,7 @@
 					loop: register
 					cel: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if (< register 4) (-- state) (++ register))
 			)
@@ -850,7 +850,7 @@
 				)
 			)
 			(2
-				(self setLoop: 4 setCycle: End)
+				(self setLoop: 4 setCycle: EndLoop)
 			)
 		)
 	)

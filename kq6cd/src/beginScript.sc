@@ -49,14 +49,14 @@
 					cel: 0
 					setLoop: 2
 					cycleSpeed: 5
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
-				(ego cel: 0 setLoop: 0 setCycle: End self)
+				(ego cel: 0 setLoop: 0 setCycle: EndLoop self)
 			)
 			(4
-				(ego setLoop: 1 setCycle: Fwd)
+				(ego setLoop: 1 setCycle: Forward)
 				(= seconds 4)
 			)
 			(5
@@ -159,7 +159,7 @@
 					setLoop: 2
 					cycleSpeed: 10
 					lastCel:
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(6

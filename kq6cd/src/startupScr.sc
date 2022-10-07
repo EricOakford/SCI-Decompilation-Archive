@@ -31,12 +31,12 @@
 					cel: 0
 					normal: 0
 					setScale: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (messager say: 1 0 1 1 self))
 			(2
-				(ego loop: 1 cel: 0 setCycle: End self)
+				(ego loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(ego

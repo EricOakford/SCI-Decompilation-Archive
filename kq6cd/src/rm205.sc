@@ -3,9 +3,9 @@
 (include sci.sh)
 (use Main)
 (use KQ6Print)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Talker)
-(use Body)
+(use Kq6Ego)
 (use Print)
 (use Messager)
 (use Scaler)
@@ -1095,7 +1095,7 @@
 			(0 (= seconds (Random 5 10)))
 			(1
 				(= state -1)
-				(client cel: 0 setCycle: End self)
+				(client cel: 0 setCycle: EndLoop self)
 			)
 		)
 	)
@@ -1123,7 +1123,7 @@
 					loop: 4
 					cel: 0
 					setScale: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(royalRing dispose:)
 			)
@@ -1261,7 +1261,7 @@
 	(method (init)
 		(self
 			cel: 0
-			setCycle: End
+			setCycle: EndLoop
 			setScript: (Clone objectGlitter)
 		)
 		(super init: &rest)

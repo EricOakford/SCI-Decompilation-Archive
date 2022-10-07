@@ -2,7 +2,7 @@
 (script# 106)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use System)
 
 (public

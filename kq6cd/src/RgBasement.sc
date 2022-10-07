@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use CastleRoom)
-(use RegionPath_918)
+(use KQRegPath)
 (use System)
 
 (public

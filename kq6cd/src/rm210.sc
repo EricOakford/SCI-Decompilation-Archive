@@ -5,7 +5,7 @@
 (use rgCrown)
 (use walkEgoInScr)
 (use KQ6Print)
-(use NewRoomCue)
+(use KQ6Room)
 (use CartoonScript)
 (use Kq6Procs)
 (use Print)
@@ -1032,7 +1032,7 @@ code_05cc:
 					posn: 305 30
 					setScale: Scaler 100 5 51 30
 					setLoop: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 272 52 self
 				)
 			)
@@ -1044,7 +1044,7 @@ code_05cc:
 				)
 			)
 			(2
-				(singSing setLoop: 3 cel: 0 setCycle: End self)
+				(singSing setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(singSing loop: 2 cel: 8 posn: 252 125 97 setPri: 14)
@@ -1115,7 +1115,7 @@ code_05cc:
 					loop: 4
 					cel: 0
 					posn: 225 56
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -1126,7 +1126,7 @@ code_05cc:
 				(singSing
 					view: 214
 					setLoop: (if (Btst 62) 0 else 1)
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(if (OneOf register 5 6) (= state 4))
 				(self cue:)
@@ -1171,7 +1171,7 @@ code_05cc:
 				else
 					(singSing posn: 111 81)
 				)
-				(singSing view: 213 setLoop: 5 cel: 0 setCycle: End self)
+				(singSing view: 213 setLoop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(9
 				(if (Btst 62)
@@ -1181,7 +1181,7 @@ code_05cc:
 				)
 				(singSing
 					setLoop: 1
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 220 49 self
 				)
 			)
@@ -1191,7 +1191,7 @@ code_05cc:
 					loop: 6
 					cel: 0
 					posn: 225 56
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11
@@ -1237,7 +1237,7 @@ code_05cc:
 					loop: 0
 					cel: 0
 					normal: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if local31 (genieSnake init:))
 			)
@@ -1257,13 +1257,13 @@ code_05cc:
 			(6
 				(theGlobalSound fade:)
 				(musicScr dispose:)
-				(singSing z: 0 loop: 4 posn: 225 56 setCycle: End self)
+				(singSing z: 0 loop: 4 posn: 225 56 setCycle: EndLoop self)
 			)
 			(7
 				(singSing
 					setLoop: 0
 					posn: 201 56
-					setCycle: Fwd self
+					setCycle: Forward self
 					setMotion: MoveTo 158 95 self
 				)
 			)
@@ -1273,11 +1273,11 @@ code_05cc:
 				)
 				(soundFx2 number: 212 play:)
 				(if (Btst 10) (soundFx2 hold: 10))
-				(singSing setLoop: 5 cel: 0 setCycle: End self)
+				(singSing setLoop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(9 (client cue:))
 			(10
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 				(self cue:)
 				(= register 0)
 			)
@@ -1291,7 +1291,7 @@ code_05cc:
 						(0 4)
 					)
 					posn: 187 85
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 272 52 self
 				)
 			)
@@ -1658,7 +1658,7 @@ code_05cc:
 					cel: 0
 					posn: 120 142
 					normal: 0
-					setCycle: Fwd
+					setCycle: Forward
 					scaleX: 128
 					scaleY: 128
 					setScale:
@@ -1684,7 +1684,7 @@ code_05cc:
 			)
 			(1
 				(soundFx2 number: 931 loop: -1 play:)
-				(ego loop: 7 cycleSpeed: 9 setCycle: Fwd)
+				(ego loop: 7 cycleSpeed: 9 setCycle: Forward)
 				(= ticks 180)
 			)
 			(2
@@ -1730,7 +1730,7 @@ code_05cc:
 				(self setScript: windBirdHeader self 11)
 			)
 			(1
-				(ego loop: 3 cel: 0 posn: 119 142 setCycle: End self)
+				(ego loop: 3 cel: 0 posn: 119 142 setCycle: EndLoop self)
 			)
 			(2
 				(windUpBird init:)
@@ -1752,7 +1752,7 @@ code_05cc:
 					posn: 252 125 97
 					loop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6 (= cycles 2))
@@ -1775,7 +1775,7 @@ code_05cc:
 					loop: 3
 					cel: 7
 					normal: 0
-					setCycle: CT 1 -1 self
+					setCycle: CycleTo 1 -1 self
 				)
 			)
 			(10
@@ -1800,9 +1800,9 @@ code_05cc:
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0 (client setCycle: EndLoop self))
 			(1
-				(client loop: 1 cel: 0 setCycle: End self)
+				(client loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(if (< (++ local35) 2)
@@ -1825,22 +1825,22 @@ code_05cc:
 				else
 					(= register 0)
 					(if (cast contains: eye) (eye dispose:))
-					(genieSnake loop: 2 cel: 0 setCycle: End self)
+					(genieSnake loop: 2 cel: 0 setCycle: EndLoop self)
 				)
 			)
 			(4 (genieSnake dispose:))
 			(5
 				(if (!= (genieSnake cel?) 6)
-					(genieSnake setCycle: End self)
+					(genieSnake setCycle: EndLoop self)
 				else
 					(self cue:)
 				)
 			)
 			(6
-				(eye init: setCycle: End self)
+				(eye init: setCycle: EndLoop self)
 			)
 			(7 (= ticks 45))
-			(8 (eye setCycle: Beg self))
+			(8 (eye setCycle: BegLoop self))
 			(9
 				(eye dispose:)
 				(= state (- (if register 3 else 2) 1))
@@ -1868,7 +1868,7 @@ code_05cc:
 					loop: 0
 					cel: 0
 					normal: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (= ticks 30))
@@ -1882,7 +1882,7 @@ code_05cc:
 					(messager say: 4 register 11 2 self)
 				)
 			)
-			(5 (ego setCycle: Beg self))
+			(5 (ego setCycle: BegLoop self))
 			(6 (= cycles 2))
 			(7
 				(ego
@@ -1945,11 +1945,11 @@ code_05cc:
 				(= state 4)
 			)
 			(5
-				(singSing setCycle: End self)
+				(singSing setCycle: EndLoop self)
 			)
 			(6 (= cycles 2))
 			(7
-				(singSing setCycle: Beg self)
+				(singSing setCycle: BegLoop self)
 			)
 			(8 (= state 0) (= ticks 1))
 			(9 0)
@@ -1959,7 +1959,7 @@ code_05cc:
 				(= state 10)
 			)
 			(11
-				(singSing cycleSpeed: 8 setCycle: End self)
+				(singSing cycleSpeed: 8 setCycle: EndLoop self)
 			)
 			(12
 				(singSing cycleSpeed: 6 cel: 0)
@@ -1998,11 +1998,11 @@ code_05cc:
 				)
 				(= cycles 2)
 			)
-			(4 (ego setCycle: CT 3 1 self))
+			(4 (ego setCycle: CycleTo 3 1 self))
 			(5 (= cycles 2))
 			(6
 				(theRibbon dispose:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(7 (= cycles 2))
 			(8
@@ -2046,11 +2046,11 @@ code_05cc:
 				)
 				(= cycles 2)
 			)
-			(4 (ego setCycle: CT 3 1 self))
+			(4 (ego setCycle: CycleTo 3 1 self))
 			(5 (= cycles 2))
 			(6
 				(letter dispose:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(7 (= cycles 2))
 			(8
@@ -2322,7 +2322,7 @@ code_05cc:
 	
 	(method (init)
 		(super init: &rest)
-		(self setCycle: Fwd)
+		(self setCycle: Forward)
 	)
 )
 

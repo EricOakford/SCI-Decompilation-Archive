@@ -52,7 +52,7 @@
 	
 	(method (init)
 		(rSacred marePresent: 1)
-		(self cycleSpeed: 10 setCycle: Fwd)
+		(self cycleSpeed: 10 setCycle: Forward)
 		(super init:)
 	)
 	
@@ -187,7 +187,7 @@
 					cel: 0
 					normal: 0
 					posn: (+ (ego x?) 14) (+ (ego y?) 7)
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 			)
 			(1
@@ -195,7 +195,7 @@
 			)
 			(2
 				(soundFx2 number: 346 setLoop: 1 play:)
-				(nightMare setLoop: 0 setCycle: Beg self)
+				(nightMare setLoop: 0 setCycle: BegLoop self)
 			)
 			(3
 				(nightMare cel: 5)
@@ -237,7 +237,7 @@
 					normal: 0
 					cycleSpeed: 6
 					posn: (+ (ego x?) 14) (+ (ego y?) 7)
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 			)
 			(1
@@ -245,19 +245,19 @@
 			)
 			(2
 				(ego setLoop: 8)
-				(nightMare setCycle: Beg self)
+				(nightMare setCycle: BegLoop self)
 			)
 			(3
 				(soundFx2 number: 346 setLoop: 1 play:)
-				(nightMare setCycle: CT 5 1)
+				(nightMare setCycle: CycleTo 5 1)
 				(= seconds 4)
 			)
 			(4
-				(nightMare setCycle: Fwd)
+				(nightMare setCycle: Forward)
 				(messager say: 10 51 0 2 self 340)
 			)
 			(5
-				(ego setLoop: 0 cel: 2 setCycle: Beg self)
+				(ego setLoop: 0 cel: 2 setCycle: BegLoop self)
 			)
 			(6
 				(ego posn: egoX egoY reset: 6)
@@ -289,7 +289,7 @@
 					loop: 0
 					cel: 0
 					cycleSpeed: 8
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(birdSound number: 930 loop: -1 play:)
 				(= seconds 5)
@@ -299,7 +299,7 @@
 				(messager say: 10 37 0 1 self 340)
 			)
 			(2
-				(ego loop: 2 cel: 0 setCycle: End self)
+				(ego loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(birdSound number: 931 loop: -1 play:)
@@ -310,7 +310,7 @@
 				(messager say: 10 37 0 2 self 340)
 			)
 			(5
-				(ego loop: 2 cel: (ego lastCel:) setCycle: Beg self)
+				(ego loop: 2 cel: (ego lastCel:) setCycle: BegLoop self)
 			)
 			(6
 				(ego posn: egoX egoY reset: 1)
@@ -341,13 +341,13 @@
 					cel: 0
 					normal: 0
 					posn: (+ (ego x?) 14) (+ (ego y?) 7)
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 			)
 			(1
 				(messager say: 10 register 0 1 self 340)
 			)
-			(2 (ego setCycle: Beg self))
+			(2 (ego setCycle: BegLoop self))
 			(3
 				(ego posn: egoX egoY reset: 6)
 				(theGame handsOn:)
@@ -367,12 +367,12 @@
 				(messager say: 10 31 0 1 self 340)
 			)
 			(1
-				(nightMare setCycle: Beg)
+				(nightMare setCycle: BegLoop)
 				(self setScript: (ScriptID 85 0) self)
 			)
 			(2
 				(soundFx2 number: 346 setLoop: 1 play:)
-				(nightMare setCycle: CT 5 1 self)
+				(nightMare setCycle: CycleTo 5 1 self)
 			)
 			(3 (= seconds 5))
 			(4
@@ -380,7 +380,7 @@
 			)
 			(5
 				(theGame handsOn:)
-				(nightMare setCycle: Fwd)
+				(nightMare setCycle: Forward)
 				(self dispose:)
 			)
 		)
@@ -398,7 +398,7 @@
 			)
 			(1
 				(soundFx2 number: 346 setLoop: 1 play:)
-				(nightMare setCycle: Beg)
+				(nightMare setCycle: BegLoop)
 				(ego
 					setMotion: PolyPath (- (nightMare x?) 20) (+ (nightMare y?) 20) self
 				)
@@ -435,7 +435,7 @@
 					cel: 0
 					cycleSpeed: 12
 					setPri: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -489,7 +489,7 @@
 					cel: 0
 					cycleSpeed: 18
 					posn: (+ (ego x?) 14) (+ (ego y?) 7)
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 5)
 			)
@@ -504,26 +504,26 @@
 					modeless: 1
 					init:
 				)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(5
-				(ego setLoop: 1 cel: 0 setCycle: End self)
+				(ego setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(6
-				(ego setLoop: 1 cel: 0 setCycle: End self)
+				(ego setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(7
-				(ego setLoop: 1 cel: 0 setCycle: End self)
+				(ego setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(8
-				(ego setLoop: 7 cel: 0 setCycle: End self)
+				(ego setLoop: 7 cel: 0 setCycle: EndLoop self)
 			)
 			(9
 				(ego setLoop: 8)
 				(= seconds 1)
 			)
 			(10
-				(nightMare setCycle: Beg self)
+				(nightMare setCycle: BegLoop self)
 				(soundFx2 number: 346 setLoop: 1 play:)
 			)
 			(11
@@ -531,7 +531,7 @@
 				(messager say: 1 0 30 1 self 340)
 			)
 			(12
-				(nightMare setCycle: Fwd)
+				(nightMare setCycle: Forward)
 				(= seconds 3)
 			)
 			(13
@@ -569,7 +569,7 @@
 					cel: 0
 					cycleSpeed: 6
 					posn: (+ (ego x?) 14) (+ (ego y?) 7)
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 5)
 			)
@@ -584,13 +584,13 @@
 					modeless: 1
 					init:
 				)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(5
-				(ego setLoop: 1 cel: 0 cycleSpeed: 8 setCycle: Fwd)
+				(ego setLoop: 1 cel: 0 cycleSpeed: 8 setCycle: Forward)
 				(= seconds 12)
 			)
-			(6 (ego setCycle: End self))
+			(6 (ego setCycle: EndLoop self))
 			(7 (ego cel: 0) (= cycles 4))
 			(8
 				(ego setLoop: 7 cel: 0)
@@ -602,12 +602,12 @@
 				(= seconds 1)
 			)
 			(11
-				(smoke init: setCycle: End self)
+				(smoke init: setCycle: EndLoop self)
 			)
 			(12
 				(soundFx2 number: 346 setLoop: 1 play:)
-				(nightMare setCycle: Beg)
-				(smoke setLoop: 10 cel: 0 setCycle: Fwd)
+				(nightMare setCycle: BegLoop)
+				(smoke setLoop: 10 cel: 0 setCycle: Forward)
 				(= seconds 5)
 			)
 			(13
@@ -615,14 +615,14 @@
 				(messager say: 1 0 4 3 self 340)
 			)
 			(14
-				(ego view: 336 setLoop: 2 setCycle: End self)
-				(smoke setLoop: 9 cel: 10 setCycle: Beg)
+				(ego view: 336 setLoop: 2 setCycle: EndLoop self)
+				(smoke setLoop: 9 cel: 10 setCycle: BegLoop)
 				(nightMare
 					view: 337
 					loop: 0
 					cel: 0
 					posn: 265 112
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(15 (smoke dispose:))
@@ -659,7 +659,7 @@
 					setLoop: 5
 					cel: 0
 					posn: 216 135
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(ego setMotion: PolyPath 167 122 self)
 			)
@@ -676,7 +676,7 @@
 					setLoop: 3
 					cel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(22

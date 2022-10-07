@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use walkEgoInScr)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use Scaler)
@@ -192,26 +192,26 @@
 					loop: 2
 					cel: 0
 					posn: 213 81
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(client loop: 3 cel: 0 setCycle: End self)
+				(client loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(client cel: 0 posn: 202 88 setCycle: End self)
+				(client cel: 0 posn: 202 88 setCycle: EndLoop self)
 			)
 			(3
-				(client cel: 0 posn: 194 94 setCycle: End self)
+				(client cel: 0 posn: 194 94 setCycle: EndLoop self)
 			)
 			(4
-				(client loop: 4 cel: 0 posn: 191 96 setCycle: End self)
+				(client loop: 4 cel: 0 posn: 191 96 setCycle: EndLoop self)
 			)
 			(5
 				(= seconds (= register (Random 1 9)))
 			)
 			(6
-				(client loop: 5 cel: 0 posn: 174 97 setCycle: End self)
+				(client loop: 5 cel: 0 posn: 174 97 setCycle: EndLoop self)
 			)
 			(7
 				(client loop: 6 cel: 0)
@@ -223,13 +223,13 @@
 					view: 255
 					loop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(soundFx2 number: 901 loop: 1 play:)
 			)
 			(9 (= ticks 12))
 			(10
-				(houseDoor loop: 1 cel: 0 setCycle: End self)
+				(houseDoor loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(11 (= cycles 2))
 			(12
@@ -249,7 +249,7 @@
 			)
 			(15
 				(if (!= register 4)
-					(houseDoor setCycle: End self)
+					(houseDoor setCycle: EndLoop self)
 				else
 					(++ state)
 					(= ticks 1)
@@ -261,7 +261,7 @@
 			)
 			(18
 				(if (== register 4)
-					(houseDoor setCycle: End self)
+					(houseDoor setCycle: EndLoop self)
 				else
 					(++ state)
 					(= ticks 1)
@@ -299,7 +299,7 @@
 				(= seconds (= register (Random 1 9)))
 			)
 			(2
-				(client loop: 5 cel: 0 posn: 174 97 setCycle: End self)
+				(client loop: 5 cel: 0 posn: 174 97 setCycle: EndLoop self)
 			)
 			(3
 				(client loop: 6 cel: 0)
@@ -311,7 +311,7 @@
 					view: 255
 					loop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(soundFx2 number: 901 loop: 1 play:)
 			)
@@ -319,7 +319,7 @@
 			(6
 				(if (== global155 3)
 					(= register 6)
-					(houseDoor loop: 1 cel: 0 setCycle: End self)
+					(houseDoor loop: 1 cel: 0 setCycle: EndLoop self)
 				else
 					(= register 7)
 					(= state (+ state 2))
@@ -375,14 +375,14 @@
 					cel: 0
 					posn: 250 154
 					normal: 0
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(3
-				(beauty view: 251 loop: 1 cel: 0 setCycle: CT 3 1 self)
+				(beauty view: 251 loop: 1 cel: 0 setCycle: CycleTo 3 1 self)
 			)
 			(4
-				(beauty setCycle: End self)
+				(beauty setCycle: EndLoop self)
 				(ego cel: 5)
 			)
 			(5
@@ -394,7 +394,7 @@
 				(= seconds 2)
 			)
 			(6
-				(beauty loop: 2 cel: 0 setCycle: End self)
+				(beauty loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(7
 				(messager
@@ -421,9 +421,9 @@
 				(= cycles 1)
 			)
 			(1 (= seconds (Random 2 5)))
-			(2 (client setCycle: End self))
+			(2 (client setCycle: EndLoop self))
 			(3 (= seconds (Random 2 5)))
-			(4 (client setCycle: Beg self))
+			(4 (client setCycle: BegLoop self))
 			(5 (= state 0) (= cycles 1))
 		)
 	)
@@ -494,10 +494,10 @@
 			(3
 				(beauty hide:)
 				(soundFx2 number: 906 loop: 1 play:)
-				(gate view: 253 loop: 1 cel: 0 setCycle: CT 5 1 self)
+				(gate view: 253 loop: 1 cel: 0 setCycle: CycleTo 5 1 self)
 			)
 			(4
-				(gate setCycle: End)
+				(gate setCycle: EndLoop)
 				(beauty
 					show:
 					setPri: -1
@@ -532,7 +532,7 @@
 					view: 253
 					loop: 10
 					posn: 127 157
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(9
@@ -541,12 +541,12 @@
 					loop: 0
 					cel: 0
 					posn: 158 157
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(10
-				(beauty setCycle: End self)
-				(ego setCycle: End self)
+				(beauty setCycle: EndLoop self)
+				(ego setCycle: EndLoop self)
 			)
 			(11 0)
 			(12
@@ -569,7 +569,7 @@
 				(= ticks 60)
 			)
 			(14
-				(houseDoor view: 255 loop: 2 cel: 0 setCycle: End self)
+				(houseDoor view: 255 loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(15
 				(messager say: 6 69 10 20 self)
@@ -597,9 +597,9 @@
 					view: 255
 					loop: 0
 					cel: (houseDoor lastCel:)
-					setCycle: Beg houseDoor
+					setCycle: BegLoop houseDoor
 				)
-				(client posn: 174 97 loop: 7 cel: 0 setCycle: End self)
+				(client posn: 174 97 loop: 7 cel: 0 setCycle: EndLoop self)
 			)
 			(1
 				(client
@@ -610,14 +610,14 @@
 				)
 			)
 			(2
-				(houseDoor setCycle: End self)
+				(houseDoor setCycle: EndLoop self)
 				(soundFx2 number: 901 loop: 1 play:)
 			)
 			(3
-				(client setLoop: -1 loop: 9 cel: 0 setCycle: End self)
+				(client setLoop: -1 loop: 9 cel: 0 setCycle: EndLoop self)
 			)
 			(4
-				(houseDoor setCycle: Beg self)
+				(houseDoor setCycle: BegLoop self)
 			)
 			(5
 				(soundFx2 number: 902 loop: 1 play:)
@@ -708,22 +708,22 @@
 				(client view: 255 loop: 0 cel: 0)
 				(= cycles 2)
 			)
-			(1 (client setCycle: End self))
+			(1 (client setCycle: EndLoop self))
 			(2 (= cycles 2))
 			(3
-				(client view: 257 loop: 0 cel: 0 setCycle: End self)
+				(client view: 257 loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(4 (= cycles 2))
 			(5
-				(client loop: 1 cel: 0 setCycle: Fwd)
+				(client loop: 1 cel: 0 setCycle: Forward)
 				(= ticks 300)
 			)
 			(6
-				(client loop: 0 cel: 10 setCycle: Beg self)
+				(client loop: 0 cel: 10 setCycle: BegLoop self)
 			)
 			(7 (= cycles 2))
 			(8
-				(client view: 255 loop: 0 cel: 3 setCycle: Beg self)
+				(client view: 255 loop: 0 cel: 3 setCycle: BegLoop self)
 			)
 			(9
 				(client view: 250 loop: 1 cel: 0)

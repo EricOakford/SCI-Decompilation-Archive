@@ -2,7 +2,7 @@
 (script# 260)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Scaler)
 (use MoveCyc)
@@ -40,7 +40,7 @@
 	)
 )
 
-(class GenieCycler of Fwd
+(class GenieCycler of Forward
 	(properties
 		client 0
 		caller 0
@@ -261,11 +261,11 @@
 		(ocean init:)
 		(boatDoor init:)
 		(holeInBoat init:)
-		(reflect1 init: setCycle: Fwd)
-		(reflect2 init: setCycle: Fwd)
-		(reflect3 init: setCycle: Fwd)
-		(reflect4 init: setCycle: Fwd)
-		(reflect5 init: setCycle: Fwd)
+		(reflect1 init: setCycle: Forward)
+		(reflect2 init: setCycle: Forward)
+		(reflect3 init: setCycle: Forward)
+		(reflect4 init: setCycle: Forward)
+		(reflect5 init: setCycle: Forward)
 		(if
 			(and
 				(not (Random 0 2))
@@ -360,7 +360,7 @@
 	)
 )
 
-(instance myMoveCycle of MCyc
+(instance myMoveCycle of MoveCycle
 	(properties)
 	
 	(method (nextCel &tmp temp0)
@@ -419,11 +419,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client cycleSpeed: (Random 10 19) setCycle: End self)
+				(client cycleSpeed: (Random 10 19) setCycle: EndLoop self)
 			)
 			(1 (= cycles 2))
 			(2
-				(client cycleSpeed: (Random 10 19) setCycle: Beg self)
+				(client cycleSpeed: (Random 10 19) setCycle: BegLoop self)
 				(= state -1)
 			)
 		)
@@ -436,13 +436,13 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client loop: 1 cel: 0 posn: 117 77 setCycle: End self)
+				(client loop: 1 cel: 0 posn: 117 77 setCycle: EndLoop self)
 			)
 			(1 (= ticks (Random 45 90)))
-			(2 (client setCycle: End self))
+			(2 (client setCycle: EndLoop self))
 			(3 (= ticks 30))
 			(4
-				(client loop: 2 cel: 0 posn: 104 77 setCycle: End self)
+				(client loop: 2 cel: 0 posn: 104 77 setCycle: EndLoop self)
 			)
 			(5 (= cycles 2))
 			(6
@@ -459,7 +459,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 3 5)))
-			(1 (client setCycle: End self))
+			(1 (client setCycle: EndLoop self))
 			(2 (= cycles 2))
 			(3 (client dispose:))
 		)
@@ -565,34 +565,34 @@
 		)
 		(switch (= previous thePrevious)
 			(0
-				(self setPri: 2 cycleSpeed: 5 setCycle: MCyc @local3 self)
+				(self setPri: 2 cycleSpeed: 5 setCycle: MoveCycle @local3 self)
 			)
 			(1
 				(self
 					setPri: 1
 					cycleSpeed: 10
-					setCycle: MCyc @local125 self
+					setCycle: MoveCycle @local125 self
 				)
 			)
 			(2
 				(self
 					setPri: 1
 					cycleSpeed: 9
-					setCycle: MCyc @local219 self
+					setCycle: MoveCycle @local219 self
 				)
 			)
 			(3
 				(self
 					setPri: 1
 					cycleSpeed: 7
-					setCycle: MCyc @local325 self
+					setCycle: MoveCycle @local325 self
 				)
 			)
 			(4
 				(self
 					setPri: 2
 					cycleSpeed: 6
-					setCycle: MCyc @local467 self
+					setCycle: MoveCycle @local467 self
 				)
 			)
 		)
@@ -639,7 +639,7 @@
 				)
 				(= cycles 2)
 			)
-			(1 (ego setCycle: End self))
+			(1 (ego setCycle: EndLoop self))
 			(2 (= ticks 45))
 			(3
 				(ego loop: 3 cel: 0)
@@ -647,7 +647,7 @@
 			)
 			(4
 				(soundFx2 number: 923 loop: 1 play:)
-				(ego setPri: 1 setCycle: End self)
+				(ego setPri: 1 setCycle: EndLoop self)
 			)
 			(5
 				(theMusic stop:)
@@ -691,7 +691,7 @@
 				)
 				(= cycles 2)
 			)
-			(1 (ego setCycle: End self))
+			(1 (ego setCycle: EndLoop self))
 			(2 (= ticks 10))
 			(3
 				(ego loop: 1 cel: 0)
@@ -702,7 +702,7 @@
 				(ego
 					cel: 1
 					posn: (+ (ego x?) 3) (+ (ego y?) 4)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -728,9 +728,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (ego setCycle: CT 7 1 self))
+			(0 (ego setCycle: CycleTo 7 1 self))
 			(1 (= cycles 2))
-			(2 (ego setCycle: CT 3 -1 self))
+			(2 (ego setCycle: CycleTo 3 -1 self))
 			(3 (= state -1) (= cycles 2))
 		)
 	)
@@ -840,13 +840,13 @@
 		(switch (= state newState)
 			(0 (= ticks 12))
 			(1
-				(eye init: setCycle: End self)
+				(eye init: setCycle: EndLoop self)
 			)
 			(2 (= ticks 30))
-			(3 (eye setCycle: Beg self))
+			(3 (eye setCycle: BegLoop self))
 			(4
 				(eye dispose:)
-				(genieBoy setCycle: CT 7 1 self)
+				(genieBoy setCycle: CycleTo 7 1 self)
 			)
 			(5 (= cycles 2))
 			(6
@@ -855,7 +855,7 @@
 				(= cycles 2)
 			)
 			(7
-				(genieBoy setCycle: End self)
+				(genieBoy setCycle: EndLoop self)
 			)
 			(8 (= ticks 48))
 			(9
@@ -872,10 +872,10 @@
 				(genieBoy setMotion: MoveTo 267 131 self)
 			)
 			(11
-				(genieBoy cycleSpeed: 9 loop: 9 cel: 0 setCycle: End self)
+				(genieBoy cycleSpeed: 9 loop: 9 cel: 0 setCycle: EndLoop self)
 			)
 			(12
-				(genieBoy cel: 0 setCycle: End self)
+				(genieBoy cel: 0 setCycle: EndLoop self)
 			)
 			(13
 				(genieBoy cycleSpeed: 6 setCycle: GenieCycler loop: 7)
@@ -936,7 +936,7 @@
 					loop: 11
 					cel: 0
 					noun: 7
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(soundFx2 number: 943 loop: 1 play:)
 			)
@@ -1004,7 +1004,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(self setCycle: End genieScr)
+		(self setCycle: EndLoop genieScr)
 	)
 )
 
@@ -1038,13 +1038,13 @@
 					scaleX: 98
 					scaleY: 98
 					scaleSignal: 1
-					setCycle: CT 7 1 self
+					setCycle: CycleTo 7 1 self
 				)
 				(if register (genieBoy loop: 5))
 			)
 			(4
 				(soundFx2 number: 923 loop: 1 play:)
-				(ego posn: 229 124 setCycle: End self)
+				(ego posn: 229 124 setCycle: EndLoop self)
 				(if register (genieBoy loop: 2))
 			)
 			(5
@@ -1174,12 +1174,12 @@
 				(= cycles 2)
 			)
 			(3
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(= register 5)
 			)
 			(4
 				(-- register)
-				(ego cel: 0 loop: 3 setCycle: End self)
+				(ego cel: 0 loop: 3 setCycle: EndLoop self)
 			)
 			(5
 				(soundFx2 number: 908 loop: 1 play:)
@@ -1190,7 +1190,7 @@
 					(self cue:)
 				)
 			)
-			(6 (ego setCycle: Beg self))
+			(6 (ego setCycle: BegLoop self))
 			(7 (= cycles 2))
 			(8
 				(ego
@@ -1207,7 +1207,7 @@
 			(10
 				(ferryMan view: 263 loop: 2 cel: 8 posn: 23 96 init:)
 				(soundFx2 number: 901 loop: 1 play:)
-				(boatDoor setCycle: End self)
+				(boatDoor setCycle: EndLoop self)
 			)
 			(11 (= ticks 60))
 			(12
@@ -1227,7 +1227,7 @@
 				(messager say: 1 0 6 1 self)
 			)
 			(15
-				(boatDoor setCycle: Beg self)
+				(boatDoor setCycle: BegLoop self)
 			)
 			(16
 				(ferryMan dispose:)
@@ -1303,7 +1303,7 @@
 			)
 			(1 (= cycles 2))
 			(2
-				(boatDoor setCycle: Beg self)
+				(boatDoor setCycle: BegLoop self)
 			)
 			(3
 				(ferryMan dispose:)

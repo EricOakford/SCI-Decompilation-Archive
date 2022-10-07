@@ -2,7 +2,7 @@
 (script# 600)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use Scaler)
@@ -265,9 +265,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 1))
-			(1 (queen setCycle: End self))
+			(1 (queen setCycle: EndLoop self))
 			(2
-				(queen setCycle: MCyc @local0 self)
+				(queen setCycle: MoveCycle @local0 self)
 			)
 			(3
 				(= cycles (/ (queen cycleSpeed?) 2))
@@ -327,13 +327,13 @@
 				)
 			)
 			(4
-				(queen setLoop: 4 cel: 0 setCycle: End self)
+				(queen setLoop: 4 cel: 0 setCycle: EndLoop self)
 				(ego normal: 0 view: 626 setLoop: 5 cel: 0)
 			)
 			(5
 				(ego get: 28)
 				(theGame givePoints: 1)
-				(queen setCycle: Beg self)
+				(queen setCycle: BegLoop self)
 			)
 			(6 (ego reset: 7) (= cycles 1))
 			(7
@@ -404,7 +404,7 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 15
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (EgoDead 38))
@@ -422,7 +422,7 @@
 					init:
 					setScale: Scaler 100 67 189 84
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if (== prevRoomNum 155)
 					(SetCursor 1)
@@ -440,7 +440,7 @@
 					cel: 0
 					setPri: (+ (horse priority?) 1)
 					posn: (+ (horse x?) 38) (- (horse y?) 39)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(horse
 					view: 607
@@ -455,7 +455,7 @@
 			)
 			(3 (messager say: 5 0 4 1 self))
 			(4
-				(horse setCycle: End)
+				(horse setCycle: EndLoop)
 				(theGlobalSound fade: 0 10 20 1 self)
 			)
 			(5

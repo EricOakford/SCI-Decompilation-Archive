@@ -31,7 +31,7 @@
 					cel: 0
 					setLoop: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3

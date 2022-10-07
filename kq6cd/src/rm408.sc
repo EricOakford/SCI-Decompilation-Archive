@@ -80,7 +80,7 @@
 					setLoop: 0
 					posn: 75 152
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2

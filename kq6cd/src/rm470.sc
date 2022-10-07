@@ -2,7 +2,7 @@
 (script# 470)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use Osc)
@@ -485,7 +485,7 @@
 					(messager say: 7 34 18 1)
 				)
 			)
-			(34
+			(8 ;34
 				(if (== local55 1)
 					(messager say: 7 8 14 1)
 				else
@@ -847,7 +847,7 @@
 					loop: 1
 					cel: 0
 					posn: 64 141
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -902,13 +902,13 @@
 					posn: 71 189
 					cel: 0
 					normal: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(messager say: 8 44 0 1 self)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(ego posn: 87 181 reset: 1 setMotion: MoveTo 107 167 self)
 			)
@@ -951,26 +951,26 @@
 			)
 			(3
 				(theGlobalSound number: 473 setLoop: 1 play:)
-				([newACat_2 0] view: 4701 startUpd: setCycle: End self)
+				([newACat_2 0] view: 4701 startUpd: setCycle: EndLoop self)
 			)
 			(4
 				(theGlobalSound number: 473 setLoop: 1 play:)
-				([newACat_2 0] setCycle: Beg)
-				([newACat_2 1] view: 4701 startUpd: setCycle: End self)
+				([newACat_2 0] setCycle: BegLoop)
+				([newACat_2 1] view: 4701 startUpd: setCycle: EndLoop self)
 			)
 			(5
 				(theGlobalSound number: 473 setLoop: 1 play:)
-				([newACat_2 1] setCycle: Beg)
-				([newACat_2 2] view: 4701 startUpd: setCycle: End self)
+				([newACat_2 1] setCycle: BegLoop)
+				([newACat_2 2] view: 4701 startUpd: setCycle: EndLoop self)
 			)
 			(6
 				(if (< local62 3)
 					(++ local62)
-					([newACat_2 2] setCycle: Beg)
+					([newACat_2 2] setCycle: BegLoop)
 					(= state (- state 4))
 					(self cue:)
 				else
-					([newACat_2 2] setCycle: Beg self)
+					([newACat_2 2] setCycle: BegLoop self)
 				)
 			)
 			(7
@@ -1025,12 +1025,12 @@
 					cel: 0
 					posn: (+ (ego x?) 6) (+ (ego y?) 4)
 					cycleSpeed: 6
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(3
 				(theGlobalSound number: 924 setLoop: 1 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(4
 				(ego posn: (- (ego x?) 11) (- (ego y?) 8) reset: 4)
@@ -1041,9 +1041,9 @@
 					setLoop: 4
 					setMotion: MoveTo (- (ego x?) 6) (- (ego y?) 4)
 				)
-				(stick view: 475 setLoop: 1 setCycle: End self)
+				(stick view: 475 setLoop: 1 setCycle: EndLoop self)
 			)
-			(6 (stick setCycle: Beg self))
+			(6 (stick setCycle: BegLoop self))
 			(7
 				(if (== local57 0)
 					(myConv
@@ -1085,7 +1085,7 @@
 			(10
 				(++ local57)
 				(ego reset:)
-				(stick setLoop: 2 setCycle: Osc 1 self)
+				(stick setLoop: 2 setCycle: Oscillate 1 self)
 				(= cycles 1)
 			)
 			(11
@@ -1189,7 +1189,7 @@
 					cel: 0
 					z: 0
 					posn: 275 129
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -1240,7 +1240,7 @@
 					setLoop: 0
 					priority: 15
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(materSlime setCycle: 0 hide: dispose:)
 			)
@@ -1305,7 +1305,7 @@
 				(ego setMotion: PolyPath 108 149 self)
 			)
 			(2
-				(ego view: 472 normal: 0 setLoop: 2 setCycle: End self)
+				(ego view: 472 normal: 0 setLoop: 2 setCycle: EndLoop self)
 				(theGlobalSound number: 0 stop:)
 				(theGlobalSound number: 474 setLoop: 1 play:)
 			)
@@ -1375,7 +1375,7 @@
 				(= ticks 12)
 			)
 			(7
-				(mater setLoop: 5 posn: 274 130 cel: 0 setCycle: End self)
+				(mater setLoop: 5 posn: 274 130 cel: 0 setCycle: EndLoop self)
 			)
 			(8
 				(mater setLoop: 6 posn: 266 131 startUpd: forceUpd:)
@@ -1388,7 +1388,7 @@
 				(mater setLoop: 6 setMotion: MoveTo 270 140 self)
 			)
 			(11
-				(mater setLoop: 9 posn: 279 139 cel: 0 setCycle: End self)
+				(mater setLoop: 9 posn: 279 139 cel: 0 setCycle: EndLoop self)
 				(theGlobalSound number: 477 setLoop: 1 play:)
 			)
 			(12
@@ -1416,7 +1416,7 @@
 					(else  (self cue:))
 				)
 			)
-			(1 (doggy setCycle: End self))
+			(1 (doggy setCycle: EndLoop self))
 			(2
 				(theGlobalSound number: 0 stop:)
 				(theGlobalSound number: 472 setLoop: 1 play:)
@@ -1427,7 +1427,7 @@
 				(if (-- local61)
 					(= state (- state 3))
 				else
-					(doggy setCycle: Beg)
+					(doggy setCycle: BegLoop)
 				)
 				(= ticks 30)
 			)
@@ -1456,7 +1456,7 @@
 			(0
 				(theGame handsOff:)
 				(++ local58)
-				(stick view: 475 setLoop: 4 cel: 0 setCycle: End self)
+				(stick view: 475 setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(1
 				(theGlobalSound number: 0 stop:)
@@ -1469,7 +1469,7 @@
 					setLoop: 3
 					cel: 0
 					setPri: 15
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (Random 180 185) (Random 60 65) self
 				)
 			)
@@ -1496,7 +1496,7 @@
 					init:
 				)
 				(if temp0
-					([newSlimeBall local58] setCycle: End self)
+					([newSlimeBall local58] setCycle: EndLoop self)
 				else
 					(= cycles 4)
 				)
@@ -1541,7 +1541,7 @@
 					posn: 70 185
 					normal: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -1551,12 +1551,12 @@
 					setLoop: 5
 					setCel: 0
 					cycleSpeed: 6
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(3
 				(ego reset: 1)
-				(bumpArm setCycle: End self)
+				(bumpArm setCycle: EndLoop self)
 			)
 			(4 (= cycles 2))
 			(5
@@ -1627,16 +1627,16 @@
 					cel: 0
 					setPri: 15
 					ignoreActors: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (= ticks 30))
 			(2
-				(bumpArm setLoop: 1 setCycle: Fwd)
+				(bumpArm setLoop: 1 setCycle: Forward)
 				(= seconds 3)
 			)
 			(3
-				(bumpArm setLoop: 2 cel: 0 setCycle: End self)
+				(bumpArm setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(theGlobalSound number: 474 setLoop: 1 play:)
@@ -1672,7 +1672,7 @@
 			(11
 				(theGlobalSound number: 0 stop:)
 				(theGlobalSound number: 475 setLoop: 1 play:)
-				(stick view: 475 setLoop: 11 cel: 0 setCycle: Fwd)
+				(stick view: 475 setLoop: 11 cel: 0 setCycle: Forward)
 				(mater posn: 280 97)
 				(= ticks 4)
 			)
@@ -1686,7 +1686,7 @@
 			)
 			(14
 				(stick view: 475 setLoop: 1 cel: 0 stopUpd:)
-				(mater setLoop: 5 posn: 274 129 setCycle: End self)
+				(mater setLoop: 5 posn: 274 129 setCycle: EndLoop self)
 			)
 			(15
 				(mater
@@ -1762,7 +1762,7 @@
 				(ego
 					cycleSpeed: 8
 					moveSpeed: 15
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: MoveTo 211 131
 				)
 				(= cycles 2)
@@ -1781,9 +1781,9 @@
 				)
 				(= cycles 2)
 			)
-			(5 (ego setCycle: End self))
+			(5 (ego setCycle: EndLoop self))
 			(6
-				(ego setLoop: 1 cel: 0 cycleSpeed: 15 setCycle: End self)
+				(ego setLoop: 1 cel: 0 cycleSpeed: 15 setCycle: EndLoop self)
 			)
 			(7 (messager say: 6 3 0 2 self))
 			(8 (EgoDead 36))
@@ -1808,12 +1808,12 @@
 			)
 			(1 (= cycles (Random 4 8)))
 			(2
-				(client setCycle: CT 3 1 self)
+				(client setCycle: CycleTo 3 1 self)
 			)
 			(3
 				(client
 					posn: (client x?) (+ (client y?) 15)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -1846,10 +1846,10 @@
 			(1 (= cycles (Random 4 8)))
 			(2
 				(if (OneOf register 0 1)
-					(client setCycle: CT 9 1 self)
+					(client setCycle: CycleTo 9 1 self)
 				else
 					(= state (+ state 2))
-					(client setCycle: End self)
+					(client setCycle: EndLoop self)
 				)
 			)
 			(3
@@ -1859,7 +1859,7 @@
 				)
 				(= cycles (Random 2 4))
 			)
-			(4 (client setCycle: End self))
+			(4 (client setCycle: EndLoop self))
 			(5 (client dispose:))
 		)
 	)
@@ -1875,7 +1875,7 @@
 					posn: 46 168
 					cel: 0
 					setLoop: 1
-					setCycle: CT 9 1 self
+					setCycle: CycleTo 9 1 self
 				)
 			)
 			(1

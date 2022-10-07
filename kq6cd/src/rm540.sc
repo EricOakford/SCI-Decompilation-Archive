@@ -2,7 +2,7 @@
 (script# 540)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use Scaler)
@@ -102,8 +102,8 @@
 		(beastPath init:)
 		(fountain init:)
 		(gateFeat init:)
-		(spout init: setCycle: Fwd)
-		(spray init: setCycle: Fwd)
+		(spout init: setCycle: Forward)
+		(spray init: setCycle: Forward)
 		(gate init:)
 		(ego
 			init:
@@ -384,7 +384,7 @@
 					view: 533
 					setLoop: 0
 					ignoreActors: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -393,7 +393,7 @@
 					posn: 96 98
 					setLoop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(gateFx number: 542 play:)
 			)
@@ -428,11 +428,11 @@
 					init: self
 				)
 			)
-			(8 (beast setCycle: End self))
+			(8 (beast setCycle: EndLoop self))
 			(9
 				(myConv add: -1 1 0 1 6 add: -1 1 0 1 7 init: self)
 			)
-			(10 (beast setCycle: Beg self))
+			(10 (beast setCycle: BegLoop self))
 			(11
 				(myConv
 					add: -1 1 0 1 8
@@ -457,7 +457,7 @@
 			)
 			(13
 				(ego hide:)
-				(beast setLoop: 2 setCycle: End self)
+				(beast setLoop: 2 setCycle: EndLoop self)
 			)
 			(14
 				(myConv
@@ -487,12 +487,12 @@
 					setScale: 0
 					setLoop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(gateFx number: 542 play:)
 			)
 			(19
-				(beast setLoop: 2 cel: 0 setCycle: End self)
+				(beast setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(20
 				(gateFx number: 543 play:)
@@ -502,7 +502,7 @@
 					posn: 72 62
 					setLoop: 3
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(21
@@ -531,7 +531,7 @@
 					view: 533
 					setLoop: 0
 					ignoreActors: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(beauty setScript: beautyWalkScript self)
 			)
@@ -541,7 +541,7 @@
 					posn: 96 98
 					setLoop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(gateFx number: 542 play:)
 			)
@@ -576,13 +576,13 @@
 				)
 			)
 			(7
-				(beast view: 544 setLoop: 2 cel: 0 setCycle: End self)
+				(beast view: 544 setLoop: 2 cel: 0 setCycle: EndLoop self)
 				(gateFx number: 546 play:)
 				(Bset 113)
 			)
 			(8 (messager say: 1 0 2 6 self))
 			(9
-				(beauty view: 5405 setLoop: 0 cel: 0 setCycle: End self)
+				(beauty view: 5405 setLoop: 0 cel: 0 setCycle: EndLoop self)
 				(UnLoad 128 544)
 			)
 			(10
@@ -593,7 +593,7 @@
 				(messager say: 1 0 2 8 self)
 			)
 			(12
-				(beauty setLoop: 1 cel: 0 setCycle: End self)
+				(beauty setLoop: 1 cel: 0 setCycle: EndLoop self)
 				(gateFx number: 546 play:)
 				(Bset 43)
 			)
@@ -635,7 +635,7 @@
 					setLoop: 2
 					cel: 0
 					posn: (+ (beauty x?) 30) (+ (beauty y?) 1)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(21
@@ -683,8 +683,8 @@
 			)
 			(26
 				(beauty cel: 1)
-				(beast setCycle: End self)
-				(ego setCycle: End self)
+				(beast setCycle: EndLoop self)
+				(ego setCycle: EndLoop self)
 			)
 			(27 0)
 			(28
@@ -709,15 +709,15 @@
 			)
 			(30
 				(ego
-					setCycle: Rev
+					setCycle: Reverse
 					setLoop: 1
 					setMotion: PolyPath (+ (ego x?) 20) (ego y?) self
 				)
 			)
 			(31
 				(ego reset: 1)
-				(beast setCycle: End self)
-				(beauty view: 548 setLoop: 1 cel: 0 setCycle: End self)
+				(beast setCycle: EndLoop self)
+				(beauty view: 548 setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(32 0)
 			(33
@@ -730,11 +730,11 @@
 					setLoop: 0
 					cel: 0
 					posn: (+ (beast x?) 22) (beast y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(35
-				(beast setLoop: 1 cel: 0 setCycle: End self)
+				(beast setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(36
 				(ego setHeading: 315)
@@ -767,7 +767,7 @@
 					posn: 96 98
 					setScale: 0
 					setPri: -1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(beauty setPri: -1)
 				(gateFx number: 542 play:)
@@ -780,7 +780,7 @@
 				(beauty setMotion: MoveTo 98 94 self)
 			)
 			(40
-				(beast view: 5407 setLoop: 0 cel: 0 setCycle: End self)
+				(beast view: 5407 setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(41
 				(gateFx number: 543 play:)
@@ -790,7 +790,7 @@
 					setLoop: 0
 					cel: 0
 					posn: 72 62
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(42
@@ -838,10 +838,10 @@
 				(glint
 					show:
 					posn: (- (weasel x?) 14) (weasel y?) 5
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(4 (glint setCycle: Beg self))
+			(4 (glint setCycle: BegLoop self))
 			(5
 				(if (not register)
 					(self start: 2 init:)
@@ -857,10 +857,10 @@
 				(glint
 					show:
 					posn: (- (weasel x?) 13) (weasel y?) 5
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(8 (glint setCycle: Beg self))
+			(8 (glint setCycle: BegLoop self))
 			(9
 				(glint dispose:)
 				(weasel setMotion: MoveTo 90 210 self)
@@ -892,7 +892,7 @@
 					cycleSpeed: 9
 					view: 5404
 					setLoop: (if register 5 else 2)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (ego reset: 6) (= cycles 4))

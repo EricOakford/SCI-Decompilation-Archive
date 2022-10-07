@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 820)
-(include sci.sh)
+(include system.sh)
 (use Main)
 (use CastleRoom)
 (use Print)
@@ -315,12 +315,12 @@
 					loop: 5
 					cel: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
 				(soundFx2 number: 825 setLoop: -1 play:)
-				(ego loop: 6 cel: 0 setCycle: Fwd)
+				(ego loop: 6 cel: 0 setCycle: Forward)
 				(= seconds 4)
 			)
 			(4
@@ -333,7 +333,7 @@
 			(7
 				(cast eachElementDo: #hide)
 				(curRoom drawPic: 98 10)
-				(Message msgNEXT @temp1)
+				(Message 1 @temp1) ;msgNEXT
 				(Display @temp1
 					p_at 30 11
 					p_width 260
@@ -382,10 +382,10 @@
 							(theGame restore:)
 						)
 						(2
-							(theGame restart: TRUE)
+							(theGame restart: 1)
 						)
 						(3
-							(= quit TRUE)
+							(= quit 1)
 							(break)
 						)
 					)

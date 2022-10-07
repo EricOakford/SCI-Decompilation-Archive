@@ -40,7 +40,7 @@
 					setPri: -1
 					loop: 6
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (= cycles 2))
@@ -55,7 +55,7 @@
 					scaleY: 102
 					setScale:
 					setSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -71,11 +71,11 @@
 					loop: 0
 					cel: 0
 					setSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7
-				(ego loop: 1 cel: 0 setCycle: End self)
+				(ego loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(8 (= ticks 60))
 			(9
@@ -105,7 +105,7 @@
 						cel: 6
 						setPri: 7
 						posn: 19 128
-						setCycle: Beg self
+						setCycle: BegLoop self
 					)
 					(= state (+ state 2))
 				)
@@ -117,7 +117,7 @@
 					view: 245
 					loop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(14 (= cycles 2))
@@ -136,7 +136,7 @@
 					view: 2431
 					loop: 6
 					cel: ((ScriptID 241 0) lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(ego reset: 1)
 				(theGame handsOn:)
@@ -197,11 +197,11 @@
 					view: 254
 					loop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
-				((ScriptID 241 0) loop: 1 cel: 0 setCycle: Fwd self)
+				((ScriptID 241 0) loop: 1 cel: 0 setCycle: Forward self)
 				(= seconds 4)
 			)
 			(7
@@ -216,7 +216,7 @@
 				(= cycles 2)
 			)
 			(10
-				((ScriptID 241 0) setCycle: Beg self)
+				((ScriptID 241 0) setCycle: BegLoop self)
 			)
 			(11 (= cycles 2))
 			(12
@@ -250,7 +250,7 @@
 						loop: 1
 						cel: 0
 						setSpeed: 6
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(messager say: 4 2 register 0 self 240)
@@ -260,7 +260,7 @@
 			(1
 				(messager say: 4 0 0 0 self 240)
 			)
-			(2 (ego setCycle: Beg self))
+			(2 (ego setCycle: BegLoop self))
 			(3 (= cycles 2))
 			(4 (ego reset: 1) (= cycles 2))
 			(5

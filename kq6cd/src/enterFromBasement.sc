@@ -40,7 +40,7 @@
 			(1
 				(soundFx2 number: 901 loop: 1 play:)
 				(if (not register) (= state 4))
-				((ScriptID 730 2) setCycle: CT 3 1 self)
+				((ScriptID 730 2) setCycle: CycleTo 3 1 self)
 			)
 			(2
 				(EgoHead init:)
@@ -52,14 +52,14 @@
 				(= seconds 2)
 			)
 			(5
-				((ScriptID 730 2) setCycle: End self)
+				((ScriptID 730 2) setCycle: EndLoop self)
 			)
 			(6
 				(soundFx2 stop:)
 				(ego setMotion: MoveTo 233 144 self)
 			)
 			(7
-				((ScriptID 730 2) setCycle: Beg self)
+				((ScriptID 730 2) setCycle: BegLoop self)
 			)
 			(8
 				(soundFx2 number: 902 loop: 1 play:)

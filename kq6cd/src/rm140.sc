@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use AnimatePrint)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Talker)
 (use CartoonScript)
 (use Kq6Procs)
@@ -84,7 +84,7 @@
 					(2 (followItem view: 1411))
 					(1 (followItem view: 1414))
 				)
-				(leftArm setCycle: End)
+				(leftArm setCycle: EndLoop)
 				(++ state)
 				(followItem init:)
 				(self cue:)
@@ -178,7 +178,7 @@
 			(4
 				(rightArm init:)
 				(followItem dispose:)
-				(leftArm view: 1422 loop: 0 cel: 0 setCycle: CT 1 1 self)
+				(leftArm view: 1422 loop: 0 cel: 0 setCycle: CycleTo 1 1 self)
 			)
 			(5 (= cycles 2))
 			(6 (= cycles 2))
@@ -190,7 +190,7 @@
 				(= ticks 12)
 			)
 			(11
-				(leftArm loop: 1 cel: 0 setCycle: End self)
+				(leftArm loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(12 (= ticks 30))
 			(13
@@ -198,7 +198,7 @@
 			)
 			(14 (= ticks 12))
 			(15
-				(leftArm view: 1423 loop: 0 cel: 0 setCycle: End self)
+				(leftArm view: 1423 loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(16 (= cycles 2))
 			(17
@@ -241,11 +241,11 @@
 				(leftArm view: 1424 loop: 0 cel: 0)
 				(if (== register 4)
 					(cHead init: 0)
-					(leftArm setCycle: End self)
+					(leftArm setCycle: EndLoop self)
 				else
 					(cHead init: 1)
 					(= local71 1)
-					(leftArm setCycle: CT 1 1 self)
+					(leftArm setCycle: CycleTo 1 1 self)
 				)
 			)
 			(4 (= ticks 30))
@@ -255,7 +255,7 @@
 					(messager say: 1 0 register 1 self)
 				else
 					(leftArm setPri: 15)
-					(leftArm setCycle: Beg self)
+					(leftArm setCycle: BegLoop self)
 				)
 			)
 			(6
@@ -303,7 +303,7 @@
 			)
 			(3 (= ticks 25))
 			(4
-				(leftArm view: 1421 loop: 0 cel: 0 setCycle: End self)
+				(leftArm view: 1421 loop: 0 cel: 0 setCycle: EndLoop self)
 				(followItem dispose:)
 				(rightArm init:)
 				(if (!= local1 210) (cHead init: 1))
@@ -330,11 +330,11 @@
 				)
 			)
 			(12
-				(leftArm loop: 1 cel: 0 setCycle: End self)
+				(leftArm loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(13 (= ticks 20))
 			(14
-				(leftArm setCycle: Beg self)
+				(leftArm setCycle: BegLoop self)
 			)
 			(15 (= cycles 2))
 			(16

@@ -2,7 +2,7 @@
 (script# 380)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use Scaler)
@@ -137,12 +137,12 @@
 			)
 			(2 (= seconds 2))
 			(3
-				(oracArm view: 383 setCycle: CT 3 1 self)
+				(oracArm view: 383 setCycle: CycleTo 3 1 self)
 				(UnLoad 128 3832)
 			)
 			(4
 				(soundFx2 number: 381 setLoop: 1 play:)
-				(oracArm setCycle: End self)
+				(oracArm setCycle: EndLoop self)
 			)
 			(5
 				(oracArm view: 3832 cel: 0 stopUpd:)
@@ -150,7 +150,7 @@
 				(= seconds 1)
 			)
 			(6
-				(cassFace init: setCycle: End self)
+				(cassFace init: setCycle: EndLoop self)
 				(soundFx2 number: 382 setLoop: 1 play:)
 			)
 			(7
@@ -167,7 +167,7 @@
 				)
 			)
 			(10
-				(cassFace startUpd: setCycle: Beg self)
+				(cassFace startUpd: setCycle: BegLoop self)
 			)
 			(11
 				(myConv
@@ -185,13 +185,13 @@
 			(12 (= seconds 2))
 			(13
 				(cassFace dispose:)
-				(oracArm view: 383 setCycle: CT 3 1 self)
+				(oracArm view: 383 setCycle: CycleTo 3 1 self)
 				(UnLoad 128 384)
 				(UnLoad 128 3832)
 			)
 			(14
 				(soundFx2 number: 381 setLoop: 1 play:)
-				(oracArm setCycle: End self)
+				(oracArm setCycle: EndLoop self)
 			)
 			(15
 				(oracArm view: 3832 cel: 0 stopUpd:)
@@ -199,7 +199,7 @@
 				(= seconds 1)
 			)
 			(16
-				(deadHead init: setCycle: End self)
+				(deadHead init: setCycle: EndLoop self)
 				(soundFx2 number: 383 setLoop: 1 play:)
 			)
 			(17
@@ -224,12 +224,12 @@
 				(messager say: 1 0 1 22 self)
 			)
 			(21
-				(oracArm view: 3831 posn: 158 82 setCycle: CT 5 1 self)
+				(oracArm view: 3831 posn: 158 82 setCycle: CycleTo 5 1 self)
 				(UnLoad 128 383)
 			)
 			(22
 				(soundFx2 number: 924 setLoop: 1 play:)
-				(oracArm view: 3831 posn: 158 82 setCycle: CT 10 1 self)
+				(oracArm view: 3831 posn: 158 82 setCycle: CycleTo 10 1 self)
 			)
 			(23
 				(ego
@@ -241,7 +241,7 @@
 				(= cycles 6)
 			)
 			(24
-				(ego setCycle: CT 3 1 self)
+				(ego setCycle: CycleTo 3 1 self)
 				(oracArm cel: 11)
 			)
 			(25 (ego cel: 4) (= cycles 6))
@@ -291,7 +291,7 @@
 				(flyer
 					posn: 174 14
 					setLoop: 1
-					setCycle: Fwd
+					setCycle: Forward
 					setScale: Scaler 50 5 19 14
 					init:
 					setMotion: MoveTo 174 19 self

@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use KQ6Print)
-(use NewRoomCue)
+(use KQ6Room)
 (use CartoonScript)
 (use Kq6Procs)
 (use Scaler)
@@ -92,8 +92,8 @@
 				frontCounter
 			eachElementDo: #init
 		)
-		(fire setCycle: Fwd init:)
-		(shopDoor init: setCycle: Beg shopDoor)
+		(fire setCycle: Forward init:)
+		(shopDoor init: setCycle: BegLoop shopDoor)
 		(if (== ((inventory at: 45) owner?) curRoomNum)
 			(spellBook init:)
 		)
@@ -290,10 +290,10 @@
 			(2 0)
 			(3
 				(if (not (< (shopOwner y?) 145))
-					(shopOwner view: 277 loop: 2 cel: 0 setCycle: End)
+					(shopOwner view: 277 loop: 2 cel: 0 setCycle: EndLoop)
 				)
 				(soundFx2 number: 901 loop: 1 play:)
-				(shopDoor setCycle: End self)
+				(shopDoor setCycle: EndLoop self)
 			)
 			(4
 				(shopDoor setPri: 15)
@@ -321,7 +321,7 @@
 					scaleX: 128
 					scaleY: 128
 					setScale: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -339,19 +339,19 @@
 				(= cycles 1)
 			)
 			(3
-				(ego loop: 3 cel: 0 setCycle: CT 1 1 self)
+				(ego loop: 3 cel: 0 setCycle: CycleTo 1 1 self)
 			)
 			(4
 				(clownBook dispose:)
 				(= cycles 2)
 			)
-			(5 (ego setCycle: End self))
+			(5 (ego setCycle: EndLoop self))
 			(6
-				(ego setSpeed: 6 loop: 1 cel: 0 setCycle: End self)
+				(ego setSpeed: 6 loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(7 (= seconds 4))
 			(8
-				(ego cel: 0 setCycle: End self)
+				(ego cel: 0 setCycle: EndLoop self)
 			)
 			(9 (= seconds 2))
 			(10
@@ -362,15 +362,15 @@
 				)
 			)
 			(11
-				(ego loop: 3 cel: 2 setCycle: CT 1 -1 self)
+				(ego loop: 3 cel: 2 setCycle: CycleTo 1 -1 self)
 			)
 			(12
 				(clownBook init:)
 				(= cycles 2)
 			)
-			(13 (ego setCycle: Beg self))
+			(13 (ego setCycle: BegLoop self))
 			(14
-				(ego loop: 2 cel: 0 setCycle: End self)
+				(ego loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(15
 				(ego
@@ -494,7 +494,7 @@
 			)
 			(2
 				(soundFx2 number: 902 loop: 1 play:)
-				((ScriptID 270 2) setCycle: End self)
+				((ScriptID 270 2) setCycle: EndLoop self)
 			)
 			(3 (= cycles 2))
 			(4
@@ -507,7 +507,7 @@
 					loop: 1
 					cel: 0
 					setPri: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7
@@ -515,11 +515,11 @@
 					posn: 288 140
 					loop: 2
 					cel: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(8
-				((ScriptID 270 2) setPri: 12 setCycle: End self)
+				((ScriptID 270 2) setPri: 12 setCycle: EndLoop self)
 			)
 			(9 (= cycles 2))
 			(10
@@ -527,7 +527,7 @@
 					loop: 3
 					cel: 0
 					posn: 303 151
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11 (= cycles 2))
@@ -566,26 +566,26 @@
 					loop: 0
 					cel: 0
 					posn: 297 159
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (= ticks 20))
 			(3
-				(shopOwner loop: 1 cel: 0 setCycle: End self)
+				(shopOwner loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(4 (= ticks 20))
 			(5
-				(shopOwner cel: 0 setCycle: End self)
+				(shopOwner cel: 0 setCycle: EndLoop self)
 			)
 			(6 (= ticks 20))
 			(7
-				(shopOwner setCycle: Beg self)
+				(shopOwner setCycle: BegLoop self)
 			)
 			(8
 				(shopOwner
 					loop: 1
 					cel: (shopOwner lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(9

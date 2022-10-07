@@ -107,28 +107,28 @@
 			(babyFace1 bottleNum?)
 			((ScriptID 40 0) bottleSucker?)
 		)
-		(babyFace1 init: setCycle: Fwd)
+		(babyFace1 init: setCycle: Forward)
 	)
 	(if
 		(!=
 			(babyFace2 bottleNum?)
 			((ScriptID 40 0) bottleSucker?)
 		)
-		(babyFace2 init: setCycle: Fwd)
+		(babyFace2 init: setCycle: Forward)
 	)
 	(if
 		(!=
 			(babyFace3 bottleNum?)
 			((ScriptID 40 0) bottleSucker?)
 		)
-		(babyFace3 init: setCycle: Fwd)
+		(babyFace3 init: setCycle: Forward)
 	)
 	(if
 		(!=
 			(babyFace4 bottleNum?)
 			((ScriptID 40 0) bottleSucker?)
 		)
-		(babyFace4 init: setCycle: Fwd)
+		(babyFace4 init: setCycle: Forward)
 	)
 	(cryMusic setLoop: -1 play:)
 	(suckMusic setLoop: -1 play:)
@@ -424,7 +424,7 @@
 					posn: (register stoopX?) (register stoopY?)
 					normal: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(UnLoad 128 900)
 			)
@@ -454,18 +454,18 @@
 					((ScriptID 40 0) lampMsg: 21)
 				)
 				(if (!= register babyFace1)
-					(babyFace1 init: setCycle: Fwd)
+					(babyFace1 init: setCycle: Forward)
 				)
 				(if (!= register babyFace2)
-					(babyFace2 init: setCycle: Fwd)
+					(babyFace2 init: setCycle: Forward)
 				)
 				(if (!= register babyFace3)
-					(babyFace3 init: setCycle: Fwd)
+					(babyFace3 init: setCycle: Forward)
 				)
 				(if (!= register babyFace4)
-					(babyFace4 init: setCycle: Fwd)
+					(babyFace4 init: setCycle: Forward)
 				)
-				(ego setLoop: 3 cycleSpeed: 3 setCycle: Beg self)
+				(ego setLoop: 3 cycleSpeed: 3 setCycle: BegLoop self)
 				(UnLoad 128 4811)
 			)
 			(4
@@ -514,12 +514,12 @@
 					posn: (register stoopX?) (register stoopY?)
 					normal: 0
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(UnLoad 128 900)
 			)
 			(2 (= cycles 2))
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(= global161 (| global161 $0004))
 				(theGame givePoints: 1)
@@ -572,14 +572,14 @@
 					posn: (+ ((ScriptID 480 6) x?) 21) (+ ((ScriptID 480 6) y?) 6)
 					normal: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(UnLoad 128 900)
 			)
 			(2
 				(messager say: 9 5 17 1 self 480)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(if (== ((ScriptID 40 0) bottleSucker?) 3)
 					(= temp0 10)

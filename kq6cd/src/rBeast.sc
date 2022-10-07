@@ -8,7 +8,7 @@
 	rBeast 0
 )
 
-(class rBeast of Rgn
+(class rBeast of Region
 	(properties
 		script 0
 		number 0

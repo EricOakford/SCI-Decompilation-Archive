@@ -501,7 +501,7 @@
 					scaleX: 148
 					scaleY: 148
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -517,7 +517,7 @@
 				(keyDownHandler delete: self)
 				((ScriptID 80 5) sightAngle: 40)
 				((ScriptID 80 6) sightAngle: 40)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(5
 				(ego
@@ -613,13 +613,13 @@
 					scaleX: 85
 					scaleY: 85
 					cycleSpeed: 8
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 5)
 			)
 			(4
 				(soundFx2 loop: 1 stop:)
-				(ego loop: 2 cel: 0 setCycle: End self)
+				(ego loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(bird init:)
@@ -673,13 +673,13 @@
 					view: 884
 					loop: 1
 					cel: 0
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 				(theMusic fadeTo: 700 -1)
 			)
 			(8
 				(bird hide:)
-				((ScriptID 80 5) setCycle: End self)
+				((ScriptID 80 5) setCycle: EndLoop self)
 			)
 			(9
 				(roomConv
@@ -1065,7 +1065,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(self setCycle: Fwd ignoreActors: setScript: timerScr)
+		(self setCycle: Forward ignoreActors: setScript: timerScr)
 	)
 )
 
@@ -1214,7 +1214,7 @@
 			)
 			(1
 				(soundFx2 number: 901 loop: 1 flags: 0 play:)
-				(vizierDoor setPri: 10 setCycle: End self)
+				(vizierDoor setPri: 10 setCycle: EndLoop self)
 			)
 			(2
 				(vizierDoor cue:)
@@ -1231,7 +1231,7 @@
 		(switch (= state newState)
 			(0 (= cycles 2))
 			(1
-				(vizierDoor setPri: 10 setCycle: Beg self)
+				(vizierDoor setPri: 10 setCycle: BegLoop self)
 			)
 			(2
 				(soundFx2 number: 902 loop: 1 play:)

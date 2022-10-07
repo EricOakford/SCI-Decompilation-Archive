@@ -24,18 +24,18 @@
 						(> ((ScriptID 271 0) cel?) 3)
 					)
 					(++ state)
-					((ScriptID 271 0) setCycle: End self)
+					((ScriptID 271 0) setCycle: EndLoop self)
 				else
 					((ScriptID 271 0) loop: 1 cel: 0)
 					(= ticks 10)
 				)
 			)
 			(1
-				((ScriptID 271 0) cel: 4 setCycle: End self)
+				((ScriptID 271 0) cel: 4 setCycle: EndLoop self)
 			)
 			(2 (client cue:))
 			(3
-				((ScriptID 271 0) setCycle: Beg self)
+				((ScriptID 271 0) setCycle: BegLoop self)
 			)
 			(4
 				((ScriptID 271 0) setScript: (ScriptID 271 1))
@@ -120,7 +120,7 @@
 					setSpeed: 6
 					view: 2832
 					loop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (= ticks 15))
@@ -130,14 +130,14 @@
 					loop: 0
 					cel: 0
 					posn: 185 118
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6 (= ticks 30))
 			(7
 				(messager say: 9 63 0 3 self 270)
 			)
-			(8 (ego setCycle: Beg self))
+			(8 (ego setCycle: BegLoop self))
 			(9
 				(ego reset: 7)
 				((ScriptID 271 0)
@@ -145,20 +145,20 @@
 					cel: 0
 					posn: 185 118
 					cycleSpeed: 14
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(10 (= ticks 15))
 			(11
-				((ScriptID 271 0) cel: 0 setCycle: End self)
+				((ScriptID 271 0) cel: 0 setCycle: EndLoop self)
 			)
 			(12 (= ticks 15))
 			(13
-				((ScriptID 271 0) setCycle: Beg self)
+				((ScriptID 271 0) setCycle: BegLoop self)
 			)
 			(14 (= ticks 15))
 			(15
-				((ScriptID 271 0) setCycle: Beg self)
+				((ScriptID 271 0) setCycle: BegLoop self)
 			)
 			(16 (= ticks 45))
 			(17

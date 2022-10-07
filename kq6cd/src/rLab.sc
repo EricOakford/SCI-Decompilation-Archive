@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use n404)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use RandCyc)
 (use PolyPath)
@@ -30,7 +30,7 @@
 	bat 13
 )
 
-(class rLab of Rgn
+(class rLab of Region
 	(properties
 		script 0
 		number 0
@@ -996,7 +996,7 @@
 				z: 106
 				setLoop: 3
 				init:
-				setCycle: Fwd
+				setCycle: Forward
 				checkDetail:
 			)
 			(if (!= curRoomNum 410)
@@ -1035,7 +1035,7 @@
 				)
 				setLoop: 2
 				init:
-				setCycle: Fwd
+				setCycle: Forward
 				checkDetail:
 			)
 			(torchCycler
@@ -1078,7 +1078,7 @@
 				z: 106
 				setLoop: 3
 				show:
-				setCycle: Fwd
+				setCycle: Forward
 				checkDetail:
 			)
 			(if (!= curRoomNum 406)
@@ -1107,7 +1107,7 @@
 				z: (if (== curRoomNum 406) 61 else 95)
 				setLoop: 2
 				show:
-				setCycle: Fwd
+				setCycle: Forward
 				checkDetail:
 			)
 			(if (!= curRoomNum 406)
@@ -1580,7 +1580,7 @@
 					normal: 0
 					cel: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -1589,7 +1589,7 @@
 					((< (register x?) 230) (ego posn: 149 151 setLoop: 5))
 					(else (ego posn: 252 164 setLoop: 1))
 				)
-				(ego cycleSpeed: 18 setCycle: End self)
+				(ego cycleSpeed: 18 setCycle: EndLoop self)
 			)
 			(3
 				(cond 
@@ -1779,7 +1779,7 @@
 					(= state (+ state 2))
 					(self cue:)
 				else
-					(bat setLoop: temp0 posn: temp1 temp2 setCycle: End self)
+					(bat setLoop: temp0 posn: temp1 temp2 setCycle: EndLoop self)
 				)
 			)
 			(2

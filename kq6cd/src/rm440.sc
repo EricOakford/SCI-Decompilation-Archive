@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use minotaur)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use Conv)
 (use RandCyc)
@@ -345,7 +345,7 @@
 			(3
 				(ego
 					setPri: (if (< (ego x?) 185) 2 else -1)
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(theMusic stop:)
 				(soundFx2 number: 442 setLoop: 1 play: self)
@@ -393,7 +393,7 @@
 						((ScriptID 30 0) scarfOnMino: 1)
 						(ego view: 441 normal: 0 setLoop: 0 cel: 0)
 						(UnLoad 128 900)
-						((ScriptID 441 4) cycleSpeed: 6 setCycle: Fwd)
+						((ScriptID 441 4) cycleSpeed: 6 setCycle: Forward)
 						((ScriptID 441 3) state: 19 register: 72 cue:)
 						(theGame handsOff:)
 						(theGame givePoints: 3)

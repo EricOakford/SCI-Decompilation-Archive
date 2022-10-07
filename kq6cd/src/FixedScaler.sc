@@ -2,7 +2,7 @@
 (script# 630)
 (include sci.sh)
 (use Main)
-(use NewRoomCue)
+(use KQ6Room)
 (use Conv)
 (use Scaler)
 (use MoveCyc)
@@ -92,7 +92,7 @@
 			illegalBits: 0
 			ignoreActors: 1
 			ignoreHorizon: 1
-			setCycle: MCyc @local209 bats
+			setCycle: MoveCycle @local209 bats
 		)
 		(zombie
 			init:
@@ -540,7 +540,7 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 15
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (EgoDead 38))
@@ -554,7 +554,7 @@
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
-				(client show: setCycle: MCyc @local0 self)
+				(client show: setCycle: MoveCycle @local0 self)
 			)
 			(1
 				(client hide:)
@@ -694,12 +694,12 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client loop: 0 posn: 109 82 cycleSpeed: 20 setCycle: Fwd)
+				(client loop: 0 posn: 109 82 cycleSpeed: 20 setCycle: Forward)
 				(= seconds (Random 5 15))
 			)
 			(1 (messager say: 9 0 4 1 self))
 			(2
-				(client cycleSpeed: 5 setCycle: MCyc @local322 self)
+				(client cycleSpeed: 5 setCycle: MoveCycle @local322 self)
 			)
 			(3 (self init:))
 		)
@@ -733,7 +733,7 @@
 			(4 (messager say: 2 2 2 8 self))
 			(5 (messager say: 2 2 2 9 self))
 			(6
-				(motherGhost cycleSpeed: 15 setCycle: MCyc @local375 self)
+				(motherGhost cycleSpeed: 15 setCycle: MoveCycle @local375 self)
 			)
 			(7
 				(motherGhost setLoop: 2 cel: 0 posn: 138 69)
@@ -757,7 +757,7 @@
 				(= cycles 10)
 			)
 			(10
-				(motherGhost setCycle: MCyc @local457 self)
+				(motherGhost setCycle: MoveCycle @local457 self)
 				(ego cel: 3)
 				(= cycles 3)
 			)
@@ -776,7 +776,7 @@
 					view: 632
 					setLoop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theMusic fade:)
 			)

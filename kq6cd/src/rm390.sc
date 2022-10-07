@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use KQ6Print)
-(use NewRoomCue)
+(use KQ6Room)
 (use Kq6Procs)
 (use PolyPath)
 (use Polygon)
@@ -416,7 +416,7 @@
 				(= cycles 2)
 			)
 			(2
-				(ego signal: (| (ego signal?) $1000) setCycle: Beg self)
+				(ego signal: (| (ego signal?) $1000) setCycle: BegLoop self)
 			)
 			(3 (= cycles 2))
 			(4
@@ -461,7 +461,7 @@
 						loop: 3
 						cel: 5
 						setSpeed: 6
-						setCycle: Beg self
+						setCycle: BegLoop self
 					)
 					(Palette palSET_INTENSITY 64 223 60)
 				else
@@ -476,7 +476,7 @@
 					loop: 6
 					normal: 0
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -512,12 +512,12 @@
 					cel: 5
 					setSpeed: 6
 					looper: 0
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(Palette palSET_INTENSITY 64 223 60)
 			)
 			(3
-				(ego view: 390 loop: 5 cel: 0 setCycle: End self)
+				(ego view: 390 loop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(ego
@@ -559,7 +559,7 @@
 					view: 3901
 					loop: 7
 					cel: 4
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(8
@@ -601,7 +601,7 @@
 					loop: 6
 					cel: 0
 					posn: 78 147
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -634,7 +634,7 @@
 				(ego show: view: 390 loop: 6 posn: 270 142 cel: 4)
 				(= ticks 15)
 			)
-			(7 (ego setCycle: Beg self))
+			(7 (ego setCycle: BegLoop self))
 			(8 (= cycles 2))
 			(9
 				(ego
@@ -674,7 +674,7 @@
 					loop: (+ (ego loop?) 2)
 					cel: 0
 					cycleSpeed: 21
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if (Btst 48) (ego setScript: cyclePalette 0 0))
 			)
@@ -708,7 +708,7 @@
 					loop: 0
 					cel: -1
 					get: 31
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (= cycles 2))

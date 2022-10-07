@@ -8,7 +8,7 @@
 	rSacred 0
 )
 
-(class rSacred of Rgn
+(class rSacred of Region
 	(properties
 		script 0
 		number 0

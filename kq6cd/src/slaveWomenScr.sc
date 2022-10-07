@@ -137,7 +137,7 @@
 					((ScriptID 220 4)
 						view: 725
 						setLoop: 1
-						setCycle: Rev
+						setCycle: Reverse
 						setMotion:
 							MoveTo
 							(+ ((ScriptID 220 4) x?) 10)

@@ -154,7 +154,7 @@
 				)
 				(= cycles 8)
 			)
-			(1 (ego setCycle: End self))
+			(1 (ego setCycle: EndLoop self))
 			(2
 				(ego posn: 181 157 reset: 5)
 				(UnLoad 128 307)
@@ -187,7 +187,7 @@
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -201,7 +201,7 @@
 					setLoop: 6
 					cel: 0
 					cycleSpeed: 4
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(UnLoad 128 391)
 			)
@@ -211,7 +211,7 @@
 					setLoop: 5
 					cel: 0
 					cycleSpeed: 4
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -242,7 +242,7 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 6
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(UnLoad 128 392)
 				(self setScript: shiftThePalette self)
@@ -338,7 +338,7 @@
 					setStep: 6 10
 					cel: 0
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -395,7 +395,7 @@
 			(15
 				(theGlobalSound stop:)
 				(theMusic number: 406 setLoop: -1 play:)
-				(ego setLoop: 4 cycleSpeed: 0 cel: 0 show: setCycle: Fwd)
+				(ego setLoop: 4 cycleSpeed: 0 cel: 0 show: setCycle: Forward)
 				(= seconds 1)
 			)
 			(16
@@ -411,7 +411,7 @@
 				(= seconds 1)
 			)
 			(19
-				(ego setLoop: 4 setCycle: End self)
+				(ego setLoop: 4 setCycle: EndLoop self)
 			)
 			(20
 				(theMusic number: 430 setLoop: 1 play:)
@@ -419,17 +419,17 @@
 					setLoop: 5
 					cel: 0
 					cycleSpeed: 8
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(21
 				(theMusic number: 431 setLoop: 1 play: self)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(22)
 			(23
 				(theMusic number: 431 setLoop: 1 play:)
-				(ego setLoop: 7 cel: 0 cycleSpeed: 30 setCycle: End self)
+				(ego setLoop: 7 cel: 0 cycleSpeed: 30 setCycle: EndLoop self)
 			)
 			(24 (EgoDead 26))
 		)
@@ -449,10 +449,10 @@
 				)
 			)
 			(1
-				(ego setLoop: 3 cel: 0 cycleSpeed: 6 setCycle: End self)
+				(ego setLoop: 3 cel: 0 cycleSpeed: 6 setCycle: EndLoop self)
 			)
 			(2
-				(ego setLoop: 2 cel: 0 cycleSpeed: 48 setCycle: Fwd)
+				(ego setLoop: 2 cel: 0 cycleSpeed: 48 setCycle: Forward)
 				(if (< local0 4) (++ local0) (= state (- state 3)))
 				(self cue:)
 			)

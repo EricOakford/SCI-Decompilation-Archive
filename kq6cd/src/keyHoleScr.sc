@@ -50,7 +50,7 @@
 							(else 2)
 						)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -68,7 +68,7 @@
 				(if (not register) (keyHole dispose:))
 				(= cycles 1)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(theGame handsOn:)
 				(theIconBar enable: 6)

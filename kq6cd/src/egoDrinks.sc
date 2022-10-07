@@ -41,12 +41,12 @@
 					setPri: 14
 					cel: 0
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(localMusic number: 925 play: loop: 1)
 			)
 			(2 (= seconds 2))
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4 (= cycles 15))
 			(5
 				(messager say: 1 14 0 2 self 0)
@@ -107,7 +107,7 @@
 					cel: 0
 					setPri: 14
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -142,10 +142,10 @@
 				(messager say: 1 14 0 6 self 0)
 			)
 			(13
-				(newEgo cel: 0 setLoop: 2 setCycle: End self)
+				(newEgo cel: 0 setLoop: 2 setCycle: EndLoop self)
 			)
 			(14
-				(newEgo cel: 0 setLoop: 3 setCycle: End self)
+				(newEgo cel: 0 setLoop: 3 setCycle: EndLoop self)
 			)
 			(15
 				(cast
