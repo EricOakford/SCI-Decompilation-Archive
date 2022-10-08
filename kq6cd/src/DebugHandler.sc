@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 911)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Kq6Procs)
@@ -63,7 +63,7 @@
 		(= howFast (+ howFast 1000))
 	)
 	(if (OneOf temp1 200 300 450 500 550)
-		(Bset 103)
+		(Bset fTeleporting)
 	)
 	(curRoom newRoom: temp1)
 )
@@ -82,7 +82,7 @@
 
 (procedure (localproc_019c)
 	(if (OneOf (curRoom style?) dpOPEN_SCROLL_RIGHT dpOPEN_SCROLL_LEFT dpOPEN_SCROLL_UP dpOPEN_SCROLL_DOWN)
-		(curRoom drawPic: (curRoom picture?) dpCLEAR style: dpOPEN_NO_TRANSITION)
+		(DrawPic (curRoom picture?) dpOPEN_NO_TRANSITION)
 	)
 )
 
