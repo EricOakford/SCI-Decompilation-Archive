@@ -81,8 +81,8 @@
 )
 
 (procedure (localproc_019c)
-	(if (OneOf (curRoom style?) 11 12 13 14)
-		(curRoom sayNext: (curRoom roomToEdge:) 100 style: 100)
+	(if (OneOf (curRoom style?) dpOPEN_SCROLL_RIGHT dpOPEN_SCROLL_LEFT dpOPEN_SCROLL_UP dpOPEN_SCROLL_DOWN)
+		(curRoom drawPic: (curRoom picture?) dpCLEAR style: dpOPEN_NO_TRANSITION)
 	)
 )
 
