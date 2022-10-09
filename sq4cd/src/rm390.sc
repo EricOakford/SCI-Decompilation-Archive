@@ -337,7 +337,7 @@
 		y 28
 		view 390
 		loop 1
-		priority 3
+		priority 2
 		signal $4010
 	)
 	
