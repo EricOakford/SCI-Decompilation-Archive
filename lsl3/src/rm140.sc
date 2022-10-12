@@ -262,7 +262,7 @@
 				(Format
 					@buffer 140 10
 					filthNum
-					(switch @buffer
+					(switch filthNum
 						(5 {Totally Raunchiest})
 						(4 {Really Filthy})
 						(3 {Pretty Dirty})
