@@ -28,7 +28,7 @@
 )
 (procedure (DoDisplay param1 theColor &tmp [str 200])
 	(= theY (+ 42 (* param1 30)))
-	(Format @buffer 140 7 (+ param1 96))
+	(Format @buffer 140 8 (+ param1 96))
 	(Display @buffer
 		p_at 150 theY
 		p_color theColor
@@ -154,10 +154,17 @@
 					#at 10 -1
 					#width 290
 				)
+				(Display
+					140 2
+					p_at 100 165
+					p_color 4
+					p_font 4		
+					p_width 135
+				)
 				(if
 					(== 0
 						(Print
-							140 2
+							140 3
 							#title {Blush!}
 							#button {Bail\nOut} 0
 							#button {Oh, Go Ahead!\nTry to Offend Me!} 1
@@ -168,7 +175,7 @@
 				)
 				(= temp0
 					(Print
-						140 3
+						140 4
 						#title {Reality Check}
 						#button {Under 12} -1
 						#button {13 to 17} 0
@@ -179,18 +186,18 @@
 				(music fade:)
 				(switch temp0
 					(-1
-						(Print 140 4)
+						(Print 140 5)
 						(= quit 1)
 					)
 					(0
-						(Print 140 5)
+						(Print 140 6)
 						(self changeState: 5)
 					)
 					(else 
 						(curRoom drawPic: curRoomNum 7)
 						(aSuit init:)
 						(addToPics add: atpFace doit:)
-						(Format @buffer 140 6 temp0)
+						(Format @buffer 140 7 temp0)
 						(Print @buffer #at -1 144)
 						(self cue:)
 					)
@@ -215,7 +222,7 @@
 				(= theY 72)
 				(= temp1 1)
 				(while (< temp1 5)
-					(Format @buffer 140 7 (+ temp1 96))
+					(Format @buffer 140 8 (+ temp1 96))
 					(Display
 						@buffer
 						p_at 150 theY
@@ -239,13 +246,13 @@
 				(if (== printRet local6)
 					(DoDisplay printRet 2)
 					(music number: 140 loop: 1 play:)
-					(Print 140 8 #at 190 8 #time 3 #dispose)
+					(Print 140 9 #at 190 8 #time 3 #dispose)
 					(++ filthNum)
 					(++ local3)
 				else
 					(DoDisplay printRet 4)
 					(music number: 141 loop: 1 play:)
-					(Print 140 9 #at 190 8 #time 3 #dispose)
+					(Print 140 10 #at 190 8 #time 3 #dispose)
 					(if local3 (-- local3))
 				)
 				(aSuit setCel: local3 forceUpd:)
@@ -260,7 +267,7 @@
 			)
 			(4
 				(Format
-					@buffer 140 10
+					@buffer 140 11
 					filthNum
 					(switch filthNum
 						(5 {Totally Raunchiest})
