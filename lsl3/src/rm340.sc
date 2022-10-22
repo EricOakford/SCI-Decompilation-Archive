@@ -476,9 +476,6 @@
 				(= ethnic1Str 0)
 				(= ethnic2Str 0)
 				(= ethnic3Str 0)
-				;BUG: this doesn't seem to work properly,
-				; as /1, /2, and /3 are printed instead of the
-				; input
 				(while (> 3 (StrLen @ethnic1Str))
 					(GetInput @ethnic1Str 15 {Ethnic group #1:})
 				)
@@ -517,7 +514,7 @@
 						(Format @str 340 49 341 (+ temp207 (* temp206 5)))
 						(if (!= 32 (StrAt @str 1))
 							(= temp205 0)
-							(if (< temp205 (StrLen @str))
+							(while (< temp205 (StrLen @str))
 								(if (== 47 (StrAt @str temp205))
 									(StrAt @str temp205 37)
 									(switch (StrAt @str (++ temp205))
