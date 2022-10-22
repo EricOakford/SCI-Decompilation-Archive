@@ -80,9 +80,10 @@
 
 (procedure (localproc_0835 &tmp temp0 temp1 [fileBuf 30])
 	(if (!= (= temp0 (FOpen {LARRY3.DRV} 1)) -1)
-		(= [local9 0] (ReadNumber (FGets @fileBuf 8 temp0)))
-		(= [local9 1] (ReadNumber (FGets @fileBuf 8 temp0)))
-		(= [local9 2] (ReadNumber (FGets @fileBuf 8 temp0)))
+		(= temp1 (FGets @fileBuf 8 temp0))
+		(= [local9 0] (ReadNumber temp1))
+		(= [local9 1] (ReadNumber temp1))
+		(= [local9 2] (ReadNumber temp1))
 	)
 	(FClose temp0)
 )
