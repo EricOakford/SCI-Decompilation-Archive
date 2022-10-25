@@ -292,7 +292,7 @@
 				(if (== filthNum 0) (++ filthNum))
 				(= filthLevel (- filthNum 1))
 				(if (!= (= temp2 (FOpen {RESOURCE.LL3} 2)) -1)
-					(Format @str 140 11 filthLevel)
+					(Format @str 140 12 filthLevel)
 					(FPuts temp2 @str)
 				)
 				(FClose temp2)
