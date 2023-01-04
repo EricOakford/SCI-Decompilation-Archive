@@ -1,4 +1,10 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
+;*********************************************************************
+;*
+;*  sound.sc
+;*
+;*********************************************************************
+
 (script# MUSIC)
 (include game.sh)
 (use Main)
@@ -31,6 +37,11 @@
 	)
 	
 	(method (init)
+
+		;Put yourself on the sounds list, and allocate a
+		;sound node in heap with InitSound kernel call, if
+		;there isn't already a node allocated
+
 		(= signal 0)
 		(= prevSignal 0)
 		(sounds add: self)

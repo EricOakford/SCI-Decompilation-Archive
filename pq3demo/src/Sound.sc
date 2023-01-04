@@ -61,7 +61,6 @@
 			)
 		)
 	)
-	
 	(method (init)
 
 		;Put yourself on the sounds list, and allocate a
@@ -73,7 +72,6 @@
 		(sounds add: self)
 		(DoSound InitSound self)
 	)
-	
 	(method (play newVol &tmp argCount)
 
 		;Put this objects sound node on the PlayList with PlaySound
@@ -95,13 +93,11 @@
 			(= client 0)
 		)
 
-		(if (not (sounds contains: self))
-			(self init:)
-		)
+		(self init:)
 
-;		(if (not loop)
+		(if (not loop)
 			(= loop 1)
-;		)
+		)
 
 		(if argCount
 			(= vol newVol)
@@ -111,7 +107,6 @@
 
 		(DoSound PlaySound self 0)
 	)
-
 	(method (stop)
 
 		;Take this objects sound node off the PlayList, and free up its
@@ -167,7 +162,6 @@
 
 		(DoSound HoldSound self 0)
 	)
-	
 	(method (fade newVol fTicks fSteps fEnd &tmp argCount)
 
 		;Fade sound from current volume to newVol.  Fade may go up or
@@ -179,7 +173,10 @@
 		;the sound will continue at the new volume.  This is usefull for
 		;fading a sound in (from volume 0), in which case you would not
 		;want an automatic end when the fade is complete.  Volume ranges
-		;from 0 to 127.
+		;from 0 to 127.  If only a newVol paramater is specified, a
+		;default rate will be assumed, and fEnd will be TRUE if newVol
+		;is 0.  If no paramaters are specified, newVol will default to
+		;zero.
 		
 		(= argCount argc)
 		(if
@@ -196,12 +193,21 @@
 			(DoSound FadeSound self 0 25 10 1)
 		)
 	)
-
 	(method (mute value)
-		(if (not argc) (= value 1))
+
+		;If value is TRUE, the sound will no longer be heard until
+		;another call to this method is made where value is FALSE.
+		;The only difference between this method and the pause:
+		;method is that by using mute:, the sound will continue to
+		;be parsed, so that when you un-mute it, it will come back
+		;at the proper place in the sound.
+
+		(if (not argc)
+			(= value TRUE)
+		)
+
 		(DoSound MuteSound self value)
 	)
-	
 	(method (setVol newVol)
 
 		;Change the volume of the sound to newVol (0 - 127).  When
@@ -232,8 +238,6 @@
 
 		(DoSound SetLoop self newLoop)
 	)
-
-	
 	(method (send channel command value1 value2)
 
 		;This method gives application programmers access to MIDI
@@ -242,7 +246,7 @@
 		;controller argument is number specifying what type of MIDI
 		;event you want to send, and they are defined in system.sh.
 		;Value may be 0 to 127 for controllers and program changes, and
-		;-8192 to 8191 for benders.
+		;0 to 16383 for benders.
 
 		(if (<= 1 channel 15)
 			(if (< command 128)
@@ -252,7 +256,6 @@
 			)
 		)
 	)
-	
 	(method (check)
 
 		;Check for MIDI cues and cue: somebody if needed.
@@ -277,7 +280,6 @@
 			(self dispose:)
 		)
 	)
-	
 	(method (dispose)
 
 		;Stop the sound, and remove the sound node from heap.
@@ -290,7 +292,8 @@
 
 		(super dispose:)
 	)
-	
+
+
 	;; The following methods WILL be removed after KQ5 cd and
 	;; Jones cd are shipped.  There is no longer any reason for
 	;; any other application code to be using these methods.

@@ -28,6 +28,14 @@
 	ICON_HELP
 )
 
+;Cursors
+(define WALK_CURSOR	6)
+(define TALK_CURSOR	7)
+(define LOOK_CURSOR 19)
+(define HELP_CURSOR	29)
+(define NOTEBOOK_CURSOR	32)
+(define WATCH_CURSOR 997)
+
 ;Framework scripts
 (define SPEED 99)
 (define PQEGO 895)
@@ -36,6 +44,7 @@
 
 ;Game-specific verbs
 ;(for generic verbs, refer to SYSTEM.SH)
+(define verbAbout 8)
 (define verbNotebook 10)
 
 ;Event flags

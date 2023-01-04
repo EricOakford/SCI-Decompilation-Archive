@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# SPEED) ;99
+(script# SPEED)
 (include game.sh)
 (use Main)
 (use Motion)
@@ -15,18 +15,18 @@
 	doneTime
 	machineSpeed
 	versionFile
-	fastSpeed
+	fastThreshold
 )
 (instance fred of Actor)
 
 (instance speedTest of Room
 	(properties
 		picture 98
-		style PLAIN
+		style $0064
 	)
 	
 	(method (init)
-		(= versionFile (FileIO fileOpen {version} 1))
+		(= versionFile (FileIO fileOpen {version} fRead))
 		(FileIO fileFGets version 6 versionFile)
 		(FileIO fileClose versionFile)
 		(super init:)
@@ -45,7 +45,7 @@
 		)
 		(= speed 0)
 		(= machineSpeed 0)
-		(= fastSpeed 90)
+		(= fastThreshold 90)
 	)
 	
 	(method (doit)
@@ -54,7 +54,7 @@
 			(= doneTime (+ 60 (GetTime)))
 		)
 		(if (and (u< doneTime (GetTime)) (not (self script?)))
-			(if (< machineSpeed fastSpeed)
+			(if (< machineSpeed fastThreshold)
 				(= howFast slow)
 				(theGame detailLevel: 1)
 			else

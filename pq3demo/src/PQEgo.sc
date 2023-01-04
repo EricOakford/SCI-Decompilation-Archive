@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# PQEGO) ;895
+(script# PQEGO)
 (include game.sh)
 (use Main)
 (use Grooper)
@@ -11,10 +11,10 @@
 )
 
 (local
-	[theCel 24] = [6 0 4 5 1 7 4 2 5 7 3 6 0 4 2 2 5 1 3 6 0 1 7 3]
+	headCel = [6 0 4 5 1 7 4 2 5 7 3 6 0 4 2 2 5 1 3 6 0 1 7 3]
 	local24 =  3
-	[theXOffset 75] = [0 -1 0 0 0 0 0 0 0 -1 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 0 0 0 0 0 0 0 0 0 -1 0 0 0 0 0 1 0 0 0 0 0 0 0 1]
-	[theYOffset 75] = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 0 0 0 0 0 1 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 4 0 0 1 1 0 0 0 0 0 0 0 0 -1 0 0 0 0 -1]
+	theXOffset = [0 -1 0 0 0 0 0 0 0 -1 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 0 0 0 0 0 0 0 0 0 -1 0 0 0 0 0 1 0 0 0 0 0 0 0 1]
+	theYOffset = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 0 0 0 0 0 1 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 4 0 0 1 1 0 0 0 0 0 0 0 0 -1 0 0 0 0 -1]
 )
 (class Body of Ego
 	(properties
@@ -23,14 +23,14 @@
 		moveHead TRUE
 	)
 	
-	(method (doit &tmp theLoop temp1)
+	(method (doit &tmp bodyLoop temp1)
 		(super doit:)
 		(cond 
 			((self isStopped:)
 				(if
 					(and
 						(!=
-							(= theLoop (self loop?))
+							(= bodyLoop (self loop?))
 							(= temp1 (- (NumLoops self) 1))
 						)
 						(cast contains: self)
@@ -38,13 +38,13 @@
 						(not ((self cycler?) isKindOf: GradualCycler))
 						(self normal?)
 					)
-					(self loop: temp1 cel: theLoop)
+					(self loop: temp1 cel: bodyLoop)
 				)
 			)
 			(
 				(and
 					(== (self loop?) (- (NumLoops self) 1))
-					(not (& signal fixedLoop))
+					(not (& signal $0800))
 				)
 				(self loop: (self cel?))
 			)
@@ -52,23 +52,17 @@
 	)
 	
 	(method (dispose)
-		(if head
-			(head dispose:)
-		)
+		(if head (head dispose:))
 		(super dispose:)
 	)
 	
 	(method (stopUpd)
-		(if head
-			(head stopUpd:)
-		)
+		(if head (head stopUpd:))
 		(super stopUpd:)
 	)
 	
 	(method (hide)
-		(if head
-			(head hide:)
-		)
+		(if head (head hide:))
 		(super hide:)
 	)
 )
@@ -83,14 +77,14 @@
 		rand 0
 	)
 	
-	(method (init obj)
+	(method (init owner)
 		(self
-			view: (obj view?)
-			client: obj
+			view: (owner view?)
+			client: owner
 			ignoreActors: 1
 		)
 		(= loop (- (NumLoops self) 2))
-		(obj head: self)
+		(owner head: self)
 		(super init:)
 		(self hide: signal: (| (self signal?) fixPriOn))
 	)
@@ -120,7 +114,7 @@
 		(super doit:)
 	)
 	
-	(method (showSelf &tmp temp0 temp1)
+	(method (showSelf &tmp i temp1)
 		(= temp1 0)
 		(if (& signal hideActor)
 			(= cel (client cel?))
@@ -136,20 +130,18 @@
 			)
 			(= cnt cycleSpeed)
 			(= cel
-				[theCel (+ offSet (= rand (- (Random 0 2) 1)))]
+				[headCel (+ offSet (= rand (- (Random 0 2) 1)))]
 			)
 		)
-		(= temp0 0)
-		(while (< temp0 (* 25 local24))
-			(if (== (client view?) [theXOffset temp0])
+		(for ((= i 0)) (< i (* 25 local24)) ((+= i 25))
+			(if (== (client view?) [theXOffset i])
 				(= temp1 1)
 				(break)
 			)
-			(= temp0 (+ temp0 25))
 		)
 		(if temp1
-			(= xOffset [theXOffset (+ 1 temp0 offSet rand)])
-			(= yOffset [theYOffset (+ 1 temp0 offSet rand)])
+			(= xOffset [theXOffset (+ 1 i offSet rand)])
+			(= yOffset [theYOffset (+ 1 i offSet rand)])
 		else
 			(= xOffset (= yOffset 0))
 		)

@@ -5,7 +5,7 @@
 (use PQEgo)
 (use ColorInit)
 (use PMouse)
-(use GControl)
+(use SlideIcon)
 (use BordWind)
 (use IconBar)
 (use PolyPath)
@@ -28,8 +28,8 @@
 	HaveMem 4
 	EgoDead 5
 	SolvePuzzle 6
-	EgoHeadMove 7
-	VerbFail 8
+	InitEgoHead 7
+	NoResponse 8
 	Bset 9
 	Btst 10
 	Bclr 11
@@ -38,53 +38,59 @@
 	Face 14
 	Speak 15
 	AdvanceTime 16
-	VGAOrEGA 17
+	FindColor 17
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	speed =  6
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	showStyle =  IRISOUT
-	aniInterval
-	theCursor
-	normalCursor =  ARROW_CURSOR
-	waitCursor =  20
-	userFont =  USERFONT
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  USERFONT
-	version
-	locales
-	curSaveDir
-	aniThreshold =  10
-	perspective
-	features
-	sortedFeatures
-	useSortedFeatures
-	egoBlindSpot
-	overlays =  -1
-	doMotionCue
-	systemWindow
-	demoDialogTime =  3
-	currentPalette
-	modelessPort
-	sysLogPath
+	ego										;pointer to ego
+	theGame									;ID of the Game instance
+	curRoom									;ID of current room
+	speed				=	6				;number of ticks between animations
+	quit									;when TRUE, quit game
+	cast									;collection of actors
+	regions									;set of current regions
+	timers									;list of timers in the game
+	sounds									;set of sounds being played
+	inventory								;set of inventory items in game
+	addToPics								;list of views added to the picture
+	curRoomNum								;current room number
+	prevRoomNum								;previous room number
+	newRoomNum								;number of room to change to
+	debugOn									;generic debug flag -- set from debug menu
+	score									;the player's current score
+	possibleScore							;highest possible score
+	showStyle			=	IRISOUT			;style of picture showing
+	aniInterval								;# of ticks it took to do the last animation cycle
+	theCursor								;the number of the current cursor
+	normalCursor		=	ARROW_CURSOR	;number of normal cursor form
+	waitCursor			=	HAND_CURSOR		;cursor number of "wait" cursor
+	userFont			=	USERFONT		;font to use for Print
+	smallFont			=	USERFONT		;small font for save/restore, etc.
+	lastEvent								;the last event (used by save/restore game)
+	modelessDialog							;the modeless Dialog known to User and Intrface
+	bigFont				=	USERFONT		;large font
+	version				=	0				;pointer to 'incver' version string
+											;***WARNING***  Must be set in room 0
+											; (usually to {x.yyy    } or {x.yyy.zzz})
+	locales									;set of current locales
+	curSaveDir								;address of current save drive/directory string
+	aniThreshold		=	10
+	perspective								;player's viewing angle:
+											;	 degrees away from vertical along y axis
+	features								;locations that may respond to events
+	sortedFeatures							;above+cast sorted by "visibility" to ego
+	useSortedFeatures	=	FALSE			;enable cast & feature sorting?
+	egoBlindSpot		=	0				;used by sortCopy to exclude 
+											;actors behind ego within angle 
+											;from straight behind. 
+											;Default zero is no blind spot
+	overlays			=	-1
+	doMotionCue								;a motion cue has occurred - process it
+	systemWindow							;ID of standard system window
+	demoDialogTime		=	3				;how long Prints stay up in demo mode
+	currentPalette							;
+	modelessPort		
+	sysLogPath								;used for system standard logfile path	
 		global43
 		global44
 		global45
@@ -104,33 +110,36 @@
 		global59
 		global60
 		global61
-	endSysLogPath
-	gameControls
-	ftrInitializer
-	doVerbCode
-	approachCode
-	useObstacles =  TRUE
-	theMenuBar
-	theIconBar
-	mouseX
-	mouseY
-	keyDownHandler
-	mouseDownHandler
-	directionHandler
-	speechHandler
-	lastVolume
-	pMouse
-	theDoits
-	eatMice =  60
-	user
-	syncBias
-	theSync
-	cDAudio
-	fastCast
-	inputFont
-	tickOffset
-	howFast
-	gameTime
+	endSysLogPath					;uses 20 globals
+	gameControls		
+	ftrInitializer		
+	doVerbCode			
+	firstSaidHandler				;will be the first to handle said events
+	useObstacles		=	TRUE	;will Ego use PolyPath or not?
+	theMenuBar						;points to TheMenuBar or Null	
+	theIconBar						;points to TheIconBar or Null	
+	mouseX				
+	mouseY				
+	keyDownHandler					;our EventHandlers, get called by the game
+	mouseDownHandler	
+	directionHandler	
+	gameCursor			
+	lastVolume			
+	pMouse				=	NULL	;pointer to a Pseudo-Mouse, or NULL
+	theDoits			=	NULL	;list of objects to get doits done every cycle
+	eatMice				=	60		;how many ticks minimum that a window stays up	
+	user				=	NULL	;pointer to specific applications User
+	syncBias						;; globals used by sync.sc (will be removed shortly)
+	theSync				
+	cDAudio				
+	fastCast			
+	inputFont			=	SYSFONT	;font used for user type-in
+
+	tickOffset			
+
+	howFast				 ;; measurment of how fast a machine is
+	gameTime			
+	;globals 89-99 are unused
 		global89
 		global90
 		global91
@@ -160,14 +169,15 @@
 	saveCursorX =  -1
 	saveCursorY =  -1
 	oldSysTime
-	mapTextColor
-	myTextColor
-	myInsideColor
-	myBotBordColor
-	myRgtBordColor
-	myBackColor
-	myLftBordColor
-	myTopBordColor
+	colMap
+	colBlack
+	colGray1
+	colGray2
+	colGray3
+	colGray4
+	colGray5
+	colWhite
+	;globals 126-136 were likely meant for additional color globals
 	global126
 	global127
 	global128
@@ -179,8 +189,8 @@
 	global134
 	global135
 	global136
-	myHighlightColor
-	mapBackColor
+	colRed
+	colBlue
 	global139
 	global140
 	global141
@@ -213,7 +223,9 @@
 )
 (procedure (NormalEgo theView theLoop)
 	(if (> argc 0)
-		(if (!= theView -1) (ego view: theView))
+		(if (!= theView -1)
+			(ego view: theView)
+		)
 		(if (and (> argc 1) (!= theLoop -1))
 			(ego loop: theLoop)
 		)
@@ -228,16 +240,18 @@
 		setCycle: Walk
 		setStep: 3 2
 		illegalBits: 0
-		ignoreActors: 0
+		ignoreActors: FALSE
 		moveSpeed: (theGame egoMoveSpeed?)
 		cycleSpeed: (theGame egoMoveSpeed?)
 	)
 )
 
-(procedure (HandsOff &tmp oldCurIcon)
+(procedure (HandsOff &tmp saveIcon)
 	(User canControl: FALSE canInput: FALSE)
-	(if (not argc) (ego setMotion: 0))
-	(= oldCurIcon (theIconBar curIcon?))
+	(if (not argc)
+		(ego setMotion: 0)
+	)
+	(= saveIcon (theIconBar curIcon?))
 	(theIconBar disable:
 		ICON_WALK
 		ICON_LOOK
@@ -247,7 +261,7 @@
 		ICON_INVENTORY
 		ICON_NOTEBOOK
 	)
-	(theIconBar curIcon: oldCurIcon)
+	(theIconBar curIcon: saveIcon)
 	(if (not (HaveMouse))
 		(= saveCursorX ((User curEvent?) x?))
 		(= saveCursorY ((User curEvent?) y?))
@@ -255,12 +269,14 @@
 	else
 		(theGame setCursor: waitCursor TRUE)
 	)
-	(if pMouse (pMouse stop:))
+	(if pMouse
+		(pMouse stop:)
+	)
 )
 
 (procedure (HandsOn)
 	(User canControl: TRUE canInput: TRUE)
-	(theIconBar enable: 
+	(theIconBar enable:
 		ICON_WALK
 		ICON_LOOK
 		ICON_DO
@@ -289,11 +305,11 @@
 (procedure (SolvePuzzle)
 )
 
-(procedure (EgoHeadMove)
+(procedure (InitEgoHead)
 	(egoHead init: ego view: (ego view?) cycleSpeed: 24)
 )
 
-(procedure (VerbFail &tmp list [temp1 2] oldCur event ticks [temp6 5])
+(procedure (NoResponse &tmp list [temp1 2] oldCur event ticks [temp6 5])
 	(= oldCur (theGame setCursor: 69 TRUE))
 	(= event (User curEvent?))
 	(redX
@@ -371,18 +387,27 @@
 	)
 )
 
+
 (procedure (Speak)
 )
 
 (procedure (AdvanceTime)
 )
 
-(procedure (VGAOrEGA vga ega)
-	(if (< vga 0) (= vga 0))
-	(if (> vga 255) (= vga 255))
-	(if (< ega 0) (= ega 0))
-	(if (> ega 15) (= ega 15))
-	(return (if (Btst fIsVGA) vga else ega))
+(procedure (FindColor col256 col16)
+	(if (< col256 0)
+		(= col256 0)
+	)
+	(if (> col256 255)
+		(= col256 255)
+	)
+	(if (< col16 0)
+		(= col16 0)
+	)
+	(if (> col16 15)
+		(= col16 15)
+	)
+	(return (if (Btst fIsVGA) col256 else col16))
 )
 
 (procedure (manageFlags what flagEnum &tmp temp0 temp1 temp2 temp3)
@@ -470,7 +495,7 @@ code_0aeb:
 
 (instance egoObj of Body
 	(properties
-		name "ego"
+		name {ego}
 		description {Sony Bonds}
 		sightAngle 180
 		lookStr {*** It's you, Sonny.}
@@ -482,7 +507,9 @@ code_0aeb:
 			)
 			(verbUse
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -528,7 +555,6 @@ code_0aeb:
 (instance invWin of InsetWindow)
 
 (instance pq3 of Game
-	
 	(method (init)
 		(= systemWindow pq3Win)
 		(= useSortedFeatures FALSE)
@@ -562,10 +588,9 @@ code_0aeb:
 		(User alterEgo: ego canControl: FALSE canInput: FALSE)
 		(= possibleScore 6969)
 		(= userFont 4)
-		(= waitCursor HAND_CURSOR)
+		(= waitCursor WATCH_CURSOR)
 		(= currentHour 8)
-		(= currentMinutes 0) 
-		(= currentSeconds 0)
+		(= currentMinutes (= currentSeconds 0))
 		(if
 			(and
 				(>= (= numColors (Graph GDetect)) 2)
@@ -576,33 +601,33 @@ code_0aeb:
 			(Bset fIsVGA)
 		)
 		(pq3Win
-			color: myTextColor
-			back: (VGAOrEGA myBackColor myBotBordColor)
-			topBordColor: myTopBordColor
-			lftBordColor: (VGAOrEGA myLftBordColor myTopBordColor)
-			rgtBordColor: (VGAOrEGA myRgtBordColor myInsideColor)
-			botBordColor: (VGAOrEGA myBotBordColor myInsideColor)
+			color: colBlack
+			back: (FindColor colGray4 colGray2)
+			topBordColor: colWhite
+			lftBordColor: (FindColor colGray5 colWhite)
+			rgtBordColor: (FindColor colGray3 colGray1)
+			botBordColor: (FindColor colGray2 colGray1)
 		)
 		(gcWin
-			color: myTextColor
-			back: (VGAOrEGA myBackColor myBotBordColor)
-			topBordColor: myTopBordColor
-			lftBordColor: (VGAOrEGA myLftBordColor myTopBordColor)
-			rgtBordColor: (VGAOrEGA myRgtBordColor myInsideColor)
-			botBordColor: (VGAOrEGA myBotBordColor myInsideColor)
+			color: colBlack
+			back: (FindColor colGray4 colGray2)
+			topBordColor: colWhite
+			lftBordColor: (FindColor colGray5 colWhite)
+			rgtBordColor: (FindColor colGray3 colGray1)
+			botBordColor: (FindColor colGray2 colGray1)
 		)
 		(invWin
-			color: myTextColor
-			back: (VGAOrEGA myBotBordColor myInsideColor)
-			topBordColor: (VGAOrEGA myBackColor myTopBordColor)
-			lftBordColor: (VGAOrEGA myRgtBordColor myTopBordColor)
-			rgtBordColor: (VGAOrEGA myInsideColor myBotBordColor)
-			botBordColor: (VGAOrEGA myTextColor myBotBordColor)
-			insideColor: (VGAOrEGA myInsideColor myBotBordColor)
-			topBordColor2: myTextColor
-			lftBordColor2: myTextColor
-			botBordColor2: (VGAOrEGA myBackColor myTopBordColor)
-			rgtBordColor2: (VGAOrEGA myLftBordColor myTopBordColor)
+			color: colBlack
+			back: (FindColor colGray2 colGray1)
+			topBordColor: (FindColor colGray4 colWhite)
+			lftBordColor: (FindColor colGray3 colWhite)
+			rgtBordColor: (FindColor colGray1 colGray2)
+			botBordColor: (FindColor colBlack colGray2)
+			insideColor: (FindColor colGray1 colGray2)
+			topBordColor2: colBlack
+			lftBordColor2: colBlack
+			botBordColor2: (FindColor colGray4 colWhite)
+			rgtBordColor2: (FindColor colGray5 colWhite)
 			botBordHgt: 25
 		)
 		(= numVoices (DoSound NumVoices))
@@ -611,7 +636,7 @@ code_0aeb:
 			add: icon0 icon1 icon2 icon3 icon4 icon5 icon8 icon7 icon9 icon6
 			eachElementDo: #init
 			eachElementDo: #highlightColor 0
-			eachElementDo: #lowlightColor (VGAOrEGA myBackColor myInsideColor)
+			eachElementDo: #lowlightColor (FindColor colGray4 colGray1)
 			curIcon: icon0
 			useIconItem: icon4
 			helpIconItem: icon9
@@ -662,9 +687,9 @@ code_0aeb:
 			helpIconItem: iconHelp
 			curIcon: iconRestore
 			eachElementDo: #highlightColor 0
-			eachElementDo: #lowlightColor (VGAOrEGA myRgtBordColor myInsideColor)
+			eachElementDo: #lowlightColor (FindColor colGray3 colGray1)
 		)
-		(= howFast 2)
+		(= howFast fast)
 		(self newRoom: SPEED)
 	)
 	
@@ -685,7 +710,9 @@ code_0aeb:
 	)
 	
 	(method (startRoom roomNum)
-		(if pMouse (pMouse stop:))
+		(if pMouse
+			(pMouse stop:)
+		)
 		(mouseDownHandler delete: (ScriptID DEBUG))
 		(DisposeScript RANDCYC)
 		(if
@@ -700,17 +727,17 @@ code_0aeb:
 		)
 		(super startRoom: roomNum)
 		(if (cast contains: ego)
-			(if (not (ego looper?)) (ego setLoop: stopGroop))
-			(EgoHeadMove)
+			(if (not (ego looper?))
+				(ego setLoop: stopGroop)
+			)
+			(InitEgoHead)
 		)
 		(redX init: hide: setPri: 15 posn: 1000 -1000)
 	)
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if (event claimed?)
-			(return TRUE)
-		)
+		(if (event claimed?) (return TRUE))
 		(return
 			(switch (event type?)
 				(keyDown
@@ -727,13 +754,16 @@ code_0aeb:
 	
 	(method (quitGame)
 		(super
-			quitGame: (Print 0 1 #button {quit} 1 #button {continue} 0)
+			quitGame: (Print 0 1
+				#button {quit} 1
+				#button {continue} 0
+			)
 		)
 	)
 	
 	(method (pragmaFail)
 		(if (User canInput:)
-			(VerbFail)
+			(NoResponse)
 		)
 	)
 )
@@ -752,7 +782,7 @@ code_0aeb:
 	(method (init)
 		(self
 			highlightColor: 0
-			lowlightColor: (VGAOrEGA myBackColor myInsideColor)
+			lowlightColor: (FindColor colGray4 colGray1)
 		)
 		(super init:)
 	)
@@ -763,7 +793,7 @@ code_0aeb:
 		view 901
 		loop 2
 		cel 0
-		cursor 19
+		cursor LOOK_CURSOR
 		message verbLook
 		helpStr {Select this Icon then select an inventory item you'd like a description of.}
 	)
@@ -771,7 +801,7 @@ code_0aeb:
 	(method (init)
 		(self
 			highlightColor: 0
-			lowlightColor: (VGAOrEGA myBackColor myInsideColor)
+			lowlightColor: (FindColor colGray4 colGray1)
 		)
 		(super init:)
 	)
@@ -782,7 +812,7 @@ code_0aeb:
 		view 901
 		loop 0
 		cel 0
-		cursor 20
+		cursor HAND_CURSOR
 		message verbDo
 		helpStr {This allows you to do something to an item.}
 	)
@@ -790,7 +820,7 @@ code_0aeb:
 	(method (init)
 		(self
 			highlightColor: 0
-			lowlightColor: (VGAOrEGA myBackColor myInsideColor)
+			lowlightColor: (FindColor colGray4 colGray1)
 		)
 		(super init:)
 	)
@@ -801,14 +831,14 @@ code_0aeb:
 		view 901
 		loop 1
 		cel 0
-		cursor 29
+		cursor HELP_CURSOR
 		message verbHelp
 	)
 	
 	(method (init)
 		(self
 			highlightColor: 0
-			lowlightColor: (VGAOrEGA myBackColor myInsideColor)
+			lowlightColor: (FindColor colGray4 colGray1)
 		)
 		(super init:)
 	)
@@ -826,7 +856,7 @@ code_0aeb:
 	(method (init)
 		(self
 			highlightColor: 0
-			lowlightColor: (VGAOrEGA myBackColor myInsideColor)
+			lowlightColor: (FindColor colGray4 colGray1)
 		)
 		(super init:)
 	)
@@ -837,7 +867,7 @@ code_0aeb:
 		view 900
 		loop 0
 		cel 0
-		cursor 6
+		cursor WALK_CURSOR
 		message verbWalk
 		signal (| HIDEBAR RELVERIFY)
 		helpStr {This icon is for walking.}
@@ -851,7 +881,7 @@ code_0aeb:
 		view 900
 		loop 1
 		cel 0
-		cursor 19
+		cursor LOOK_CURSOR
 		message verbLook
 		signal (| HIDEBAR RELVERIFY)
 		helpStr {This icon is for looking.}
@@ -865,7 +895,7 @@ code_0aeb:
 		view 900
 		loop 2
 		cel 0
-		cursor 20
+		cursor HAND_CURSOR
 		message verbDo
 		signal (| HIDEBAR RELVERIFY)
 		helpStr {This icon is for doing.}
@@ -880,7 +910,7 @@ code_0aeb:
 		view 900
 		loop 3
 		cel 0
-		cursor 7
+		cursor TALK_CURSOR
 		message verbTalk
 		signal (| HIDEBAR RELVERIFY)
 		helpStr {This icon is for talking.}
@@ -895,7 +925,7 @@ code_0aeb:
 		view 900
 		loop 4
 		cel 0
-		cursor 999
+		cursor ARROW_CURSOR
 		message verbUse
 		signal (| HIDEBAR RELVERIFY)
 		helpStr {This icon shows the currently selected inventory item.}
@@ -945,7 +975,7 @@ code_0aeb:
 		view 900
 		loop 6
 		cel 0
-		cursor 32
+		cursor NOTEBOOK_CURSOR
 		message verbNotebook
 		signal (| HIDEBAR RELVERIFY)
 		helpStr {** enters the time into your notebook.}
@@ -981,8 +1011,8 @@ code_0aeb:
 		view 900
 		loop 9
 		cel 0
-		cursor 29
-		message 6
+		cursor HELP_CURSOR
+		message verbHelp
 		signal (| RELVERIFY IMMEDIATE)
 		helpStr {This icon tells you about other icons.}
 		maskView 900
@@ -1000,12 +1030,12 @@ code_0aeb:
 					(if (theObj lookStr?)
 						(Print (theObj lookStr?))
 					else
-						(VerbFail)
+						(NoResponse)
 					)
 				)
 			)
 			(else
-				(VerbFail)
+				(NoResponse)
 			)
 		)
 	)
@@ -1031,7 +1061,7 @@ code_0aeb:
 (instance gcWin of BorderWindow
 	(method (open &tmp
 			theBevelWid t l r b theColor theMaps bottomColor topColor leftColor rightColor
-			thePri i [scoreBuf 15] [scoreRect 4])
+			thePri i [str 15] [rectPt 4])
 		(self
 			top: (/ (- 200 (+ (CelHigh 947 1 1) 6)) 2)
 			left: (/ (- 320 (+ 151 (CelWide 947 0 1))) 2)
@@ -1084,32 +1114,30 @@ code_0aeb:
 		)
 		(= thePri 15)
 		(= theColor 0)
-		(= bottomColor (VGAOrEGA myBotBordColor myInsideColor))
-		(= rightColor (VGAOrEGA myRgtBordColor myInsideColor))
-		(= leftColor (VGAOrEGA myLftBordColor myTopBordColor))
-		(= topColor myTopBordColor)
+		(= bottomColor (FindColor colGray2 colGray1))
+		(= rightColor (FindColor colGray3 colGray1))
+		(= leftColor (FindColor colGray5 colWhite))
+		(= topColor colWhite)
 		(= theBevelWid 3)
 		(= theMaps 3)
 		(Graph GFillRect t l (+ b 1) (+ r 1) theMaps theColor thePri)
-		(= t (- t theBevelWid))
-		(= l (- l theBevelWid))
-		(= r (+ r theBevelWid))
-		(= b (+ b theBevelWid))
+		(-= t theBevelWid)
+		(-= l theBevelWid)
+		(+= r theBevelWid)
+		(+= b theBevelWid)
 		(Graph GFillRect t l (+ t theBevelWid) r theMaps bottomColor thePri)
 		(Graph GFillRect (- b theBevelWid) l b r theMaps topColor thePri)
-		(= i 0)
-		(while (< i theBevelWid)
+		(for ((= i 0)) (< i theBevelWid) ((++ i))
 			(Graph GDrawLine (+ t i) (+ l i) (- b (+ i 1)) (+ l i) rightColor thePri -1)
 			(Graph GDrawLine (+ t i)(- r (+ i 1)) (- b (+ i 1)) (- r (+ i 1)) leftColor thePri -1)
-			(++ i)
 		)
 		(Graph GShowBits t l (+ b 1) (+ r 1) 1)
-		(Format @scoreBuf 0 2 score possibleScore)
-		(TextSize @scoreRect @scoreBuf 999 0)
+		(Format @str 0 2 score possibleScore)
+		(TextSize @rectPt @str 999 0)
 		(Display
-			@scoreBuf
+			@str
 			p_font 999
-			p_color (VGAOrEGA myBackColor myTopBordColor)
+			p_color (FindColor colGray4 colWhite)
 			p_at
 			(+ 10 (CelWide 947 1 1)
 				(/
@@ -1118,7 +1146,7 @@ code_0aeb:
 							(+ 151 (CelWide 947 0 1))
 							(+ 10 (CelWide 947 1 1) 6)
 						)
-						[scoreRect 3]
+						[rectPt 3]
 					)
 					2
 				)
@@ -1188,7 +1216,7 @@ code_0aeb:
 		cel 0
 		nsLeft 8
 		nsTop 6
-		message 8
+		message verbAbout
 		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr {Save your game?}
 	)
@@ -1201,7 +1229,7 @@ code_0aeb:
 		cel 0
 		nsLeft 8
 		nsTop 26
-		message 8
+		message verbAbout
 		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr {Restore a previously saved game?}
 	)
@@ -1214,7 +1242,7 @@ code_0aeb:
 		cel 0
 		nsLeft 8
 		nsTop 46
-		message 8
+		message verbAbout
 		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr {Restart the Game?}
 	)
@@ -1227,7 +1255,7 @@ code_0aeb:
 		cel 0
 		nsLeft 8
 		nsTop 66
-		message 8
+		message verbAbout
 		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr {*** Quit the game?}
 	)
@@ -1240,7 +1268,7 @@ code_0aeb:
 		cel 0
 		nsLeft 34
 		nsTop 106
-		message 8
+		message verbAbout
 		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr {Information about the game.}
 	)
@@ -1253,8 +1281,8 @@ code_0aeb:
 		cel 0
 		nsLeft 8
 		nsTop 106
-		cursor 29
-		message 6
+		cursor HELP_CURSOR
+		message verbHelp
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE)
 	)
 )
@@ -1266,7 +1294,7 @@ code_0aeb:
 		cel 0
 		nsLeft 8
 		nsTop 86
-		message 8
+		message verbAbout
 		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr {Quit this menu.}
 	)

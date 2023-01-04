@@ -16,13 +16,15 @@
 )
 
 (local
-	outtaHereButton
+	yesI
 )
-(procedure (localproc_000e param1 param2 &tmp [str 40])
+(procedure (GetNum n default &tmp [str 40])
 	(= str 0)
-	(if (> argc 1) (Format @str 899 0 param2))
+	(if (> argc 1)
+		(Format @str 899 0 default)
+	)
 	(return
-		(if (GetInput @str 10 param1)
+		(if (GetInput @str 10 n)
 			(ReadNumber @str)
 		else
 			-1
@@ -30,7 +32,7 @@
 	)
 )
 
-(procedure (noScrolling)
+(procedure (CheckScroll)
 	(if (OneOf (curRoom style?) SCROLLRIGHT SCROLLLEFT SCROLLUP SCROLLDOWN)
 		(curRoom drawPic: (curRoom picture?) PLAIN style: PLAIN)
 	)
@@ -53,7 +55,7 @@
 						(= b (+ t (* 34 numCols)))
 						(= r (+ l (* 10 numRows)))
 						(= saveBits
-							(Graph GSaveBits t l b r 1)
+							(Graph GSaveBits t l b r VMAP)
 						)
 						(Graph GFillRect t l b r 1 255)
 						(for ((= theColor 0)) (< theColor 256) ((++ theColor))
@@ -67,7 +69,7 @@
 								theColor
 							)
 						)
-						(Graph GShowBits t l b r 1)
+						(Graph GShowBits t l b r VMAP)
 						(repeat
 							(if
 								(or
@@ -110,14 +112,14 @@
 						(Show VMAP)
 					)
 					(`@p
-						(noScrolling)
+						(CheckScroll)
 						(Show PMAP)
 					)
 					(`@c
-						(noScrolling)
+						(CheckScroll)
 						(Show CMAP)
 						(Animate (cast elements?))
-						(while (== nullEvt ((= event (Event new: $7ffd)) type?))
+						(while (== 0 ((= event (Event new: (- allEvents mouseUp))) type?))
 							(event dispose:)
 						)
 						(event dispose:)
@@ -225,12 +227,12 @@
 							(curRoom vanishingX?)
 							(curRoom vanishingY?)
 						)
-						(= i (localproc_000e {vanishingX:}))
+						(= i (GetNum {vanishingX:}))
 						(if (OneOf i -1 0)
 						else
 							(curRoom vanishingX: i)
 						)
-						(= i (localproc_000e {vanishingY:}))
+						(= i (GetNum {vanishingY:}))
 						(if (OneOf i -1 0)
 						else
 							(curRoom vanishingY: i)
@@ -325,21 +327,20 @@
 )
 
 (instance dInvD of Dialog
-	(method (init &tmp temp0 temp1 temp2 temp3 newDText node obj)
-		(= temp2 (= temp0 (= temp1 4)))
-		(= temp3 0)
-		(= node (inventory first:))
-		(while node
+	(method (init &tmp lastX lastY widest num el node obj)
+		(= widest (= lastX (= lastY 4)))
+		(= num 0)
+		(for ((= node (inventory first?))) node ((= node (inventory next: node)))
 			(= obj (NodeValue node))
-			(++ temp3)
+			(++ num)
 			(if (obj isKindOf: InvItem)
 				(self
 					add:
-						((= newDText (DText new:))
+						((= el (DText new:))
 							value: obj
 							text: (obj name?)
-							nsLeft: temp0
-							nsTop: temp1
+							nsLeft: lastX
+							nsTop: lastY
 							state: 3
 							font: smallFont
 							setSize:
@@ -347,53 +348,52 @@
 						)
 				)
 			)
-			(if (< temp2 (- (newDText nsRight?) (newDText nsLeft?)))
-				(= temp2 (- (newDText nsRight?) (newDText nsLeft?)))
+			(if (< widest (- (el nsRight?) (el nsLeft?)))
+				(= widest (- (el nsRight?) (el nsLeft?)))
 			)
 			(if
 				(>
-					(= temp1
-						(+ temp1 (- (newDText nsBottom?) (newDText nsTop?)) 1)
+					(= lastY
+						(+ lastY (- (el nsBottom?) (el nsTop?)) 1)
 					)
 					140
 				)
-				(= temp1 4)
-				(= temp0 (+ temp0 temp2 10))
-				(= temp2 0)
+				(= lastY 4)
+				(= lastX (+ lastX widest 10))
+				(= widest 0)
 			)
-			(= node (inventory next: node))
 		)
 		(= window systemWindow)
 		(self setSize:)
-		(= outtaHereButton (DButton new:))
-		(outtaHereButton
+		(= yesI (DButton new:))
+		(yesI
 			text: {Outta here!}
 			setSize:
-			moveTo: (- nsRight (+ 4 (outtaHereButton nsRight?))) nsBottom
+			moveTo: (- nsRight (+ 4 (yesI nsRight?))) nsBottom
 		)
-		(outtaHereButton
-			move: (- (outtaHereButton nsLeft?) (outtaHereButton nsRight?)) 0
+		(yesI
+			move: (- (yesI nsLeft?) (yesI nsRight?)) 0
 		)
-		(self add: outtaHereButton setSize: center:)
-		(return temp3)
+		(self add: yesI setSize: center:)
+		(return num)
 	)
 	
-	(method (doit &tmp theOuttaHereButton)
+	(method (doit &tmp el)
 		(self init:)
 		(self open: 4 15)
-		(= theOuttaHereButton outtaHereButton)
+		(= el yesI)
 		(repeat
 			(if
 				(or
 					(not
-						(= theOuttaHereButton (super doit: theOuttaHereButton))
+						(= el (super doit: el))
 					)
-					(== theOuttaHereButton -1)
-					(== theOuttaHereButton outtaHereButton)
+					(== el -1)
+					(== el yesI)
 				)
 				(break)
 			)
-			((theOuttaHereButton value?) owner: ego)
+			((el value?) owner: ego)
 		)
 		(self dispose:)
 	)

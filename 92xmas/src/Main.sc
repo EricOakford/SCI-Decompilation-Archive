@@ -221,17 +221,18 @@
 		cycleCnt 0
 		completed 0
 		;EO: These were incorrect due to lack of a selector table.
-		setOnMeCheck 10
-		scaleDir 20
+		; I've tried to figure out the best names for them.
+		minCycles 10
+		maxCycles 20
 	)
 	
-	(method (init theObj theSetOnMeCheck theScaleDir)
+	(method (init theObj cMin cMax)
 		(if argc
 			(= client theObj)
 		)
 		(if (> argc 1)
-			(= setOnMeCheck theSetOnMeCheck)
-			(= scaleDir theScaleDir)
+			(= minCycles cMin)
+			(= maxCycles cMax)
 		)
 		(= cycleCnt gameTime)
 		(= completed FALSE)
@@ -243,7 +244,7 @@
 				(client cel?)
 			else
 				(= cycleCnt gameTime)
-				(client cycleSpeed: (Random setOnMeCheck scaleDir))
+				(client cycleSpeed: (Random minCycles maxCycles))
 				(+ (client cel?) cycleDir)
 			)
 		)

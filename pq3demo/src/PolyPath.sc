@@ -3,23 +3,20 @@
 (include game.sh)
 (use Main)
 (use Motion)
-(use System)
-
 
 ;; Path around an arbitrary set of obstacles, all of which are
 ;; defined as Polygons and added to the obstacle list via the
 ;; Rooms setObstacle method. 07/24/90 J.M.H.
 
-
 (class PolyPath	kindof Motion
 	(properties
 		value		2	; current location in path
 		points	0	; pointer to path array allocated in the kernel
-		xLast	0
-		yLast	0
+		finalX	0
+		finalY	0
 		obstacles 0
 	)
-	
+
 	(method (init actor theX theY whoCares opt obstList)
 		(if argc											 
 			(= client actor)
@@ -37,8 +34,8 @@
 					(AvoidPath 
 						(actor x?)
 						(actor y?) 
-						(= xLast theX) (= yLast theY) 
-						(if obstacles
+						(= finalX theX) (= finalY theY) 
+						(if obstacles 
 							(obstacles elements?)
 						)
 						(if obstacles
@@ -60,7 +57,6 @@
 		(super init:)
 	)
 
-	
 	(method (dispose)
 		(if points (Memory MDisposePtr points))
 		(= points NULL)
@@ -74,7 +70,7 @@
 			(++ value)
 		)
 	)
-	
+
 	(method (moveDone)
 		(if (== (WordAt points value) $7777)
 			(super moveDone:)
