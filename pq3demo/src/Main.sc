@@ -65,7 +65,7 @@
 	normalCursor		=	ARROW_CURSOR	;number of normal cursor form
 	waitCursor			=	HAND_CURSOR		;cursor number of "wait" cursor
 	userFont			=	USERFONT		;font to use for Print
-	smallFont			=	USERFONT		;small font for save/restore, etc.
+	smallFont			=	4		;small font for save/restore, etc.
 	lastEvent								;the last event (used by save/restore game)
 	modelessDialog							;the modeless Dialog known to User and Intrface
 	bigFont				=	USERFONT		;large font
