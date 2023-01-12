@@ -77,7 +77,7 @@
 						(if (== (ego view?) 30) (User canControl: FALSE))
 					)
 				)
-				(globalSound stop:)
+				(theMusic2 stop:)
 				(self dispose:)
 			)
 		)

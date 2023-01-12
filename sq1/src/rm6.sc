@@ -510,7 +510,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(globalSound number: 357 loop: -1 play: 0)
+		(theMusic2 number: 357 loop: -1 play: 0)
 		(self
 			setLoop: 0
 			ignoreActors: TRUE
@@ -536,7 +536,7 @@
 			(= temp1 127)
 		)
 		(if (< temp1 0) (= temp1 0))
-		(globalSound
+		(theMusic2
 			send: 7 10 temp1
 			send: 8 10 temp1
 			send: 9 10 temp1
@@ -546,7 +546,7 @@
 			(if (< (= local105 (- local105 6)) -512)
 				(= local105 -512)
 			)
-			(globalSound
+			(theMusic2
 				send: 7 224 local105
 				send: 8 224 local105
 				send: 9 224 local105
@@ -556,7 +556,7 @@
 	)
 	
 	(method (dispose)
-		(globalSound loop: 0 stop:)
+		(theMusic2 loop: 0 stop:)
 		(super dispose:)
 	)
 	

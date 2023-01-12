@@ -402,7 +402,7 @@
 (instance launchTube of Feature
 	(properties
 		description {escape pod launch tube}
-		onMeCheck SKIPCHECK
+		onMeCheck cLRED
 	)
 	
 	(method (doVerb theVerb)

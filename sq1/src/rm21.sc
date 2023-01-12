@@ -82,7 +82,7 @@
 				(ego setMotion: MoveTo 103 83 self)
 			)
 			(1
-				(music number: 414 loop: 1 play:)
+				(theMusic number: 414 loop: 1 play:)
 				(ego
 					view: 45
 					loop: 0

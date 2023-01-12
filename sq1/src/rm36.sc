@@ -254,7 +254,7 @@
 				((not local0) (Print 36 2))
 				(else (Print 36 3))
 			)
-			(music fade:)
+			(theMusic fade:)
 			(self newRoom: 41)
 		)
 		(= temp0 (GetTime SYSTIME1))
@@ -399,7 +399,7 @@
 				(= cycles 1)
 			)
 			(2
-				(music number: 437 loop: -1 play:)
+				(theMusic number: 437 loop: -1 play:)
 				(self dispose:)
 			)
 		)
@@ -561,7 +561,7 @@
 					)
 				else
 					(= local3 1)
-					(music stop:)
+					(theMusic stop:)
 					(motorSound stop:)
 					(shadow dispose:)
 					(flyingEgo

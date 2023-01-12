@@ -1,8 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# REVERSE)
-(include game.sh)
 (use Motion)
-
 
 (class Reverse kindof Cycle
 	;;; Cycles client's cel constantly in reverse, wrapping to the last cel
@@ -28,3 +26,4 @@
 		(client cel: (client lastCel:))
 	)
 )
+

@@ -281,7 +281,7 @@
 				(spiderBody dispose:)
 			)
 			(3
-				(music fade:)
+				(theMusic fade:)
 				(Bset fSpiderDead)
 				(Bclr fSpiderLanded)
 				(SolvePuzzle 5 fKillSpider)
@@ -312,7 +312,7 @@
 	)
 	
 	(method (cue)
-		(globalSound number: 412 loop: 1 play:)
+		(theMusic2 number: 412 loop: 1 play:)
 	)
 )
 

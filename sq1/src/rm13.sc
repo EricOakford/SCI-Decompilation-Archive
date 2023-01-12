@@ -117,8 +117,8 @@
 	)
 	
 	(method (newRoom n)
-		(if (and (== n 12) (!= (music number?) 355))
-			(music fade:)
+		(if (and (== n 12) (!= (theMusic number?) 355))
+			(theMusic fade:)
 		)
 		(super newRoom: n)
 	)
@@ -165,10 +165,10 @@
 				(ledLights dispose:)
 				(survivalKit dispose:)
 				(screen dispose:)
-				(globalSound pause:)
+				(theMusic2 pause:)
 				(cockpitSound stop:)
 				(if (> selfDestructTimer 30)
-					(globalSound number: 370 loop: 0 play:)
+					(theMusic2 number: 370 loop: 0 play:)
 				)
 				(deltaurArm init:)
 				(arcada init:)
@@ -257,11 +257,11 @@
 							(if (not wearingSeatbelt)
 								(soundFx number: 331 loop: 6 play:)
 							)
-							(globalSound number: 328 loop: 1 flags: mNOPAUSE play: hold: 1)
+							(theMusic2 number: 328 loop: 1 flags: mNOPAUSE play: hold: 1)
 							(cockpitSound number: 326 loop: -1 flags: mNOPAUSE play:)
 						else
 							(soundFx loop: 0 stop:)
-							(globalSound stop: hold: 0)
+							(theMusic2 stop: hold: 0)
 							(cockpitSound number: 326 loop: 0 stop:)
 							(= powerOn 0)
 							((ScriptID ARCADA 0)
@@ -320,7 +320,7 @@
 					((not powerOn) (Print 13 6) (= cycles 3))
 					((not (Btst 10))
 						((ScriptID ARCADA 0) inGame: 0)
-						(globalSound number: 327 loop: 1 play: hold: 1)
+						(theMusic2 number: 327 loop: 1 play: hold: 1)
 						(curRoom setScript: crashThruDoors)
 					)
 					((not wearingSeatbelt)
@@ -331,7 +331,7 @@
 						(UnLoad SOUND 328)
 						(UnLoad SOUND 337)
 						(UnLoad SOUND 325)
-						(globalSound number: 327 loop: 1 flags: 1 play: hold: 1)
+						(theMusic2 number: 327 loop: 1 flags: 1 play: hold: 1)
 						(= cycles 60)
 					)
 				)
@@ -409,7 +409,7 @@
 			(3
 				(if register
 					(= register 0)
-					(music fade: 127 25 10 0)
+					(theMusic fade: 127 25 10 0)
 					(curRoom newRoom: 37)
 				else
 					(HandsOn)
@@ -428,7 +428,7 @@
 			(0
 				(HandsOff)
 				(curRoom drawPic: 14 -32759)
-				(globalSound pause:)
+				(theMusic2 pause:)
 				(cockpitSound stop:)
 				(deltaurArm
 					init:

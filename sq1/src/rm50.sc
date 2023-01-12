@@ -16,7 +16,7 @@
 
 (local
 	i
-	[egoPosn 48] = [0 0 0 3 118 34 3 130 41 4 139 50 5 149 57 6 155 65 7 162 72 8 168 78 9 173 84 10 178 89 11 183 92 12 186 95 13 190 98 14 193 100 15 196 102 -1 -1 -1]
+	egoPosn = [0 0 0 3 118 34 3 130 41 4 139 50 5 149 57 6 155 65 7 162 72 8 168 78 9 173 84 10 178 89 11 183 92 12 186 95 13 190 98 14 193 100 15 196 102 -1 -1 -1]
 )
 (instance rm50 of Room
 	(properties
@@ -28,7 +28,7 @@
 		(hatch init: hide:)
 		(super init:)
 		(HandsOff)
-		(music number: 501 loop: -1 play:)
+		(theMusic number: 501 loop: -1 play:)
 		(ship init:)
 		(flames init:)
 		(self setScript: shipArrives)
@@ -75,7 +75,7 @@
 		(switch (= state newState)
 			(0
 				(ship setStep: 6 6 setMotion: MoveTo 228 180 self)
-				(globalSound number: 533 loop: -1 play:)
+				(theMusic2 number: 533 loop: -1 play:)
 				(flames cycleSpeed: 4 setCycle: RandCycle)
 			)
 			(1
@@ -83,7 +83,7 @@
 				(ship setStep: 4 4 setMotion: MoveTo 176 150 self)
 			)
 			(2
-				(globalSound pause:)
+				(theMusic2 pause:)
 				(flames dispose:)
 				(ship setStep: 2 2 setMotion: MoveTo 117 112 self)
 			)
@@ -151,7 +151,7 @@
 			)
 			(11
 				(hatch dispose:)
-				(globalSound pause: 0)
+				(theMusic2 pause: 0)
 				(flames init: cycleSpeed: 2 setCycle: Oscillate)
 				(ship setCel: 0 setStep: 2 2 setMotion: MoveTo 70 88 self)
 			)
@@ -163,7 +163,7 @@
 			)
 			(14
 				(ship dispose:)
-				(globalSound stop:)
+				(theMusic2 stop:)
 				(flames dispose:)
 				(= cycles 3)
 			)

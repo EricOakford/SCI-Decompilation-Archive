@@ -264,7 +264,7 @@
 (instance windshield of Feature
 	(properties
 		description {pod's windshield}
-		onMeCheck SKIPCHECK
+		onMeCheck cLRED
 	)
 	
 	(method (doVerb theVerb)

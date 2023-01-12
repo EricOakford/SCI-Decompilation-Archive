@@ -252,7 +252,7 @@
 					149
 					(- (ego y?) 19)
 					(ego x?)
-					myTextColor2
+					colDRed
 					1
 					0
 					0
@@ -333,7 +333,7 @@
 		(switch (= state newState)
 			(0
 				(curRoom overlay: 153 PLAIN)
-				(globalSound number: 504 loop: 1 play: self hold: 1)
+				(theMusic2 number: 504 loop: 1 play: self hold: 1)
 				(bayDoor
 					init:
 					setPri: 0
@@ -342,14 +342,14 @@
 				)
 			)
 			(1
-				(globalSound hold: 0)
+				(theMusic2 hold: 0)
 				(bayDoor dispose:)
 			)
 			(2
-				(music number: 520 loop: 1 play: self)
+				(theMusic number: 520 loop: 1 play: self)
 			)
 			(3
-				(music number: 538 loop: -1 play:)
+				(theMusic number: 538 loop: -1 play:)
 				(self dispose:)
 			)
 		)

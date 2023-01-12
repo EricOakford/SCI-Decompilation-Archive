@@ -155,7 +155,7 @@
 			(remote stopUpd:)
 		)
 		(if (!= prevRoomNum 65)
-			(music
+			(theMusic
 				number: (if (Btst fForceFieldOff) 516 else 517)
 				loop: 1
 				flags: 1
@@ -256,7 +256,7 @@
 	)
 	
 	(method (newRoom n)
-		(if (!= n 65) (music hold: 0))
+		(if (!= n 65) (theMusic hold: 0))
 		(ego setCycle: 0 setPri: -1)
 		(super newRoom: n)
 	)
@@ -671,7 +671,7 @@
 				)
 			)
 			(1
-				(if (Btst fStartedSelfDestruct) (music hold: 0))
+				(if (Btst fStartedSelfDestruct) (theMusic hold: 0))
 				(EgoStatusCheck)
 				(ego
 					loop: 2
@@ -693,7 +693,7 @@
 				)
 			)
 			(3
-				(music number: 516 loop: 0 play: hold: 1)
+				(theMusic number: 516 loop: 0 play: hold: 1)
 				(generatorOn cycleSpeed: register hide:)
 				(= ticks (* register 6))
 			)
@@ -920,7 +920,7 @@
 			)
 			(4
 				(soundFx number: 518 loop: 0 play:)
-				(globalSound number: 519 loop: 0 play:)
+				(theMusic2 number: 519 loop: 0 play:)
 				(if
 					(and
 						(< (guard nsLeft?) local0)
@@ -1093,7 +1093,7 @@
 				(shield cycleSpeed: 2 setCycle: RangeOsc 4 0 0 self)
 			)
 			(2
-				(music hold: 0 fade:)
+				(theMusic hold: 0 fade:)
 				(shield dispose:)
 				(SolvePuzzle 3 fTurnOffForceField)
 				(self dispose:)

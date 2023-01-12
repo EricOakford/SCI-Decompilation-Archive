@@ -33,9 +33,9 @@
 			)
 			(3
 				(if (not register)
-					(music send: 5 78 0)
+					(theMusic send: 5 78 0)
 				else
-					(music send: 4 78 0)
+					(theMusic send: 4 78 0)
 				)
 				(client
 					setLoop: (+ register 2)
@@ -45,9 +45,9 @@
 			)
 			(4
 				(if (not register)
-					(music send: 5 78 1)
+					(theMusic send: 5 78 1)
 				else
-					(music send: 4 78 1)
+					(theMusic send: 4 78 1)
 				)
 				(= state -1)
 				(client

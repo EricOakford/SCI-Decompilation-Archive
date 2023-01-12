@@ -299,7 +299,7 @@
 				)
 			)
 			(5
-				(music number: 403 loop: 1 play:)
+				(theMusic number: 403 loop: 1 play:)
 				(= cycles 12)
 			)
 			(6
@@ -308,7 +308,7 @@
 				(elevdoor setCycle: EndLoop elevdoor)
 			)
 			(7
-				(music number: 421 loop: -1 play:)
+				(theMusic number: 421 loop: -1 play:)
 				(if (Btst fGotStalagmite)
 					(Print 30 10 #at 40 10)
 				else

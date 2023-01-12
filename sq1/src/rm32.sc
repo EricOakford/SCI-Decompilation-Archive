@@ -190,7 +190,7 @@
 			)
 			(7
 				(= local4 1)
-				(music number: 472 loop: -1 play:)
+				(theMusic number: 472 loop: -1 play:)
 				(viewBox init: stopUpd:)
 				(heads init: stopUpd:)
 				(mouth1 init:)
@@ -253,7 +253,7 @@
 							p_font SYSFONT
 							p_width 165
 							p_at 78 40
-							p_color myTextColor2
+							p_color colLRed
 							p_save
 						)
 				)
@@ -951,7 +951,7 @@
 			)
 			(1
 				(soundFx number: 430 loop: 1 play:)
-				(globalSound number: 455 loop: 1 play:)
+				(theMusic2 number: 455 loop: 1 play:)
 				(ego
 					view: 22
 					setLoop: (if (OneOf (ego loop?) 1 5 7) 8 else 7)

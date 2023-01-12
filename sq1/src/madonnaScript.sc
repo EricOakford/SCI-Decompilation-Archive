@@ -35,7 +35,7 @@
 				)
 			)
 			(3
-				(music send: 6 78 0)
+				(theMusic send: 6 78 0)
 				(switch (madonna loop?)
 					(1
 						(madonnaFace posn: 140 52 setLoop: 7)
@@ -60,7 +60,7 @@
 				(= cycles (Random 90 120))
 			)
 			(4
-				(music send: 6 78 1)
+				(theMusic send: 6 78 1)
 				(madonnaFace hide:)
 				(= cycles (= state 1))
 			)

@@ -94,8 +94,8 @@
 		(airLockHandle init:)
 		(self setScript: zoomIn)
 		(super init:)
-		(if (!= (music number?) 501)
-			(music number: 501 loop: -1 play:)
+		(if (!= (theMusic number?) 501)
+			(theMusic number: 501 loop: -1 play:)
 		)
 	)
 	
@@ -450,7 +450,7 @@
 		(switch (= state newState)
 			(0
 				(spaceInertia dispose:)
-				(music fade:)
+				(theMusic fade:)
 				(ego
 					xStep: 4
 					yStep: 3
@@ -763,7 +763,7 @@
 				)
 			)
 			(5
-				(globalSound number: 504 loop: 1 play: hold: 1)
+				(theMusic2 number: 504 loop: 1 play: hold: 1)
 				(soundFx number: 503 loop: 1 play:)
 				(ego cel: 2 setCycle: CycleTo 6 1 self)
 			)
@@ -781,7 +781,7 @@
 			)
 			(9
 				(door dispose:)
-				(globalSound hold: 0)
+				(theMusic2 hold: 0)
 				(ego setCycle: EndLoop self)
 			)
 			(10
@@ -798,7 +798,7 @@
 				(ego setLoop: 11 setCycle: EndLoop self)
 			)
 			(12
-				(music fade:)
+				(theMusic fade:)
 				(ego
 					x: 140
 					y: 112

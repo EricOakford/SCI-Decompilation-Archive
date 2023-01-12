@@ -63,8 +63,8 @@
 			(else  (ego posn: 69 170))
 		)
 		(super init:)
-		(if (!= (music number?) 538)
-			(music number: 538 loop: -1 play:)
+		(if (!= (theMusic number?) 538)
+			(theMusic number: 538 loop: -1 play:)
 		)
 		(features
 			add: ventShaft shadows floor1 airLock floor2 floor3 vaults
@@ -108,7 +108,7 @@
 	)
 	
 	(method (newRoom n)
-		(if (!= n 57) (music fade:))
+		(if (!= n 57) (theMusic fade:))
 		(super newRoom: n)
 	)
 )
@@ -358,7 +358,7 @@
 				)
 			)
 			(2
-				(music fade: 0 5 30 1)
+				(theMusic fade: 0 5 30 1)
 				(SolvePuzzle 3 fExitVentilationShaft)
 				(trunk startUpd: hide:)
 				(ego
@@ -374,7 +374,7 @@
 				(soundFx number: 514 loop: 1 play:)
 				(vent hide:)
 				(curRoom drawPic: 99 IRISOUT)
-				(globalSound number: 507 loop: 1 play: 0 fade: 127 5 30 0)
+				(theMusic2 number: 507 loop: 1 play: 0 fade: 127 5 30 0)
 				(ego
 					view: 51
 					loop: 0
@@ -450,8 +450,8 @@
 					setStep: (/ (ego xStep?) 2) (/ (ego yStep?) 2)
 				)
 				(HandsOn)
-				(music play: 0 fade: 127 25 10 0)
-				(globalSound fade:)
+				(theMusic play: 0 fade: 127 25 10 0)
+				(theMusic2 fade:)
 				(curRoom newRoom: 57)
 			)
 		)
@@ -950,7 +950,7 @@
 (instance shadows of RegionFeature
 	(properties
 		description {shadows}
-		onMeCheck SKIPCHECK
+		onMeCheck cLRED
 		lookStr {Various pipes, ducts and other innocuous pieces of equipment form pronounced shadows throughout the room.}
 		level 2
 	)

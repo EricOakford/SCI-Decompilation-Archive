@@ -467,7 +467,7 @@
 			)
 			(2
 				(ShakeScreen 3 7)
-				(music number: 339 loop: 1 play: self)
+				(theMusic number: 339 loop: 1 play: self)
 			)
 			(3
 				(iris dispose:)
@@ -490,7 +490,7 @@
 			)
 			(4
 				(ShakeScreen shakeSDiagonal 7)
-				(music number: 339 loop: 1 play: self)
+				(theMusic number: 339 loop: 1 play: self)
 			)
 			(5
 				(beam posn: 188 60 setCycle: CycleTo 1 1 self)
@@ -560,7 +560,7 @@
 		x 63
 		y 21
 		description {bottled energy}
-		onMeCheck SKIPCHECK
+		onMeCheck cLRED
 		lookStr {The egg-shaped globe pulses with blue-white light. It appears to be some exotic form of bottled energy, or maybe a 60,000 watt light bulb.}
 		level 1
 	)

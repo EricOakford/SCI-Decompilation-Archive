@@ -45,8 +45,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(music pause: TRUE)
-				(globalSound number: 473 loop: -1 play:)
+				(theMusic pause: TRUE)
+				(theMusic2 number: 473 loop: -1 play:)
 				((ScriptID 49 7) number: 533 loop: 1 play:)
 				(curRoom drawPic: 17 (| BLACKOUT DISSOLVE))
 				(cast eachElementDo: #hide eachElementDo: #stopUpd)
@@ -70,8 +70,8 @@
 			)
 			(2
 				((ScriptID 49 7) fade:)
-				(globalSound stop:)
-				(music pause: FALSE)
+				(theMusic2 stop:)
+				(theMusic pause: FALSE)
 				(self dispose:)
 			)
 		)
@@ -85,7 +85,7 @@
 		(switch (= state newState)
 			(0
 				((ScriptID 49 7) stop:)
-				(music number: 411 loop: 1 play:)
+				(theMusic number: 411 loop: 1 play:)
 				(ship
 					view: 156
 					loop: 5

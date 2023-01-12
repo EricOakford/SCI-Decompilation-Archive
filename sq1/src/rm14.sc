@@ -29,7 +29,7 @@
 	local76
 )
 (procedure (localproc_000e)
-	(globalSound number: 317 loop: 1 play:)
+	(theMusic2 number: 317 loop: 1 play:)
 )
 
 (procedure (RemovePadInset)
@@ -70,10 +70,10 @@
 		(survivalKit init: stopUpd:)
 		(= powerOn TRUE)
 		(cockpitSound number: 326 loop: -1 flags: mNOPAUSE init: play:)
-		(music number: 367 loop: -1 play:)
+		(theMusic number: 367 loop: -1 play:)
 		(ledLights init: setCycle: Forward)
 		(screen init: setCycle: Forward)
-		(globalSound pause: 0)
+		(theMusic2 pause: 0)
 		(head init: stopUpd:)
 		(arm init: stopUpd:)
 		(seatbelt1 init: stopUpd:)
@@ -141,7 +141,7 @@
 	)
 	
 	(method (newRoom n)
-		(globalSound flags: 0)
+		(theMusic2 flags: 0)
 		(super newRoom: n)
 	)
 	
@@ -212,7 +212,7 @@
 				(hologram init: cycleSpeed: 8 setCycle: EndLoop self)
 			)
 			(2
-				(music number: 336 loop: -1 play:)
+				(theMusic number: 336 loop: -1 play:)
 				(= cycles 3)
 			)
 			(3
@@ -225,7 +225,7 @@
 				(hologram loop: 7 cel: 5 cycleSpeed: 8 setCycle: BegLoop self)
 			)
 			(5
-				(music stop: loop: 0)
+				(theMusic stop: loop: 0)
 				(soundFx number: 335 loop: 1 play:)
 				(tempProp show: setCycle: BegLoop self)
 			)
@@ -271,8 +271,8 @@
 	(method (doit)
 		(super doit:)
 		(if
-		(and (== state 1) (== (music prevSignal?) 10))
-			(music prevSignal: 0)
+		(and (== state 1) (== (theMusic prevSignal?) 10))
+			(theMusic prevSignal: 0)
 			(= cycles 3)
 		)
 	)
@@ -286,7 +286,7 @@
 			)
 			(1
 				(cockpitSound number: 326 loop: 0 stop:)
-				(music number: 332 loop: 1 play:)
+				(theMusic number: 332 loop: 1 play:)
 			)
 			(2
 				(self setScript: doHyperspace self 10)
@@ -319,8 +319,8 @@
 	(method (doit)
 		(super doit:)
 		(if
-		(and (== state 5) (== (music prevSignal?) 10))
-			(music prevSignal: 0)
+		(and (== state 5) (== (theMusic prevSignal?) 10))
+			(theMusic prevSignal: 0)
 			(= cycles 1)
 		)
 	)
@@ -365,7 +365,7 @@
 				(= cycles 2)
 			)
 			(4
-				(music fade:)
+				(theMusic fade:)
 				(curRoom drawPic: 38 FADEOUT)
 				(kerona dispose:)
 				(tempProp dispose:)
@@ -378,10 +378,10 @@
 				(= cycles 13)
 			)
 			(5
-				(music number: 400 loop: 1 play: 127)
+				(theMusic number: 400 loop: 1 play: 127)
 			)
 			(6
-				(globalSound number: 402 loop: 1 play:)
+				(theMusic2 number: 402 loop: 1 play:)
 				(escapePod
 					show:
 					view: 138
@@ -398,7 +398,7 @@
 				(if (!= [keronaPodPosn (= i (+ i 3))] -1)
 					(-- state)
 					(if (== i 3)
-						(music stop:)
+						(theMusic stop:)
 					)
 					;EO: This did not decompile correctly. That's fixed now.
 					(escapePod
@@ -412,8 +412,8 @@
 							(== [keronaPodPosn i] 9)
 							(== [keronaPodPosn i] 12)
 						)
-						(globalSound number: 405 loop: 1 play:)
-						(music stop:)
+						(theMusic2 number: 405 loop: 1 play:)
+						(theMusic stop:)
 					)					
 				)
 				(= cycles 8)
@@ -433,8 +433,8 @@
 			(0 (= cycles 44))
 			(1
 				(curRoom drawPic: 37 FADEOUT)
-				(music number: 401 loop: -1 play:)
-				(globalSound number: 807 loop: -1 play:)
+				(theMusic number: 401 loop: -1 play:)
+				(theMusic2 number: 807 loop: -1 play:)
 				(back1 dispose:)
 				(back2 dispose:)
 				(back3 dispose:)
@@ -452,8 +452,8 @@
 			)
 			(3 (= seconds 3))
 			(4
-				(music setVol: 70)
-				(globalSound fade:)
+				(theMusic setVol: 70)
+				(theMusic2 fade:)
 				(curRoom drawPic: 13 FADEOUT)
 				(curRoom overlay: 313 PLAIN)
 				(smoke dispose:)
@@ -504,7 +504,7 @@
 								(crashedIntoKerona (Print 14 11))
 								((not powerOn) (Print 14 12))
 								((<= gasTimer 0) (Print 14 13))
-								((not crashedIntoKerona) (music stop:) (self next: pressedWrongButton))
+								((not crashedIntoKerona) (theMusic stop:) (self next: pressedWrongButton))
 							)
 						)
 						(2
@@ -512,12 +512,12 @@
 								(= powerOn TRUE)
 								(ledLights show:)
 								(screen show:)
-								(globalSound pause: 0)
+								(theMusic2 pause: 0)
 								(cockpitSound number: 326 loop: -1 play:)
 							else
 								(cockpitSound number: 326 loop: 0 stop:)
 								(= powerOn FALSE)
-								(globalSound pause:)
+								(theMusic2 pause:)
 								(ledLights hide:)
 								(screen hide:)
 							)
@@ -528,7 +528,7 @@
 								((<= gasTimer 0) (Print 14 13))
 								(else
 									(SolvePuzzle 2 f14AutoNav)
-									(music fade:)
+									(theMusic fade:)
 									(self next: autoNavScript)
 								)
 							)
@@ -589,13 +589,13 @@
 		(if local3 (Palette PALCycle 48 70 1))
 		(super doit:)
 		(if
-		(and (== state 1) (== (music prevSignal?) 10))
-			(music prevSignal: 0)
+		(and (== state 1) (== (theMusic prevSignal?) 10))
+			(theMusic prevSignal: 0)
 			(= cycles 1)
 		)
 		(if
-		(and (== state 6) (== (music prevSignal?) 10))
-			(music prevSignal: 0)
+		(and (== state 6) (== (theMusic prevSignal?) 10))
+			(theMusic prevSignal: 0)
 			(= cycles 1)
 		)
 	)
@@ -618,14 +618,14 @@
 			)
 			(1
 				(sounds eachElementDo: #stop)
-				(music number: 359 loop: 1 play:)
+				(theMusic number: 359 loop: 1 play:)
 			)
 			(2
 				(self setScript: doHyperspace self 10)
 			)
 			(3
 				(curRoom drawPic: 69 FADEOUT)
-				(music fade:)
+				(theMusic fade:)
 				(cockpitSound stop:)
 				(= cycles 1)
 			)
@@ -644,7 +644,7 @@
 				)
 			)
 			(6
-				(music number: 400 loop: 1 play:)
+				(theMusic number: 400 loop: 1 play:)
 				(tempProp setLoop: 3 cel: 0 setCycle: Forward)
 			)
 			(7
@@ -674,7 +674,7 @@
 					)
 					(if (== [camelotPodPosn i] 1)
 						(soundFx number: 362 loop: 1 play: 127)
-						(music number: 402 loop: 1 play:)
+						(theMusic number: 402 loop: 1 play:)
 					)					
 				)
 				(= cycles 1)
@@ -683,7 +683,7 @@
 				(escapePod setCel: 1 setMotion: MoveTo 84 168 self)
 			)
 			(11
-				(music stop:)
+				(theMusic stop:)
 				(soundFx number: 411 loop: 1 play: self)
 				(ego
 					show:
@@ -698,8 +698,8 @@
 			)
 			(12 0)
 			(13
-				(globalSound fade:)
-				(music number: 356 loop: 1 play: self)
+				(theMusic2 fade:)
+				(theMusic number: 356 loop: 1 play: self)
 				(tempProp setLoop: 2 cel: 3 setCycle: BegLoop)
 				(= seconds 4)
 			)
@@ -759,17 +759,17 @@
 			(0
 				(HandsOff)
 				(arm loop: 3 startUpd: cel: 5)
-				(globalSound number: 325 loop: 1 play: self)
+				(theMusic2 number: 325 loop: 1 play: self)
 			)
 			(1
-				(globalSound number: 337 loop: 1 play:)
+				(theMusic2 number: 337 loop: 1 play:)
 				(head cel: 1 forceUpd:)
 				(arm setCycle: BegLoop self)
 				(seatbelt1 cel: 5 setCycle: BegLoop)
 				(seatbelt2 dispose:)
 			)
 			(2
-				(globalSound loop: 0 stop:)
+				(theMusic2 loop: 0 stop:)
 				(head cel: 0 forceUpd:)
 				(arm loop: 1 cel: 0)
 				(seatbelt1 cel: 0 stopUpd:)
@@ -777,7 +777,7 @@
 			)
 			(3
 				(= register 0)
-				(music fade: 127 25 10 0)
+				(theMusic fade: 127 25 10 0)
 				(curRoom newRoom: 37)
 			)
 		)

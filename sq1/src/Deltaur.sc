@@ -405,10 +405,10 @@
 		)
 		(if
 			(and
-				(!= (music number?) 508)
+				(!= (theMusic number?) 508)
 				(not (OneOf curRoomNum 53 54 55 57 58 64))
 			)
-			(music number: 508 loop: -1 hold: 0 flags: mNOPAUSE play:)
+			(theMusic number: 508 loop: -1 hold: 0 flags: mNOPAUSE play:)
 		)
 		(if (Btst 53)
 			(detonationWindow
@@ -489,7 +489,7 @@
 		(ego ignoreActors: 1)
 		(= keep (OneOf n 54 55 57 58 59 60 61 62 63 64 65 66 67))
 		(= initialized FALSE)
-		(if (OneOf n 53 54 55 57 58 64) (music fade:))
+		(if (OneOf n 53 54 55 57 58 64) (theMusic fade:))
 		(super newRoom: n &rest)
 	)
 )

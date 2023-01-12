@@ -242,7 +242,7 @@
 		x 73
 		y 155
 		description {transmission}
-		onMeCheck SKIPCHECK
+		onMeCheck cLRED
 		lookStr {You're uncertain whether this is a Walwoodian cryobaric hypersleep chamber or the transmission out of a late model Buick Skylark.}
 		level 4
 	)

@@ -84,7 +84,7 @@
 				((ScriptID ZZTOP 3) init: setCycle: Forward)
 				((ScriptID ZZTOP 4) init: setCycle: Forward)
 				(addToPics add: (ScriptID 302 1))
-				(music number: 611)
+				(theMusic number: 611)
 			)
 			(2
 				((ScriptID BLUESBROS 1)
@@ -95,12 +95,12 @@
 					init:
 					setScript: (Clone (ScriptID BLUESBROS 0)) 0 3
 				)
-				(music number: 612 send: 4 78 0 send: 5 78 0)
+				(theMusic number: 612 send: 4 78 0 send: 5 78 0)
 			)
 			(3
 				((ScriptID MADONNA 1) init: setScript: (ScriptID MADONNA 0))
 				((ScriptID MADONNA 2) init: setCycle: Forward hide:)
-				(music number: 613 send: 6 78 0)
+				(theMusic number: 613 send: 6 78 0)
 			)
 		)
 		(slugGuy init: stopUpd:)
@@ -150,18 +150,18 @@
 					(curRoom setScript: playSlots 0 1)
 				)
 			)
-			(if (< 3 4) (music loop: -1 flags: 1 play:))
+			(if (< 3 4) (theMusic loop: -1 flags: 1 play:))
 		else
 			(if (Btst fSlotMachineBroken)
 				(slot view: 243 posn: 282 81 loop: 7 cel: 2 stopUpd:)
 			)
-			(music loop: -1 flags: mNOPAUSE play:)
+			(theMusic loop: -1 flags: mNOPAUSE play:)
 			(self setScript: walkIn)
 		)
-		(if (== (music number?) 612)
-			(music send: 4 78 1 send: 5 78 1)
+		(if (== (theMusic number?) 612)
+			(theMusic send: 4 78 1 send: 5 78 1)
 		)
-		(if (== (music number?) 613) (music send: 6 78 1))
+		(if (== (theMusic number?) 613) (theMusic send: 6 78 1))
 		(if (Btst fPlayedSlots)
 			(widget init: setCycle: Forward)
 		else
@@ -1045,7 +1045,7 @@
 				)
 			)
 			(5
-				(globalSound number: 615 loop: -1 play:)
+				(theMusic2 number: 615 loop: -1 play:)
 				(sweeper
 					setMotion: PolyPath (- (register x?) 10) (- (register y?) 1) self
 				)
@@ -1063,26 +1063,26 @@
 				(sweeper setLoop: 3 cel: 0 setCycle: CycleTo 1 1 self)
 			)
 			(8
-				(globalSound number: 616 loop: -1 play:)
+				(theMusic2 number: 616 loop: -1 play:)
 				(sweeper setLoop: 3 cel: 2 setCycle: CycleTo 5 1 self)
 			)
 			(9
-				(globalSound stop:)
+				(theMusic2 stop:)
 				(sweeper setLoop: 3 cel: 6 setCycle: CycleTo 10 1 self)
 			)
 			(10
-				(globalSound number: 616 loop: -1 play:)
+				(theMusic2 number: 616 loop: -1 play:)
 				(sweeper setLoop: 3 cel: 11 setCycle: EndLoop self)
 			)
 			(11
-				(globalSound stop:)
+				(theMusic2 stop:)
 				(= cycles 3)
 			)
 			(12
 				(sweeper setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(13
-				(globalSound number: 615 loop: -1 play:)
+				(theMusic2 number: 615 loop: -1 play:)
 				(sweeper
 					setLoop: 1
 					cycleSpeed: 4
@@ -1105,7 +1105,7 @@
 				)
 				(UnLoad VIEW 444)
 				(UnLoad VIEW 443)
-				(globalSound stop:)
+				(theMusic2 stop:)
 				(= register 0)
 				(self dispose:)
 			)

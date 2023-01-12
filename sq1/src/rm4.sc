@@ -376,7 +376,7 @@
 				(= cycles 12)
 			)
 			(1
-				(music number: 307 loop: -1 flags: mNOPAUSE play:)
+				(theMusic number: 307 loop: -1 flags: mNOPAUSE play:)
 				(alertSign setCycle: Forward)
 				(= currentFloor 1)
 				(= inCloset 1)
@@ -392,7 +392,7 @@
 					(alertSign setCycle: 0)
 				)
 				(ShakeScreen 3 (Random 1 3))
-				(music number: 339 loop: 1 play: self)
+				(theMusic number: 339 loop: 1 play: self)
 			)
 			(5
 				(= panicDroidPassingBy TRUE)
@@ -407,7 +407,7 @@
 					ICON_INVENTORY
 				)
 				(panicDroid init: setCycle: Forward)
-				(music number: 300 loop: -1 play:)
+				(theMusic number: 300 loop: -1 play:)
 			)
 			(6
 				(HandsOff)
@@ -419,7 +419,7 @@
 			(7
 				(Format @str 4 4 (/ selfDestructTimer 60))
 				(Print @str #mode teJustCenter #at 123 24 #dispose)
-				(globalSound number: 309 loop: 1 play: self)
+				(theMusic2 number: 309 loop: 1 play: self)
 			)
 			(8
 				(= seconds 0)
@@ -688,7 +688,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(globalSound number: 357 loop: -1 play: 0)
+		(theMusic2 number: 357 loop: -1 play: 0)
 		(self
 			setLoop: 0
 			ignoreActors: 1
@@ -713,7 +713,7 @@
 			(= temp1 127)
 		)
 		(if (< temp1 0) (= temp1 0))
-		(globalSound
+		(theMusic2
 			send: 7 10 temp1
 			send: 8 10 temp1
 			send: 9 10 temp1
@@ -722,7 +722,7 @@
 		)
 		(if (< (- x (ego x?)) 0)
 			(if (< (= local3 (- local3 6)) -512) (= local3 -512))
-			(globalSound
+			(theMusic2
 				send: 7 224 local3
 				send: 8 224 local3
 				send: 9 224 local3
@@ -732,7 +732,7 @@
 	)
 	
 	(method (dispose)
-		(globalSound loop: 0 stop:)
+		(theMusic2 loop: 0 stop:)
 		(super dispose:)
 	)
 	

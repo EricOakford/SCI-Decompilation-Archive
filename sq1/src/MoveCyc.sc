@@ -75,14 +75,14 @@
 		)
 		(super init:)
 	)
-
+	
 	(method (doit)
 		(if (> (++ cycleCnt) (client cycleSpeed?))
 			(= cycleCnt 0)
 			(self nextCel:)
 		)
 	)
-
+	
 	(method (nextCel)
 		(client
 			loop:	(WordAt points value),
@@ -98,7 +98,7 @@
 			(self cycleDone:)
 		)
 	)
-
+	
 	(method (cycleDone)
 		(= completed TRUE)
 		(= value 0)

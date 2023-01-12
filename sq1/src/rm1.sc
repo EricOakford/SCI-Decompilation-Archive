@@ -122,8 +122,8 @@
 					#button {Restore a Game} 3
 				)
 				(1
-					(if (!= (music number?) 2)
-						(music number: 2 loop: -1 play:)
+					(if (!= (theMusic number?) 2)
+						(theMusic number: 2 loop: -1 play:)
 					else
 						(Sound pause: FALSE)
 					)
@@ -156,22 +156,22 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (and local6 (== (music prevSignal?) -1))
-			(music prevSignal: 0)
+		(if (and local6 (== (theMusic prevSignal?) -1))
+			(theMusic prevSignal: 0)
 			(self cue:)
 		)
 		(if
-		(and (== state 1) (== (music prevSignal?) 10))
-			(music prevSignal: 0)
+		(and (== state 1) (== (theMusic prevSignal?) 10))
+			(theMusic prevSignal: 0)
 			(self cue:)
 		)
 		(if (and local7 (>= (ship x?) 320))
 			(= local7 0)
-			(globalSound hold: 0)
+			(theMusic2 hold: 0)
 		)
 		(if (and local8 (<= (ship x?) 0))
 			(= local8 0)
-			(globalSound hold: 0)
+			(theMusic2 hold: 0)
 		)
 	)
 	
@@ -183,7 +183,7 @@
 				(= cycles 1)
 			)
 			(1
-				(music number: 1 loop: -1 flags: 0 play:)
+				(theMusic number: 1 loop: -1 flags: 0 play:)
 				0
 			)
 			(2
@@ -200,7 +200,7 @@
 						{\03 1991 Sierra On-Line, Inc.}
 						#mode teJustLeft
 						#color myTextColor5
-						#back myLowlightColor
+						#back colBlack
 						#width 240
 						#at 63 181
 					)
@@ -237,7 +237,7 @@
 			)
 			(8
 				(= local7 1)
-				(globalSound number: 4 loop: 1 play: 40 hold: 1)
+				(theMusic2 number: 4 loop: 1 play: 40 hold: 1)
 				(ship
 					init:
 					setLoop: 5
@@ -265,7 +265,7 @@
 			)
 			(13
 				(= local8 1)
-				(globalSound number: 4 loop: 1 play: 80 hold: 1)
+				(theMusic2 number: 4 loop: 1 play: 80 hold: 1)
 				(ship
 					setLoop: 2
 					cel: 0
@@ -292,7 +292,7 @@
 			)
 			(18
 				(= local7 1)
-				(globalSound number: 4 loop: 1 play: hold: 1)
+				(theMusic2 number: 4 loop: 1 play: hold: 1)
 				(ship
 					setLoop: 1
 					cel: 0
@@ -591,7 +591,7 @@
 				(curRoom drawPic: 303 PLAIN)
 				(curRoom overlay: 124 PLAIN)
 				(= local7 1)
-				(globalSound number: 4 loop: 1 play: 40 hold: 1)
+				(theMusic2 number: 4 loop: 1 play: 40 hold: 1)
 				(ship
 					view: 601
 					setCycle: 0
@@ -626,7 +626,7 @@
 			)
 			(73
 				(= local8 1)
-				(globalSound number: 4 loop: 1 play: 80 hold: 1)
+				(theMusic2 number: 4 loop: 1 play: 80 hold: 1)
 				(ship
 					setLoop: 2
 					cel: 0
@@ -656,7 +656,7 @@
 				(= local4 -1)
 				(= local0 1)
 				(= local7 1)
-				(globalSound number: 4 loop: 1 play: hold: 1)
+				(theMusic2 number: 4 loop: 1 play: hold: 1)
 				(ship
 					setLoop: 1
 					cel: 0
@@ -789,7 +789,7 @@
 				(= local5 1)
 				(= local4 1)
 				(= local0 1)
-				(music number: 2 loop: -1 play:)
+				(theMusic number: 2 loop: -1 play:)
 				(curRoom overlay: 127 PLAIN)
 				(= seconds 1)
 			)
@@ -966,7 +966,7 @@
 				(= seconds 2)
 			)
 			(3
-				(music number: 3 loop: 1 play:)
+				(theMusic number: 3 loop: 1 play:)
 				(= seconds 4)
 			)
 			(4

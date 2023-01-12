@@ -67,7 +67,7 @@
 		(babbleIcon view: 946 cycleSpeed: (* (+ howFast 1) 4))
 		(Palette PALLoad 999)
 		(theIconBar disable:)
-		(music flags: 0)
+		(theMusic flags: 0)
 		(super init:)
 		(keyDownHandler addToFront: self)
 		(mouseDownHandler addToFront: self)
@@ -86,7 +86,7 @@
 	)
 	
 	(method (newRoom n)
-		(music flags: mNOPAUSE fade:)
+		(theMusic flags: mNOPAUSE fade:)
 		(super newRoom: n)
 	)
 )

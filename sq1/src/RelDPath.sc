@@ -1,8 +1,7 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# RELDPATH)
+(script#	RELDPATH)
 (include game.sh)
 (use DPath)
-
 
 (class RelDPath of DPath
 	(method (setTarget)

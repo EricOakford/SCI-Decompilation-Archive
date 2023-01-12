@@ -1,5 +1,7 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# MOVEFWD)
+(include game.sh)
+(use PolyPath)
 ;;;;
 ;;;;	MOVEFWD.SC
 ;;;;	(c) Sierra On-Line, Inc, 1990
@@ -18,9 +20,6 @@
 ;;;;		anActor setMotion: MoveFwd 20 whoToCue
 ;;;;
 ;;;; modified 4/24/91 to be a kind of PolyPath (JMH)
-
-(include game.sh)
-(use PolyPath)
 
 
 (class MoveFwd kindof PolyPath
@@ -41,3 +40,4 @@
 		)
 	)
 )
+

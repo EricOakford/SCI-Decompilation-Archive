@@ -80,8 +80,8 @@
 		)
 		(self setRegions: ARCADA)
 		(super init:)
-		(if (!= (music number?) 355)
-			(globalSound number: 314 loop: -1 play:)
+		(if (!= (theMusic number?) 355)
+			(theMusic2 number: 314 loop: -1 play:)
 		)
 		(egoHead init:)
 		(egoArm init:)
@@ -152,7 +152,7 @@
 			(0
 				(cast eachElementDo: #show)
 				(if (cast contains: droidArm)
-					(globalSound number: 353 loop: -1 play:)
+					(theMusic2 number: 353 loop: -1 play:)
 				)
 				(curRoom drawPic: 103 FADEOUT)
 				(= cycles 2)
@@ -168,7 +168,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(globalSound stop: loop: 0)
+				(theMusic2 stop: loop: 0)
 				(cast eachElementDo: #hide)
 				(curRoom drawPic: 2)
 				(curRoom overlay: 102)

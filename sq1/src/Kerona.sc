@@ -193,10 +193,10 @@
 		(if (== curRoomNum 22) (plant2 init:))
 		(if
 			(and
-				(!= (music number?) (SetRoomSound curRoomNum))
+				(!= (theMusic number?) (SetRoomSound curRoomNum))
 				(not spiderRoom)
 			)
-			(music
+			(theMusic
 				number: (if (spider inThisRoom:) 404 else roomSound)
 				loop: -1
 				play:
@@ -207,17 +207,17 @@
 	(method (doit)
 		(if
 			(and
-				(== (music number?) roomSound)
+				(== (theMusic number?) roomSound)
 				(or spiderRoom (and (Btst fSpiderLanded) (spider inThisRoom:)))
 			)
-			(music number: 404 loop: -1 play:)
+			(theMusic number: 404 loop: -1 play:)
 		)
 		(if
 			(and
-				(== (music prevSignal?) -1)
-				(== (music number?) 404)
+				(== (theMusic prevSignal?) -1)
+				(== (theMusic number?) 404)
 			)
-			(music number: roomSound loop: -1 play:)
+			(theMusic number: roomSound loop: -1 play:)
 		)
 		(cond 
 			((curRoom script?) 0)
@@ -288,9 +288,9 @@
 				(not spiderRoom)
 				(IsObject (spider regionPathID?))
 				(!= ((spider regionPathID?) currentRoom?) n)
-				(== (music number?) 404)
+				(== (theMusic number?) 404)
 			)
-			(music fade:)
+			(theMusic fade:)
 		)
 		(= fellDown FALSE)
 		(super newRoom: n &rest)
@@ -788,7 +788,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(music fade:)
+				(theMusic fade:)
 				(soundFx number: 411 loop: 1 play:)
 				(spider
 					view: 328
@@ -1001,8 +1001,8 @@
 	(method (nextRoom)
 		(super nextRoom: &rest)
 		(cond 
-			((== currentRoom curRoomNum) (music number: 404 loop: -1 play:))
-			((== (music number?) 404) (music fade:))
+			((== currentRoom curRoomNum) (theMusic number: 404 loop: -1 play:))
+			((== (theMusic number?) 404) (theMusic fade:))
 		)
 	)
 	

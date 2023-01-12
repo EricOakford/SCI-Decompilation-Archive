@@ -68,7 +68,7 @@
 			(laserEnd1 init: cel: 7)
 			(laserEnd2 init: cel: 7)
 		else
-			(globalSound number: 427 loop: -1 flags: mNOPAUSE play:)
+			(theMusic2 number: 427 loop: -1 flags: mNOPAUSE play:)
 			(LoadMany SOUND 459 428 429 432 427)
 			(laser init: setCycle: Forward)
 			(laserThing1 init:)
@@ -98,7 +98,7 @@
 	)
 	
 	(method (dispose)
-		(globalSound stop: flags: 0)
+		(theMusic2 stop: flags: 0)
 		(super dispose:)
 	)
 	
@@ -213,7 +213,7 @@
 			(6
 				(soundFx number: 428 loop: 0 play:)
 				(laser hide:)
-				(globalSound loop: 0 stop:)
+				(theMusic2 loop: 0 stop:)
 				(ego setCycle: BegLoop self)
 				(smoke1 init: cycleSpeed: 5 setCycle: EndLoop)
 				(smoke2 init: cycleSpeed: 5 setCycle: EndLoop self)
@@ -300,7 +300,7 @@
 			(0 (= cycles 40) (= local1 0))
 			(1
 				(= local2 1)
-				(music number: 472 loop: -1 play:)
+				(theMusic number: 472 loop: -1 play:)
 				(viewBox init: stopUpd:)
 				(heads init: stopUpd:)
 				(mouth1 init:)
@@ -347,7 +347,7 @@
 							p_font SYSFONT
 							p_width 165
 							p_at 78 40
-							p_color myTextColor2
+							p_color colLRed
 							p_save
 						)
 				)

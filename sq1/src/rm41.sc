@@ -117,7 +117,7 @@
 				(= style DISSOLVE)
 				(ego normal: 0 init:)
 				(guy init: stopUpd:)
-				(music number: 600 loop: -1 flags: mNOPAUSE play:)
+				(theMusic number: 600 loop: -1 flags: mNOPAUSE play:)
 				(Bset fHaveSkimmer)
 				(SolvePuzzle 25 f41EnterUlenceFlats)
 				(self setScript: getOutaSkimmer)
@@ -152,8 +152,8 @@
 				(= skimmerStolen FALSE)
 			)
 			((and sellSkimmerTimer (not (-- sellSkimmerTimer)))
-				(if (!= (music number?) 600)
-					(music number: 600 loop: -1 play: 30 fade: 127 15 10 0)
+				(if (!= (theMusic number?) 600)
+					(theMusic number: 600 loop: -1 play: 30 fade: 127 15 10 0)
 				)
 				(self setScript: sellSkimmerForJet)
 			)
@@ -397,10 +397,10 @@
 			)
 			(18
 				(guy dispose:)
-				(music client: self fade:)
+				(theMusic client: self fade:)
 			)
 			(19
-				(music number: 601 loop: -1 flags: 1 play:)
+				(theMusic number: 601 loop: -1 flags: 1 play:)
 				(= sellSkimmerTimer 400)
 				(HandsOn)
 				(self dispose:)
@@ -475,12 +475,12 @@
 				)
 			)
 			(8
-				(globalSound number: 439 loop: -1 play: hold: 1)
+				(theMusic2 number: 439 loop: -1 play: hold: 1)
 				(guy setStep: 10 8 setMotion: MoveTo 170 202 self)
 			)
 			(9
-				(music number: 601 loop: -1 play:)
-				(globalSound fade: hold: 0)
+				(theMusic number: 601 loop: -1 play:)
+				(theMusic2 fade: hold: 0)
 				(guy dispose:)
 				(HandsOn)
 				(self dispose:)
@@ -636,7 +636,7 @@
 			(19
 				(skimmer dispose:)
 				((curRoom obstacles?) delete: skimmerPoly)
-				(globalSound number: 439 loop: -1 play: hold: 1)
+				(theMusic2 number: 439 loop: -1 play: hold: 1)
 				(guy setLoop: 9 cel: 0 cycleSpeed: 10 setCycle: EndLoop self)
 			)
 			(20
@@ -647,8 +647,8 @@
 				)
 			)
 			(21
-				(music number: 601 loop: -1 play:)
-				(globalSound fade: hold: 0)
+				(theMusic number: 601 loop: -1 play:)
+				(theMusic2 fade: hold: 0)
 				(guy dispose:)
 				(HandsOn)
 				(self dispose:)

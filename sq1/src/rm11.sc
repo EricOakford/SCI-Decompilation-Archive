@@ -118,8 +118,8 @@
 			setPri: 7
 			whereTo: 10
 		)
-		(if (!= (music number?) 355)
-			(music number: 323 loop: -1 play:)
+		(if (!= (theMusic number?) 355)
+			(theMusic number: 323 loop: -1 play:)
 		)
 	)
 	
@@ -132,7 +132,7 @@
 	)
 	
 	(method (dispose)
-		(if (!= (music number?) 355) (music loop: 0 fade:))
+		(if (!= (theMusic number?) 355) (theMusic loop: 0 fade:))
 		(super dispose:)
 	)
 	
@@ -216,7 +216,7 @@
 			)
 			(1
 				(soundFx number: 311 loop: 1 play:)
-				(globalSound number: 322 loop: 1 play:)
+				(theMusic2 number: 322 loop: 1 play:)
 				(bigRedDoor setCycle: BegLoop self)
 			)
 			(2
@@ -238,7 +238,7 @@
 			(5
 				(soundFx number: 311 loop: 1 play:)
 				(bigRedDoor setPri: -1 setCycle: EndLoop self)
-				(if (Btst fBayDoorsOpen) (globalSound fade:))
+				(if (Btst fBayDoorsOpen) (theMusic2 fade:))
 				(ego setPri: -1 setMotion: MoveTo 306 114 self)
 			)
 			(6 0)

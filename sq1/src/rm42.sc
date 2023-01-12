@@ -150,7 +150,7 @@
 				(robotArm loop: 2 cel: 0 setCycle: CycleTo 3 1 self)
 			)
 			(5
-				(globalSound number: 604 loop: 1 play:)
+				(theMusic2 number: 604 loop: 1 play:)
 				(robotArm setCycle: EndLoop self)
 			)
 			(6
@@ -685,7 +685,7 @@
 (instance scribbles of Feature
 	(properties
 		description {graffiti}
-		onMeCheck SKIPCHECK
+		onMeCheck cLRED
 		lookStr {It appears to be in Sarienese. Your Sarienese is a little rusty, but you decide it must say "Xenon Bites!"}
 	)
 	

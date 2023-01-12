@@ -79,7 +79,7 @@
 		(table init:)
 		(parts init:)
 		(self setScript: sellRobots)
-		(music number: 623 loop: -1 play:)
+		(theMusic number: 623 loop: -1 play:)
 	)
 	
 	(method (doit)

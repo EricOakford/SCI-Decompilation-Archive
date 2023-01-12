@@ -87,7 +87,7 @@
 		(super init:)
 		(if
 			(and (== prevRoomNum south) (not (Btst fTinyFollows)))
-			(globalSound fade:)
+			(theMusic2 fade:)
 		)
 		(saucer init: stopUpd:)
 		(saucerShadow init: stopUpd:)
@@ -109,10 +109,10 @@
 	(method (newRoom n)
 		(if
 			(and
-				(== (globalSound number?) 608)
-				(!= (globalSound prevSignal?) -1)
+				(== (theMusic2 number?) 608)
+				(!= (theMusic2 prevSignal?) -1)
 			)
-			(globalSound fade:)
+			(theMusic2 fade:)
 		)
 		(super newRoom: n)
 	)
@@ -531,7 +531,7 @@
 						setMotion: MoveTo 12 240
 					)
 					(tinyPts type: 0)
-					(globalSound fade:)
+					(theMusic2 fade:)
 				)
 				(ego
 					posn: 171 86
@@ -590,8 +590,8 @@
 	(method (doit)
 		(super doit:)
 		(if
-		(and (== state 4) (== (globalSound prevSignal?) 10))
-			(globalSound prevSignal: 0)
+		(and (== state 4) (== (theMusic2 prevSignal?) 10))
+			(theMusic2 prevSignal: 0)
 			(= cycles 4)
 		)
 	)
@@ -625,7 +625,7 @@
 			)
 			(4
 				(soundFx stop:)
-				(globalSound number: 624 loop: 1 flags: mNOPAUSE play:)
+				(theMusic2 number: 624 loop: 1 flags: mNOPAUSE play:)
 				(zap1 init: setCycle: Forward)
 				(zap2 init: setCycle: Forward)
 				(gear setCycle: EndLoop)
@@ -641,7 +641,7 @@
 				(ship stopUpd:)
 				(zap1 dispose:)
 				(zap2 dispose:)
-				(globalSound fade: 40 25 4 0)
+				(theMusic2 fade: 40 25 4 0)
 				(SolvePuzzle 25 fExitKerona)
 				(mugger
 					init:
@@ -674,7 +674,7 @@
 				)
 			)
 			(10
-				(music number: 465 loop: -1 play:)
+				(theMusic number: 465 loop: -1 play:)
 				(curRoom newRoom: 49)
 			)
 		)
@@ -703,7 +703,7 @@
 			(2
 				(saucerLid cel: 1 setCycle: EndLoop self)
 				(ego hide:)
-				(globalSound stop:)
+				(theMusic2 stop:)
 			)
 			(3
 				(soundFx number: 603 loop: 1 play: self)

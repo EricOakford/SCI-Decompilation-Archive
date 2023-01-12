@@ -30,7 +30,7 @@
 			)
 			(1
 				(soundFx number: 518 loop: 1 play:)
-				(globalSound number: 519 loop: 1 play:)
+				(theMusic2 number: 519 loop: 1 play:)
 				(ego cel: 8 setCycle: CycleTo 12 1)
 				(= seconds 2)
 			)

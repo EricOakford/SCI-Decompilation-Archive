@@ -35,7 +35,7 @@
 	lWestToNorth
 )
 
-(define TwoStep 16)
+(define TwoStep	16)
 
 ;;;(define HEADINGNORTH 	(or (<= theHeading 45	) (> theHeading 315)))
 ;;;(define HEADINGEAST 	(<= theHeading 135	))
@@ -50,7 +50,6 @@
 		oldMover			0
 		newMover			0
 		oldCycleSpeed	0
-		cycleSpeed		0
 		inProgress		0
 		vNormal			0
 		vChangeDir		0
@@ -93,19 +92,19 @@
 		(switch theLoop  ; clients Loop
 			(facingNorth
 				(cond
-					((or (<= theHeading 45	) (> theHeading 315))	;HEADINGNORTH		  ; new Headings
+					((or (<= theHeading 45	) (> theHeading 315)) ;(HEADINGNORTH		  ; new Headings
 					)
-					((<= theHeading 135	)	;HEADINGEAST
+					((<= theHeading 135	) ;HEADINGEAST
 						(= theLoop 	lNorthToEast) 
 						(= nextLoop facingEast)
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 225	)	;HEADINGSOUTH
+					((<= theHeading 225	) ;HEADINGSOUTH
 						(= theLoop  lNorthToEast)
 						(= nextLoop (+ TwoStep lEastToSouth))
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 315	)	;HEADINGWEST
+					((<= theHeading 315	) ;HEADINGWEST
 						(= theLoop  lNorthToWest)
 						(= nextLoop facingWest)
 						(=	changedTheLoop TRUE)
@@ -114,19 +113,19 @@
 			)
 			(facingEast
 				(cond
-					((or (<= theHeading 45	) (> theHeading 315))	;HEADINGNORTH
+					((or (<= theHeading 45	) (> theHeading 315)); HEADINGNORTH
 						(= theLoop	lEastToNorth)
 						(= nextLoop facingNorth )
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 135	)	;HEADINGEAST
+					((<= theHeading 135	) ;HEADINGEAST
 					)
-					((<= theHeading 225	)	;HEADINGSOUTH
+					((<= theHeading 225	) ;HEADINGSOUTH
 						(= theLoop 	lEastToSouth)
 						(= nextLoop facingSouth)
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 315	)	;HEADINGWEST							
+					((<= theHeading 315	) ;HEADINGWEST							
 						(= theLoop	lEastToNorth)
 						(= nextLoop (+ TwoStep lNorthToWest))
 						(=	changedTheLoop TRUE)
@@ -135,40 +134,40 @@
 			)
 			(facingWest
 				(cond
-					((or (<= theHeading 45	) (> theHeading 315))	;HEADINGNORTH
+					((or (<= theHeading 45	) (> theHeading 315)); HEADINGNORTH
 						(= theLoop 	lWestToNorth) 
 						(= nextLoop facingNorth)
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 135	)	;HEADINGEAST
+					((<= theHeading 135	) ;HEADINGEAST
 						(= theLoop 	lWestToSouth)
 						(= nextLoop (+ TwoStep lSouthToEast))
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 225	)	;HEADINGSOUTH
+					((<= theHeading 225	) ;HEADINGSOUTH
 						(= theLoop 	lWestToSouth)
 						(= nextLoop facingSouth)
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 315	)	;HEADINGWEST
+					((<= theHeading 315	) ;HEADINGWEST	
 					)
 				)
 			)
 			(facingSouth
 				(cond
-					((or (<= theHeading 45	) (> theHeading 315))	;HEADINGNORTH
+					((or (<= theHeading 45	) (> theHeading 315)); HEADINGNORTH
 						(= theLoop 	lSouthToWest) 
 						(= nextLoop (+ TwoStep lWestToNorth))
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 135	)	;HEADINGEAST
+					((<= theHeading 135	) ;HEADINGEAST
 						(= theLoop 	lSouthToEast)
 						(= nextLoop facingEast)
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 225	)	;HEADINGSOUTH
+					((<= theHeading 225	) ;HEADINGSOUTH
 					)
-					((<= theHeading 315	)	;HEADINGWEST
+					((<= theHeading 315	) ;HEADINGWEST	
 						(= theLoop	lSouthToWest)
 						(= nextLoop facingWest)
 						(=	changedTheLoop TRUE)
@@ -182,7 +181,7 @@
 			(= oldCycleSpeed 	(client cycleSpeed?))
 			(client 
 				view:			vChangeDir,
-				cycleSpeed:	cycleSpeed,
+				cycleSpeed:	0,
 				mover:		0,
 				cycler:		0,
 				loop:			theLoop,
@@ -240,7 +239,6 @@
 		(if oldMover	(oldMover 	dispose:))
 		(if newMover	(newMover 	dispose:))
 		(if oldCycler	(oldCycler	dispose:))
-		(= inProgress (= oldMover (= newMover (= oldCycler 0))))
 		(client			view:vNormal, looper:0)
 		(DirLoop client (client heading?))
 		(super 			dispose:)

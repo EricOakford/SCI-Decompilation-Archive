@@ -147,7 +147,7 @@
 (instance exitHole of Feature
 	(properties
 		description {exit hole}
-		onMeCheck SKIPCHECK
+		onMeCheck cLRED
 	)
 	
 	(method (doVerb theVerb)

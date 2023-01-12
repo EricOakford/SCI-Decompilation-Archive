@@ -31,7 +31,7 @@
 		(LoadMany SOUND 422 431 419)
 		(LoadMany VIEW 24)
 		(HandsOff)
-		(music fade: loop: 0)
+		(theMusic fade: loop: 0)
 		(holodude init:)
 		(super init:)
 		(ego init: x: 180 y: 225)
@@ -94,7 +94,7 @@
 				(= cycles 6)
 			)
 			(4
-				(music
+				(theMusic
 					number:
 						(cond 
 							((and (ego has: iOratPart) (Btst fGadgetOn)) 434)
@@ -520,7 +520,7 @@
 			(6
 				(soundFx stop:)
 				(ego setPri: 10 setMotion: MoveTo 88 112 self)
-				(music fade:)
+				(theMusic fade:)
 			)
 			(7 (curRoom newRoom: 35))
 		)

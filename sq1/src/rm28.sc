@@ -72,7 +72,7 @@
 		(bigRock init:)
 		(smallRock init:)
 		(floor init:)
-		(music
+		(theMusic
 			number: (if (Btst fOratDead) 420 else 415)
 			loop: -1
 			play:
@@ -91,7 +91,7 @@
 	)
 	
 	(method (newRoom)
-		(music fade:)
+		(theMusic fade:)
 		(super newRoom: &rest)
 	)
 )
@@ -181,7 +181,7 @@
 				((ScriptID 704 3) cycleSpeed: 12 setCycle: EndLoop self)
 			)
 			(8
-				(music fade:)
+				(theMusic fade:)
 				(orat
 					show:
 					setLoop: 4
@@ -199,7 +199,7 @@
 				(orat setCycle: EndLoop self)
 			)
 			(10
-				(music number: 420 loop: -1 play: 0 fade: 127 25 10 0)
+				(theMusic number: 420 loop: -1 play: 0 fade: 127 25 10 0)
 				(orat dispose:)
 				(part init:)
 				(= oratAlive FALSE)
@@ -350,7 +350,7 @@
 				(water dispose:)
 			)
 			(4
-				(music fade:)
+				(theMusic fade:)
 				(orat
 					setLoop: 4
 					cycleSpeed: 12
@@ -360,7 +360,7 @@
 				(Print 28 4)
 			)
 			(5
-				(globalSound number: 418 loop: 1 play:)
+				(theMusic2 number: 418 loop: 1 play:)
 				(orat setCycle: CycleTo 8 1 self)
 			)
 			(6
@@ -368,7 +368,7 @@
 				(orat setCycle: EndLoop self)
 			)
 			(7
-				(music number: 420 loop: -1 play: 0 fade: 127 25 10 0)
+				(theMusic number: 420 loop: -1 play: 0 fade: 127 25 10 0)
 				(orat dispose:)
 				(part init:)
 				(= oratAlive FALSE)
@@ -701,7 +701,7 @@
 (instance skullHoles of Feature
 	(properties
 		description {holes}
-		onMeCheck SKIPCHECK
+		onMeCheck cLRED
 		lookStr {The orbs in this gigantic skull offer the only passageways for light into this gloomy place.}
 	)
 )

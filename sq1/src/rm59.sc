@@ -530,7 +530,7 @@
 (instance generator of RegionFeature
 	(properties
 		description {generator}
-		onMeCheck SKIPCHECK
+		onMeCheck cLRED
 		lookStr {Printed near the bottom in tiny precise letters are the words: Oda Generator - model EC-54 - Deltaur backup unit #1.}
 		level 2
 	)

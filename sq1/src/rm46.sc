@@ -170,7 +170,7 @@
 	)
 	
 	(method (newRoom n)
-		(globalSound flags: 0)
+		(theMusic2 flags: 0)
 		(super newRoom: n)
 	)
 )
@@ -191,7 +191,7 @@
 				(ego setMotion: MoveTo 126 147 self)
 			)
 			(3
-				(globalSound number: 622 loop: -1 flags: mNOPAUSE play:)
+				(theMusic2 number: 622 loop: -1 flags: mNOPAUSE play:)
 				(robbie
 					setLoop: 0
 					setCycle: Walk
@@ -225,7 +225,7 @@
 				)
 			)
 			(7
-				(globalSound stop:)
+				(theMusic2 stop:)
 				(Bclr fBoughtDefTechParts)
 				(HandsOn)
 				(self dispose:)
@@ -331,7 +331,7 @@
 				(= seconds 3)
 			)
 			(9
-				(globalSound number: 622 loop: -1 flags: 1 play:)
+				(theMusic2 number: 622 loop: -1 flags: 1 play:)
 				(robbieT
 					init:
 						robBust topGear robMouth
@@ -341,7 +341,7 @@
 				)
 			)
 			(10
-				(globalSound stop:)
+				(theMusic2 stop:)
 				(= seconds 4)
 			)
 			(11
@@ -371,7 +371,7 @@
 				(ego setMotion: MoveTo 126 151 self)
 			)
 			(3
-				(globalSound number: 622 loop: -1 flags: 1 play:)
+				(theMusic2 number: 622 loop: -1 flags: 1 play:)
 				(robbie
 					setLoop: 0
 					setCycle: Walk
@@ -398,7 +398,7 @@
 			)
 			(6
 				(if register
-					(globalSound stop:)
+					(theMusic2 stop:)
 					(client setScript: suxRobotS)
 				else
 					((ScriptID ULENCE 1)
@@ -414,7 +414,7 @@
 				)
 			)
 			(7
-				(globalSound stop:)
+				(theMusic2 stop:)
 				((ScriptID ULENCE 1) setLoop: -1)
 				(Face (ScriptID ULENCE 1) ego self)
 			)
@@ -423,7 +423,7 @@
 			)
 			(9 (= ticks 12))
 			(10
-				(globalSound number: 622 loop: -1 flags: 1 play:)
+				(theMusic2 number: 622 loop: -1 flags: 1 play:)
 				(SolvePuzzle 4 f46GetNavRobot)
 				(robbieT
 					init:
@@ -434,7 +434,7 @@
 				)
 			)
 			(11
-				(globalSound stop:)
+				(theMusic2 stop:)
 				((ScriptID ULENCE 1)
 					illegalBits: cBROWN
 					setMotion: PFollow ego 45
@@ -497,7 +497,7 @@
 	(method (doVerb theVerb theItem)
 		(switch theVerb
 			(verbTalk
-				(globalSound number: 622 loop: -1 flags: 1 play:)
+				(theMusic2 number: 622 loop: -1 flags: 1 play:)
 				(switch (++ talkCount)
 					(0
 						(robbieT
@@ -551,7 +551,7 @@
 				)
 			)
 			(3
-				(globalSound number: 622 loop: -1 flags: 1 play:)
+				(theMusic2 number: 622 loop: -1 flags: 1 play:)
 				(robbieT
 					init:
 						robBust topGear robMouth
@@ -565,7 +565,7 @@
 						iKnife iWidget iBuckazoid iCartridge
 						iGadget iDehydratedWater iJetpack iDroidsBUsCoupon
 					)
-					(globalSound number: 622 loop: -1 flags: mNOPAUSE play:)
+					(theMusic2 number: 622 loop: -1 flags: mNOPAUSE play:)
 				)
 				(switch theItem
 					(iKnife
@@ -673,7 +673,7 @@
 	)
 	
 	(method (cue)
-		(globalSound stop:)
+		(theMusic2 stop:)
 	)
 )
 

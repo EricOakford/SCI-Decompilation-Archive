@@ -115,7 +115,7 @@
 					(self dispose:)
 				else
 					(HandsOff)
-					(music number: 810 loop: 1 play:)
+					(theMusic number: 810 loop: 1 play:)
 					(ego
 						view: 18
 						setLoop: (if (< (ego heading?) 180) 0 else 1)

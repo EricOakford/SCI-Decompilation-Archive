@@ -209,28 +209,28 @@
 		(if
 			(and
 				inGame
-				(!= (music number?) 355)
+				(!= (theMusic number?) 355)
 				(or
 					(and
 						(OneOf curRoomNum 8 9 10 12)
-						(!= (music number?) 360)
+						(!= (theMusic number?) 360)
 						(= temp0 360)
 					)
 					(and
 						(OneOf curRoomNum 3 4 5 6 103)
-						(!= (music number?) 300)
+						(!= (theMusic number?) 300)
 						(= temp0 300)
 					)
 				)
 			)
-			(music
+			(theMusic
 				number: temp0
 				loop: -1
 				hold: 0
 				play: 30
 				fade: 127 25 10 0
 			)
-			(if (== temp0 360) (music hold: TRUE))
+			(if (== temp0 360) (theMusic hold: TRUE))
 		)
 		(if (OneOf curRoomNum 4 5 6 8 10 11)
 			(Load SOUND 315)
@@ -299,7 +299,7 @@
 					)
 					(if (< (-- selfDestructTimer) 0)
 						(= inGame 0)
-						(music fade:)
+						(theMusic fade:)
 						(curRoom setScript: timesUp)
 					)
 					(if (!= timeTilSariens -1) (-- timeTilSariens))
@@ -399,10 +399,10 @@
 		)
 		(if
 			(and
-				(!= (music number?) 355)
+				(!= (theMusic number?) 355)
 				(or (OneOf n 7 11 13) (== n 7))
 			)
-			(music loop: 0 fade: number: 0)
+			(theMusic loop: 0 fade: number: 0)
 		)
 		(if theTimeID
 			(Display 700 3 p_restore theTimeID)
@@ -725,8 +725,8 @@
 		(if
 			(and
 				local0
-				(== (music number?) 355)
-				(== (music prevSignal?) -1)
+				(== (theMusic number?) 355)
+				(== (theMusic prevSignal?) -1)
 			)
 			(= local0 0)
 			(= cycles 1)
@@ -765,7 +765,7 @@
 			)
 			(2 (= local0 1))
 			(3
-				(globalSound number: 805 loop: 1 flags: 1 play:)
+				(theMusic2 number: 805 loop: 1 flags: 1 play:)
 				(arcada setCycle: EndLoop self)
 			)
 			(4
@@ -804,7 +804,7 @@
 		(switch (= state newState)
 			(0
 				(if (== register 30)
-					(music number: 355 loop: 1 flags: 0 play:)
+					(theMusic number: 355 loop: 1 flags: 0 play:)
 				)
 				(sampledVoice
 					number:

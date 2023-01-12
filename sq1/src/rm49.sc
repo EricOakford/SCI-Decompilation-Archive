@@ -242,8 +242,8 @@
 	(method (doit)
 		(super doit:)
 		(if
-		(and (== state 0) (== (globalSound prevSignal?) 10))
-			(music prevSignal: 0)
+		(and (== state 0) (== (theMusic2 prevSignal?) 10))
+			(theMusic prevSignal: 0)
 			(self cue:)
 		)
 		(Palette PALCycle 238 255 -1)
@@ -258,8 +258,8 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(music pause:)
-				(globalSound number: 332 loop: 1 flags: 0 play:)
+				(theMusic pause:)
+				(theMusic2 number: 332 loop: 1 flags: 0 play:)
 			)
 			(1
 				(curRoom overlay: 149 IRISOUT)
@@ -276,8 +276,8 @@
 				)
 			)
 			(4
-				(globalSound fade:)
-				(music setVol: 40 pause: 0 fade: 127 25 10 0)
+				(theMusic2 fade:)
+				(theMusic setVol: 40 pause: 0 fade: 127 25 10 0)
 				(curRoom drawPic: 49 IRISOUT)
 				(self dispose:)
 			)
@@ -301,8 +301,8 @@
 			)
 			(1
 				(Print 49 6)
-				(music stop:)
-				(globalSound number: 500 loop: 1 flags: mNOPAUSE play:)
+				(theMusic stop:)
+				(theMusic2 number: 500 loop: 1 flags: mNOPAUSE play:)
 				(self setScript: scratchHead self)
 			)
 			(2
@@ -329,7 +329,7 @@
 					)
 					(self dispose:)
 				else
-					(music fade:)
+					(theMusic fade:)
 					(HandsOn)
 					(curRoom newRoom: 50)
 				)

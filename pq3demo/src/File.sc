@@ -1,14 +1,9 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 ;;;;
-;;;;
 ;;;;	FILE.SC
-;;;;
 ;;;;	(c) Sierra On-Line, Inc, 1988, 1990
 ;;;;
 ;;;;	Authors: Jeff Stephenson, Mark Wilden
-;;;;	Updated:
-;;;;		Brian K. Hughes
-;;;;		August 11, 1992
 ;;;;
 ;;;;	The File class allows you to open and write to a file on disk. 
 ;;;;	This is useful for logging user input for which you have no
@@ -19,12 +14,15 @@
 ;;;;	Classes:
 ;;;;		File
 
+
 (script#	FILE)
 (include game.sh)
 (use System)
 
-(class File kindof Object
+(class File of Object
+
 	(properties
+		name		0
 		handle	0				;private -- the OS's handle for the open file
 	)
 
@@ -91,12 +89,9 @@
 		;Multiple writes accepted.
 		(if handle
 			(for ((= i 0)) (< i argc) ((++ i))
-				(if (not (FileIO fileFPuts handle [str i]))
-					(return FALSE)
-				)
+				(FileIO fileFPuts handle [str i])
 			)
 		)
-		(return TRUE)
 	)
 
 	(method (read str len)
@@ -123,23 +118,23 @@
 
 		;Open the file if it is not presently open.
 		(if (not handle)
-			(self open: fRead)
+			(self open:fRead)
 		)
 
-		(return (if handle (FileIO fileFGets str len handle) else NULL))
+		(return (if handle (FileIO fileFGets str len handle) else 0))
 	)
 
 	(method (seek offset mode &tmp theMode)
-		; Change the position in the file where the next read or write will
-		;	occur.  The new position is specified by means of the mode and offset.
-		;	if the mode is,
-		;		fileSeekBeg		the offset is relative to the beginning of the
-		;							file (default)
-		;		fileSeekCur		the offset is relative to the current position
-		;		fileSeekEnd		the offset is relative to the end of the file
-		;
-		;	the offset can be negative (for fileSeekCur and fileSeekEnd modes)
-		; the new file position is returned
+		;; Change the position in the file where the next read or write will
+		;;	occur.  The new position is specified by means of the mode and offset.
+		;;	if the mode is,
+		;;		fileSeekBeg		the offset is relative to the beginning of the
+		;;							file (default)
+		;;		fileSeekCur		the offset is relative to the current position
+		;;		fileSeekEnd		the offset is relative to the end of the file
+		;;
+		;;	the offset can be negative (for fileSeekCur and fileSeekEnd modes)
+		;; the new file position is returned
 
 		(= theMode (if (>= argc 2) mode else fileSeekBeg))
 

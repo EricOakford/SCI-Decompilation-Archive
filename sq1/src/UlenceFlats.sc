@@ -28,11 +28,11 @@
 		(super init:)
 		(if
 			(and
-				(!= (music number?) 601)
+				(!= (theMusic number?) 601)
 				(OneOf curRoomNum 40 41 42 45 46 47)
 				(OneOf prevRoomNum 40 41 42 43 45 46 47 48)
 			)
-			(music number: 601 loop: -1 play:)
+			(theMusic number: 601 loop: -1 play:)
 		)
 		(if (Btst fHaveNavDroid)
 			(robot
@@ -81,7 +81,7 @@
 	(method (newRoom n)
 		(if
 		(and (!= n 45) (not (OneOf n 40 41 42 45 46 47)))
-			(music fade:)
+			(theMusic fade:)
 		)
 		(super newRoom: n)
 	)

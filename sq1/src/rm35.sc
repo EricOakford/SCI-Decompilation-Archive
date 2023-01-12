@@ -93,7 +93,7 @@
 		(worker init: hide:)
 		(worker setScript: workerDoYourThing)
 		(= local253 0)
-		(music number: 463 loop: -1 play:)
+		(theMusic number: 463 loop: -1 play:)
 	)
 	
 	(method (doit)
@@ -112,7 +112,7 @@
 	)
 	
 	(method (newRoom n)
-		(music fade: loop: 0)
+		(theMusic fade: loop: 0)
 		(super newRoom: n)
 	)
 )
@@ -495,7 +495,7 @@
 (instance computerPipes of Feature
 	(properties
 		description {computer pipes}
-		onMeCheck SKIPCHECK
+		onMeCheck cLRED
 		lookStr {From the looks of these pipes, even the computer is powered by steam!}
 	)
 	
@@ -1007,7 +1007,7 @@
 				)
 			)
 			(2
-				(music fade:)
+				(theMusic fade:)
 				(steamSound stop:)
 				(engineSound stop:)
 				(worker signal: (| (worker signal?) $0100))
@@ -1037,7 +1037,7 @@
 				(= cycles 12)
 			)
 			(6
-				(globalSound number: 413 loop: -1 play:)
+				(theMusic2 number: 413 loop: -1 play:)
 				(self
 					save1:
 						(Display 35 55
@@ -1210,8 +1210,8 @@
 				(= cycles 9)
 			)
 			(26
-				(globalSound fade: loop: 0)
-				(music play: 0 fade: 127 25 10 0)
+				(theMusic2 fade: loop: 0)
+				(theMusic play: 0 fade: 127 25 10 0)
 				(cast eachElementDo: #show)
 				((ego _head?) hide:)
 				(curRoom drawPic: 35 FADEOUT)
@@ -1809,9 +1809,9 @@
 			(2 (leader setCycle: EndLoop self))
 			(3
 				(hoverSound fade: 40 25 10 0)
-				(music setVol: 40)
+				(theMusic setVol: 40)
 				(= local256 1)
-				(globalSound number: 458 loop: -1 flags: 1 play:)
+				(theMusic2 number: 458 loop: -1 flags: 1 play:)
 				(leaderTalker
 					posn: 100 120
 					init:
@@ -1864,8 +1864,8 @@
 			(9
 				(= local256 0)
 				(hoverSound fade: 127 25 10 0)
-				(music fade: 127 25 10 0)
-				(globalSound flags: 0 fade:)
+				(theMusic fade: 127 25 10 0)
+				(theMusic2 flags: 0 fade:)
 				(leader xStep: 5)
 				(= cycles 2)
 			)

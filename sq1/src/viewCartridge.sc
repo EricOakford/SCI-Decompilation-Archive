@@ -42,7 +42,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(music fade:)
+				(theMusic fade:)
 				(= ticks 18)
 			)
 			(1
@@ -68,7 +68,7 @@
 			)
 			(5
 				(curRoom drawPic: 99 SCROLLUP)
-				(globalSound number: 413 loop: -1 play:)
+				(theMusic2 number: 413 loop: -1 play:)
 				(Display 706 1
 					p_mode teJustCenter
 					p_width 165
@@ -182,8 +182,8 @@
 			)
 			(16
 				(curRoom drawPic: 99 SCROLLUP)
-				(globalSound fade: loop: 0)
-				(music play: 0 fade: 127 25 10 0)
+				(theMusic2 fade: loop: 0)
+				(theMusic play: 0 fade: 127 25 10 0)
 				(cast eachElementDo: #show)
 				(cast eachElementDo: #startUpd)
 				(ego ignoreActors: 0)

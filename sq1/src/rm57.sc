@@ -59,8 +59,8 @@
 			(else  (ego posn: 270 177))
 		)
 		(super init:)
-		(if (!= (music number?) 538)
-			(music number: 538 loop: -1 play:)
+		(if (!= (theMusic number?) 538)
+			(theMusic number: 538 loop: -1 play:)
 		)
 		(features
 			add: ventShaft shadows floor2 floor3 floor4 washerFeature
@@ -117,7 +117,7 @@
 	)
 	
 	(method (newRoom n)
-		(music fade:)
+		(theMusic fade:)
 		(super newRoom: n)
 	)
 )
@@ -440,7 +440,7 @@
 (instance shadows of RegionFeature
 	(properties
 		description {shadows}
-		onMeCheck SKIPCHECK
+		onMeCheck cLRED
 		lookStr {Various pipes, ducts and other innocuous pieces of equipment form pronounced shadows throughout the room.}
 		level 2
 	)
@@ -677,7 +677,7 @@
 			)
 			(21
 				(soundFx fade: flags: 0)
-				(music number: 538 loop: -1 play: 30 fade: 127 25 10 0)
+				(theMusic number: 538 loop: -1 play: 30 fade: 127 25 10 0)
 				(EgoStatusCheck)
 				(ego loop: 4)
 				(HandsOn)

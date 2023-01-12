@@ -37,8 +37,8 @@
 			(widget init:)
 		)
 		(super init:)
-		(if (!= (music number?) 355)
-			(music
+		(if (!= (theMusic number?) 355)
+			(theMusic
 				number: 319
 				loop: 1
 				play: 40
@@ -135,7 +135,7 @@
 	)
 	
 	(method (newRoom n)
-		(if (!= (music number?) 355) (music hold: 0 fade:))
+		(if (!= (theMusic number?) 355) (theMusic hold: 0 fade:))
 		(super newRoom: n)
 	)
 )

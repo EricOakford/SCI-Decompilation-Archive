@@ -80,10 +80,10 @@
 			(grateMonster2 init:)
 			(eyeStalk init: setScript: waveYourEyeStalk)
 			(if (Btst fGrateMonsterStuck)
-				(globalSound number: 449 loop: -1 play:)
+				(theMusic2 number: 449 loop: -1 play:)
 				(grateMonster1 setScript: tentacleStuck)
 			else
-				(globalSound number: 425 loop: -1 play:)
+				(theMusic2 number: 425 loop: -1 play:)
 				(tentacle1 init: hide:)
 				(tentacle1 setScript: tentacleWave 0 0)
 			)
@@ -98,7 +98,7 @@
 			((& (ego onControl: 0) cCYAN) (curRoom newRoom: 34))
 			(
 			(and (not (Btst fGrateMonsterAppears)) (& (ego onControl: 0) cLMAGENTA))
-				(globalSound number: 425 loop: -1 play:)
+				(theMusic2 number: 425 loop: -1 play:)
 				(Bset fGrateMonsterAppears)
 				(grateMonster1 init:)
 				(grateMonster2 init:)
@@ -135,7 +135,7 @@
 	)
 	
 	(method (newRoom n)
-		(globalSound fade:)
+		(theMusic2 fade:)
 		(super newRoom: n)
 	)
 )
@@ -219,7 +219,7 @@
 				)
 			)
 			(1
-				(globalSound number: 450 loop: 1 play: self)
+				(theMusic2 number: 450 loop: 1 play: self)
 			)
 			(2
 				(self setScript: tentacleStuck self)
@@ -235,7 +235,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(globalSound number: 449 loop: -1 play:)
+				(theMusic2 number: 449 loop: -1 play:)
 				(tentacle2
 					init:
 					x: 150
@@ -608,11 +608,11 @@
 				(tentacle2 setCycle: CycleTo 7 1 self)
 			)
 			(4
-				(globalSound number: 366 loop: 1 play:)
+				(theMusic2 number: 366 loop: 1 play:)
 				(tentacle2 cel: 8 setCycle: EndLoop self)
 			)
 			(5
-				(globalSound number: 426 loop: 1 play:)
+				(theMusic2 number: 426 loop: 1 play:)
 				(Print 31 27)
 				(= seconds 4)
 			)
@@ -659,11 +659,11 @@
 				(tentacle2 cel: 4 setCycle: CycleTo 7 1 self)
 			)
 			(4
-				(globalSound number: 366 loop: 1 play:)
+				(theMusic2 number: 366 loop: 1 play:)
 				(tentacle2 cel: 8 setCycle: EndLoop self)
 			)
 			(5
-				(globalSound number: 426 loop: 1 play:)
+				(theMusic2 number: 426 loop: 1 play:)
 				(Print 31 27)
 				(= seconds 4)
 			)

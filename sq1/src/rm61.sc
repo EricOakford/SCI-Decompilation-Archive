@@ -485,7 +485,7 @@
 		x 84
 		y 123
 		description {small machine}
-		onMeCheck SKIPCHECK
+		onMeCheck cLRED
 		lookStr {I give up. YOU tell ME what it is.}
 		level 2
 	)

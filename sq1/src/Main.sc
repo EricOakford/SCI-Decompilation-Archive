@@ -8,7 +8,7 @@
 (use SQEgo)
 (use Elevator)
 (use PMouse)
-(use GControl)
+(use SlideIcon)
 (use BordWind)
 (use IconBar)
 (use RandCyc)
@@ -42,54 +42,60 @@
 	ShowStatus 14
 	VerbFail 15
 	Speak 16
-	VGAOrEGA 17
+	FindColor 17
 	SpiderList 18
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	speed =  6
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	showStyle =  IRISOUT
-	aniInterval
-	theCursor
-	normalCursor =  ARROW_CURSOR
-	waitCursor =  20
-	userFont =  USERFONT
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  USERFONT
-	version
-	locales
-	curSaveDir
-	aniThreshold =  10
-	perspective
-	features
-	sortedFeatures
-	useSortedFeatures
-	egoBlindSpot
-	overlays =  -1
-	doMotionCue
-	systemWindow
-	demoDialogTime =  3
-	currentPalette
-	modelessPort
-	sysLogPath
+	ego										;pointer to ego
+	theGame									;ID of the Game instance
+	curRoom									;ID of current room
+	speed				=	6				;number of ticks between animations
+	quit									;when TRUE, quit game
+	cast									;collection of actors
+	regions									;set of current regions
+	timers									;list of timers in the game
+	sounds									;set of sounds being played
+	inventory								;set of inventory items in game
+	addToPics								;list of views added to the picture
+	curRoomNum								;current room number
+	prevRoomNum								;previous room number
+	newRoomNum								;number of room to change to
+	debugOn									;generic debug flag -- set from debug menu
+	score									;the player's current score
+	possibleScore							;highest possible score
+	showStyle			=	IRISOUT			;style of picture showing
+	aniInterval								;# of ticks it took to do the last animation cycle
+	theCursor								;the number of the current cursor
+	normalCursor		=	ARROW_CURSOR	;number of normal cursor form
+	waitCursor			=	HAND_CURSOR		;cursor number of "wait" cursor
+	userFont			=	USERFONT		;font to use for Print
+	smallFont			=	4		;small font for save/restore, etc.
+	lastEvent								;the last event (used by save/restore game)
+	modelessDialog							;the modeless Dialog known to User and Intrface
+	bigFont				=	USERFONT		;large font
+	version				=	0				;pointer to 'incver' version string
+											;***WARNING***  Must be set in room 0
+											; (usually to {x.yyy    } or {x.yyy.zzz})
+	locales									;set of current locales
+	curSaveDir								;address of current save drive/directory string
+	aniThreshold		=	10
+	perspective								;player's viewing angle:
+											;	 degrees away from vertical along y axis
+	features								;locations that may respond to events
+	sortedFeatures							;above+cast sorted by "visibility" to ego
+	useSortedFeatures	=	FALSE			;enable cast & feature sorting?
+	egoBlindSpot		=	0				;used by sortCopy to exclude 
+											;actors behind ego within angle 
+											;from straight behind. 
+											;Default zero is no blind spot
+	overlays			=	-1
+	doMotionCue								;a motion cue has occurred - process it
+	systemWindow							;ID of standard system window
+	demoDialogTime		=	3				;how long Prints stay up in demo mode
+	currentPalette							;
+	modelessPort		
+	sysLogPath								;used for system standard logfile path	
 		global43
 		global44
 		global45
@@ -109,33 +115,36 @@
 		global59
 		global60
 		global61
-	endSysLogPath
-	gameControls
-	ftrInitializer
-	doVerbCode
-	approachCode
-	useObstacles =  TRUE
-	theMenuBar
-	theIconBar
-	mouseX
-	mouseY
-	keyDownHandler
-	mouseDownHandler
-	directionHandler
-	speechHandler
-	lastVolume
-	pMouse
-	theDoits
-	eatMice =  60
-	user
-	syncBias
-	theSync
-	cDAudio
-	fastCast
-	inputFont
-	tickOffset
-	howFast
-	gameTime
+	endSysLogPath					;uses 20 globals
+	gameControls		
+	ftrInitializer		
+	doVerbCode			
+	firstSaidHandler				;will be the first to handle said events
+	useObstacles		=	TRUE	;will Ego use PolyPath or not?
+	theMenuBar						;points to TheMenuBar or Null	
+	theIconBar						;points to TheIconBar or Null	
+	mouseX				
+	mouseY				
+	keyDownHandler					;our EventHandlers, get called by the game
+	mouseDownHandler	
+	directionHandler	
+	gameCursor			
+	lastVolume			
+	pMouse				=	NULL	;pointer to a Pseudo-Mouse, or NULL
+	theDoits			=	NULL	;list of objects to get doits done every cycle
+	eatMice				=	60		;how many ticks minimum that a window stays up	
+	user				=	NULL	;pointer to specific applications User
+	syncBias						;; globals used by sync.sc (will be removed shortly)
+	theSync				
+	cDAudio				
+	fastCast			
+	inputFont			=	SYSFONT	;font used for user type-in
+
+	tickOffset			
+
+	howFast				 ;; measurment of how fast a machine is
+	gameTime			
+	;globals 89-99 are unused
 		global89
 		global90
 		global91
@@ -147,10 +156,10 @@
 		global97
 		global98
 	lastSysGlobal
-	music
+	theMusic
 	zapCount
 	global102
-	dongle =  1
+	gameCode =  1
 	global104
 	numColors
 	numVoices
@@ -161,25 +170,25 @@
 	global111
 	spiderPoly
 	oldCursor
-	pMouseX
-	pMouseY
+	saveCursorX
+	saveCursorY
 	theEgoHead
 	theStopGroop
 	gameFlags
-	global119
-	global120
-	global121
-	global122
-	global123
-	global124
-	global125
-	global126
-	global127
-	global128
-	myLowlightColor
-	myTopBordColor
-	myTextColor
-	myTextColor2
+		global119
+		global120
+		global121
+		global122
+		global123
+		global124
+		global125
+		global126
+		global127
+		global128
+	colBlack
+	colWhite
+	colDRed
+	colLRed
 	myTextColor3
 	myTextColor4
 	myTextColor5
@@ -201,12 +210,12 @@
 	global151
 	global152
 	global153
-	globalSound
-	myInsideColor
-	myBotBordColor
-	myRgtBordColor
-	myBackColor
-	myLftBordColor
+	theMusic2
+	colGray1
+	colGray2
+	colGray3
+	colGray4
+	colGray5
 	global160
 	global161
 	global162
@@ -283,8 +292,8 @@
 	)
 	(theIconBar curIcon: oldCurIcon)
 	(if (not (HaveMouse))
-		(= pMouseX ((User curEvent?) x?))
-		(= pMouseY ((User curEvent?) y?))
+		(= saveCursorX ((User curEvent?) x?))
+		(= saveCursorY ((User curEvent?) y?))
 		(theGame setCursor: waitCursor TRUE 310 180)
 	else
 		(theGame setCursor: waitCursor TRUE)
@@ -313,7 +322,7 @@
 	)
 	(if (not (HaveMouse))
 		(theGame
-			setCursor: ((theIconBar curIcon?) cursor?) TRUE pMouseX pMouseY
+			setCursor: ((theIconBar curIcon?) cursor?) TRUE saveCursorX saveCursorY
 		)
 	else
 		(theGame setCursor: ((theIconBar curIcon?) cursor?))
@@ -344,23 +353,13 @@
 
 (procedure (Bset flagEnum &tmp oldState)
 	(= oldState (Btst flagEnum))
-	(= [gameFlags (/ flagEnum 16)]
-		(|
-			[gameFlags (/ flagEnum 16)]
-			(>> $8000 (mod flagEnum 16))
-		)
-	)
+	(|= [gameFlags (/ flagEnum 16)] (>> $8000 (mod flagEnum 16)))
 	(return oldState)
 )
 
 (procedure (Bclr flagEnum &tmp oldState)
 	(= oldState (Btst flagEnum))
-	(= [gameFlags (/ flagEnum 16)]
-		(&
-			[gameFlags (/ flagEnum 16)]
-			(~ (>> $8000 (mod flagEnum 16)))
-		)
-	)
+	(&= [gameFlags (/ flagEnum 16)] (~ (>> $8000 (mod flagEnum 16))))
 	(return oldState)
 )
 
@@ -387,7 +386,7 @@
 		(= deadCel 0)
 		(Format @str 0 28)
 	)
-	(music number: 900 vol: 127 loop: 1 flags: mNOPAUSE play:)
+	(theMusic number: 900 vol: 127 loop: 1 flags: mNOPAUSE play:)
 	(sq1 setCursor: normalCursor TRUE)
 	(repeat
 		(switch
@@ -439,7 +438,7 @@
 			(= theForeFont 68)
 			(= theBackFont 69)
 			(= theWidth SCRNWIDE)
-			(= theForeColor myTopBordColor)
+			(= theForeColor colWhite)
 			(= theBackColor 0)
 			(= ret 1)
 			(while (< ret argc)
@@ -530,7 +529,7 @@
 
 (procedure (ShowStatus strg)
 	(StrCpy @strg {__Space Quest I - The Sarien Encounter})
-	(DrawStatus @strg 0 (VGAOrEGA myBackColor myInsideColor))
+	(DrawStatus @strg 0 (FindColor colGray4 colGray1))
 )
 
 (procedure (VerbFail &tmp list [temp1 2] evt theTime [temp5 5])
@@ -576,16 +575,16 @@
 	)
 )
 
-(procedure (VGAOrEGA vga ega)
-	(if (< vga 0) (= vga 0))
-	(if (> vga 255) (= vga 255))
-	(if (< ega 0) (= ega 0))
-	(if (> ega 15) (= ega 15))
+(procedure (FindColor col256 col16)
+	(if (< col256 0) (= col256 0))
+	(if (> col256 255) (= col256 255))
+	(if (< col16 0) (= col16 0))
+	(if (> col16 15) (= col16 15))
 	(return
 		(if (not (if (<= 2 numColors) (<= numColors 16)))
-			vga
+			col256
 		else
-			ega
+			col16
 		)
 	)
 )
@@ -754,13 +753,9 @@
 	)
 )
 
-(instance longSong of Sound
-	(properties)
-)
+(instance longSong of Sound)
 
-(instance longSong2 of Sound
-	(properties)
-)
+(instance longSong2 of Sound)
 
 (instance invSound of Sound
 	(properties
@@ -769,8 +764,6 @@
 )
 
 (instance soundEffects of Sound
-	(properties)
-	
 	(method (check)
 		(DoSound UpdateCues self)
 		(if signal
@@ -795,8 +788,6 @@
 )
 
 (instance stopGroop of GradualLooper
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
@@ -810,8 +801,6 @@
 )
 
 (instance babbleIcon of DCIcon
-	(properties)
-	
 	(method (init)
 		((= cycler (RandCycle new:)) init: self 20)
 	)
@@ -864,52 +853,52 @@
 		)
 		(theEgoHead client: ego)
 		(User canControl: 0 canInput: 0 alterEgo: ego)
-		((= music longSong) owner: self init: flags: 1)
-		((= globalSound longSong2) owner: self init:)
+		((= theMusic longSong) owner: self init: flags: mNOPAUSE)
+		((= theMusic2 longSong2) owner: self init:)
 		(= soundFx soundEffects)
 		(= version {x.yyy})
-		(= waitCursor HAND_CURSOR)
+		(= waitCursor 997)
 		(= possibleScore 201)
 		(= userFont 4)
 		(= numVoices (DoSound NumVoices))
 		(= numColors (Graph GDetect))
 		(sq1Win
 			color: 0
-			back: (VGAOrEGA myBackColor myInsideColor)
-			topBordColor: myTopBordColor
-			lftBordColor: (VGAOrEGA myLftBordColor myTopBordColor)
-			rgtBordColor: (VGAOrEGA myRgtBordColor myBotBordColor)
-			botBordColor: myBotBordColor
+			back: (FindColor colGray4 colGray1)
+			topBordColor: colWhite
+			lftBordColor: (FindColor colGray5 colWhite)
+			rgtBordColor: (FindColor colGray3 colGray2)
+			botBordColor: colGray2
 		)
 		(gcWin
 			color: 0
-			back: (VGAOrEGA myBackColor myInsideColor)
-			topBordColor: myTopBordColor
-			lftBordColor: (VGAOrEGA myLftBordColor myTopBordColor)
-			rgtBordColor: (VGAOrEGA myRgtBordColor myBotBordColor)
-			botBordColor: myBotBordColor
+			back: (FindColor colGray4 colGray1)
+			topBordColor: colWhite
+			lftBordColor: (FindColor colGray5 colWhite)
+			rgtBordColor: (FindColor colGray3 colGray2)
+			botBordColor: colGray2
 		)
 		(invWin
 			topBordHgt: 4
 			botBordHgt: 25
 			color: 0
 			priority: -1
-			back: (VGAOrEGA myBotBordColor myInsideColor)
-			topBordColor: (VGAOrEGA myBackColor myTopBordColor)
-			lftBordColor: (VGAOrEGA myRgtBordColor myTopBordColor)
-			rgtBordColor: (VGAOrEGA myInsideColor myBotBordColor)
-			botBordColor: (VGAOrEGA myInsideColor myBotBordColor)
-			insideColor: (VGAOrEGA myInsideColor myBotBordColor)
-			topBordColor2: myLowlightColor
-			lftBordColor2: myLowlightColor
-			botBordColor2: (VGAOrEGA myBackColor myTopBordColor)
-			rgtBordColor2: (VGAOrEGA myLftBordColor myLowlightColor)
+			back: (FindColor colGray2 colGray1)
+			topBordColor: (FindColor colGray4 colWhite)
+			lftBordColor: (FindColor colGray3 colWhite)
+			rgtBordColor: (FindColor colGray1 colGray2)
+			botBordColor: (FindColor colGray1 colGray2)
+			insideColor: (FindColor colGray1 colGray2)
+			topBordColor2: colBlack
+			lftBordColor2: colBlack
+			botBordColor2: (FindColor colGray4 colWhite)
+			rgtBordColor2: (FindColor colGray5 colBlack)
 		)
 		((= theIconBar IconBar)
 			add: icon0 icon1 icon2 icon3 icon6 icon7 icon4 icon5 icon8 icon9
 			eachElementDo: #init
 			eachElementDo: #highlightColor 0
-			eachElementDo: #lowlightColor (VGAOrEGA myBackColor myInsideColor)
+			eachElementDo: #lowlightColor (FindColor colGray4 colGray1)
 			curIcon: icon0
 			useIconItem: icon4
 			helpIconItem: icon9
@@ -946,7 +935,7 @@
 				invHelp
 				ok
 			eachElementDo: #highlightColor 0
-			eachElementDo: #lowlightColor (VGAOrEGA myInsideColor myBotBordColor)
+			eachElementDo: #lowlightColor (FindColor colGray1 colGray2)
 			eachElementDo: #init
 			window: invWin
 			helpIconItem: invHelp
@@ -990,7 +979,7 @@
 				)
 				iconHelp
 			eachElementDo: #highlightColor 0
-			eachElementDo: #lowlightColor (VGAOrEGA myRgtBordColor myBotBordColor)
+			eachElementDo: #lowlightColor (FindColor colGray3 colGray2)
 			helpIconItem: iconHelp
 			curIcon: iconRestore
 		)
@@ -1200,7 +1189,7 @@
 	(method (init)
 		(self
 			highlightColor: 0
-			lowlightColor: (VGAOrEGA myBackColor myInsideColor)
+			lowlightColor: (FindColor colGray4 colGray1)
 		)
 		(super init:)
 	)
@@ -1219,7 +1208,7 @@
 	(method (init)
 		(self
 			highlightColor: 0
-			lowlightColor: (VGAOrEGA myBackColor myInsideColor)
+			lowlightColor: (FindColor colGray4 colGray1)
 		)
 		(super init:)
 	)
@@ -1238,7 +1227,7 @@
 	(method (init)
 		(self
 			highlightColor: 0
-			lowlightColor: (VGAOrEGA myBackColor myInsideColor)
+			lowlightColor: (FindColor colGray4 colGray1)
 		)
 		(super init:)
 	)
@@ -1256,7 +1245,7 @@
 	(method (init)
 		(self
 			highlightColor: 0
-			lowlightColor: (VGAOrEGA myBackColor myInsideColor)
+			lowlightColor: (FindColor colGray4 colGray1)
 		)
 		(super init:)
 	)
@@ -1274,7 +1263,7 @@
 	(method (init)
 		(self
 			highlightColor: 0
-			lowlightColor: (VGAOrEGA myBackColor myInsideColor)
+			lowlightColor: (FindColor colGray4 colGray1)
 		)
 		(super init:)
 	)
@@ -1907,10 +1896,10 @@
 			)
 		)
 		(= theColor 0)
-		(= bottomColor myBotBordColor)
-		(= rightColor (VGAOrEGA myRgtBordColor myBotBordColor))
-		(= leftColor (VGAOrEGA myLftBordColor myTopBordColor))
-		(= topColor myTopBordColor)
+		(= bottomColor colGray2)
+		(= rightColor (FindColor colGray3 colGray2))
+		(= leftColor (FindColor colGray5 colWhite))
+		(= topColor colWhite)
 		(= theBevelWid 3)
 		(= theMaps 1)
 		(Graph GFillRect t l (+ b 1) (+ r 1) theMaps theColor thePri)
@@ -1931,7 +1920,7 @@
 		(TextSize @len @str 999 0)
 		(Display @str
 			p_font 999
-			p_color (VGAOrEGA myLftBordColor myTopBordColor)
+			p_color (FindColor colGray5 colWhite)
 			p_at
 			(+
 				10

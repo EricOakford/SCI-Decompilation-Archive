@@ -30,7 +30,7 @@
 		else
 			(LoadMany VIEW 115 217)
 		)
-		(music fade:)
+		(theMusic fade:)
 		(super init:)
 		(ship init:)
 		(if (Btst fDeltaurSelfDestructs)
@@ -107,7 +107,7 @@
 			)
 			(2
 				(curRoom overlay: 15)
-				(globalSound number: 805 loop: 1 play:)
+				(theMusic2 number: 805 loop: 1 play:)
 				(= cycles 4)
 			)
 			(3
@@ -172,7 +172,7 @@
 		(switch (= state newState)
 			(0
 				(curRoom drawPic: 17)
-				(music number: 701 loop: -1 flags: mNOPAUSE play:)
+				(theMusic number: 701 loop: -1 flags: mNOPAUSE play:)
 				(ship dispose:)
 				(if (Btst fStartedSelfDestruct)
 					(explosion dispose:)

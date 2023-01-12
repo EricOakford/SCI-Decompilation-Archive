@@ -144,7 +144,7 @@
 (instance skull of Feature
 	(properties
 		description {skull}
-		onMeCheck SKIPCHECK
+		onMeCheck cLRED
 		lookStr {This must be the skull previously attached to the rest of the mammoth bones partially assembled here.}
 	)
 	

@@ -31,7 +31,7 @@
 			101 teJustCenter ;p_mode
 			p_width 160
 			p_at 80 126
-			p_color myLowlightColor
+			p_color colBlack
 			p_save
 		)
 	)
@@ -63,7 +63,7 @@
 		(LoadMany SOUND 621 619 620 625 627 628 629)
 		(mouseDownHandler addToFront: self)
 		(keyDownHandler addToFront: self)
-		(if (< numVoices 4) (music stop:))
+		(if (< numVoices 4) (theMusic stop:))
 		(super init:)
 		(HandsOn)
 		(Bclr fWidgetOnSlots)
@@ -77,7 +77,7 @@
 		(pic1 cel: (& global174 $000f) init:)
 		(pic2 cel: (& (>> global174 $0004) $000f) init:)
 		(pic3 cel: (& (>> global174 $0008) $000f) init:)
-		(music setVol: 70)
+		(theMusic setVol: 70)
 		(if insertedBuckazoids
 			(info cel: 1 stopUpd:)
 			(SlotDisplay
@@ -159,8 +159,8 @@
 		)
 		(mouseDownHandler delete: self)
 		(keyDownHandler delete: self)
-		(music setVol: 127)
-		(globalSound flags: 0)
+		(theMusic setVol: 127)
+		(theMusic2 flags: 0)
 		(super dispose: &rest)
 	)
 	
@@ -308,7 +308,7 @@
 				(= cycles 3)
 			)
 			(2
-				(globalSound
+				(theMusic2
 					number:
 						(cond 
 							((== local0 1000) 626)
@@ -453,7 +453,7 @@
 	(method (cue)
 		(curRoom setScript: spinDone)
 		(tmp3 loop: 3)
-		(globalSound hold: 0)
+		(theMusic2 hold: 0)
 		(super cue: &rest)
 	)
 )
@@ -598,7 +598,7 @@
 						(not (curRoom script?))
 					)
 					(soundFx number: 627 loop: 1 play:)
-					(globalSound number: 628 loop: 1 flags: 1 play: hold: 1)
+					(theMusic2 number: 628 loop: 1 flags: 1 play: hold: 1)
 					(pic1 setPri: 10 setScript: (Clone spinPic) pic1 tmp1)
 					(pic2 setPri: 10 setScript: (Clone spinPic) pic2 tmp2)
 					(pic3 setPri: 10 setScript: (Clone spinPic) pic3 tmp3)

@@ -388,7 +388,7 @@
 			(0
 				(if register
 					(if (not (Btst fSelfDestructPoints))
-						(globalSound number: 626 loop: -1 play:)
+						(theMusic2 number: 626 loop: -1 play:)
 					)
 					(= saveBits2
 						(Display 65 2
@@ -401,7 +401,7 @@
 					)
 					(SolvePuzzle 10 fSelfDestructPoints)
 				else
-					(globalSound number: 521 loop: 1 play:)
+					(theMusic2 number: 521 loop: 1 play:)
 					(= saveBits2
 						(Display 65 3
 							p_at 111 42
@@ -415,7 +415,7 @@
 				(= cycles 15)
 			)
 			(1
-				(if (not register) (globalSound stop:))
+				(if (not register) (theMusic2 stop:))
 				(Display 65 1 p_restore saveBits2)
 				(= cycles 6)
 			)
@@ -429,7 +429,7 @@
 			)
 			(3
 				(if register
-					(globalSound number: 619 loop: 1 play:)
+					(theMusic2 number: 619 loop: 1 play:)
 					(= saveBits2
 						(Display 65 4
 							p_at 125 42

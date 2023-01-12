@@ -63,8 +63,8 @@
 		)
 		(super init:)
 		(self setScript: fromGrate)
-		(if (!= (music number?) 509)
-			(music number: 509 loop: -1 play:)
+		(if (!= (theMusic number?) 509)
+			(theMusic number: 509 loop: -1 play:)
 		)
 	)
 	
@@ -77,7 +77,7 @@
 	)
 	
 	(method (dispose)
-		(music fade:)
+		(theMusic fade:)
 		(super dispose:)
 	)
 	

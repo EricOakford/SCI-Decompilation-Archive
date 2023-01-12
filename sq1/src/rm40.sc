@@ -108,7 +108,7 @@
 			(tiny init: stopUpd:)
 			(arm init:)
 		)
-		(globalSound number: 608 loop: -1 flags: mNOPAUSE play:)
+		(theMusic2 number: 608 loop: -1 flags: mNOPAUSE play:)
 	)
 	
 	(method (doit)
@@ -152,7 +152,7 @@
 	
 	(method (newRoom n)
 		(if (not (Btst fTinyFollows))
-			(globalSound fade:)
+			(theMusic2 fade:)
 		)
 		(super newRoom: n)
 	)
@@ -283,7 +283,7 @@
 				(= seconds 2)
 			)
 			(4
-				(globalSound fade: 0 10 10 1)
+				(theMusic2 fade: 0 10 10 1)
 				(Print 40 6)
 				(= seconds 3)
 			)
@@ -316,7 +316,7 @@
 				(= seconds 5)
 			)
 			(10
-				(globalSound
+				(theMusic2
 					number: 608
 					loop: -1
 					play: 30
