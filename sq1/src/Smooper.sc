@@ -90,87 +90,84 @@
 		)
 		(= theLoop (client loop?))
 		(switch theLoop  ; clients Loop
+			;NOTE: SQ1-specific changes
 			(facingNorth
-				(cond
-					((or (<= theHeading 45	) (> theHeading 315)) ;(HEADINGNORTH		  ; new Headings
+				(cond 
+					((and (<= 271 theHeading) (<= theHeading 359)))
+					((and (<= 0 theHeading) (<= theHeading 90))
+						(= theLoop lNorthToEast)
+						(= nextLoop 0)
+						(= changedTheLoop TRUE)
 					)
-					((<= theHeading 135	) ;HEADINGEAST
-						(= theLoop 	lNorthToEast) 
-						(= nextLoop facingEast)
-						(=	changedTheLoop TRUE)
+					((and (<= 91 theHeading) (<= theHeading 180))
+						(= theLoop 4)
+						(= nextLoop 16)
+						(= changedTheLoop TRUE)
 					)
-					((<= theHeading 225	) ;HEADINGSOUTH
-						(= theLoop  lNorthToEast)
-						(= nextLoop (+ TwoStep lEastToSouth))
-						(=	changedTheLoop TRUE)
-					)
-					((<= theHeading 315	) ;HEADINGWEST
-						(= theLoop  lNorthToWest)
+					((and (<= 181 theHeading) (<= theHeading 270))
+						(= theLoop 5)
 						(= nextLoop facingWest)
-						(=	changedTheLoop TRUE)
+						(= changedTheLoop TRUE)
 					)
 				)
 			)
 			(facingEast
-				(cond
-					((or (<= theHeading 45	) (> theHeading 315)); HEADINGNORTH
-						(= theLoop	lEastToNorth)
-						(= nextLoop facingNorth )
-						(=	changedTheLoop TRUE)
+				(cond 
+					((and (<= 271 theHeading) (<= theHeading 359))
+						(= theLoop 6)
+						(= nextLoop 3)
+						(= changedTheLoop TRUE)
 					)
-					((<= theHeading 135	) ;HEADINGEAST
+					((and (<= 0 theHeading) (<= theHeading 90)))
+					((and (<= 91 theHeading) (<= theHeading 180))
+						(= theLoop 0)
+						(= nextLoop 2)
+						(= changedTheLoop TRUE)
 					)
-					((<= theHeading 225	) ;HEADINGSOUTH
-						(= theLoop 	lEastToSouth)
-						(= nextLoop facingSouth)
-						(=	changedTheLoop TRUE)
-					)
-					((<= theHeading 315	) ;HEADINGWEST							
-						(= theLoop	lEastToNorth)
-						(= nextLoop (+ TwoStep lNorthToWest))
-						(=	changedTheLoop TRUE)
+					((and (<= 181 theHeading) (<= theHeading 270))
+						(= theLoop 6)
+						(= nextLoop 21)
+						(= changedTheLoop TRUE)
 					)
 				)
 			)
 			(facingWest
-				(cond
-					((or (<= theHeading 45	) (> theHeading 315)); HEADINGNORTH
-						(= theLoop 	lWestToNorth) 
-						(= nextLoop facingNorth)
-						(=	changedTheLoop TRUE)
+				(cond 
+					((and (<= 271 theHeading) (<= theHeading 359))
+						(= theLoop 7)
+						(= nextLoop 3)
+						(= changedTheLoop TRUE)
 					)
-					((<= theHeading 135	) ;HEADINGEAST
-						(= theLoop 	lWestToSouth)
-						(= nextLoop (+ TwoStep lSouthToEast))
-						(=	changedTheLoop TRUE)
+					((and (<= 0 theHeading) (<= theHeading 90))
+						(= theLoop 1)
+						(= nextLoop 18)
+						(= changedTheLoop TRUE)
 					)
-					((<= theHeading 225	) ;HEADINGSOUTH
-						(= theLoop 	lWestToSouth)
-						(= nextLoop facingSouth)
-						(=	changedTheLoop TRUE)
+					((and (<= 91 theHeading) (<= theHeading 180))
+						(= theLoop 1)
+						(= nextLoop 2)
+						(= changedTheLoop TRUE)
 					)
-					((<= theHeading 315	) ;HEADINGWEST	
-					)
+					((and (<= 181 theHeading) (<= theHeading 270)))
 				)
 			)
 			(facingSouth
-				(cond
-					((or (<= theHeading 45	) (> theHeading 315)); HEADINGNORTH
-						(= theLoop 	lSouthToWest) 
-						(= nextLoop (+ TwoStep lWestToNorth))
-						(=	changedTheLoop TRUE)
+				(cond 
+					((and (<= 271 theHeading) (<= theHeading 359))
+						(= theLoop 3)
+						(= nextLoop 23)
+						(= changedTheLoop TRUE)
 					)
-					((<= theHeading 135	) ;HEADINGEAST
-						(= theLoop 	lSouthToEast)
-						(= nextLoop facingEast)
-						(=	changedTheLoop TRUE)
+					((and (<= 0 theHeading) (<= theHeading 90))
+						(= theLoop 2)
+						(= nextLoop 0)
+						(= changedTheLoop TRUE)
 					)
-					((<= theHeading 225	) ;HEADINGSOUTH
-					)
-					((<= theHeading 315	) ;HEADINGWEST	
-						(= theLoop	lSouthToWest)
-						(= nextLoop facingWest)
-						(=	changedTheLoop TRUE)
+					((and (<= 91 theHeading) (<= theHeading 180)))
+					((and (<= 181 theHeading) (<= theHeading 270))
+						(= theLoop 3)
+						(= changedTheLoop TRUE)
+						(= nextLoop 1)
 					)
 				)
 			)
