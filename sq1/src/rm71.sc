@@ -256,9 +256,9 @@
 			(2 (= seconds 2))
 			(3
 				(= saveBits (Graph GSaveBits 74 0 78 245 1))
-				(Graph GDrawLine 76 0 76 244 myTextColor7 1 0 0)
-				(Graph GDrawLine 75 0 75 122 myTextColor7 1 0 0)
-				(Graph GDrawLine 77 0 77 122 myTextColor7 1 0 0)
+				(Graph GDrawLine 76 0 76 244 colLGreen 1 0 0)
+				(Graph GDrawLine 75 0 75 122 colLGreen 1 0 0)
+				(Graph GDrawLine 77 0 77 122 colLGreen 1 0 0)
 				(Graph GShowBits 74 0 78 245 1)
 				(soundFx number: 312 loop: 1 play:)
 				(= ticks 80)

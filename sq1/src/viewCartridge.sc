@@ -62,7 +62,7 @@
 					p_mode teJustCenter
 					p_width 165
 					p_at 78 40
-					p_color myTextColor6
+					p_color colLYellow
 				)
 				(= seconds 3)
 			)
@@ -73,7 +73,7 @@
 					p_mode teJustCenter
 					p_width 165
 					p_at 78 40
-					p_color myTextColor6
+					p_color colLYellow
 				)
 				(= seconds 10)
 			)
@@ -83,7 +83,7 @@
 					p_mode teJustCenter
 					p_width 165
 					p_at 78 40
-					p_color myTextColor6
+					p_color colLYellow
 				)
 				(= seconds 16)
 			)
@@ -93,7 +93,7 @@
 					p_mode teJustCenter
 					p_width 165
 					p_at 78 40
-					p_color myTextColor6
+					p_color colLYellow
 				)
 				(= seconds 10)
 			)
@@ -103,7 +103,7 @@
 					p_mode teJustCenter
 					p_width 165
 					p_at 78 40
-					p_color myTextColor6
+					p_color colLYellow
 				)
 				(= seconds 12)
 			)
@@ -114,7 +114,7 @@
 					p_width 165
 					p_at 78 40
 					p_color
-					myTextColor6
+					colLYellow
 				)
 				(= seconds 12)
 			)
@@ -124,7 +124,7 @@
 					p_mode teJustCenter
 					p_width 165
 					p_at 78 40
-					p_color myTextColor6
+					p_color colLYellow
 				)
 				(= seconds 12)
 			)
@@ -134,7 +134,7 @@
 					p_mode teJustCenter
 					p_width 165
 					p_at 78 40
-					p_color myTextColor6
+					p_color colLYellow
 				)
 				(= seconds 12)
 			)
@@ -144,7 +144,7 @@
 					p_mode teJustCenter
 					p_width 165
 					p_at 78 40
-					p_color myTextColor6
+					p_color colLYellow
 				)
 				(= seconds 10)
 			)
@@ -156,7 +156,7 @@
 					p_mode teJustCenter
 					p_width 165
 					p_at 78 40
-					p_color myTextColor6
+					p_color colLYellow
 				)
 				(= seconds 20)
 			)
@@ -166,7 +166,7 @@
 					p_mode teJustCenter
 					p_width 165
 					p_at 78 40
-					p_color myTextColor6
+					p_color colLYellow
 				)
 				(= seconds 16)
 			)
@@ -176,7 +176,7 @@
 					p_mode teJustCenter
 					p_width 165
 					p_at 78 40
-					p_color myTextColor6
+					p_color colLYellow
 				)
 				(= seconds 4)
 			)

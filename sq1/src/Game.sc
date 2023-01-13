@@ -393,12 +393,6 @@
 				(= doMotionCue 0)
 				(cast eachElementDo: #motionCue)
 			)
-			;EO: conditions added from NRS speed patch
-			(cond 
-				((== curRoomNum 803))
-				((== curRoomNum 1) (Wait 1))
-				(else (Wait 2))
-			)
 			(if script (script doit:))
 			(regions eachElementDo: #doit)
 			(if (== newRoomNum curRoomNum) (user doit:))

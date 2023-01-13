@@ -10,8 +10,8 @@
 
 
 (local
-	[local0 18] = [359 338 22 0 67 23 112 68 157 113 202 158 247 203 292 248 337 293]
-	[theXOff 18] = [0 -1 0 -1 1 -1 1 0 1 1 0 1 -1 1 -1 0 -1 -1]
+	local0 = [359 338 22 0 67 23 112 68 157 113 202 158 247 203 292 248 337 293]
+	theXOff = [0 -1 0 -1 1 -1 1 0 1 1 0 1 -1 1 -1 0 -1 -1]
 )
 (class Inertia of Code
 	(properties
@@ -67,8 +67,7 @@
 					(!= (client heading?) oldDir)
 					(and (not (client mover?)) oldMover)
 				)
-				(= i 0)
-				(while (< i 17)
+				(for ((= i 0)) (< i 17) ((+= i 2))
 					(if
 						(and
 							(>= [local0 i] oldDir)
@@ -78,7 +77,6 @@
 						(= yOff [theXOff (+ i 1)])
 						(= i 17)
 					)
-					(= i (+ i 2))
 				)
 				(= inertizing 1)
 				(= swimCnt inertia)
@@ -115,18 +113,14 @@
 )
 
 (class Swim of Forward
-	
 	(method (doit)
-		(if
-		(and (client mover?) (not (client isBlocked:)))
+		(if (and (client mover?) (not (client isBlocked:)))
 			(super doit:)
 		)
 	)
 )
 
 (instance InertTo of Motion
-	(properties)
-	
 	(method (doit &tmp temp0)
 		(if (self onTarget:)
 			(self moveDone:)
@@ -159,8 +153,6 @@
 )
 
 (instance inertiaScript of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(directionHandler addToFront: self)

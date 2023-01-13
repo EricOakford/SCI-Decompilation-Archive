@@ -241,7 +241,7 @@
 					149
 					(- (ego y?) 16)
 					(ego x?)
-					global152
+					colLBlue
 					1
 					0
 					0
@@ -263,7 +263,7 @@
 					149
 					(- (ego y?) 22)
 					(ego x?)
-					myTextColor7
+					colLGreen
 					1
 					0
 					0

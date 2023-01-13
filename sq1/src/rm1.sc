@@ -199,7 +199,7 @@
 					(DoDisplay
 						{\03 1991 Sierra On-Line, Inc.}
 						#mode teJustLeft
-						#color myTextColor5
+						#color colYellow
 						#back colBlack
 						#width 240
 						#at 63 181
@@ -890,7 +890,7 @@
 					(Display 1 1
 						p_mode teJustCenter
 						p_font 300
-						p_color myTextColor5
+						p_color colYellow
 						p_width 240
 						p_at 40 30
 						p_save

@@ -74,9 +74,9 @@
 		(exitBtn init: stopUpd:)
 		(coinSlot init:)
 		(info init: cel: 1 stopUpd:)
-		(pic1 cel: (& global174 $000f) init:)
-		(pic2 cel: (& (>> global174 $0004) $000f) init:)
-		(pic3 cel: (& (>> global174 $0008) $000f) init:)
+		(pic1 cel: (& slotsCel $000f) init:)
+		(pic2 cel: (& (>> slotsCel $0004) $000f) init:)
+		(pic3 cel: (& (>> slotsCel $0008) $000f) init:)
 		(theMusic setVol: 70)
 		(if insertedBuckazoids
 			(info cel: 1 stopUpd:)
@@ -150,7 +150,7 @@
 	)
 	
 	(method (dispose)
-		(= global174
+		(= slotsCel
 			(+
 				(pic1 cel?)
 				(<< (pic2 cel?) $0004)

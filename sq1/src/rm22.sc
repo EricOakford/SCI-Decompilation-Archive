@@ -137,7 +137,7 @@
 			(4
 				(NormalEgo 0 1 61)
 				(ego loop: 4 heading: 135 setMotion: MoveTo 308 160 self)
-				(EgoHeadMove (theEgoHead view?))
+				(InitEgoHead (eHead view?))
 			)
 			(5 (HandsOn) (self dispose:))
 		)

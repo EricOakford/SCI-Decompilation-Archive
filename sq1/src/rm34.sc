@@ -164,7 +164,7 @@
 							p_font SYSFONT
 							p_width 150
 							p_at 10 40
-							p_color myTextColor7
+							p_color colLGreen
 							p_save
 						)
 				)
@@ -182,7 +182,7 @@
 							p_font SYSFONT
 							p_width 150
 							p_at 10 40
-							p_color myTextColor7
+							p_color colLGreen
 							p_save
 						)
 				)
@@ -201,7 +201,7 @@
 							p_font SYSFONT
 							p_width 150
 							p_at 10 40
-							p_color myTextColor7
+							p_color colLGreen
 							p_save
 						)
 				)
@@ -219,7 +219,7 @@
 							p_font SYSFONT
 							p_width 150
 							p_at 10 40
-							p_color myTextColor7
+							p_color colLGreen
 							p_save
 						)
 				)
@@ -237,7 +237,7 @@
 							p_font SYSFONT
 							p_width 150
 							p_at 10 40
-							p_color myTextColor7
+							p_color colLGreen
 							p_save
 						)
 				)
@@ -255,7 +255,7 @@
 							p_font SYSFONT
 							p_width 150
 							p_at 10 40
-							p_color myTextColor7
+							p_color colLGreen
 							p_save
 						)
 				)
@@ -311,7 +311,7 @@
 							p_font SYSFONT
 							p_width 150
 							p_at 10 40
-							p_color myTextColor7
+							p_color colLGreen
 							p_save
 						)
 				)
@@ -329,7 +329,7 @@
 							p_font SYSFONT
 							p_width 150
 							p_at 10 40
-							p_color myTextColor7
+							p_color colLGreen
 							p_save
 						)
 				)
@@ -347,7 +347,7 @@
 							p_font SYSFONT
 							p_width 150
 							p_at 10 40
-							p_color myTextColor7
+							p_color colLGreen
 							p_save
 						)
 				)
@@ -365,7 +365,7 @@
 							p_font SYSFONT
 							p_width 150
 							p_at 10 40
-							p_color myTextColor7
+							p_color colLGreen
 							p_save
 						)
 				)
@@ -410,7 +410,7 @@
 							p_font SYSFONT
 							p_width 150
 							p_at 10 40
-							p_color myTextColor7
+							p_color colLGreen
 							p_save
 						)
 				)
@@ -461,7 +461,7 @@
 							p_font SYSFONT
 							p_width 150
 							p_at 10 40
-							p_color myTextColor7
+							p_color colLGreen
 							p_save
 						)
 				)

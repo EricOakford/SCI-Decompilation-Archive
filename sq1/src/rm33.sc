@@ -329,7 +329,7 @@
 							p_font SYSFONT
 							p_width 165
 							p_at 78 40
-							p_color myTextColor6
+							p_color colLYellow
 							p_save
 						)
 				)

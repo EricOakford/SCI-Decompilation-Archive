@@ -143,7 +143,7 @@
 					(curRoom setScript: playSlots 0 3)
 				)
 				((Btst fSlotsDeath)
-					(theEgoHead hide:)
+					(eHead hide:)
 					(curRoom setScript: someoneDied 0 ego)
 				)
 				(else
@@ -999,11 +999,11 @@
 			(2
 				(if (== register ego)
 					(= saveBits (Graph GSaveBits 20 62 89 255 1))
-					(Graph GDrawLine 21 63 78 254 myTextColor7 1 0 0)
+					(Graph GDrawLine 21 63 78 254 colLGreen 1 0 0)
 					(Graph GReAnimate 20 62 89 255)
 				else
 					(= saveBits (Graph GSaveBits 20 62 89 250 1))
-					(Graph GDrawLine 21 63 88 249 myTextColor7 1 0 0)
+					(Graph GDrawLine 21 63 88 249 colLGreen 1 0 0)
 					(Graph GReAnimate 20 62 89 250)
 				)
 				(soundFx number: 312 loop: 1 play:)

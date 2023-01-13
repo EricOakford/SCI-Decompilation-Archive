@@ -11,7 +11,6 @@
 	slow
 	medium
 	fast
-	fastest
 )
 
 ;Icon buttons

@@ -98,7 +98,7 @@
 	(= theTimeID
 		(Display @str
 			p_at (detonationWindow x?) (detonationWindow y?)
-			p_color myTextColor12
+			p_color colLED
 			p_font 2
 			p_save
 		)
@@ -442,7 +442,7 @@
 			(= theTimeID
 				(Display 703 43
 					p_at (detonationWindow x?) (detonationWindow y?)
-					p_color myTextColor12
+					p_color colLED
 					p_font 2
 					p_save
 				)

@@ -414,7 +414,7 @@
 						)
 					)
 					(else
-						(VerbFail)
+						(NoResponse)
 					)
 				)
 			)
@@ -1026,7 +1026,7 @@
 							p_mode teJustCenter
 							p_width 165
 							p_at 78 40
-							p_color myTextColor6
+							p_color colLYellow
 							p_save
 						)
 				)
@@ -1044,7 +1044,7 @@
 							p_mode teJustCenter
 							p_width 165
 							p_at 78 40
-							p_color myTextColor6
+							p_color colLYellow
 							p_save
 						)
 				)
@@ -1061,7 +1061,7 @@
 							p_mode teJustCenter
 							p_width 165
 							p_at 78 40
-							p_color myTextColor6
+							p_color colLYellow
 							p_save
 						)
 				)
@@ -1078,7 +1078,7 @@
 							p_mode teJustCenter
 							p_width 165
 							p_at 78 40
-							p_color myTextColor6
+							p_color colLYellow
 							p_save
 						)
 				)
@@ -1095,7 +1095,7 @@
 							p_mode teJustCenter
 							p_width 165
 							p_at 78 40
-							p_color myTextColor6
+							p_color colLYellow
 							p_save
 						)
 				)
@@ -1112,7 +1112,7 @@
 							p_mode teJustCenter
 							p_width 165
 							p_at 78 40
-							p_color myTextColor6
+							p_color colLYellow
 							p_save
 						)
 				)
@@ -1129,7 +1129,7 @@
 							p_mode teJustCenter
 							p_width 165
 							p_at 78 40
-							p_color myTextColor6
+							p_color colLYellow
 							p_save
 						)
 				)
@@ -1146,7 +1146,7 @@
 							p_mode teJustCenter
 							p_width 165
 							p_at 78 40
-							p_color myTextColor6
+							p_color colLYellow
 							p_save
 						)
 				)
@@ -1163,7 +1163,7 @@
 							p_mode teJustCenter
 							p_width 165
 							p_at 78 40
-							p_color myTextColor6
+							p_color colLYellow
 							p_save
 						)
 				)
@@ -1182,7 +1182,7 @@
 							p_mode teJustCenter
 							p_width 165
 							p_at 78 40
-							p_color myTextColor6
+							p_color colLYellow
 							p_save
 						)
 				)
@@ -1199,7 +1199,7 @@
 							p_mode teJustCenter
 							p_width 165
 							p_at 78 40
-							p_color myTextColor6
+							p_color colLYellow
 							p_save
 						)
 				)
@@ -1592,7 +1592,7 @@
 						)
 					)
 					(else
-						(VerbFail)
+						(NoResponse)
 					)
 				)
 			)
@@ -1699,7 +1699,7 @@
 	(method (doVerb theVerb theItem)
 		(switch theVerb
 			(verbDo
-				(VerbFail)
+				(NoResponse)
 			)
 			(verbTaste
 				(Print 35 104)

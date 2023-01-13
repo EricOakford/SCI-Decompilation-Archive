@@ -15,12 +15,10 @@
 	doneTime
 	machineSpeed
 	versionFile
-	mediumSpeed
-	fastSpeed
+	mediumThreshold
+	fastThreshold
 )
-(instance fred of Actor
-	(properties)
-)
+(instance fred of Actor)
 
 (instance speedTest of Room
 	(properties
@@ -34,7 +32,7 @@
 		(FileIO fileClose versionFile)
 		(super init:)
 		(sounds eachElementDo: #stop)
-		(while (u> (GetTime) -1024)
+		(while (u> (GetTime) $fc00)
 		)
 		(fred
 			view: 902
@@ -48,14 +46,14 @@
 		)
 		(= speed 0)
 		(= machineSpeed 0)
-		(= fastSpeed
+		(= fastThreshold
 			(if (not (if (<= 2 numColors) (<= numColors 16)))
 				110
 			else
 				50
 			)
 		)
-		(= mediumSpeed
+		(= mediumThreshold
 			(if (not (if (<= 2 numColors) (<= numColors 16)))
 				65
 			else
@@ -67,12 +65,16 @@
 	(method (doit)
 		(super doit:)
 		(if (== (++ machineSpeed) 1) (= doneTime (+ 60 (GetTime))))
-		(if
-		(and (u< doneTime (GetTime)) (not (self script?)))
+		(if (and (u< doneTime (GetTime)) (not (self script?)))
 			(cond 
-				((< machineSpeed mediumSpeed) (= howFast slow) (theGame detailLevel: 1))
-				((< machineSpeed fastSpeed) (= howFast medium) (theGame detailLevel: 2))
-				(else (= howFast fast) (theGame detailLevel: 3))
+				((< machineSpeed mediumThreshold)
+					(= howFast slow)
+					(theGame detailLevel: 1)
+				)
+				((< machineSpeed fastThreshold) (= howFast medium) (theGame detailLevel: 2))
+				(else (= howFast fast)
+					(theGame detailLevel: 3)
+				)
 			)
 			(self setScript: speedScript)
 		)
@@ -84,14 +86,17 @@
 )
 
 (instance speedScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 1))
-			(1 (= speed 1) (= cycles 1))
+			(0
+				(= cycles 1)
+			)
+			(1
+				(= speed 1)
+				(= cycles 1)
+			)
 			(2
-				(curRoom newRoom: startingRoom)
+				(curRoom newRoom: restartRoom)
 			)
 		)
 	)

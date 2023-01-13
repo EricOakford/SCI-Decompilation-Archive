@@ -283,7 +283,7 @@
 			(= saveBits
 				(Display theString
 					p_at (+ (keyPad x?) 5) (+ (- (keyPad y?) 10) 20)
-					p_color myTextColor12
+					p_color colLED
 					p_mode teJustLeft
 					p_font 30
 					p_save

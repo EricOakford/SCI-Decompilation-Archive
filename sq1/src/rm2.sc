@@ -109,7 +109,7 @@
 							p_mode teJustCenter
 							p_font 4
 							p_width 200
-							p_color myTextColor12
+							p_color colLED
 							p_at 60 20
 							p_save
 						)
@@ -128,7 +128,7 @@
 							p_mode teJustCenter
 							p_font 4
 							p_width 200
-							p_color myTextColor12
+							p_color colLED
 							p_at 60 20
 							p_save
 						)
@@ -147,7 +147,7 @@
 							p_mode teJustCenter
 							p_font 4
 							p_width 200
-							p_color myTextColor12
+							p_color colLED
 							p_at 60 20
 							p_save
 						)
@@ -166,7 +166,7 @@
 							p_mode teJustCenter
 							p_font 4
 							p_width 200
-							p_color myTextColor12
+							p_color colLED
 							p_at 60 20
 							p_save
 						)
@@ -185,7 +185,7 @@
 							p_mode teJustCenter
 							p_font 4
 							p_width 200
-							p_color myTextColor12
+							p_color colLED
 							p_at 60 20
 							p_save
 						)
@@ -204,7 +204,7 @@
 							p_mode teJustCenter
 							p_font 4
 							p_width 200
-							p_color myTextColor12
+							p_color colLED
 							p_at 60 20
 							p_save
 						)
@@ -223,7 +223,7 @@
 							p_mode teJustCenter
 							p_font 4
 							p_width 200
-							p_color myTextColor12
+							p_color colLED
 							p_at 60 20
 							p_save
 						)
@@ -242,7 +242,7 @@
 							p_mode teJustCenter
 							p_font 4
 							p_width 200
-							p_color myTextColor12
+							p_color colLED
 							p_at 60 20
 							p_save
 						)
@@ -261,7 +261,7 @@
 							p_mode teJustCenter
 							p_font 4
 							p_width 200
-							p_color myTextColor12
+							p_color colLED
 							p_at 60 20
 							p_save
 						)

@@ -30,18 +30,18 @@
 	HandsOff 2
 	HandsOn 3
 	HaveMem 4
-	IsObjectOnControl 5
+	SteppedOn 5
 	Btst 6
 	Bset 7
 	Bclr 8
-	EgoHeadMove 9
+	InitEgoHead 9
 	EgoDead 10
 	SolvePuzzle 11
 	DoDisplay 12
 	Face 13
-	ShowStatus 14
-	VerbFail 15
-	Speak 16
+	DoStatus 14
+	NoResponse 15
+	Babble 16
 	FindColor 17
 	SpiderList 18
 )
@@ -158,22 +158,22 @@
 	lastSysGlobal
 	theMusic
 	zapCount
-	global102
-	gameCode =  1
-	global104
+	curReg				;is set in Deltaur region, but is never used
+	noCursor =  TRUE	;unused
+	cursorType			;unused
 	numColors
 	numVoices
-	startingRoom
-	global108
-	global109
-	global110
-	global111
+	restartRoom
+	global108			;unused
+	global109			;unused
+	global110			;unused
+	global111			;unused
 	spiderPoly
 	oldCursor
 	saveCursorX
 	saveCursorY
-	theEgoHead
-	theStopGroop
+	eHead
+	sGrooper
 	gameFlags
 		global119
 		global120
@@ -185,52 +185,53 @@
 		global126
 		global127
 		global128
+	;color globals
 	colBlack
 	colWhite
 	colDRed
 	colLRed
-	myTextColor3
-	myTextColor4
-	myTextColor5
-	myTextColor6
-	myTextColor7
-	myTextColor8
-	myTextColor9
-	myTextColor10
-	myTextColor11
-	myTextColor12
-	myTextColor13
-	myTextColor14
-	myTextColor15
-	myTextColor16
-	myTextColor17
-	myTextColor18
-	global149
-	global150
-	global151
-	global152
-	global153
+	colVLRed
+	colDYellow
+	colYellow
+	colLYellow
+	colLGreen
+	colVLGreen
+	colDBlue
+	colMagenta
+	colCyan
+	colLED
+	colLaser
+	myTextColor14	;These colors are initialized
+	myTextColor15	; in ColorInit, but they're never
+	myTextColor16	; used.
+	myTextColor17	;
+	myTextColor18	;
+	colBlue
+	colDGreen
+	global151		;unused
+	colLBlue
+	colVLBlue
 	theMusic2
 	colGray1
 	colGray2
 	colGray3
 	colGray4
 	colGray5
-	global160
-	global161
-	global162
+	colLCyan
+	colLMagenta
+	global162		;unused
 	droidX
 	droidY
 	buckazoids =  3
 	currentFloor =  1
-	global167
+	global167		;unused
 	scientistState
 	alesDrunk
 	bandInBar
 	enter41
 	selfDestructTimer
 	sarienFloor
-	global174
+	slotsCel
 	insertedBuckazoids
 	buckazoidsInDust =  12
 	soundFx
@@ -241,32 +242,34 @@
 	bridgeCrossings
 	thirstTimer =  7000
 	selfDestructCode
-	global185
+	logging
 	deltaurSector
 	debugging
 	sittingAtBar
 	shipDestination
 )
-(procedure (NormalEgo theLoop theView theStoppedView &tmp stoppedView)
-	(= stoppedView 0)
+(procedure (NormalEgo theLoop theView sView &tmp stopView)
+	(= stopView 0)
 	(if (> argc 0)
 		(ego loop: theLoop)
 		(if (> argc 1)
 			(ego view: theView)
-			(if (> argc 2) (= stoppedView theStoppedView))
+			(if (> argc 2)
+				(= stopView sView)
+			)
 		)
 	)
-	(if (not stoppedView)
-		(= stoppedView 60)
+	(if (not stopView)
+		(= stopView 60)
 	)
 	(ego
-		normal: 1
-		moveHead: 1
+		normal: TRUE
+		moveHead: TRUE
 		setLoop: -1
 		setLoop: stopGroop
 		setPri: -1
-		setMotion: 0
-		setCycle: StopWalk stoppedView
+		setMotion: FALSE
+		setCycle: StopWalk stopView
 		setStep: 4 2
 		illegalBits: 0
 		ignoreActors: FALSE
@@ -276,10 +279,10 @@
 	)
 )
 
-(procedure (HandsOff &tmp oldCurIcon)
+(procedure (HandsOff &tmp saveIcon)
 	(User canControl: FALSE canInput: FALSE)
 	(ego setMotion: 0)
-	(= oldCurIcon (theIconBar curIcon?))
+	(= saveIcon (theIconBar curIcon?))
 	(theIconBar disable:
 		ICON_INVENTORY
 		ICON_ITEM
@@ -290,7 +293,7 @@
 		ICON_LOOK
 		ICON_WALK
 	)
-	(theIconBar curIcon: oldCurIcon)
+	(theIconBar curIcon: saveIcon)
 	(if (not (HaveMouse))
 		(= saveCursorX ((User curEvent?) x?))
 		(= saveCursorY ((User curEvent?) y?))
@@ -298,7 +301,9 @@
 	else
 		(theGame setCursor: waitCursor TRUE)
 	)
-	(if pMouse (pMouse stop:))
+	(if pMouse
+		(pMouse stop:)
+	)
 )
 
 (procedure (HandsOn)
@@ -321,8 +326,8 @@
 		(theIconBar disable: ICON_ITEM)
 	)
 	(if (not (HaveMouse))
-		(theGame
-			setCursor: ((theIconBar curIcon?) cursor?) TRUE saveCursorX saveCursorY
+		(theGame setCursor:
+			((theIconBar curIcon?) cursor?) TRUE saveCursorX saveCursorY
 		)
 	else
 		(theGame setCursor: ((theIconBar curIcon?) cursor?))
@@ -333,9 +338,9 @@
 	(return (u> (MemoryInfo FreeHeap) howMuch))
 )
 
-(procedure (IsObjectOnControl theObj theControl)
+(procedure (SteppedOn who color)
 	(return
-		(if (& (theObj onControl: origin) theControl)
+		(if (& (who onControl: origin) color)
 			(return TRUE)
 			else FALSE
 		)
@@ -363,30 +368,36 @@
 	(return oldState)
 )
 
-(procedure (EgoHeadMove theHead &tmp headView)
-	(= headView 0)
-	(if argc (= headView theHead) else (= headView 60))
-	((= theEgoHead egoHead)
+(procedure (InitEgoHead headView &tmp hView)
+	(= hView 0)
+	(if argc (= hView headView) else (= hView 60))
+	((= eHead egoHead)
 		init: ego
-		view: headView
+		view: hView
 		cycleSpeed: 40
 	)
 )
 
-(procedure (EgoDead theView theLoop theCel &tmp deadView deadLoop deadCel [str 300])
+(procedure (EgoDead view loop cel &tmp dView dLoop dCel [str 300])
 	(sounds eachElementDo: #stop)
 	(if argc
-		(= deadView theView)
-		(= deadLoop theLoop)
-		(= deadCel theCel)
+		(= dView view)
+		(= dLoop loop)
+		(= dCel cel)
 		(Format @str &rest)
 	else
-		(= deadView 944)
-		(= deadLoop 0)
-		(= deadCel 0)
+		(= dView 944)
+		(= dLoop 0)
+		(= dCel 0)
 		(Format @str 0 28)
 	)
-	(theMusic number: 900 vol: 127 loop: 1 flags: mNOPAUSE play:)
+	(theMusic
+		number: 900
+		vol: 127
+		loop: 1
+		flags: mNOPAUSE
+		play:
+	)
 	(sq1 setCursor: normalCursor TRUE)
 	(repeat
 		(switch
@@ -395,7 +406,7 @@
 				#button {Restore} 1
 				#button {Restart} 2
 				#button {____Quit____} 3
-				#icon deadView deadLoop deadCel
+				#icon dView dLoop dCel
 			)
 			(1
 				(theGame restore:)
@@ -411,21 +422,21 @@
 	)
 )
 
-(procedure (SolvePuzzle points flagEnum)
-	(if (not (Btst flagEnum))
-		(theGame changeScore: points)
-		(Bset flagEnum)
+(procedure (SolvePuzzle pVal pFlag)
+	(if (not (Btst pFlag))
+		(theGame changeScore: pVal)
+		(Bset pFlag)
 		(pointsSound play:)
 	)
 )
 
-(procedure (DoDisplay theString &tmp
-		theMode theForeFont theBackFont theWidth theX theY theForeColor theBackColor ret)
+(procedure (DoDisplay args &tmp
+		theMode theForeFont theBackFont theWidth theX theY theForeColor theBackColor i)
 	(return
 		(if (== argc 1)
 			(Display 0 29
 				p_restore
-				[theString 0]
+				[args 0]
 			)
 			(if (not (HaveMouse))
 				(theGame setCursor: oldCursor TRUE)
@@ -440,19 +451,18 @@
 			(= theWidth SCRNWIDE)
 			(= theForeColor colWhite)
 			(= theBackColor 0)
-			(= ret 1)
-			(while (< ret argc)
-				(switch [theString ret]
+			(for ((= i 1)) (< i argc) ((++ i))
+				(switch [args i]
 					(#mode
 						(= theMode
-							[theString (++ ret)]
+							[args (++ i)]
 						)
 					)
 					(#font
 						(= theBackFont
 							(+
 								(= theForeFont
-									[theString (++ ret)]
+									[args (++ i)]
 								)
 								1
 							)
@@ -460,34 +470,33 @@
 					)
 					(#width
 						(= theWidth
-							[theString (++ ret)]
+							[args (++ i)]
 						)
 					)
 					(#at
 						(= theX
-							[theString (++ ret)]
+							[args (++ i)]
 						)
 						(= theY
-							[theString (++ ret)]
+							[args (++ i)]
 						)
 					)
 					(#color
-						(= theForeColor [theString (++ ret)])
+						(= theForeColor [args (++ i)])
 					)
 					(#back
 						(= theBackColor
-							[theString (++ ret)]
+							[args (++ i)]
 						)
 					)
 				)
-				(++ ret)
 			)
 			(if (not (HaveMouse))
 				(= oldCursor theCursor)
 				(theGame setCursor: 69 TRUE)
 			)
-			(= ret
-				(Display [theString 0]
+			(= i
+				(Display [args 0]
 					p_at theX theY
 					p_color theBackColor
 					p_width theWidth
@@ -496,43 +505,43 @@
 					p_save
 				)
 			)
-			(Display [theString 0]
+			(Display [args 0]
 				p_at theX theY
 				p_color theForeColor
 				p_width theWidth
 				p_mode theMode
 				p_font theForeFont
 			)
-			(return ret)
+			(return i)
 		)
 	)
 )
 
-(procedure (Face actor1 actor2 both whoToCue &tmp ang1To2 theX theY obj)
-	(= obj 0)
-	(if (IsObject actor2)
-		(= theX (actor2 x?))
-		(= theY (actor2 y?))
-		(if (== argc 3) (= obj both))
+(procedure (Face who theObjOrX theY whoCares &tmp theHeading lookX looKY whoToCue)
+	(= whoToCue 0)
+	(if (IsObject theObjOrX)
+		(= lookX (theObjOrX x?))
+		(= looKY (theObjOrX y?))
+		(if (== argc 3)
+			(= whoToCue theY)
+		)
 	else
-		(= theX actor2)
-		(= theY both)
-		(if (== argc 4) (= obj whoToCue))
+		(= lookX theObjOrX)
+		(= looKY theY)
+		(if (== argc 4)
+			(= whoToCue whoCares)
+		)
 	)
-	(= ang1To2
-		(GetAngle (actor1 x?) (actor1 y?) theX theY)
-	)
-	(actor1
-		setHeading: ang1To2 (if (IsObject obj) obj else 0)
-	)
+	(= theHeading (GetAngle (who x?) (who y?) lookX looKY))
+	(who setHeading: theHeading (if (IsObject whoToCue) whoToCue else 0))
 )
 
-(procedure (ShowStatus strg)
+(procedure (DoStatus strg)
 	(StrCpy @strg {__Space Quest I - The Sarien Encounter})
 	(DrawStatus @strg 0 (FindColor colGray4 colGray1))
 )
 
-(procedure (VerbFail &tmp list [temp1 2] evt theTime [temp5 5])
+(procedure (NoResponse &tmp list [temp1 2] evt theTime [temp5 5])
 	(= oldCursor (theGame setCursor: 69 TRUE))
 	(= evt (User curEvent?))
 	(redX
@@ -558,28 +567,36 @@
 	(theGame setCursor: oldCursor)
 )
 
-(procedure (Speak theView theString moreStuff &tmp [str 500])
-	(if (u< theString 1000)
-		(GetFarText theString moreStuff @str)
+(procedure (Babble theView msgS msgO &tmp [buffer 500])
+	(if (u< msgS 1000)
+		(GetFarText msgS msgO @buffer)
 	else
-		(StrCpy @str theString)
+		(StrCpy @buffer msgS)
 	)
 	(babbleIcon
 		view: theView
 		cycleSpeed: (* (+ howFast 1) 4)
 	)
-	(if (u< theString 1000)
-		(Print @str &rest #icon babbleIcon 0 0)
+	(if (u< msgS 1000)
+		(Print @buffer &rest #icon babbleIcon 0 0)
 	else
-		(Print @str moreStuff &rest #icon babbleIcon 0 0)
+		(Print @buffer msgO &rest #icon babbleIcon 0 0)
 	)
 )
 
 (procedure (FindColor col256 col16)
-	(if (< col256 0) (= col256 0))
-	(if (> col256 255) (= col256 255))
-	(if (< col16 0) (= col16 0))
-	(if (> col16 15) (= col16 15))
+	(if (< col256 0)
+		(= col256 0)
+	)
+	(if (> col256 255)
+		(= col256 255)
+	)
+	(if (< col16 0)
+		(= col16 0)
+	)
+	(if (> col16 15)
+		(= col16 15)
+	)
 	(return
 		(if (not (if (<= 2 numColors) (<= numColors 16)))
 			col256
@@ -774,7 +791,9 @@
 					(self loop: (- (self loop?) 1))
 					(DoSound PlaySound self 0)
 				)
-				((IsObject client) (client cue: self))
+				((IsObject client)
+					(client cue: self)
+				)
 			)
 		)
 	)
@@ -806,26 +825,18 @@
 	)
 )
 
-(instance sq1KeyDownHandler of EventHandler
-	(properties)
-)
+(instance sq1KeyDownHandler of EventHandler)
 
-(instance sq1MouseDownHandler of EventHandler
-	(properties)
-)
+(instance sq1MouseDownHandler of EventHandler)
 
-(instance sq1DirectionHandler of EventHandler
-	(properties)
-)
+(instance sq1DirectionHandler of EventHandler)
 
 (instance sq1 of Game
-	(properties)
-	
 	(method (init &tmp temp0)
 		(= debugging FALSE)
 		(= systemWindow sq1Win)
 		(ColorInit)
-		(= theStopGroop stopGroop)
+		(= sGrooper stopGroop)
 		(= deltaurSector (Random 1 20))
 		(= useSortedFeatures TRUE)
 		(= spiderPoly (SpiderList add:))
@@ -847,14 +858,25 @@
 		(= pMouse PseudoMouse)
 		(self egoMoveSpeed: 5 setSpeed: 0)
 		((= ego egoObj)
-			_head: (= theEgoHead egoHead)
+			_head: (= eHead egoHead)
 			moveSpeed: (self egoMoveSpeed?)
 			cycleSpeed: (self egoMoveSpeed?)
 		)
-		(theEgoHead client: ego)
-		(User canControl: 0 canInput: 0 alterEgo: ego)
-		((= theMusic longSong) owner: self init: flags: mNOPAUSE)
-		((= theMusic2 longSong2) owner: self init:)
+		(eHead client: ego)
+		(User
+			canControl: FALSE
+			canInput: FALSE
+			alterEgo: ego
+		)
+		((= theMusic longSong)
+			owner: self
+			init:
+			flags: mNOPAUSE
+		)
+		((= theMusic2 longSong2)
+			owner: self
+			init:
+		)
 		(= soundFx soundEffects)
 		(= version {x.yyy})
 		(= waitCursor 997)
@@ -904,7 +926,7 @@
 			helpIconItem: icon9
 			disable:
 		)
-		(icon5 message: (if (HaveMouse) 3840 else 9))
+		(icon5 message: (if (HaveMouse) SHIFTTAB else TAB))
 		(Inventory
 			init:
 			add:
@@ -968,10 +990,25 @@
 					yStep: (- 3 howFast)
 					yourself:
 				)
-				(iconSave theObj: self selector: #save yourself:)
-				(iconRestore theObj: self selector: #restore yourself:)
-				(iconRestart theObj: self selector: #restart yourself:)
-				(iconQuit theObj: self selector: #quitGame yourself:)
+				(iconSave
+					theObj: self
+					selector: #save
+					yourself:
+				)
+				(iconRestore
+					theObj: self
+					selector: #restore
+					yourself:
+				)
+				(iconRestart
+					theObj: self
+					selector: #restart
+					yourself:)
+				(iconQuit
+					theObj: self
+					selector: #quitGame
+					yourself:
+				)
 				(iconAbout
 					theObj: (ScriptID ABOUT 0)
 					selector: #doit
@@ -984,8 +1021,8 @@
 			curIcon: iconRestore
 		)
 		(buckazoid owner: ego)
-		(= startingRoom (if (GameIsRestarting) 4 else 1))
-		(self newRoom: 803)
+		(= restartRoom (if (GameIsRestarting) 4 else 1))
+		(self newRoom: SPEED)
 	)
 	
 	(method (replay)
@@ -994,13 +1031,15 @@
 	)
 	
 	(method (startRoom roomNum)
-		(if pMouse (pMouse stop:))
+		(if pMouse
+			(pMouse stop:)
+		)
 		(sounds eachElementDo: #perform soundReset)
 		((ScriptID DISPOSE) doit: roomNum)
 		(if
 			(and
 				debugging
-				global185
+				logging
 				(!= (- (MemoryInfo FreeHeap) 2) (MemoryInfo LargestPtr))
 				(Print 0 17 #button {Who cares} 0 #button {Debug} 1)
 			)
@@ -1022,7 +1061,7 @@
 				Elevator
 				RegionPath
 				(ScriptID DELTAUR)
-				(= global102 703)
+				(= curReg DELTAUR)
 			)
 			(else 0)
 		)
@@ -1056,7 +1095,7 @@
 				)
 			)
 			(if (not (ego looper?)) (ego setLoop: stopGroop))
-			(EgoHeadMove (egoHead view?))
+			(InitEgoHead (egoHead view?))
 		)
 	)
 	
@@ -1098,8 +1137,12 @@
 						)
 						(`#2
 							(cond 
-								((theGame masterVolume:) (theGame masterVolume: 0))
-								((> numVoices 1) (theGame masterVolume: 15))
+								((theGame masterVolume:)
+									(theGame masterVolume: 0)
+								)
+								((> numVoices 1)
+									(theGame masterVolume: 15)
+								)
 								(else
 									(theGame masterVolume: 1)
 								)
@@ -1141,26 +1184,35 @@
 			(if (and debugging (Btst fLogging))
 				(LogIt)
 			else
-				(VerbFail)
+				(NoResponse)
 			)
 		)
+	)
+	
+	;EO: NRS speed fix which was moved from GAME.SC
+	(method (doit)
+		(switch curRoomNum
+			(SPEED)	;don't apply slowdown at speed tester
+			(1
+				(Wait 1)
+			)
+			(else
+				(Wait 2)
+			)
+		)
+		(super doit:)
 	)
 )
 
 (instance soundReset of Code
-	(properties)
-	
 	(method (doit soundNum)
-		(if
-		(and (== (soundNum prevSignal?) -1) (soundNum number?))
+		(if (and (== (soundNum prevSignal?) -1) (soundNum number?))
 			(soundNum number: 0)
 		)
 	)
 )
 
 (instance speedORama of Code
-	(properties)
-	
 	(method (doit newSpeed)
 		(if argc
 			(theGame egoMoveSpeed: newSpeed)
@@ -1270,7 +1322,6 @@
 )
 
 (class RInvItem of InvItem
-	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
 			(verbUse
@@ -1693,7 +1744,9 @@
 	)
 	
 	(method (select)
-		(if (super select:) (Inventory showSelf: ego))
+		(if (super select:)
+			(Inventory showSelf: ego)
+		)
 	)
 )
 
@@ -1754,7 +1807,7 @@
 		loop 9
 		cel 0
 		cursor 29
-		message 6
+		message verbHelp
 		signal (| RELVERIFY IMMEDIATE)
 		helpStr {This icon tells you about other icons.}
 		maskView 900
@@ -1763,8 +1816,6 @@
 )
 
 (instance sq1DoVerbCode of Code
-	(properties)
-	
 	(method (doit theVerb theObj theItem &tmp objDesc)
 		(= objDesc (theObj description?))
 		(switch theVerb
@@ -1775,7 +1826,7 @@
 							(Print (theObj lookStr?))
 						)
 						((not (Btst fLogging))
-							(VerbFail)
+							(NoResponse)
 						)
 						(else
 							(LogIt theVerb theObj)
@@ -1785,7 +1836,7 @@
 			)
 			(else 
 				(if (not (Btst fLogging))
-					(VerbFail)
+					(NoResponse)
 				else
 					(LogIt theVerb theObj theItem)
 				)
@@ -1795,8 +1846,6 @@
 )
 
 (instance sq1FtrInit of Code
-	(properties)
-	
 	(method (doit theObj)
 		(if (== (theObj sightAngle?) ftrDefault)
 			(theObj sightAngle: 90)
@@ -1808,8 +1857,6 @@
 )
 
 (instance sq1Win of BorderWindow
-	(properties)
-	
 	(method (dispose)
 		(super dispose: &rest)
 		(if (not (HaveMouse))
@@ -1826,13 +1873,9 @@
 	)
 )
 
-(instance invWin of InsetWindow
-	(properties)
-)
+(instance invWin of InsetWindow)
 
 (instance gcWin of BorderWindow
-	(properties)
-	
 	(method (open &tmp
 			temp0 theBevelWid t l r b theColor theMaps bottomColor topColor leftColor rightColor
 			thePri i [str 15] [len 4])
@@ -1909,11 +1952,9 @@
 		(= b (+ b theBevelWid))
 		(Graph GFillRect t l (+ t theBevelWid) r theMaps bottomColor thePri)
 		(Graph GFillRect (- b theBevelWid) l b r theMaps topColor thePri)
-		(= i 0)
-		(while (< i theBevelWid)
+		(for ((= i 0)) (< i theBevelWid) ((++ i))
 			(Graph GDrawLine (+ t i) (+ l i) (- b (+ i 1)) (+ l i) rightColor thePri -1)
 			(Graph GDrawLine (+ t i) (- r (+ i 1)) (- b (+ i 1)) (- r (+ i 1)) leftColor thePri -1)
-			(++ i)
 		)
 		(Graph GShowBits t l (+ b 1) (+ r 1) 1)
 		(Format @str 0 32 score possibleScore)
@@ -2075,6 +2116,4 @@
 	)
 )
 
-(instance SpiderList of List
-	(properties)
-)
+(instance SpiderList of List)

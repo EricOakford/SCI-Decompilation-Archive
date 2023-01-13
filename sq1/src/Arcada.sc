@@ -284,7 +284,7 @@
 									(mod selfDestructTimer 60)
 								)
 								p_at (detonationBox x?) (- (detonationBox y?) (detonationBox z?))
-								p_color myTextColor6
+								p_color colLYellow
 								p_font 2
 								p_save
 							)

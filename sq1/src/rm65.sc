@@ -24,7 +24,7 @@
 	(= saveBits
 		(Display 65 0
 			p_at 100 42
-			p_color myTextColor6
+			p_color colLYellow
 			p_mode teJustLeft
 			p_font 2
 			p_save
@@ -164,7 +164,7 @@
 			(= saveBits2
 				(Display theString
 					p_at 161 42
-					p_color myTextColor12
+					p_color colLED
 					p_mode teJustLeft
 					p_font 2
 					p_save
@@ -393,7 +393,7 @@
 					(= saveBits2
 						(Display 65 2
 							p_at 107 42
-							p_color myTextColor6
+							p_color colLYellow
 							p_mode teJustLeft
 							p_font 2
 							p_save
@@ -405,7 +405,7 @@
 					(= saveBits2
 						(Display 65 3
 							p_at 111 42
-							p_color myTextColor6
+							p_color colLYellow
 							p_mode teJustLeft
 							p_font 2
 							p_save
@@ -433,7 +433,7 @@
 					(= saveBits2
 						(Display 65 4
 							p_at 125 42
-							p_color myTextColor6
+							p_color colLYellow
 							p_mode teJustLeft
 							p_font 2
 							p_save

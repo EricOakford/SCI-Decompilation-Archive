@@ -4,8 +4,7 @@
 (use Motion)
 
 
-(class MoveToY of MoveTo
-	
+(class MoveToY of MoveTo	
 	(method (init param1 param2 &tmp temp0 temp1)
 		(cond 
 			(
@@ -30,7 +29,6 @@
 )
 
 (class MoveToX of MoveTo
-	
 	(method (init param1 param2 &tmp temp0 temp1)
 		(cond 
 			(

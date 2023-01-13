@@ -209,7 +209,7 @@
 						134
 						70
 						190
-						#color myTextColor6
+						#color colLYellow
 						33
 						60
 					)

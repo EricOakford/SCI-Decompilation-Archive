@@ -235,7 +235,7 @@
 							p_font SYSFONT
 							p_width 165
 							p_at 78 40
-							p_color myTextColor6
+							p_color colLYellow
 							p_save
 						)
 				)
@@ -674,7 +674,7 @@
 					((& (ego onControl:) cYELLOW) (Print 32 5))
 					((& (ego onControl:) cLMAGENTA) (Print 32 39))
 					((== currentFloor 1) (Print 32 40))
-					(else (VerbFail))
+					(else (NoResponse))
 				)
 			)
 			(verbDo
