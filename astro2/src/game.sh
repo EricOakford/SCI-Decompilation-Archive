@@ -58,7 +58,7 @@
 (define	MOVETOCOORDS	807)
 (define	NOSEPICK		808)
 (define	INERTIA			809)
-(define	ROBOT_MANAGER	810)
+(define	RMNSCRIPT	810)
 (define	ABOUT			811)
 (define	SQROOM			812)
 (define SQEGO			813)
@@ -223,3 +223,6 @@
 	fStealTimepod				;87
 	fEnterProgrammingChamber	;88
 )
+
+;Required memory sizes in bytes
+(define HintSize		6800)

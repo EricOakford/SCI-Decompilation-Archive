@@ -16,6 +16,7 @@
 
 (script# SAVE)
 (include game.sh)
+(include language.sh)
 (use Main)
 (use Intrface)
 (use Language)

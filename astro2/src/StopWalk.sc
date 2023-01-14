@@ -1,9 +1,10 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# STOPWALK)
+(include game.sh)
 (use Motion)
 
 (public
-	StopWalk	0
+	StopWalk 0
 )
 
 (class StopWalk kindof Forward

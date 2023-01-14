@@ -1,6 +1,7 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# CAT)
-(include game.sh) (include cat.sh)
+(include game.sh)
+(include cat.sh)
 (use Main)
 (use Intrface)
 (use Actor)
@@ -8,7 +9,7 @@
 
 
 (class Cat kindof Actor
-
+	
 	;;	This class will track the mouse until the next mouseUp.
 	;;	A cat can be confined to a rectangular cage by setting the
 	;;	rectangle properties, and even to movement along one of its

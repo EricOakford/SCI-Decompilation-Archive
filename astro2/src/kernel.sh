@@ -60,9 +60,9 @@
 ;;;	DrawStatus			kernel	35
 ;;;
 ;;;	;Parsing.
-;;;;;	Parse					kernel	36
-;;;;;	Said					kernel	37
-;;;;;	SetSynonyms			kernel	38
+;;;	Parse					kernel	36
+;;;	Said					kernel	37
+;;;	SetSynonyms			kernel	38
 ;;;
 ;;;	;Mouse functions.
 ;;;	HaveMouse			kernel	39
@@ -130,7 +130,7 @@
 ;;;	;Miscellaneous.
 ;;;	Wait					kernel	65
 ;;;	GetTime				kernel	66
-;;;		; pass NO argument for 60ths second "ticks" value
+		; pass NO argument for 60ths second "ticks" value
 		(enum	1	; 0 is undefined in SysTime
 			SYSTIME1		; returns HHHH|MMMM|MMSS|SSSS	(1 sec resoulution, 12 Hr)
 			SYSTIME2		; returns HHHH|HMMM|MMMS|SSSS (2 sec resoulution 24 Hr)
@@ -154,14 +154,14 @@
 ;;;	OnControl			kernel	78
 ;;;	InitBresen			kernel	79
 ;;;	DoBresen				kernel	80
-;;;	Platform				kernel	81
+;;;	DoAvoider			kernel	81
 ;;;	SetJump				kernel	82
 ;;;
 ;;;	;Debugging support.
 ;;;	SetDebug				kernel	83
 ;;;	InspectObj			kernel	84
 ;;;	ShowSends			kernel	85
-;;;;;	ShowObjs				kernel	86
+;;;	ShowObjs				kernel	86
 ;;;	ShowFree				kernel	87
 ;;;	MemoryInfo			kernel	88
 		(enum
@@ -197,14 +197,7 @@
 ;;;
 ;;;	GetSaveFiles		kernel	93
 ;;;	GetCWD				kernel	94
-;;;
 ;;;	CheckFreeSpace		kernel	95
-		(enum
-			SaveGameSize
-			FreeSpace
-			EnoughSpaceToSave
-		)
-;;;
 ;;;	ValidPath			kernel	96
 ;;;
 ;;;	CoordPri				kernel	97
@@ -226,7 +219,7 @@
 ;;;	CheckSaveGame		kernel	101
 ;;;
 ;;;	ShakeScreen			kernel	102
-;;;		; shakes [dir]
+		; shakes [dir]
 		(enum	1
 			shakeSDown
 			shakeSRight
@@ -267,7 +260,7 @@
 ;;;	ShiftScreen			kernel	110
 ;;;
 ;;;	Palette				kernel	111
-;;;
+
 		(enum	1
 			PAL_MATCH		; don't steal entries in CLUT
 			PAL_REPLACE		; steal your exact entry in CLUT
@@ -296,20 +289,11 @@
 		)
 		(define	MS_STRING	0)	; no length specified - use string length
 
-;;;	PalVary				kernel	113
-;;;		; no doco at this time
-		(enum
-			PALVARYSTART
-			PALVARYREVERSE
-			PALVARYINFO
-			PALVARYKILL
-			PALVARYTARGET
-			PALVARYNEWTIME
-			PALVARYPAUSE
-		)
+;;;	Intersections		kernel	113
+		; no doco at this time
 
 ;;;	Memory				kernel	114
-;;;		; Function codes for Memory allocation operations  (Memory)
+		; Function codes for Memory allocation operations  (Memory)
 		(enum 1
 			MNeedPtr 
 			MNewPtr
@@ -319,7 +303,7 @@
 			MWriteWord
 		)
 ;;;	ListOps				kernel	115
-;;;		; Function codes for list manipulation operations  (ListOps)
+		; Function codes for list manipulation operations  (ListOps)
 		(enum 1
 			LEachElementDo 
 			LFirstTrue	  
@@ -338,8 +322,6 @@
 			fileFindFirst
 			fileFindNext
 			fileExists
-			fileRename
-			fileCopy
 		)
 ;;;	DoAudio				kernel	117
 		(enum	1
@@ -351,65 +333,20 @@
 			Loc
 			Rate
 			Volume
-			DACFound
-			RedBook
-			Queue
+			Lang
+			Bias
 		)
 ;;;	DoSync				kernel	118
 		(enum	
 			StartSync
 			NextSync
 			StopSync
-			QueueSync
 		)
 ;;;	AvoidPath			kernel	119
 ;;;	Sort					kernel	120
 ;;;	ATan					kernel	121
 ;;;	Lock					kernel	122
-;;;	ColorRemap			kernel	123
-		(enum
-			RemapOff			; no parameters
-			RemapByPct		; remapColor %intensity [depthOfField]
-			RemapByRange	; remapColor start end increment [depthOfField]
-			RemapToGray		; remapColor %gray [depthOfField]
-			RemapToPctGray	; remapColor %intensity %gray [depthOfField]
-		)
-;;;	Message				kernel	124
-		(enum	
-			MsgGet
-			MsgNext
-			MsgSize
-			MsgGetRefNoun
-			MsgGetRefVerb
-			MsgGetRefCase
-			MsgPush
-			MsgPop
-			MsgGetKey
-		)
-
-;;;	IsItSkip				kernel	125
-;;;	MergePoly			kernel	126
-;;;	ResCheck				kernel	127
-;;;	AssertPalette		kernel	128
-;;;
-;;;	TextColors	 		kernel	129
-;;;	TextFonts	 		kernel	130
-;;;
-;;;	Record		 		kernel	131
-;;;	PlayBack		 		kernel	132
-;;;
-;;;	ShowMovie			kernel	133
-;;;	SetVideoMode		kernel	134
-;;;
-;;;	SetQuitStr			kernel	135
-;;;	; takes near string as only parameter
-;;;
-;;;	DbugStr				kernel	136
-;;;	; Parameters:
-;;;	;	near string - display to other monitor
-;;;	;	1				- set display to first text page
-;;;	;	2				- set display to second text page
-;;;	;	0				- clear current text page
+;;;	StrSplit				kernel	123
+;;;	GetMessage			kernel	124
 ;;;)
-;;;
-;;;
+

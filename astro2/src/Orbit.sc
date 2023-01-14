@@ -5,6 +5,7 @@
 (use Motion)
 (use System)
 
+
 (class Orbit kindof Motion
 	; Orbit about the screen.  This motion never terminates.
 	;

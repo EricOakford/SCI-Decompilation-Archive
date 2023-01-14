@@ -10,7 +10,6 @@
 )
 
 (instance aboutCode of Code
-	
 	(method (doit)
 		(Printf 811 0 version)
 		(Print 811 1)

@@ -18,7 +18,6 @@
 (use Motion)
 (use System)
 
-
 (class DPath of Motion
 	
 	(properties
@@ -86,3 +85,5 @@
 		)
 	)
 );DPath
+
+

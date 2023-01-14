@@ -15,10 +15,12 @@
 
 (script#	EXTRA)
 (include game.sh)
-;header file is implicitly included through system.sh
-;(include "extra.sh")
 (use Motion)
 (use Actor)
+
+
+;header file is implicitly included through system.sh
+;(include "extra.sh")
 
 
 (enum
@@ -134,7 +136,7 @@
 					)
 					(if (not (= cycles (Random minPause maxPause)))
 						(self cue:)
-					)					
+					)
 				else
 					(-- counter)
 					(self cue:)
@@ -142,17 +144,19 @@
 			)
 			(startAction
 				;Start animation for a random period of time.
-				(cond 
+				(cond
 					((== cycleType ExtraForward)
-						(self setCycle: Forward)
+						(self setCycle:Forward) 
 						(= cycles (Random minCycles maxCycles))
 					)
 					((and
-							(== cycleType ExtraEndAndBeginLoop)
-							(== pauseCel ExtraRandomCel))
-							(self setCycle: BegLoop self))
+						(== cycleType ExtraEndAndBeginLoop)
+						(== pauseCel ExtraLastCel)
+					 )
+						(self setCycle:BegLoop self)
+					)
 					(else
-						(self setCycle: EndLoop self)
+						(self setCycle:EndLoop self)
 					)
 				)
 			)
@@ -165,10 +169,10 @@
 			)
 			(continueAction
 				(if (== cycleType ExtraEndAndBeginLoop)
-					(if (!= pauseCel ExtraRandomCel)
-						(self setCycle: BegLoop self)
+					(if (!= pauseCel ExtraLastCel)
+						(self setCycle:BegLoop self)
 					else
-						(self setCycle: EndLoop self)
+						(self setCycle:EndLoop self)
 					)
 				else
 					(self cue:)

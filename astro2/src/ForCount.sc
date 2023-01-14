@@ -3,7 +3,6 @@
 (include game.sh)
 (use Motion)
 
-
 ;;; ForwardCounter Cycle Class
 ;;; Author J.Mark Hood 
 ;;; Saves states in scripts by cycleing a given number of times
@@ -33,3 +32,6 @@
 	); cycleDone
 
 ); ForwardCounter
+
+
+

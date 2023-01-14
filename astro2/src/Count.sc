@@ -1,5 +1,7 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# COUNT)
+(include game.sh)
+
 ;;;(procedure
 ;;;	Count
 ;;;)

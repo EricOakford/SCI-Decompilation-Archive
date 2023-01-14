@@ -38,6 +38,7 @@
 					theMask
 					&tmp
 					[fileName 7]
+					;[fileName (+ (/ maxFileName 2) 1)]
 					i cp rc
 			  )
 

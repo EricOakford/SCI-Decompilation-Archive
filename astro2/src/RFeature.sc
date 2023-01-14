@@ -1,7 +1,9 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script#	RFEATURE)
+(script# RFEATURE)
+(include game.sh)
 (use Feature)
 (use Actor)
+
 
 (class	RFeature	of Feature
 	(properties

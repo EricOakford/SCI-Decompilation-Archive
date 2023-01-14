@@ -1,20 +1,4 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-;;;;
-;;;;	QSOUND.SC
-;;;;
-;;;;	(c) Sierra On-Line, Inc, 1993
-;;;;
-;;;;	Author: 	Pablo Ghenis
-;;;;	Updated:	Brian K. Hughes
-;;;;
-;;;;	This class of sound is meant to monitor sequentially-numbered cues
-;;;;	and cue its client as many times as necessary to maintain the sequence,
-;;;;	regardless of whether the machine is keeping up with the sound.
-;;;;
-;;;;	Classes:
-;;;;		QueuedSound
-
-
 (script# QSOUND)
 (include game.sh)
 (use Sound)
@@ -22,6 +6,8 @@
 
 (class QueuedSound kindof Sound
 
+	;;Author: Pablo Ghenis, 7/12/89
+	;;
 	;;A QueuedSound assumes that the absolute values of the cues it receives
 	;;form a sequence, ie. 128,129,130... 
 	;;
@@ -57,21 +43,27 @@
 		)
 		
 		(while (!= (= theSignal signal) prevSignal)
+			;EO: In the SCI16 QSOUND.SC, the original code messed up the dance scene in QFG2.
+			;So the code being used is from the decompiled script.
+;;;			(if (IsObject client)
+;;;				(for
+;;;					(	(= cues (- theSignal (or prevSignal 127)))
+;;;					)
+;;;					cues
+;;;					(	(-- cues)
+;;;					)
+;;;
+;;;					;;loop body
+;;;					;;---------
+;;;					(client cue: self)
+;;;				)
+;;;			)
 
-			;;loop body
-			;;---------
-			
 			(if (IsObject client)
-				(for
-					(	(= cues (- theSignal (or prevSignal 127)))
-					)
-					cues
-					(	(-- cues)
-					)
-
-					;;loop body
-					;;---------
+				(= cues (- theSignal (if prevSignal else 127)))
+				(while cues
 					(client cue: self)
+					(-- cues)
 				)
 			)
 			(= prevSignal theSignal)

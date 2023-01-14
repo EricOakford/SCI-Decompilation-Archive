@@ -4,7 +4,6 @@
 (use Intrface)
 (use Motion)
 
-
 (class DCIcon 	kindof DIcon
 	;;; Cycling Icons are a sub-class of DIcon.
 	;;; An instance of DCIcon may be passed to Print for use in

@@ -90,41 +90,50 @@
 	(method (doit &tmp lxs lys)
 		(= xLast (client x?))
 		(= yLast (client y?))
-		(client x: (+ xLast xStep) y: (+ yLast yStep))
+		;Move the client.
+		(client
+			x:(+ xLast xStep),
+			y:(+ yLast yStep)
+		)
+
+		;Accelerate the motion.
 		(= lxs xStep)
 		(= lys yStep)
-		(= xStep (+ xStep gx))
-		(= yStep (+ yStep gy))
+		(+= xStep gx)
+		(+= yStep gy)
+
+		;Check to see if the move is completed.
 		(if
 			(and
 				(not waitApogeeX)
-				(!= x 20000)
+				(!= x UNDEF)
 				(<= 0 (* dx (- (client x?) x)))
 			)
-			(client x: x)
+				(client x:x)
 			(self moveDone:)
 			(return)
 		)
 		(if
 			(and
 				(not waitApogeeY)
-				(!= y 20000)
+				(!= y UNDEF)
 				(<= 0 (* dy (- (client y?) y)))
 			)
-			(client y: y)
-			(self moveDone:)
-			(return)
-		)
+				(client y:y)
+				(self moveDone:)
+				(return)
+			)
+
+		;If a velocity has changed sign, its apogee has been reached.
 		(if (<= (* lxs xStep) 0)
-			(= waitApogeeX 0)
+			(= waitApogeeX FALSE)
 			(self setTest:)
 		)
 		(if (<= (* lys yStep) 0)
-			(= waitApogeeY 0)
+			(= waitApogeeY FALSE)
 			(self setTest:)
 		)
 	)
-
 
 
 	(method (moveDone)

@@ -2,70 +2,126 @@
 (script# PCYCLE)
 (include game.sh)
 (use Motion)
+;;;;
+;;;;	PCYCLE.SC
+;;;;	(c) Sierra On-Line, Inc, 1990
+;;;;
+;;;;	Author: J. Mark Hood
+;;;; Palette Cycling Class.  
+;;;;
+;;;; It tries to take the place of having many  different palette
+;;;; cyclers by watching the parameter list.
+;;;; If one number is passed it acts like a CycleTo cycling
+;;;; from the current palette to the passed palette:
+;;;; 	(aProp setCycle:PCycle 5) cycles from current palette to palette 5.
+;;;; If two numbers are passed it cycles through the range specified
+;;;; in the proper direction (i.e. first number to second):
+;;;; 	(aProp setCycle:PCycle 5 2) cycles from palette 5 to palette 2
+;;;; If three numbers are passed it cycles through this range a number of 
+;;;; times:
+;;;; 	(aProp setCycle:PCycle 5 2 4) cycles from palette 5 to palette 2, 
+;;;;	4 times.
+;;;; 
+;;;; Of course, a caller can be added to any of the above conventions,
+;;;; to cue as any decent Cycler should.
 
 
-(class PCycle of CycleTo
+(class PCycle kindof CycleTo
 	(properties
-		startPal 0
-		endPal 0
+		client 0			;object whose cycling the class is controlling
+		caller 0			;object to notify when cycling is completed
+		cycleDir 1		;cycle direction (1 == forward, -1 == backward)
+		startPal	0		;starting palette number for cycle
+		endPal 0			;ending palette number for cycle
+		cycleCnt 0		;"speed" related property
+		completed 0
 		howMany 1
 	)
 	
-	(method (init theClient theEndPal theCaller theCaller_2 theCaller_3)
-		(if argc
-			(= client theClient)
-			(cond 
-				(
-					(or
-						(== argc 2)
-						(and (== argc 3) (IsObject theCaller))
-					)
+;;;	(methods
+;;;		nextCel	;return value of next palette in the current cycling direction
+;;;		cycleDone 		;method invoked when the cycling finishes
+;;;		motionCue
+;;;	)
+	
+	
+	(method (init theObj p1 p2OrWhoCares howManyOrWhoCares whoCares)
+		;Make theObj our client.
+		(if argc 
+			(= client theObj)
+			(cond
+				;; like a CycleTo
+				((or (== argc 2) (and (== argc 3) (IsObject p2OrWhoCares)))
 					(= startPal (client palette?))
-					(= endPal theEndPal)
-					(if (== argc 3) (= caller theCaller))
-				)
-				(
-					(or
-						(== argc 3)
-						(and (== argc 4) (IsObject theCaller_2))
+					(= endPal p1)
+					(if (== argc 3)
+						(= caller p2OrWhoCares)
 					)
-					(= startPal theEndPal)
-					(= endPal theCaller)
-					(if (== argc 4) (= caller theCaller_2))
 				)
-				((>= argc 4)
-					(= startPal theEndPal)
-					(= endPal theCaller)
-					(= howMany theCaller_2)
-					(if (== argc 5) (= caller theCaller_3))
+				;; Cycle a range once
+				((or (== argc 3) (and (== argc 4) (IsObject howManyOrWhoCares)))
+					(= startPal p1)
+					(= endPal p2OrWhoCares)
+					(if (== argc 4)
+						(= caller howManyOrWhoCares)
+					)
 				)
+				;; Cycles a range a number of times
+				((>= argc 4) 
+					(= startPal p1)
+					(= endPal p2OrWhoCares)
+					(= howMany howManyOrWhoCares)
+					(if (== argc 5)
+						(= caller whoCares)
+					)
+				)
+
 			)
 		)
-		(= cycleDir (if (< endPal startPal) -1 else 1))
-		(= completed (= cycleCnt 0))
+		(= cycleDir
+			(if (< endPal startPal)
+				-1
+			else
+				1
+			)
+		)
+		;Reset cycle counter.
+		(= cycleCnt 0)
+		(= completed FALSE)
 	)
 	
 	(method (doit)
 		(if (>= (++ cycleCnt) (client cycleSpeed?))
 			(= cycleCnt 0)
-			(client palette: (self nextCel:) forceUpd:)
-			(if (not howMany) (= completed 1) (self cycleDone:))
+			(client
+				palette: (self nextCel?), ; make use of cycler methods
+				forceUpd:
+			)
+			(if (not howMany)
+				(= completed TRUE)
+				(self cycleDone:)
+			)
 		)
 	)
-	
-	(method (nextCel &tmp theStartPal)
-		(cond 
-			(
-				(>
-					(= theStartPal (+ (client palette?) cycleDir))
-					endPal
-				)
-				(= theStartPal startPal)
+
+	(method (nextCel &tmp thePal)
+		(= thePal
+			(+ (client palette?) cycleDir)
+		)
+		(cond
+			((> thePal endPal)
+				(= thePal startPal)
 				(-- howMany)
 			)
-			((< theStartPal startPal) (= theStartPal endPal) (-- howMany))
+			((< thePal startPal)
+				(= thePal endPal)
+				(-- howMany)
+			)
 		)
-		(if (not howMany) (= theStartPal (client palette?)))
-		(return theStartPal)
+		(if (not howMany)
+			(= thePal (client palette?))
+		)
+		(return thePal)
 	)
+	
 )

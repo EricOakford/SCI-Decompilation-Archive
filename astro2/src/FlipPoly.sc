@@ -13,10 +13,6 @@
 ;;;	FlipPoly
 ;;;	FlipFeature
 ;;;)
-
-(define SIZEOFPOINT 	4)
-(define SIZEOFWORD 	2)
-	
 (public
 	FlipPoly	0
 	FlipFeature	1
@@ -39,6 +35,8 @@
 	(DisposeScript FLIPPOLY)
 )
 
+(define SIZEOFPOINT 	4)
+(define SIZEOFWORD 	2)
 
 (instance flipPoly of Code
 ;;;	(define SIZEOFPOINT 	4)

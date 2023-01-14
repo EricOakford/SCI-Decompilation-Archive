@@ -10,19 +10,17 @@
 )
 
 (instance disposeCode of Code
-	(properties)
-	
 	(method (doit roomNum)
 		(LoadMany FALSE
 			OSC NAMEFIND REVERSE SORT COUNT DPATH FORCOUNT SIGHT MOVEFWD
 			RANDCYC STOPWALK MOVECYC POLYPATH POLYGON SQROOM NOSEPICK HINTBOOK
-			ROBOT_MANAGER PRINTD MOVETOCOORDS
+			RMNSCRIPT PRINTD MOVETOCOORDS
 		)
 		(if
 			(or
 				(and
 					(OneOf roomNum 25 30 35 40 45 50 55 60 65)
-					(!= curRegionPath STREET)
+					(!= curReg STREET)
 				)
 				(and
 					(OneOf roomNum
@@ -30,11 +28,11 @@
 						386 387 390 391 395 397
 						398 399 400 405 406 410 411
 					)
-					(!= curRegionPath MALL)
+					(!= curReg MALL)
 				)
 				(and
 					(OneOf roomNum 150 500 505 510 514 515 520 525 541 544 545)
-					(!= curRegionPath BRAIN)
+					(!= curReg BRAIN)
 				)
 				(not
 					(OneOf roomNum

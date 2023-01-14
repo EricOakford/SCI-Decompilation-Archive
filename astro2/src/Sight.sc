@@ -1,20 +1,4 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-;;;;
-;;;;	SIGHT.SC
-;;;;
-;;;;	(c) Sierra On-Line, Inc., 1992
-;;;;
-;;;;	Author:	Unknown
-;;;;	Updated:	
-;;;;		Brian K. Hughes
-;;;;		August 19, 1992
-;;;;
-;;;;	Procedures:
-;;;;		IsOffScreen
-;;;;		CantBeSeen
-;;;;		AngleDiff
-
-
 (script# SIGHT)
 (include game.sh)
 (use Main)
@@ -69,11 +53,13 @@
 				(- 360 
 					(if (== theSeer ego)
 						(* 2 egoBlindSpot)
+						;;else 0
 					)
 				)
 			)
 		)
 	)
+	
 	
 	(= sx	(theSight x?))
 	(= sy (theSight y?))
@@ -89,6 +75,7 @@
 				(< fieldDepth (GetDistance ex ey sx sy perspective))
 			)
 		)
+		;;else FALSE
 	)
 )
 
@@ -97,20 +84,13 @@
 	;;positive numbers mean shortest turn is clockwise
 	;;by Pablo Ghenis
 	
-	(if (>= argc 2)			; deviation in -359/+359 range
-		(-= ang h)
-	)
+	(if (>= argc 2) (-= ang h))				;deviation in -359/+359 range
 	(return
-		(cond						; convert to -179/+180 range
-			((<= ang -180)
-				(+ ang 360)
-			)
-			((>  ang  180)
-				(- ang 360)
-			)
-			(else
-				ang
-			)
+		(cond											;convert to -179/+180 range
+			((<= ang -180) (+ ang 360))
+			((>  ang  180) (- ang 360))
+			(else ang)
 		)
 	)
 )
+

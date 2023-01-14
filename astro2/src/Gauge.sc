@@ -17,7 +17,7 @@
 (use Main)
 (use Intrface)
 (use Window)
-(use System)
+
 
 (define	BLOCKON		6)
 (define	BLOCKOFF		7)

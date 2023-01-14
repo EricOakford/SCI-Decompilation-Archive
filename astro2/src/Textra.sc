@@ -4,6 +4,7 @@
 (use Main)
 (use Extra)
 
+
 ;;;(procedure
 ;;;	InitSurrogate
 ;;;)
@@ -64,9 +65,9 @@
 	)
 	(if (s respondsTo:#nsRight)
 		(s
-			nsRight: 	(e nsRight?)
-			nsLeft: 	(e nsLeft?)
-			nsBottom: (e nsBottom?)
+			nsRight: 	(e nsRight?)	,
+			nsLeft: 	(e nsLeft?)	,
+			nsBottom: (e nsBottom?),
 			nsTop: 	(e nsTop?)	
 		)
 	)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 290)
-(include game.sh)
+(include sci.sh)
 (use Main)
 (use Intrface)
 (use SQRoom)
@@ -85,10 +85,10 @@
 	(properties)
 	
 	(method (init)
-		(Load VIEW 290)
-		(Load PICTURE 291)
-		(LoadMany SOUND 55 140 56 122 131 147 144 146 827)
-		(self drawPic: 290 overlay: 291 HSHUTTER setScript: startScript)
+		(Load rsVIEW 290)
+		(Load rsPIC 291)
+		(LoadMany 132 55 140 56 122 131 147 144 146 827)
+		(self drawPic: 290 overlay: 291 0 setScript: startScript)
 		(super init:)
 		(= picture 290)
 		(= oldVolume (theGame masterVolume:))
@@ -98,7 +98,7 @@
 	
 	(method (doit &tmp temp0)
 		(super doit:)
-		(Palette PALCycle 48 55 1)
+		(Palette 6 48 55 1)
 		(cond 
 			((curRoom script?))
 			((not (-- local26))
@@ -134,7 +134,7 @@
 					x: (astroChicken x?)
 					y: (astroChicken y?)
 					init:
-					setCycle: Forward
+					setCycle: Fwd
 				)
 				(astroChicken hide: dispose:)
 				(curRoom setScript: doHenHouse)
@@ -210,15 +210,64 @@
 
 (class astroChicken of Actor
 	(properties
+		x 0
+		y 0
+		z 0
+		heading 0
+		noun 0
+		nsTop 0
+		nsLeft 0
+		nsBottom 0
+		nsRight 0
+		description 0
+		sightAngle 26505
+		actions 0
+		onMeCheck $6789
+		approachX 0
+		approachY 0
+		approachDist 0
+		_approachVerbs 26505
+		lookStr 0
+		yStep 2
 		view 290
-		signal (| fixedLoop fixPriOn)
+		loop 0
+		cel 0
+		priority 0
+		underBits 0
+		signal $0800
+		lsTop 0
+		lsLeft 0
+		lsBottom 0
+		lsRight 0
+		brTop 0
+		brLeft 0
+		brBottom 0
+		brRight 0
+		palette 0
+		cycleSpeed 0
+		script 0
+		cycler 0
+		timer 0
+		detailLevel 0
+		illegalBits $8000
+		xLast 0
+		yLast 0
+		xStep 3
+		moveSpeed 0
+		blocks 0
+		baseSetter 0
+		mover 0
+		looper 0
+		viewer 0
+		avoider 0
+		code 0
 		livesLeft 3
 		eggsLeft 10
 		wireLeft 0
 	)
 	
-	(method (init &tmp [str 5])
-		(music number: 54 loop: -1 vol: 127 playBed:)
+	(method (init &tmp [temp0 5])
+		(theMusic number: 54 loop: -1 vol: 127 playBed:)
 		(super init:)
 		(self
 			show:
@@ -235,19 +284,21 @@
 		(keyDownHandler addToFront: self)
 		(if eggBits (DoDisplay eggBits))
 		(if scoreBits (DoDisplay scoreBits))
-		(= eggBits
-			(DoDisplay {Eggs:} #at 150 178 #color myTextColor6)
-		)
+		(= eggBits (DoDisplay {Eggs:} 67 150 178 28 colLYellow))
 		(= scoreBits
-			(DoDisplay {Score:} #at 240 178 #color myTextColor6)
+			(DoDisplay {Score:} 67 240 178 28 colLYellow)
 		)
 		(if ptsBits (DoDisplay ptsBits))
 		(= ptsBits
 			(DoDisplay
-				(Format @str {%d} currentPoints)
-				#at 275 178
-				#color myTextColor6
-				#width 25
+				(Format @temp0 {%d} currentPoints)
+				67
+				275
+				178
+				28
+				colLYellow
+				70
+				25
 			)
 		)
 	)
@@ -260,26 +311,26 @@
 	
 	(method (handleEvent event &tmp temp0 temp1)
 		(cond 
-			((& (event type?) direction)
-				(event claimed: TRUE)
+			((& (event type?) evJOYSTICK)
+				(event claimed: 1)
 				(switch (event message?)
-					(dirW
+					(JOY_LEFT
 						(astroChicken setMotion: MoveTo 0 (astroChicken y?))
 					)
-					(dirE
+					(JOY_RIGHT
 						(astroChicken setMotion: MoveTo 320 (astroChicken y?))
 					)
-					(dirN
+					(JOY_UP
 						(astroChicken setMotion: MoveTo (astroChicken x?) 0)
 					)
-					(dirS
+					(JOY_DOWN
 						(astroChicken setMotion: MoveTo (astroChicken x?) 190)
 					)
 				)
 			)
-			((== (event type?) mouseDown)
-				(event claimed: TRUE)
-				(if (== (event modifiers?) shiftDown)
+			((== (event type?) evMOUSEBUTTON)
+				(event claimed: 1)
+				(if (== (event modifiers?) emSHIFT)
 					(if
 						(and
 							eggsLeft
@@ -296,11 +347,11 @@
 					(astroChicken setMotion: MoveTo temp0 (event y?))
 				)
 			)
-			((== (event type?) keyDown)
-				(event claimed: TRUE)
+			((== (event type?) evKEYBOARD)
+				(event claimed: 1)
 				(if
 					(and
-						(== (event message?) ENTER)
+						(== (event message?) KEY_RETURN)
 						eggsLeft
 						(not (cast contains: egg))
 						(astroChicken isNotHidden:)
@@ -328,26 +379,34 @@
 		)
 	)
 	
-	(method (showEggs &tmp [str 5])
+	(method (showEggs &tmp [temp0 5])
 		(if numEggs (DoDisplay numEggs))
 		(= numEggs
 			(DoDisplay
-				(Format @str {%d} eggsLeft)
-				#at 180 178
-				#color myTextColor6
-				#width 25
+				(Format @temp0 {%d} eggsLeft)
+				67
+				180
+				178
+				28
+				colLYellow
+				70
+				25
 			)
 		)
 	)
 	
-	(method (showPts &tmp [str 5])
+	(method (showPts &tmp [temp0 5])
 		(if ptsBits (DoDisplay ptsBits))
 		(= ptsBits
 			(DoDisplay
-				(Format @str {%d} currentPoints)
-				#at 275 178
-				#color myTextColor6
-				#width 25
+				(Format @temp0 {%d} currentPoints)
+				67
+				275
+				178
+				28
+				colLYellow
+				70
+				25
 			)
 		)
 	)
@@ -375,9 +434,57 @@
 
 (class ScrollActor of Actor
 	(properties
+		x 0
+		y 0
+		z 0
+		heading 0
+		noun 0
+		nsTop 0
+		nsLeft 0
+		nsBottom 0
+		nsRight 0
+		description 0
+		sightAngle 26505
+		actions 0
+		onMeCheck $6789
+		approachX 0
+		approachY 0
+		approachDist 0
+		_approachVerbs 26505
+		lookStr 0
+		yStep 2
 		view 290
+		loop 0
+		cel 0
 		priority 12
-		signal (| fixedLoop fixPriOn)		
+		underBits 0
+		signal $0810
+		lsTop 0
+		lsLeft 0
+		lsBottom 0
+		lsRight 0
+		brTop 0
+		brLeft 0
+		brBottom 0
+		brRight 0
+		palette 0
+		cycleSpeed 0
+		script 0
+		cycler 0
+		timer 0
+		detailLevel 0
+		illegalBits $8000
+		xLast 0
+		yLast 0
+		xStep 3
+		moveSpeed 0
+		blocks 0
+		baseSetter 0
+		mover 0
+		looper 0
+		viewer 0
+		avoider 0
+		code 0
 		scrollSpeed 9
 		deathLoop 0
 		deathMusic 0
@@ -411,7 +518,7 @@
 	
 	(method (doChicken)
 		(if deathLoop
-			(music stop:)
+			(theMusic stop:)
 			(eggSplatting stop:)
 			(theSound number: deathMusic loop: 1 play: self)
 			(astroChicken hide:)
@@ -419,7 +526,7 @@
 				setLoop: deathLoop
 				setCel: 0
 				cycleSpeed: 2
-				setCycle: EndLoop
+				setCycle: End
 			)
 		)
 	)
@@ -485,21 +592,21 @@
 		(= loop 4)
 		(= y (astroChicken y?))
 		(super init:)
-		(self setCycle: Forward)
+		(self setCycle: Fwd)
 	)
 	
-	(method (onMe event &tmp temp0)
+	(method (onMe theObjOrX &tmp temp0)
 		(= temp0 0)
 		(cond 
 			(
 				(not
 					(if
 						(and
-							(<= nsLeft (event x?))
-							(<= (event x?) (- nsRight 15))
-							(<= (- nsTop 5) (event y?))
+							(<= nsLeft (theObjOrX x?))
+							(<= (theObjOrX x?) (- nsRight 15))
+							(<= (- nsTop 5) (theObjOrX y?))
 						)
-						(<= (event y?) (+ nsBottom 10))
+						(<= (theObjOrX y?) (+ nsBottom 10))
 					)
 				)
 			)
@@ -542,7 +649,7 @@
 					(astroChicken isNotHidden:)
 					(not (-- farmerTimer))
 				)
-				(self setCycle: EndLoop self)
+				(self setCycle: End self)
 			)
 		)
 		(if
@@ -555,15 +662,15 @@
 		)
 	)
 	
-	(method (onMe event)
+	(method (onMe theObjOrX)
 		(return
 			(if
 				(and
-					(<= nsLeft (event x?))
-					(<= (event x?) nsRight)
-					(<= nsTop (event y?))
+					(<= nsLeft (theObjOrX x?))
+					(<= (theObjOrX x?) nsRight)
+					(<= nsTop (theObjOrX y?))
 				)
-				(<= (event y?) (- nsBottom 15))
+				(<= (theObjOrX y?) (- nsBottom 15))
 			else
 				0
 			)
@@ -573,7 +680,7 @@
 	(method (cue)
 		(gunshot play:)
 		((buckShot new:) init:)
-		(self setCycle: BegLoop)
+		(self setCycle: Beg)
 		(= farmerTimer (Random 5 10))
 	)
 	
@@ -582,7 +689,7 @@
 		(eggFall stop:)
 		(eggSplatting play:)
 		(egg hide: dispose:)
-		(self setLoop: 8 setCel: 0 setCycle: EndLoop)
+		(self setLoop: 8 setCel: 0 setCycle: End)
 	)
 )
 
@@ -609,7 +716,7 @@
 		(= loop 12)
 		(super init:)
 		(= y 105)
-		(self setPri: 14 setCycle: Forward)
+		(self setPri: 14 setCycle: Fwd)
 	)
 )
 
@@ -633,15 +740,15 @@
 		cel 2
 	)
 	
-	(method (onMe event)
+	(method (onMe theObjOrX)
 		(return
 			(if
 				(and
-					(<= (- nsLeft 1) (event x?))
-					(<= (event x?) (+ nsRight 2))
-					(<= (- nsTop 10) (event y?))
+					(<= (- nsLeft 1) (theObjOrX x?))
+					(<= (theObjOrX x?) (+ nsRight 2))
+					(<= (- nsTop 10) (theObjOrX y?))
 				)
-				(<= (event y?) (+ nsBottom 15))
+				(<= (theObjOrX y?) (+ nsBottom 15))
 			else
 				0
 			)
@@ -668,23 +775,23 @@
 		(super init:)
 	)
 	
-	(method (onMe event)
+	(method (onMe theObjOrX)
 		(return
-			(if (== event astroChicken)
+			(if (== theObjOrX astroChicken)
 				(return
 					(if
 						(and
-							(<= (- nsLeft 15) (event x?))
-							(<= (event x?) (- nsRight 25))
-							(<= (- nsTop 75) (event y?))
+							(<= (- nsLeft 15) (theObjOrX x?))
+							(<= (theObjOrX x?) (- nsRight 25))
+							(<= (- nsTop 75) (theObjOrX y?))
 						)
-						(<= (event y?) nsBottom)
+						(<= (theObjOrX y?) nsBottom)
 					else
 						0
 					)
 				)
 			else
-				(super onMe: event &rest)
+				(super onMe: theObjOrX &rest)
 			)
 		)
 	)
@@ -695,7 +802,7 @@
 			(if (< (- y (astroChicken y?)) 50)
 				(super doChicken:)
 			else
-				(self setCycle: EndLoop)
+				(self setCycle: End)
 			)
 		)
 	)
@@ -705,7 +812,7 @@
 		(eggFall stop:)
 		(eggSplatting play:)
 		(egg hide: dispose:)
-		(self setLoop: 9 setCel: 0 setCycle: EndLoop)
+		(self setLoop: 9 setCel: 0 setCycle: End)
 	)
 )
 
@@ -745,7 +852,7 @@
 		loop 11
 		cel 12
 		priority 15
-		signal fixPriOn
+		signal $0010
 	)
 )
 
@@ -753,7 +860,7 @@
 	(properties
 		view 290
 		priority 13
-		signal (| fixedLoop fixPriOn)
+		signal $0810
 	)
 	
 	(method (init)
@@ -764,7 +871,7 @@
 		(= local6 7)
 		(= local7 1)
 		(= local5 2)
-		(self setLoop: 2 setCycle: Forward)
+		(self setLoop: 2 setCycle: Fwd)
 	)
 	
 	(method (doit)
@@ -789,7 +896,7 @@
 		view 290
 		loop 3
 		priority 12
-		signal (| fixedLoop fixPriOn)
+		signal $0810
 		xStep 9
 	)
 	
@@ -798,7 +905,7 @@
 		(eggFall stop:)
 		(eggSplatting play:)
 		(= x (egg x?))
-		(self setCycle: EndLoop setMotion: MoveTo -5 y self)
+		(self setCycle: End setMotion: MoveTo -5 y self)
 	)
 	
 	(method (cue)
@@ -812,7 +919,7 @@
 		view 290
 		loop 11
 		cel 3
-		signal (| ignrAct ignrHrz skipCheck fixedLoop)
+		signal $7800
 		illegalBits $0000
 	)
 	
@@ -832,7 +939,7 @@
 				(astroChicken isNotHidden:)
 				(astroChicken onMe: self)
 			)
-			(music stop:)
+			(theMusic stop:)
 			(eggFall stop:)
 			(winged play: astroChicken)
 			(astroChicken hide: die:)
@@ -853,7 +960,7 @@
 		loop 11
 		cel 8
 		priority 3
-		signal (| ignrAct skipCheck fixedLoop fixPriOn)
+		signal $5810
 	)
 	
 	(method (doit)
@@ -870,7 +977,7 @@
 		loop 11
 		cel 9
 		priority 12
-		signal (| ignrAct skipCheck fixedLoop fixPriOn)
+		signal $5810
 	)
 	
 	(method (doit)
@@ -891,7 +998,7 @@
 (instance astroChicken2 of Actor
 	(properties
 		view 290
-		signal fixedLoop
+		signal $0800
 	)
 )
 
@@ -921,10 +1028,10 @@
 		(if
 			(and
 				(or
-					(== (event type?) mouseDown)
+					(== (event type?) evMOUSEBUTTON)
 					(and
-						(== (event type?) keyDown)
-						(== (event message?) `^s)
+						(== (event type?) evKEYBOARD)
+						(== (event message?) KEY_PAUSE)
 					)
 				)
 				(self onMe: event)
@@ -934,7 +1041,7 @@
 			else
 				(theGame masterVolume: oldVolume)
 			)
-			(event claimed: TRUE)
+			(event claimed: 1)
 		)
 	)
 )
@@ -958,9 +1065,13 @@
 				(= messageBits
 					(DoDisplay
 						{"Flight of the Pullet."}
-						#at 10 127
-						#color myLowlightColor
-						#back myTextColor2
+						67
+						10
+						127
+						28
+						colBlack
+						29
+						colLRed
 					)
 				)
 			)
@@ -969,7 +1080,7 @@
 				(curRoom drawPic: 290)
 				(astroChicken
 					init:
-					setCycle: Forward
+					setCycle: Fwd
 					observeBlocks:
 					livesLeft: 3
 					showEggs:
@@ -997,14 +1108,20 @@
 	(method (changeState newState &tmp [temp0 50])
 		(switch (= state newState)
 			(0
-				(= currentPoints (+ currentPoints (* (astroChicken eggsLeft?) 5)))
+				(= currentPoints
+					(+ currentPoints (* (astroChicken eggsLeft?) 5))
+				)
 				(if ptsBits (DoDisplay ptsBits))
 				(= ptsBits
 					(DoDisplay
 						(Format @temp0 {%d} currentPoints)
-						#at 275 178
-						#color myTextColor6
-						#back 25
+						67
+						275
+						178
+						28
+						colLYellow
+						70
+						25
 					)
 				)
 				(astroChicken2 setMotion: MoveTo 100 100 self)
@@ -1016,7 +1133,7 @@
 				(astroChicken2 setPri: 11 setMotion: MoveTo 174 129 self)
 			)
 			(3
-				(backok init: setCycle: EndLoop)
+				(backok init: setCycle: End)
 				(= cycles 20)
 			)
 			(4
@@ -1027,11 +1144,17 @@
 				(= messageBits
 					(DoDisplay
 						{Congratulations, in achieving the coveted rank of "Corn-Wheezer," you have won the Pullet Surprise!}
-						#at 0 20
-						#color myLowlightColor
-						#back myTextColor10
-						#mode teJustCenter
-						#width 319
+						67
+						0
+						20
+						28
+						colBlack
+						29
+						colMagenta
+						30
+						1
+						70
+						319
 					)
 				)
 				(= highScore
@@ -1043,10 +1166,15 @@
 							(* 5 (astroChicken eggsLeft?))
 							currentPoints
 						)
-						#at 0 65
-						#color myLowlightColor
-						#back myTextColor6
-						#mode teJustCenter
+						67
+						0
+						65
+						28
+						colBlack
+						29
+						colLYellow
+						30
+						1
 					)
 				)
 			)

@@ -4,8 +4,8 @@
 (use Main)
 (use Intrface)
 (use Motion)
-(use User)
 (use System)
+
 
 (instance ClickedOn of Code
 	(properties
@@ -77,7 +77,7 @@
 	)	
 	
 	(method (handleEvent event &tmp thisEgo thisMover node)
-		(= thisEgo (User alterEgo?))
+		(= thisEgo (user alterEgo?))
 		(= thisMover (thisEgo mover?))
 		(= x (event x?))
 		(= y (event y?))
@@ -115,14 +115,14 @@
 								(return (event claimed?))
 							)
 							((and
-									(User controls?)
+									(user controls?)
 									(IsObject thisEgo)
 									(cast contains: thisEgo)
 								)
 								(thisEgo setMotion:
 									MoveToMouse (targetObj x?) (targetObj y?) self
 								)
-								(User prevDir: 0)
+								(user prevDir: 0)
 								(event claimed:TRUE)
 							)
 							(else ;had target but didn't let it try

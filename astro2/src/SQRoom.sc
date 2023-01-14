@@ -10,20 +10,28 @@
 (use System)
 
 (public
-	eRS 0
+	enterRmScript 0
 )
 
-(procedure (localproc_0404)
+(procedure (SeeIfOffX)
 	(cond 
-		((< (ego x?) 0) (ego x: (+ 0 (* (ego xStep?) 2))))
-		((> (ego x?) 319) (ego x: (- 319 (* (ego xStep?) 2))))
+		((< (ego x?) westEdge)
+			(ego x: (+ 0 (* (ego xStep?) 2)))
+		)
+		((> (ego x?) eastEdge)
+			(ego x: (- 319 (* (ego xStep?) 2)))
+		)
 	)
 )
 
-(procedure (localproc_0451)
+(procedure (SeeIfOffY)
 	(cond 
-		((< (ego y?) (curRoom horizon?)) (ego y: (+ (curRoom horizon?) (* (ego yStep?) 2))))
-		((> (ego y?) 189) (ego y: (- 189 (* (ego yStep?) 2))))
+		((< (ego y?) (curRoom horizon?))
+			(ego y: (+ (curRoom horizon?) (* (ego yStep?) 2)))
+		)
+		((> (ego y?) southEdge)
+			(ego y: (- southEdge (* (ego yStep?) 2)))
+		)
 	)
 )
 
@@ -34,69 +42,51 @@
 )
 
 (class SQRoom of Room
-	(properties
-		lookStr 0
-	)
-	
-	(method (init &tmp temp0 temp1)
+	(method (init &tmp wide high)
 		(= number curRoomNum)
 		(= controls roomControls)
 		(= perspective picAngle)
-		(if picture (self drawPic: picture))
+		(if picture
+			(self drawPic: picture)
+		)
 		(cond 
 			((not (cast contains: ego)) 0)
 			(script 0)
 			((OneOf style SCROLLRIGHT SCROLLLEFT SCROLLUP SCROLLDOWN)
-				(= temp0
-					(+
-						1
-						(/
-							(CelWide
-								((User alterEgo?) view?)
-								((User alterEgo?) loop?)
-								((User alterEgo?) cel?)
-							)
-							2
-						)
-					)
-				)
-				(= temp1
-					(+
-						1
-						(/
-							(CelHigh
-								((User alterEgo?) view?)
-								((User alterEgo?) loop?)
-								((User alterEgo?) cel?)
-							)
-							2
-						)
-					)
-				)
+				(= wide (+ 1 (/ (CelWide ((User alterEgo?) view?) ((User alterEgo?) loop?) ((User alterEgo?) cel?)) 2)))
+				(= high (+ 1 (/ (CelHigh ((User alterEgo?) view?) ((User alterEgo?) loop?) ((User alterEgo?) cel?)) 2)))
 				(switch ((User alterEgo?) edgeHit?)
-					(NORTH ((User alterEgo?) y: 188))
+					(NORTH
+						((User alterEgo?) y: (- southEdge 1))
+					)
 					(WEST
-						((User alterEgo?) x: (- 319 temp0))
+						((User alterEgo?) x: (- eastEdge wide))
 					)
 					(SOUTH
-						((User alterEgo?) y: (+ horizon temp1))
+						((User alterEgo?) y: (+ horizon high))
 					)
 					(EAST
-						((User alterEgo?) x: (+ 0 temp0))
+						((User alterEgo?) x: (+ westEdge wide))
 					)
 				)
 				((User alterEgo?) edgeHit: 0)
 			)
-			(else (self setScript: eRS 0 prevRoomNum))
+			(else
+				(self setScript: enterRmScript 0 prevRoomNum)
+			)
 		)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp nRoom)
 		(cond 
-			(script (script doit:))
-			((not (cast contains: ego)) 0)
+			(script
+				(script doit:)
+			)
+			((not (cast contains: ego))
+				NULL
+			)
 			(
-				(= temp0
+				(= nRoom
 					(switch ((User alterEgo?) edgeHit?)
 						(NORTH north)
 						(EAST east)
@@ -104,49 +94,45 @@
 						(WEST west)
 					)
 				)
-				(self setScript: lRS 0 temp0)
+				(self setScript: leaveRmScript NULL nRoom)
 			)
 		)
 	)
 )
 
-(instance lRS of Script
-	(properties)
+(instance leaveRmScript of Script
+	(properties
+		name "lRS"
+	)
 	
-	(method (changeState newState &tmp temp0 temp1)
-		(switch (= state newState)
+	(method (changeState ns &tmp high wide)
+		(switch (= state ns)
 			(0
 				(HandsOff)
-				(= temp1 (CelWide (ego view?) (ego loop?) (ego cel?)))
+				(= wide (CelWide (ego view?) (ego loop?) (ego cel?)))
 				(switch register
 					((client north?)
 						(curRoom newRoom: register)
 					)
-					((client south:)
-						(= temp0 (CelHigh (ego view?) (ego loop?) (ego cel?)))
+					((client south?)
+						(= high (CelHigh (ego view?) (ego loop?) (ego cel?)))
 						(if (IsObject (ego _head?))
-							(= temp0
-								(+
-									temp0
-									(CelHigh
-										((ego _head?) view?)
-										((ego _head?) loop?)
-										((ego _head?) cel?)
-									)
-								)
-							)
+							(+= high (CelHigh ((ego _head?) view?) ((ego _head?) loop?) ((ego _head?) cel?)))
 						)
-						(ego setMotion: PolyPath (ego x?) (+ 189 temp0) self)
+						(ego setMotion: PolyPath (ego x?) (+ southEdge high) self)
 					)
-					((client east:)
-						(ego setMotion: PolyPath (+ 319 temp1) (ego y?) self)
+					((client east?)
+						(ego setMotion: PolyPath (+ eastEdge wide) (ego y?) self)
 					)
-					((client west:)
-						(ego setMotion: PolyPath (- 0 temp1) (ego y?) self)
+					((client west?)
+						(ego setMotion: PolyPath (- westEdge wide) (ego y?) self)
 					)
 				)
 			)
-			(1 (ego hide:) (= cycles 2))
+			(1
+				(ego hide:)
+				(= cycles 2)
+			)
 			(2
 				(curRoom setScript: 0 newRoom: register)
 			)
@@ -154,56 +140,65 @@
 	)
 )
 
-(instance eRS of Script
-	(properties)
+(instance enterRmScript of Script
+	(properties
+		name "eRS"
+	)
 	
-	(method (changeState newState &tmp temp0 temp1)
-		(switch (= state newState)
+	(method (changeState ns &tmp high wide)
+		(switch (= state ns)
 			(0
 				(= cycles 0)
 				(HandsOff)
-				(= temp0 (CelHigh (ego view?) (ego loop?) (ego cel?)))
-				(= temp1 (CelWide (ego view?) (ego loop?) (ego cel?)))
+				(= high (CelHigh (ego view?) (ego loop?) (ego cel?)))
+				(= wide (CelWide (ego view?) (ego loop?) (ego cel?)))
 				(switch register
 					((client north?)
-						(localproc_0404)
+						(SeeIfOffX)
 						(ego y: (+ (curRoom horizon?) (ego yStep?)))
 						(= cycles 1)
 					)
-					((client south:)
-						(localproc_0404)
+					((client south?)
+						(SeeIfOffX)
 						(ego
-							y: (+ 189 temp0)
-							setMotion: nBMT (ego x?) (- 189 (* (ego yStep?) 2)) self
+							y: (+ southEdge high)
+							setMotion: noBlkMoveTo (ego x?) (- southEdge (* (ego yStep?) 2)) self
 						)
 					)
-					((client east:)
-						(localproc_0451)
+					((client east?)
+						(SeeIfOffY)
 						(ego
-							x: (+ 319 (/ temp1 2))
-							setMotion: nBMT (- 319 (* (ego xStep?) 2)) (ego y?) self
+							x: (+ eastEdge (/ wide 2))
+							setMotion: noBlkMoveTo (- eastEdge (* (ego xStep?) 2)) (ego y?) self
 						)
 					)
-					((client west:)
-						(localproc_0451)
+					((client west?)
+						(SeeIfOffY)
 						(ego
-							x: (- 0 (/ temp1 2))
-							setMotion: nBMT (+ 0 (* (ego xStep?) 2)) (ego y?) self
+							x: (- 0 (/ wide 2))
+							setMotion: noBlkMoveTo (+ 0 (* (ego xStep?) 2)) (ego y?) self
 						)
 					)
 					(else  (= cycles 1))
 				)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
-(instance nBMT of MoveTo
-	(properties)
+(instance noBlkMoveTo of MoveTo
+	(properties
+		name "nBMT"
+	)
 	
 	(method (doit)
 		(super doit:)
-		(if (client isBlocked:) (self moveDone:))
+		(if (client isBlocked:)
+			(self moveDone:)
+		)
 	)
 )

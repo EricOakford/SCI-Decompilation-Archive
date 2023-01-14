@@ -1,49 +1,44 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 ;;;;
 ;;;;	RANDCYC.SC
-;;;;
 ;;;;	(c) Sierra On-Line, Inc, 1990
 ;;;;
-;;;;	Written:
-;;;;		Doug Oldfield
-;;;;		July 25, 1990
+;;;;	Author: Doug Oldfield
+;;;;	July 25, 1990
 ;;;;
-;;;;
+;;;; Modified	to allow a count and caller Aug 10, 1990, JMH.
 ;;;;	Cycles cels randomly & constantly
 ;;;;
 ;;;;	Classes:
-;;;;	  RandCycle
-
+;;;;	  RandCycle	
 
 (script# RANDCYC)
 (include game.sh)
 (use Main)
 (use Motion)
 
-
 (class RandCycle kindof Cycle
 	(properties
-		count		-1
+		count	-1
 	)
 
-	(method (init obj theTime whoCares)
-		(super init: obj)
-		(if (>= argc 2)			
-			(= count theTime)
-			(if (>= argc 3)		
-				(= caller whoCares)
+	(method (init theObj num whoCares)
+		(super init: theObj)
+		(if (>= argc 2)			(= count num) 
+			(if (>= argc 3)		(= caller whoCares)
 			)
-		else 
-			(= count -1)
+		else (= count -1)
 		)
 	)
 
 	(method (doit)
 		(++ cycleCnt)
-		(if (> cycleCnt (client cycleSpeed?))
+		(if (> cycleCnt (client cycleSpeed?)) 
 			(if count
-				(if (> count 0) (-- count))
-				(client cel: (self nextCel:))
+				(if (> count 0)
+					(-- count)
+				)
+				(client cel:(self nextCel:))
 				(= cycleCnt 0)
 			else
 				(self cycleDone:)

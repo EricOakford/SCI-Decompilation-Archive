@@ -61,13 +61,11 @@
 			(= xLast (client x?))
 			(= yLast (client y?))
 			(= angle (GetAngle xLast yLast (who x?) (who y?)))
-			(if (!= angle (client heading?))
-				(client heading: angle)
-				(if (client looper?)
-					((client looper?) doit: client angle)
-				else
-					(DirLoop client angle)
-				)
+			(client heading: angle)
+			(if (client looper?)
+				((client looper?) doit: client angle)
+			else
+				(DirLoop client angle)
 			)
 		)
 	)

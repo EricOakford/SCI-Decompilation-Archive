@@ -4,59 +4,77 @@
 (use Main)
 (use System)
 
-
 (class PseudoMouse of Code
 	(properties
-		cursorInc 2
-		minInc 2
-		maxInc 20
-		prevDir 0
-		joyInc 5
+		cursorInc	2
+		minInc		2
+		maxInc		20
+		prevDir		0
+		joyInc		5
 	)
-	
+
+;;;	(methods
+;;;		handleEvent
+;;;		doit
+;;;		start
+;;;		stop
+;;;	)
+
 	(method (handleEvent event)
-		(if
-		(and (user canInput:) (& (event type?) direction))
+		(if (and (user canInput?) (& (event type?) direction))
+			;; save location of mouse
+			;; set direction to move mouse
 			(= prevDir
-				(if
-					(or
-						(not theIconBar)
-						(!= ((theIconBar curIcon?) message?) verbWalk)
+				(if (or 
+							(not theIconBar) 
+							(!= ((theIconBar curIcon?) message?) verbWalk)
 					)
-					(= prevDir (event message?))
+					(= prevDir
+						(event message?)
+					)
 				else
 					(return)
 				)
 			)
-			(= cursorInc
+			;; find out how far to move it
+			(= cursorInc 
 				(if (& (event type?) keyDown)
-					(if (& (event modifiers?) shiftDown) minInc else maxInc)
-				else
+					(if (& (event modifiers?) shiftDown)
+						minInc
+					else
+						maxInc
+					)
+				else ;; joyStick
 					joyInc
 				)
 			)
-			(cond 
-				((& (event type?) keyDown)
-					(if prevDir
-						(self doit:)
-					else
-						(event claimed: FALSE)
-						(return)
-					)
+
+			(if (& (event type?) keyDown)
+				;; move once 
+				(if prevDir
+					(self doit:)
+				else
+					(event claimed:FALSE)
+					(return FALSE)
 				)
-				(prevDir (self start:))
-				(else (self stop:))
+			else
+				;; caused by joystick
+				;; move until joystick is centered
+				(if prevDir
+					(self start:)
+				else
+					(self stop:)
+				)
 			)
-			(event claimed: TRUE)
-			(return)
+			(return (event claimed:TRUE))
 		)
-	)
+	)					  
 
 	(method (start dir)
 		(if argc (= prevDir dir))
 		(theDoits add: self)
 	)
-	
+
 	(method (stop)
 		(= prevDir 0)
 		(theDoits delete: self)
@@ -65,36 +83,37 @@
 	(method (doit &tmp theX theY)
 		(= theX (lastEvent x?))
 		(= theY (lastEvent y?))
-		(switch prevDir
+		(switch prevDir							 
 			(dirN
-				(= theY (- theY cursorInc))
+				(-= theY cursorInc)
 			)
 			(dirNE
-				(= theX (+ theX cursorInc))
-				(= theY (- theY cursorInc))
+				(+= theX cursorInc)							 
+				(-= theY cursorInc)
 			)
-			(dirE
-				(= theX (+ theX cursorInc))
+			(dirE													 
+				(+= theX cursorInc)							 
 			)
 			(dirSE
-				(= theX (+ theX cursorInc))
-				(= theY (+ theY cursorInc))
+				(+= theX cursorInc)							 
+				(+= theY cursorInc)							 
 			)
 			(dirS
-				(= theY (+ theY cursorInc))
+				(+= theY cursorInc)
 			)
 			(dirSW
-				(= theX (- theX cursorInc))
-				(= theY (+ theY cursorInc))
+				(-= theX cursorInc)							 
+				(+= theY cursorInc)
 			)
-			(dirW
-				(= theX (- theX cursorInc))
-			)
-			(dirNW
-				(= theX (- theX cursorInc))
-				(= theY (- theY cursorInc))
+			(dirW													 
+				(-= theX cursorInc)							 
+			)														 
+			(dirNW												 
+				(-= theX cursorInc)							 
+				(-= theY cursorInc)							 
 			)
 		)
 		(theGame setCursor: theCursor TRUE theX theY)
 	)
+
 )

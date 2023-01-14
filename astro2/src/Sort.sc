@@ -43,7 +43,7 @@
 	);while
 	
 	(tempList
-		eachElementDo: #perform transferElement tempList theList,
+		eachElementDo: #perform transferElement tempList theList
 		dispose:
 	)
 	

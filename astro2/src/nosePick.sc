@@ -13,17 +13,15 @@
 )
 
 (local
-	nosePickTimer
-	local1
-	mD
+	oldTime
+	thisTime
+	saveBits
 	oldSignal
 	oldPriority
 	oldIllBits
 	oldSpeed
 )
 (instance nosePick of Code
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
@@ -40,15 +38,15 @@
 				(== (ego view?) ((ego cycler?) vStopped?))
 				(== ((ego cycler?) vStopped?) 4)
 			)
-			(if (!= nosePickTimer (GetTime 1))
-				(= nosePickTimer (GetTime 1))
-				(if (> (++ local1) 120)
+			(if (!= oldTime (GetTime SYSTIME1))
+				(= oldTime (GetTime SYSTIME1))
+				(if (> (++ thisTime) 120)
 					(HandsOff)
 					(curRoom setScript: nosePickScript)
 				)
 			)
 		else
-			(= local1 0)
+			(= thisTime 0)
 		)
 	)
 )
@@ -58,7 +56,7 @@
 		name "nPS"
 	)
 	
-	(method (changeState newState &tmp temp0 temp1)
+	(method (changeState newState &tmp theLoop textY)
 		(switch (= state newState)
 			(0
 				(Load VIEW 65)
@@ -69,34 +67,44 @@
 				)
 			)
 			(1
-				(= temp0 (Random 0 2))
+				(= theLoop (Random 0 2))
 				(= oldSignal (ego signal?))
 				(= oldPriority (ego priority?))
 				(= oldIllBits (ego illegalBits?))
 				(= oldSpeed (ego cycleSpeed?))
 				(ego
 					view: 65
-					setLoop: temp0
+					setLoop: theLoop
 					cycleSpeed: 1
 					cel: 0
 					setCycle: EndLoop self
 				)
 				(Animate (cast elements?) FALSE)
-				(if (not temp0)
-					(if (< (ego y?) 85) (= temp1 -20) else (= temp1 80))
-					(= mD
+				(if (not theLoop)
+					(if (< (ego y?) 85)
+						(= textY -20)
+					else
+						(= textY 80)
+					)
+					(= saveBits
 						(DoDisplay {"So why am I standing around?"}
-							#at 100 (- (ego y?) temp1)
+							#at 100 (- (ego y?) textY)
 							#width 219
 						)
 					)
 				)
 			)
 			(2
-				(if (not (ego loop?)) (= seconds 3) else (= cycles 1))
+				(if (not (ego loop?))
+					(= seconds 3)
+				else
+					(= cycles 1)
+				)
 			)
 			(3
-				(if (not (ego loop?)) (DoDisplay mD))
+				(if (not (ego loop?))
+					(DoDisplay saveBits)
+				)
 				(NormalEgo 2 0 4)
 				(ego
 					signal: oldSignal
@@ -104,8 +112,8 @@
 					illegalBits: oldIllBits
 					cycleSpeed: oldSpeed
 				)
-				(= nosePickTimer (= start 0))
-				(= local1 0)
+				(= oldTime (= start 0))
+				(= thisTime 0)
 				(HandsOn)
 				(self dispose:)
 			)

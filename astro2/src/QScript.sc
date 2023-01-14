@@ -59,7 +59,7 @@
 				(theClient setScript:(ScriptObject theScript))
 				(break)
 			)
-			((not (theObj respondsTo: next:))
+			((not (theObj respondsTo: #next))
 				(if (theObj script?)
 					(= theObj (theObj script?))	;follow link
 				else
@@ -82,7 +82,7 @@
 						((== theObj (theObj next?))
 							((aTmp new:) next: NULL yourself:)
 						)
-						((& (theObj -info-:) CLONED)
+						((& (theObj -info-?) CLONED)
 							((aTmp new:) next: NULL yourself:)
 						)
 						(else
@@ -90,7 +90,7 @@
 						)
 					)
 				)
-				(= theObj (theObj next?))	;follow the link
+				(= theObj (theObj next:))	;follow the link
 			)
 			(else
 				(theObj next: 
@@ -98,7 +98,7 @@
 							(== theScript theObj)
 							(and
 								(IsObject theScript)
-								(& (theScript -info-:) CLONED)
+								(& (theScript -info-?) CLONED)
 							)
 						)
 						(theScript new:)
