@@ -8,12 +8,12 @@
 (use Save)
 (use Actor)
 
-(procedure
-	FakeInput
-	FakeDir			
-	FakeKey			
-	FakeMouse	
-)
+;;;(procedure
+;;;	FakeInput
+;;;	FakeDir			
+;;;	FakeKey			
+;;;	FakeMouse	
+;;;)
 (public
 	demoRegion		0
 	FakeInput		1

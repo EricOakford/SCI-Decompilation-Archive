@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 290)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use SQRoom)
@@ -31,13 +31,11 @@
 	oldVolume
 	eggBits
 	scoreBits
-	[local14 6] = [0 5 4 3 2 1]
-	[local20 6] = [0 9 8 7 6 5]
-	local26 =  50
+	local14 = [0 5 4 3 2 1]
+	local20 = [0 9 8 7 6 5]
+	obstacleCountdown =  50
 )
-(instance theSound of Sound
-	(properties)
-)
+(instance theSound of Sound)
 
 (instance winged of Sound
 	(properties
@@ -85,9 +83,9 @@
 	(properties)
 	
 	(method (init)
-		(Load rsVIEW 290)
-		(Load rsPIC 291)
-		(LoadMany 132 55 140 56 122 131 147 144 146 827)
+		(Load VIEW 290)
+		(Load PICTURE 291)
+		(LoadMany SOUND 55 140 56 122 131 147 144 146 827)
 		(self drawPic: 290 overlay: 291 0 setScript: startScript)
 		(super init:)
 		(= picture 290)
@@ -98,14 +96,18 @@
 	
 	(method (doit &tmp temp0)
 		(super doit:)
-		(Palette 6 48 55 1)
+		(Palette PALCycle 48 55 1)
 		(cond 
 			((curRoom script?))
-			((not (-- local26))
-				(= local26 50)
+			((not (-- obstacleCountdown))
+				(= obstacleCountdown 50)
 				(if (not (cast contains: henHouseRight))
-					(if (not (cast contains: rock)) (rock init:))
-					(if (not (cast contains: grass)) (grass init:))
+					(if (not (cast contains: rock))
+						(rock init:)
+					)
+					(if (not (cast contains: grass))
+						(grass init:)
+					)
 				)
 			)
 		)
@@ -134,7 +136,7 @@
 					x: (astroChicken x?)
 					y: (astroChicken y?)
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(astroChicken hide: dispose:)
 				(curRoom setScript: doHenHouse)
@@ -149,8 +151,7 @@
 					(cast contains: henHouseRight)
 				)
 			)
-			(
-			(or (sounds contains: winged) (sounds contains: 55)))
+			((or (sounds contains: winged) (sounds contains: 55)))
 			((<= (= temp0 (Random 1 100)) 15)
 				(hill init:)
 				(switch (Random 0 2)
@@ -164,8 +165,12 @@
 					)
 				)
 			)
-			((<= temp0 30) (crazedFarmer init:))
-			((<= temp0 40) (windMill init:))
+			((<= temp0 30)
+				(crazedFarmer init:)
+			)
+			((<= temp0 40)
+				(windMill init:)
+			)
 			((<= temp0 65)
 				(if
 					(and
@@ -176,7 +181,9 @@
 					(= local4 (Random 4 9))
 				)
 			)
-			((<= temp0 80) (weasel init:))
+			((<= temp0 80)
+				(weasel init:)
+			)
 			(
 				(and
 					(<= temp0 85)
@@ -185,7 +192,9 @@
 				)
 				(chickenWire init:)
 			)
-			((not (cast contains: rabidDog)) (rabidDog init:))
+			((not (cast contains: rabidDog))
+				(rabidDog init:)
+			)
 		)
 	)
 	
@@ -210,63 +219,13 @@
 
 (class astroChicken of Actor
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		description 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 26505
-		lookStr 0
-		yStep 2
 		view 290
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0800
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		cycleSpeed 0
-		script 0
-		cycler 0
-		timer 0
-		detailLevel 0
-		illegalBits $8000
-		xLast 0
-		yLast 0
-		xStep 3
-		moveSpeed 0
-		blocks 0
-		baseSetter 0
-		mover 0
-		looper 0
-		viewer 0
-		avoider 0
-		code 0
 		livesLeft 3
 		eggsLeft 10
 		wireLeft 0
 	)
 	
-	(method (init &tmp [temp0 5])
+	(method (init &tmp [str 5])
 		(theMusic number: 54 loop: -1 vol: 127 playBed:)
 		(super init:)
 		(self
@@ -282,23 +241,33 @@
 		(astroIndicator init: addToPic:)
 		(directionHandler addToFront: self)
 		(keyDownHandler addToFront: self)
-		(if eggBits (DoDisplay eggBits))
-		(if scoreBits (DoDisplay scoreBits))
-		(= eggBits (DoDisplay {Eggs:} 67 150 178 28 colLYellow))
-		(= scoreBits
-			(DoDisplay {Score:} 67 240 178 28 colLYellow)
+		(if eggBits
+			(DoDisplay eggBits)
 		)
-		(if ptsBits (DoDisplay ptsBits))
+		(if scoreBits
+			(DoDisplay scoreBits)
+		)
+		(= eggBits
+			(DoDisplay {Eggs:}
+				#at 150 178
+				#color colLYellow
+			)
+		)
+		(= scoreBits
+			(DoDisplay {Score:}
+				#at 240 178
+				#color colLYellow
+			)
+		)
+		(if ptsBits
+			(DoDisplay ptsBits)
+		)
 		(= ptsBits
 			(DoDisplay
-				(Format @temp0 {%d} currentPoints)
-				67
-				275
-				178
-				28
-				colLYellow
-				70
-				25
+				(Format @str {%d} currentPoints)
+				#at 275 178
+				#color colLYellow
+				#width 25
 			)
 		)
 	)
@@ -309,28 +278,28 @@
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp temp0 temp1)
+	(method (handleEvent event &tmp toX temp1)
 		(cond 
-			((& (event type?) evJOYSTICK)
-				(event claimed: 1)
+			((& (event type?) direction)
+				(event claimed: TRUE)
 				(switch (event message?)
-					(JOY_LEFT
+					(dirW
 						(astroChicken setMotion: MoveTo 0 (astroChicken y?))
 					)
-					(JOY_RIGHT
+					(dirE
 						(astroChicken setMotion: MoveTo 320 (astroChicken y?))
 					)
-					(JOY_UP
+					(dirN
 						(astroChicken setMotion: MoveTo (astroChicken x?) 0)
 					)
-					(JOY_DOWN
+					(dirS
 						(astroChicken setMotion: MoveTo (astroChicken x?) 190)
 					)
 				)
 			)
-			((== (event type?) evMOUSEBUTTON)
-				(event claimed: 1)
-				(if (== (event modifiers?) emSHIFT)
+			((== (event type?) mouseDown)
+				(event claimed: TRUE)
+				(if (== (event modifiers?) shiftDown)
 					(if
 						(and
 							eggsLeft
@@ -343,15 +312,15 @@
 						(self showEggs:)
 					)
 				else
-					(= temp0 (Min 213 (Max 87 (event x?))))
-					(astroChicken setMotion: MoveTo temp0 (event y?))
+					(= toX (Min 213 (Max 87 (event x?))))
+					(astroChicken setMotion: MoveTo toX (event y?))
 				)
 			)
-			((== (event type?) evKEYBOARD)
-				(event claimed: 1)
+			((== (event type?) keyDown)
+				(event claimed: TRUE)
 				(if
 					(and
-						(== (event message?) KEY_RETURN)
+						(== (event message?) ENTER)
 						eggsLeft
 						(not (cast contains: egg))
 						(astroChicken isNotHidden:)
@@ -368,7 +337,9 @@
 	(method (die)
 		(if (not (-- livesLeft))
 			(Print 290 0)
-			(if modelessDialog (modelessDialog dispose:))
+			(if modelessDialog
+				(modelessDialog dispose:)
+			)
 			(theGame restart:)
 		else
 			(winged dispose:)
@@ -384,13 +355,9 @@
 		(= numEggs
 			(DoDisplay
 				(Format @temp0 {%d} eggsLeft)
-				67
-				180
-				178
-				28
-				colLYellow
-				70
-				25
+				#at 180 178
+				#color colLYellow
+				#width 25
 			)
 		)
 	)
@@ -400,13 +367,9 @@
 		(= ptsBits
 			(DoDisplay
 				(Format @temp0 {%d} currentPoints)
-				67
-				275
-				178
-				28
-				colLYellow
-				70
-				25
+				#width 275 178
+				#color colLYellow
+				#width 25
 			)
 		)
 	)
@@ -419,13 +382,13 @@
 	
 	(method (incScore param1 &tmp [temp0 41] temp41)
 		(if (> param1 1)
-			(= currentPoints (+ currentPoints param1))
+			(+= currentPoints param1)
 		else
 			(= temp41 (/ y 20))
 			(if param1
-				(= currentPoints (+ currentPoints [local14 temp41]))
+				(+= currentPoints [local14 temp41])
 			else
-				(= currentPoints (+ currentPoints [local20 temp41]))
+				(+= currentPoints [local20 temp41])
 			)
 		)
 		(self showPts:)
@@ -434,58 +397,11 @@
 
 (class ScrollActor of Actor
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		description 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 26505
-		lookStr 0
-		yStep 2
 		view 290
-		loop 0
-		cel 0
 		priority 12
-		underBits 0
-		signal $0810
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		cycleSpeed 0
-		script 0
-		cycler 0
-		timer 0
-		detailLevel 0
-		illegalBits $8000
-		xLast 0
-		yLast 0
-		xStep 3
-		moveSpeed 0
-		blocks 0
-		baseSetter 0
-		mover 0
-		looper 0
-		viewer 0
-		avoider 0
-		code 0
+		signal (| fixedLoop fixPriOn)
 		scrollSpeed 9
+		illegalBits $8000
 		deathLoop 0
 		deathMusic 0
 	)
@@ -500,7 +416,9 @@
 	(method (doit)
 		(super doit:)
 		(cond 
-			((< (= x (- x scrollSpeed)) -50) (self dispose:))
+			((< (-= x scrollSpeed) -50)
+				(self dispose:)
+			)
 			(
 				(and
 					(astroChicken isNotHidden:)
@@ -508,7 +426,9 @@
 				)
 				(self doChicken:)
 			)
-			((and (cast contains: egg) (self onMe: egg)) (self doEgg:))
+			((and (cast contains: egg) (self onMe: egg))
+				(self doEgg:)
+			)
 		)
 	)
 	
@@ -526,7 +446,7 @@
 				setLoop: deathLoop
 				setCel: 0
 				cycleSpeed: 2
-				setCycle: End
+				setCycle: EndLoop
 			)
 		)
 	)
@@ -557,7 +477,7 @@
 	(method (init)
 		(super init:)
 		(= scrollSpeed 11)
-		(= x (+ x (Random 0 150)))
+		(+= x (Random 0 150))
 		(= y 155)
 		(self setPri: 14)
 	)
@@ -574,7 +494,7 @@
 	(method (init)
 		(super init:)
 		(= scrollSpeed 11)
-		(= x (+ x (Random 0 150)))
+		(+= x (Random 0 150))
 		(= y 155)
 		(self setPri: 14)
 	)
@@ -592,11 +512,11 @@
 		(= loop 4)
 		(= y (astroChicken y?))
 		(super init:)
-		(self setCycle: Fwd)
+		(self setCycle: Forward)
 	)
 	
-	(method (onMe theObjOrX &tmp temp0)
-		(= temp0 0)
+	(method (onMe theObjOrX &tmp retVal)
+		(= retVal 0)
 		(cond 
 			(
 				(not
@@ -621,9 +541,9 @@
 					(astroChicken setLoop: 0)
 				)
 			)
-			(else (= temp0 1))
+			(else (= retVal 1))
 		)
-		(return temp0)
+		(return retVal)
 	)
 )
 
@@ -634,7 +554,11 @@
 	
 	(method (init)
 		(= loop 5)
-		(if (cast contains: hill) (= y 130) else (= y 143))
+		(if (cast contains: hill)
+			(= y 130)
+		else
+			(= y 143)
+		)
 		(super init:)
 		(= farmerTimer 10)
 	)
@@ -649,7 +573,7 @@
 					(astroChicken isNotHidden:)
 					(not (-- farmerTimer))
 				)
-				(self setCycle: End self)
+				(self setCycle: EndLoop self)
 			)
 		)
 		(if
@@ -680,7 +604,7 @@
 	(method (cue)
 		(gunshot play:)
 		((buckShot new:) init:)
-		(self setCycle: Beg)
+		(self setCycle: BegLoop)
 		(= farmerTimer (Random 5 10))
 	)
 	
@@ -689,7 +613,7 @@
 		(eggFall stop:)
 		(eggSplatting play:)
 		(egg hide: dispose:)
-		(self setLoop: 8 setCel: 0 setCycle: End)
+		(self setLoop: 8 setCel: 0 setCycle: EndLoop)
 	)
 )
 
@@ -716,7 +640,7 @@
 		(= loop 12)
 		(super init:)
 		(= y 105)
-		(self setPri: 14 setCycle: Fwd)
+		(self setPri: 14 setCycle: Forward)
 	)
 )
 
@@ -771,7 +695,11 @@
 	(method (init)
 		(= loop 15)
 		(= cycleSpeed (= cel 0))
-		(if (cast contains: hill) (= y 130) else (= y 143))
+		(if (cast contains: hill)
+			(= y 130)
+		else
+			(= y 143)
+		)
 		(super init:)
 	)
 	
@@ -802,7 +730,7 @@
 			(if (< (- y (astroChicken y?)) 50)
 				(super doChicken:)
 			else
-				(self setCycle: End)
+				(self setCycle: EndLoop)
 			)
 		)
 	)
@@ -812,7 +740,7 @@
 		(eggFall stop:)
 		(eggSplatting play:)
 		(egg hide: dispose:)
-		(self setLoop: 9 setCel: 0 setCycle: End)
+		(self setLoop: 9 setCel: 0 setCycle: EndLoop)
 	)
 )
 
@@ -860,7 +788,7 @@
 	(properties
 		view 290
 		priority 13
-		signal $0810
+		signal (| fixedLoop fixPriOn)
 	)
 	
 	(method (init)
@@ -871,7 +799,7 @@
 		(= local6 7)
 		(= local7 1)
 		(= local5 2)
-		(self setLoop: 2 setCycle: Fwd)
+		(self setLoop: 2 setCycle: Forward)
 	)
 	
 	(method (doit)
@@ -896,7 +824,7 @@
 		view 290
 		loop 3
 		priority 12
-		signal $0810
+		signal (| fixedLoop fixPriOn)
 		xStep 9
 	)
 	
@@ -905,7 +833,7 @@
 		(eggFall stop:)
 		(eggSplatting play:)
 		(= x (egg x?))
-		(self setCycle: End setMotion: MoveTo -5 y self)
+		(self setCycle: EndLoop setMotion: MoveTo -5 y self)
 	)
 	
 	(method (cue)
@@ -919,7 +847,7 @@
 		view 290
 		loop 11
 		cel 3
-		signal $7800
+		signal (| ignrAct ignrHrz fixedLoop fixedCel)
 		illegalBits $0000
 	)
 	
@@ -960,7 +888,7 @@
 		loop 11
 		cel 8
 		priority 3
-		signal $5810
+		signal (| ignrAct fixedLoop fixedCel fixPriOn)
 	)
 	
 	(method (doit)
@@ -977,7 +905,7 @@
 		loop 11
 		cel 9
 		priority 12
-		signal $5810
+		signal (| ignrAct fixedLoop fixedCel fixPriOn)
 	)
 	
 	(method (doit)
@@ -998,7 +926,7 @@
 (instance astroChicken2 of Actor
 	(properties
 		view 290
-		signal $0800
+		signal fixedLoop
 	)
 )
 
@@ -1028,10 +956,10 @@
 		(if
 			(and
 				(or
-					(== (event type?) evMOUSEBUTTON)
+					(== (event type?) mouseDown)
 					(and
-						(== (event type?) evKEYBOARD)
-						(== (event message?) KEY_PAUSE)
+						(== (event type?) keyDown)
+						(== (event message?) $0013)
 					)
 				)
 				(self onMe: event)
@@ -1041,21 +969,26 @@
 			else
 				(theGame masterVolume: oldVolume)
 			)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
 
 (instance startScript of Script
-	(properties)
-	
-	(method (doit &tmp newEvent temp1)
+	(method (doit &tmp event eMsg)
 		(super doit: &rest)
-		(if (< register 40) (++ register) else (self cue:))
+		(if (< register 40)
+			(++ register)
+		else
+			(self cue:)
+		)
 		(if (== state 0)
-			(= temp1 ((= newEvent (Event new:)) type?))
-			(if (OneOf temp1 1 4) (= seconds 0) (= cycles 1))
-			(newEvent dispose:)
+			(= eMsg ((= event (Event new:)) type?))
+			(if (OneOf eMsg mouseDown keyDown)
+				(= seconds 0)
+				(= cycles 1)
+			)
+			(event dispose:)
 		)
 	)
 	
@@ -1063,15 +996,10 @@
 		(switch (= state newState)
 			(0
 				(= messageBits
-					(DoDisplay
-						{"Flight of the Pullet."}
-						67
-						10
-						127
-						28
-						colBlack
-						29
-						colLRed
+					(DoDisplay {"Flight of the Pullet."}
+						#at 10 127
+						#color colBlack
+						#back colLRed
 					)
 				)
 			)
@@ -1080,7 +1008,7 @@
 				(curRoom drawPic: 290)
 				(astroChicken
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					observeBlocks:
 					livesLeft: 3
 					showEggs:
@@ -1094,34 +1022,28 @@
 )
 
 (instance doHenHouse of Script
-	(properties)
-	
-	(method (doit &tmp newEvent temp1)
+	(method (doit &tmp event eMsg)
 		(super doit: &rest)
 		(if (== state 5)
-			(= temp1 ((= newEvent (Event new:)) type?))
-			(if (OneOf temp1 1 4) (= seconds 0) (= cycles 1))
-			(newEvent dispose:)
+			(= eMsg ((= event (Event new:)) type?))
+			(if (OneOf eMsg mouseDown keyDown)
+				(= seconds 0)
+				(= cycles 1)
+			)
+			(event dispose:)
 		)
 	)
 	
-	(method (changeState newState &tmp [temp0 50])
+	(method (changeState newState &tmp [str 50])
 		(switch (= state newState)
 			(0
-				(= currentPoints
-					(+ currentPoints (* (astroChicken eggsLeft?) 5))
-				)
+				(+= currentPoints (* (astroChicken eggsLeft?) 5))
 				(if ptsBits (DoDisplay ptsBits))
 				(= ptsBits
 					(DoDisplay
-						(Format @temp0 {%d} currentPoints)
-						67
-						275
-						178
-						28
-						colLYellow
-						70
-						25
+						(Format @str {%d} currentPoints)
+						#at 275 178
+						#color colLYellow 70 25
 					)
 				)
 				(astroChicken2 setMotion: MoveTo 100 100 self)
@@ -1133,7 +1055,7 @@
 				(astroChicken2 setPri: 11 setMotion: MoveTo 174 129 self)
 			)
 			(3
-				(backok init: setCycle: End)
+				(backok init: setCycle: EndLoop)
 				(= cycles 20)
 			)
 			(4
@@ -1144,37 +1066,25 @@
 				(= messageBits
 					(DoDisplay
 						{Congratulations, in achieving the coveted rank of "Corn-Wheezer," you have won the Pullet Surprise!}
-						67
-						0
-						20
-						28
-						colBlack
-						29
-						colMagenta
-						30
-						1
-						70
-						319
+						#at 0 20
+						#color colBlack
+						#back colMagenta
+						#mode teJustCenter
+						#width 319
 					)
 				)
 				(= highScore
 					(DoDisplay
-						(Format
-							@temp0
+						(Format @str
 							{5 X %d eggs = %d bonus points\n\nMega-Hi Score: %d}
 							(astroChicken eggsLeft?)
 							(* 5 (astroChicken eggsLeft?))
 							currentPoints
 						)
-						67
-						0
-						65
-						28
-						colBlack
-						29
-						colLYellow
-						30
-						1
+						#at 0 65
+						#color colBlack
+						#back colLYellow
+						#mode teJustCenter
 					)
 				)
 			)

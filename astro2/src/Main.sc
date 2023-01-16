@@ -278,290 +278,314 @@
 )
 
 (procedure (HandsOff &tmp saveIcon)
-	(User canControl: 0 canInput: 0)
+	(User canControl: FALSE canInput: FALSE)
 	(ego setMotion: 0)
 	(= saveIcon (theIconBar curIcon?))
-	(theIconBar disable: 0 1 2 3 4 5 6 7)
+	(theIconBar disable:
+		ICON_WALK
+		ICON_LOOK
+		ICON_DO
+		ICON_TALK
+		ICON_SMELL
+		ICON_TASTE
+		ICON_ITEM
+		ICON_INVENTORY
+	)
 	(theIconBar curIcon: saveIcon)
 	(if (not (HaveMouse))
 		(= saveCursorX ((User curEvent?) x?))
 		(= saveCursorY ((User curEvent?) y?))
-		(theGame setCursor: waitCursor 1 304 172)
+		(theGame setCursor: waitCursor TRUE 304 172)
 	else
-		(theGame setCursor: waitCursor 1)
+		(theGame setCursor: waitCursor TRUE)
 	)
-	(if pMouse (pMouse stop:))
+	(if pMouse
+		(pMouse stop:)
+	)
 )
 
 (procedure (HandsOn)
-	(User canControl: 1 canInput: 1)
-	(theIconBar enable: 0 1 2 3 4 5 6 7)
+	(User canControl: TRUE canInput: TRUE)
+	(theIconBar enable: 
+		ICON_WALK
+		ICON_LOOK
+		ICON_DO
+		ICON_TALK
+		ICON_SMELL
+		ICON_TASTE
+		ICON_ITEM
+		ICON_INVENTORY
+	)
 	(if (not (HaveMouse))
-		(theGame
-			setCursor: ((theIconBar curIcon?) cursor?) 1 saveCursorX saveCursorY
+		(theGame setCursor:
+			((theIconBar curIcon?) cursor?) TRUE saveCursorX saveCursorY
 		)
 	else
 		(theGame setCursor: ((theIconBar curIcon?) cursor?))
 	)
 )
 
-(procedure (HaveMem param1)
-	(return (u> (MemoryInfo 1) param1))
+(procedure (HaveMem howMuch)
+	(return (u> (MemoryInfo FreeHeap) howMuch))
 )
 
-(procedure (SteppedOn param1 param2)
-	(return (if (& (param1 onControl: 1) param2) (return 1) else 0))
+(procedure (SteppedOn who color)
+	(return
+		(if (& (who onControl: origin) color)
+			(return TRUE)
+			else FALSE
+		)
+	)
 )
 
-(procedure (Btst param1)
+(procedure (Btst flagEnum)
 	(return
 		(&
-			[gameFlags (/ param1 16)]
-			(>> $8000 (mod param1 16))
+			[gameFlags (/ flagEnum 16)]
+			(>> $8000 (mod flagEnum 16))
 		)
 	)
 )
 
-(procedure (Bset param1 &tmp temp0)
-	(= temp0 (Btst param1))
-	(= [gameFlags (/ param1 16)]
-		(|
-			[gameFlags (/ param1 16)]
-			(>> $8000 (mod param1 16))
-		)
+(procedure (Bset flagEnum &tmp oldState)
+	(= oldState (Btst flagEnum))
+	(|= [gameFlags (/ flagEnum 16)] (>> $8000 (mod flagEnum 16)))
+	(return oldState)
+)
+
+(procedure (Bclr flagEnum &tmp oldState)
+	(= oldState (Btst flagEnum))
+	(&= [gameFlags (/ flagEnum 16)] (~ (>> $8000 (mod flagEnum 16))))
+	(return oldState)
+)
+
+(procedure (InitEgoHead headView &tmp hView)
+	(= hView 0)
+	(if argc (= hView headView) else (= hView 4))
+	((= eHead egoHead)
+		init: ego
+		view: hView
+		cycleSpeed: 24
 	)
-	(return temp0)
 )
 
-(procedure (Bclr param1 &tmp temp0)
-	(= temp0 (Btst param1))
-	(= [gameFlags (/ param1 16)]
-		(&
-			[gameFlags (/ param1 16)]
-			(~ (>> $8000 (mod param1 16)))
-		)
-	)
-	(return temp0)
-)
-
-(procedure (InitEgoHead param1 &tmp temp0)
-	(= temp0 0)
-	(if argc (= temp0 param1) else (= temp0 4))
-	((= eHead egoHead) init: ego view: temp0 cycleSpeed: 24)
-)
-
-(procedure (EgoDead theDeathView theDeathMessage)
+(procedure (EgoDead view msg)
 	(if (> argc 0)
-		(= deathView theDeathView)
+		(= deathView view)
 		(if (OneOf (ego view?) 373 374 993)
-			(if (== deathView 0) (= deathView 7))
-			(if (== deathView 8) (= deathView 9))
+			(if (== deathView 0)
+				(= deathView 7)
+			)
+			(if (== deathView 8)
+				(= deathView 9)
+			)
 		)
 	else
 		(= deathView 0)
 	)
 	(if (> argc 1)
-		(= deathMessage theDeathMessage)
+		(= deathMessage msg)
 	else
 		(= deathMessage 0)
 	)
-	(curRoom newRoom: 900)
+	(curRoom newRoom: EGODEAD)
 )
 
-(procedure (SolvePuzzle param1 param2)
-	(if (not (Btst param1))
-		(theGame changeScore: param2)
-		(Bset param1)
+(procedure (SolvePuzzle pVal pFlag)
+	(if (not (Btst pFlag))
+		(theGame changeScore: pVal)
+		(Bset pFlag)
 		(pointsSound play:)
 	)
 )
 
-(procedure (DoDisplay theTheColWhite &tmp theTheTheColWhite theTheTheColWhite_2 temp2 theTheTheColWhite_3 theTheTheColWhite_4 theTheTheColWhite_5 theColWhite theTheTheColWhite_6 temp8)
+(procedure (DoDisplay args &tmp
+		theMode theForeFont theBackFont theWidth theX theY theForeColor theBackColor i)
 	(return
 		(if (== argc 1)
-			(Display 0 26 108 [theTheColWhite 0])
+			(Display 0 2
+				 p_restore
+				 [args 0]
+			)
 		else
-			(= theTheTheColWhite_4 (= theTheTheColWhite_5 -1))
-			(= theTheTheColWhite 0)
-			(= theTheTheColWhite_2 68)
-			(= temp2 69)
-			(= theTheTheColWhite_3 -1)
-			(= theColWhite colWhite)
-			(= theTheTheColWhite_6 0)
-			(= temp8 1)
-			(while (< temp8 argc)
-				(switch [theTheColWhite temp8]
-					(30
-						(= theTheTheColWhite [theTheColWhite (++ temp8)])
+			(= theX
+				(= theY -1)
+			)
+			(= theMode teJustCenter)
+			(= theForeFont 68)
+			(= theBackFont 69)
+			(= theWidth -1)
+			(= theForeColor colWhite)
+			(= theBackColor 0)
+			(for ((= i 1)) (< i argc) ((++ i))
+				(switch [args i]
+					(#mode
+						(= theMode [args (++ i)])
 					)
-					(33
-						(= temp2
-							(+
-								(= theTheTheColWhite_2 [theTheColWhite (++ temp8)])
-								1
-							)
-						)
+					(#font
+						(= theBackFont (+ (= theForeFont [args (++ i)]) 1))
 					)
-					(70
-						(= theTheTheColWhite_3 [theTheColWhite (++ temp8)])
+					(#width
+						(= theWidth [args (++ i)])
 					)
-					(67
-						(= theTheTheColWhite_4 [theTheColWhite (++ temp8)])
-						(= theTheTheColWhite_5 [theTheColWhite (++ temp8)])
+					(#at
+						(= theX [args (++ i)])
+						(= theY [args (++ i)])
 					)
-					(28
-						(= theColWhite [theTheColWhite (++ temp8)])
+					(#color
+						(= theForeColor [args (++ i)])
 					)
-					(29
-						(= theTheTheColWhite_6 [theTheColWhite (++ temp8)])
+					(#back
+						(= theBackColor [args (++ i)])
 					)
 				)
-				(++ temp8)
 			)
-			(= temp8
-				(Display
-					[theTheColWhite 0]
-					dsCOORD
-					theTheTheColWhite_4
-					theTheTheColWhite_5
-					dsCOLOR
-					theTheTheColWhite_6
-					dsWIDTH
-					theTheTheColWhite_3
-					dsALIGN
-					theTheTheColWhite
-					dsFONT
-					temp2
-					dsSAVEPIXELS
+			(= i
+				(Display [args 0]
+					p_at theX theY
+					p_color theBackColor
+					p_width theWidth
+					p_mode theMode
+					p_font theBackFont
+					p_save
 				)
 			)
-			(Display
-				[theTheColWhite 0]
-				dsCOORD
-				theTheTheColWhite_4
-				theTheTheColWhite_5
-				dsCOLOR
-				theColWhite
-				dsWIDTH
-				theTheTheColWhite_3
-				dsALIGN
-				theTheTheColWhite
-				dsFONT
-				theTheTheColWhite_2
+			(Display [args 0]
+				p_at theX theY
+				p_color theForeColor
+				p_width theWidth
+				p_mode theMode
+				p_font theForeFont
 			)
-			(return temp8)
+			(return i)
 		)
 	)
 )
 
-(procedure (Face param1 param2 param3 param4 &tmp temp0 temp1 temp2 temp3)
-	(= temp3 0)
-	(if (IsObject param2)
-		(= temp1 (param2 x?))
-		(= temp2 (param2 y?))
-		(if (== argc 3) (= temp3 param3))
+(procedure (Face who theObjOrX theY whoCares &tmp theHeading lookX looKY whoToCue)
+	(= whoToCue 0)
+	(if (IsObject theObjOrX)
+		(= lookX (theObjOrX x?))
+		(= looKY (theObjOrX y?))
+		(if (== argc 3)
+			(= whoToCue theY)
+		)
 	else
-		(= temp1 param2)
-		(= temp2 param3)
-		(if (== argc 4) (= temp3 param4))
+		(= lookX theObjOrX)
+		(= looKY theY)
+		(if (== argc 4)
+			(= whoToCue whoCares)
+		)
 	)
-	(= temp0
-		(GetAngle (param1 x?) (param1 y?) temp1 temp2)
-	)
-	(param1
-		setHeading: temp0 (if (IsObject temp3) temp3 else 0)
-	)
+	(= theHeading (GetAngle (who x?) (who y?) lookX looKY))
+	(who setHeading: theHeading (if (IsObject whoToCue) whoToCue else 0))
 )
 
-(procedure (DoStatus theCurrentEra &tmp theMyTextColor18 [temp1 25] [temp26 100] [temp126 4] temp130)
-	(if (!= theCurrentEra -1) (= currentEra theCurrentEra))
-	(StrCpy @temp1 {Space Quest_})
+(procedure (DoStatus strg &tmp theMyTextColor18 [str 25] [buffer 100] [len 4] temp130)
+	(if (!= strg -1)
+		(= currentEra strg)
+	)
+	(StrCpy @str {Space Quest_})
 	(switch currentEra
 		(1
-			(StrCat @temp1 {\1B - The Sarien Encounter})
+			(StrCat @str {\1B - The Sarien Encounter})
 		)
 		(3
-			(StrCat @temp1 {\1C - The Pirates of Pestulon})
+			(StrCat @str {\1C - The Pirates of Pestulon})
 		)
 		(4
-			(StrCat @temp1 {\1A - Roger Wilco and The Time Rippers})
+			(StrCat @str {\1A - Roger Wilco and The Time Rippers})
 		)
 		(10
-			(StrCat @temp1 {\1E - Latex Babes of Estros})
+			(StrCat @str {\1E - Latex Babes of Estros})
 		)
 		(12
-			(StrCat @temp1 {\1D - Vohaul's Revenge \1F})
+			(StrCat @str {\1D - Vohaul's Revenge \1F})
 			(= theMyTextColor18 myTextColor18)
 		)
 	)
-	(TextSize @temp126 @temp1 0 -1)
-	(StrCpy @temp26 {\06})
-	(= temp130 (/ (- 326 (- [temp126 3] [temp126 1])) 2))
+	(TextSize @len @str 0 -1)
+	(StrCpy @buffer {\06})
+	(= temp130 (/ (- 326 (- [len 3] [len 1])) 2))
 	(while (> temp130 0)
-		(StrCat @temp26 {\06})
+		(StrCat @buffer {\06})
 		(-- temp130)
 	)
-	(StrCat @temp26 @temp1)
-	(DrawStatus @temp26 0 (FindColor colGray4 colGray1))
+	(StrCat @buffer @str)
+	(DrawStatus @buffer 0 (FindColor colGray4 colGray1))
 )
 
-(procedure (SteppedFullyOn param1 param2)
-	(return (if (== (param1 onControl:) param2) (return 1) else 0))
+(procedure (SteppedFullyOn who color)
+	(return
+		(if (== (who onControl:) color)
+			(return TRUE)
+			else FALSE
+		)
+	)
 )
 
-(procedure (NoResponse &tmp newList [temp1 2] temp3 userCurEvent temp5 [temp6 5])
-	(= temp3 (theGame setCursor: 69 1))
-	(= userCurEvent (User curEvent?))
+(procedure (NoResponse &tmp list [temp1 2] oldCursor evt theTime [temp6 5])
+	(= oldCursor (theGame setCursor: 69 TRUE))
+	(= evt (User curEvent?))
 	(redX
-		x: (userCurEvent x?)
-		y: (+ 300 (userCurEvent y?))
+		x: (evt x?)
+		y: (+ 300 (evt y?))
 		z: 300
 		show:
 	)
-	((= newList (List new:)) add: redX)
-	(Animate (newList elements?) 1)
-	(Animate (cast elements?) 0)
-	(= temp5 (GetTime))
-	(while (< (Abs (- temp5 (GetTime))) 40)
+	((= list (List new:)) add: redX)
+	(Animate (list elements?) TRUE)
+	(Animate (cast elements?) FALSE)
+	(= theTime (GetTime))
+	(while (< (Abs (- theTime (GetTime))) 40)
 		(breakif
-			(OneOf ((= userCurEvent (Event new:)) type?) 4 1)
+			(OneOf ((= evt (Event new:)) type?) keyDown mouseDown)
 		)
-		(userCurEvent dispose:)
+		(evt dispose:)
 	)
-	(if (IsObject userCurEvent) (userCurEvent dispose:))
+	(if (IsObject evt) (evt dispose:))
 	(redX hide: posn: 1000 -1000)
-	(Animate (newList elements?) 1)
-	(newList delete: redX dispose:)
-	(theGame setCursor: temp3)
+	(Animate (list elements?) TRUE)
+	(list delete: redX dispose:)
+	(theGame setCursor: oldCursor)
 )
 
-(procedure (Babble param1 param2 param3 &tmp [temp0 500])
-	(if (u< param2 1000)
-		(GetFarText param2 param3 @temp0)
+(procedure (Babble theView msgS msgO &tmp [buffer 500])
+	(if (u< msgS 1000)
+		(GetFarText msgS msgO @buffer)
 	else
-		(StrCpy @temp0 param2)
+		(StrCpy @buffer msgS)
 	)
 	(babbleIcon
-		view: param1
+		view: theView
 		cycleSpeed: (* (+ howFast 1) 4)
 	)
-	(if (u< param2 1000)
-		(Print @temp0 &rest 82 babbleIcon 0 0)
+	(if (u< msgS 1000)
+		(Print @buffer &rest #icon babbleIcon 0 0)
 	else
-		(Print @temp0 param3 &rest 82 babbleIcon 0 0)
+		(Print @buffer msgO &rest #icon babbleIcon 0 0)
 	)
 )
 
-(procedure (FindColor param1 param2)
-	(if (< param1 0) (= param1 0))
-	(if (> param1 255) (= param1 255))
-	(if (< param2 0) (= param2 0))
-	(if (> param2 15) (= param2 15))
-	(return (if (Btst 21) param1 else param2))
+(procedure (FindColor col256 col16)
+	(if (< col256 0)
+		(= col256 0)
+	)
+	(if (> col256 255)
+		(= col256 255)
+	)
+	(if (< col16 0)
+		(= col16 0)
+	)
+	(if (> col16 15)
+		(= col16 15)
+	)
+	(return (if (Btst fIsVGA) col256 else col16))
 )
 
-(instance ego of SQEgo
+(instance egoObj of SQEgo
 	(properties
+		name {ego}
 		description {Roger Wilco}
 		sightAngle 180
 		lookStr {It's you. Roger Wilco, space guy.}
@@ -569,17 +593,31 @@
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(5 (Print 0 0))
-			(3 (Print 0 1))
-			(10 (Print 0 2))
-			(11 (Print 0 3))
-			(4
+			(verbTalk
+				(Print 0 0)
+			)
+			(verbDo
+				(Print 0 1)
+			)
+			(verbTaste
+				(Print 0 2)
+			)
+			(verbSmell
+				(Print 0 3)
+			)
+			(verbUse
 				(switch theItem
-					(12 (Print 0 4))
-					(else  (NoResponse))
+					(iCigar
+						(Print 0 4)
+					)
+					(else
+						(NoResponse)
+					)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -610,15 +648,13 @@
 
 (instance pointsSound of Sound
 	(properties
-		flags $0001
+		flags mNOPAUSE
 		number 888
 		priority 15
 	)
 )
 
-(instance stopGroop of Grooper
-	(properties)
-	
+(instance stopGroop of GradualLooper
 	(method (doit)
 		(if
 			(and
@@ -632,33 +668,23 @@
 )
 
 (instance babbleIcon of DCIcon
-	(properties)
-	
 	(method (init)
 		((= cycler (RandCycle new:)) init: self 20)
 	)
 )
 
-(instance sq4KeyDownHandler of EventHandler
-	(properties)
-)
+(instance sq4KeyDownHandler of EventHandler)
 
-(instance sq4MouseDownHandler of EventHandler
-	(properties)
-)
+(instance sq4MouseDownHandler of EventHandler)
 
-(instance sq4DirectionHandler of EventHandler
-	(properties)
-)
+(instance sq4DirectionHandler of EventHandler)
 
 (instance sq4 of Game
-	(properties)
-	
 	(method (init &tmp temp0)
 		(= systemWindow sq4Win)
 		(ColorInit)
 		(= sGrooper stopGroop)
-		(= useSortedFeatures 1)
+		(= useSortedFeatures TRUE)
 		(super init:)
 		(StrCpy @sysLogPath {})
 		(= doVerbCode sq4DoVerbCode)
@@ -667,34 +693,44 @@
 		((= mouseDownHandler sq4MouseDownHandler) add:)
 		((= directionHandler sq4DirectionHandler) add:)
 		(= pMouse PseudoMouse)
-		(self egoMoveSpeed: 0 setCursor: theCursor 1 304 172)
-		((= ego ego)
+		(self
+			egoMoveSpeed: 0
+			setCursor: theCursor TRUE 304 172)
+		((= ego egoObj)
 			_head: (= eHead egoHead)
 			moveSpeed: (self egoMoveSpeed?)
 			cycleSpeed: (self egoMoveSpeed?)
 		)
-		((ego _head?) client: ego)
+		((ego _head?)
+			client: ego
+		)
 		(User
 			alterEgo: ego
 			verbMessager: 0
-			canControl: 0
-			canInput: 0
+			canControl: FALSE
+			canInput: FALSE
 		)
-		((= theMusic longSong) owner: self init:)
-		((= theMusic2 longSong2) owner: self init:)
+		((= theMusic longSong)
+			owner: self
+			init:
+		)
+		((= theMusic2 longSong2)
+			owner: self
+			init:
+		)
 		(= waitCursor 997)
 		(= possibleScore 315)
 		(= userFont 4)
 		(= version {x.yyy})
-		(= numVoices (DoSound sndDISPOSE))
+		(= numVoices (DoSound NumVoices))
 		(if
 			(and
-				(>= (= numColors (Graph grGET_COLOURS)) 2)
+				(>= (= numColors (Graph GDetect)) 2)
 				(<= numColors 16)
 			)
-			(Bclr 21)
+			(Bclr fIsVGA)
 		else
-			(Bset 21)
+			(Bset fIsVGA)
 		)
 		(sq4Win
 			color: 0
@@ -735,8 +771,8 @@
 			helpIconItem: icon9
 			disable:
 		)
-		(icon5 message: (if (HaveMouse) 3840 else 9))
-		(Inv
+		(icon5 message: (if (HaveMouse) SHIFTTAB else TAB))
+		(Inventory
 			init:
 			add:
 				buckazoid
@@ -774,32 +810,46 @@
 				iconOk
 				(detailSlider
 					theObj: self
-					selector: 291
+					selector: #detailLevel
 					topValue: 3
 					bottomValue: 0
 					yourself:
 				)
 				(volumeSlider
 					theObj: self
-					selector: 381
+					selector: #masterVolume
 					topValue: (if (> numVoices 1) 15 else 1)
 					bottomValue: 0
 					yourself:
 				)
 				(speedSlider
 					theObj: self
-					selector: 378
+					selector: #setSpeed
 					topValue: 1
 					bottomValue: 15
 					yourself:
 				)
-				(iconSave theObj: self yourself:)
-				(iconRestore theObj: self yourself:)
-				(iconRestart theObj: self selector: 104 yourself:)
-				(iconQuit theObj: self selector: 103 yourself:)
+				(iconSave
+					theObj: self
+					yourself:
+				)
+				(iconRestore
+					theObj: self
+					yourself:
+				)
+				(iconRestart
+					theObj: self
+					selector: #restart
+					yourself:
+				)
+				(iconQuit
+					theObj: self
+					selector: #quitGame
+					yourself:
+				)
 				(iconAbout
-					theObj: (ScriptID 811 0)
-					selector: 60
+					theObj: (ScriptID ABOUT 0)
+					selector: #doit
 					yourself:
 				)
 				iconHelp
@@ -821,176 +871,99 @@
 		(super doit:)
 		(if
 			(not
-				(OneOf
-					curRoomNum
-					803
-					1
-					6
-					9
-					10
-					15
-					16
-					17
-					19
-					20
-					21
-					59
-					119
-					120
-					150
-					321
-					329
-					330
-					335
-					340
-					345
-					350
-					355
-					371
-					376
-					398
-					500
-					505
-					510
-					514
-					515
-					520
-					525
-					531
-					541
+				(OneOf curRoomNum
+					803 1 6 9 10 15 16 17 19 20 21
+					59 119 120 150 321 329 330 335
+					340 345 350 355 371 376 398 500
+					505 510 514 515 520 525 531 541
 					615
 				)
 			)
-			((ScriptID 808 0) doit:)
+			((ScriptID NOSEPICK 0) doit:)
 		)
 	)
 	
 	(method (replay)
 		(DoStatus -1)
-		(Palette 4 0 255 100)
+		(Palette PALIntensity 0 255 100)
 		(super replay:)
 	)
 	
 	(method (newRoom)
-		(if (== ((inventory at: 12) state?) 1)
+		(if (== ((inventory at: iCigar) state?) 1)
 			(Print 0 6)
-			((inventory at: 12) state: 0)
+			((inventory at: iCigar) state: 0)
 		)
 		(super newRoom: &rest)
 	)
 	
 	(method (startRoom roomNum)
-		(if pMouse (pMouse stop:))
-		((ScriptID 801) doit: roomNum)
-		(if debugOn (SetDebug))
+		(if pMouse
+			(pMouse stop:)
+		)
+		((ScriptID DISPOSE) doit: roomNum)
+		(if debugOn
+			(SetDebug)
+		)
 		(cond 
 			(
-				(OneOf
-					roomNum
-					370
-					371
-					375
-					376
-					380
-					381
-					385
-					386
-					387
-					390
-					391
-					395
-					397
-					398
-					399
-					400
-					405
-					406
-					410
-					411
+				(OneOf roomNum
+					370 371 375 376 380 381 385 386
+					387 390 391 395 397 398 399 400
+					405 406 410 411
 				)
 				RegionPath
-				(ScriptID 700)
-				(= curReg 700)
-				(if (OneOf roomNum 405 406 410 411) (ScriptID 809))
+				(ScriptID MALL)
+				(= curReg MALL)
+				(if (OneOf roomNum 405 406 410 411)
+					(ScriptID INERTIA)
+				)
 			)
 			((OneOf roomNum 25 30 35 40 45 50 55 60 65)
 				RegionPath
-				(ScriptID 701)
-				(= curReg 701)
+				(ScriptID STREET)
+				(= curReg STREET)
 				(if (OneOf roomNum 25 30 35 40 45 50 55 60 65)
-					(ScriptID 705)
+					(ScriptID BUNNY)
 				)
 			)
-			((OneOf roomNum 75 80 85 90 95 100 105 110 115) (ScriptID 702))
-			((OneOf roomNum 609 610 611 612 613 614 615 620) (ScriptID 706))
-			((OneOf roomNum 299 300 305 306 310 315 320 298) (ScriptID 703))
+			((OneOf roomNum 75 80 85 90 95 100 105 110 115)
+				(ScriptID SEWER)
+			)
+			((OneOf roomNum 609 610 611 612 613 614 615 620)
+				(ScriptID ULENCE)
+			)
+			((OneOf roomNum 299 300 305 306 310 315 320 298)
+				(ScriptID BUTTE)
+			)
 			(
-				(OneOf
-					roomNum
-					150
-					500
-					505
-					510
-					514
-					515
-					520
-					525
-					541
-					544
-					545
+				(OneOf roomNum
+					150 500 505 510 514 515
+					520 525 541 544 545
 				)
 				RegionPath
-				(ScriptID 704)
-				(= curReg 704)
+				(ScriptID BRAIN)
+				(= curReg BRAIN)
 			)
-			((OneOf roomNum 1 6 9 10 15 16 17 19 20 21) (ScriptID 707))
-			((OneOf roomNum 530 535 540) (ScriptID 709))
+			((OneOf roomNum 1 6 9 10 15 16 17 19 20 21)
+				(ScriptID INTRO)
+			)
+			((OneOf roomNum 530 535 540)
+				(ScriptID LANDING)
+			)
 		)
 		(if
 			(not
-				(OneOf
-					roomNum
-					803
-					1
-					6
-					9
-					10
-					15
-					16
-					17
-					19
-					20
-					21
-					59
-					119
-					120
-					150
-					321
-					329
-					330
-					335
-					340
-					345
-					350
-					355
-					371
-					376
-					398
-					500
-					505
-					510
-					514
-					515
-					520
-					525
-					531
-					541
-					615
+				(OneOf roomNum
+					803 1 6 9 10 15 16 17 19 20 21 59
+					119 120 150 321 329 330 335 340 345
+					350 355 371 376 398 500 505 510 514
+					515 520 525 531 541 615
 				)
 			)
-			(ScriptID 808)
+			(ScriptID NOSEPICK)
 		)
-		(ScriptID 982)
+		(ScriptID SIGHT)
 		(super startRoom: roomNum)
 		(if (cast contains: ego)
 			(if
@@ -1001,7 +974,9 @@
 				)
 				(ego setCycle: StopWalk 4)
 			)
-			(if (not (ego looper?)) (ego setLoop: stopGroop))
+			(if (not (ego looper?))
+				(ego setLoop: stopGroop)
+			)
 			(InitEgoHead (egoHead view?))
 		)
 		(redX init: hide: setPri: 15 posn: 1000 -1000)
@@ -1009,44 +984,50 @@
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
 			(switch (event type?)
-				(evKEYBOARD
+				(keyDown
 					(switch (event message?)
-						(KEY_TAB
-							(if (not (& (icon5 signal?) $0004))
-								(Inv showSelf: ego)
+						(TAB
+							(if (not (& (icon5 signal?) DISABLED))
+								(Inventory showSelf: ego)
 							)
 						)
-						(KEY_SHIFTTAB
-							(if (not (& (icon5 signal?) $0004))
-								(Inv showSelf: ego)
+						(SHIFTTAB
+							(if (not (& (icon5 signal?) DISABLED))
+								(Inventory showSelf: ego)
 							)
 						)
-						(KEY_CONTROL
+						(`^q
 							(theGame quitGame:)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(KEY_F2
+						(`#2
 							(cond 
-								((theGame masterVolume:) (theGame masterVolume: 0))
-								((> numVoices 1) (theGame masterVolume: 15))
-								(else (theGame masterVolume: 1))
+								((theGame masterVolume:)
+									(theGame masterVolume: 0)
+								)
+								((> numVoices 1)
+									(theGame masterVolume: 15)
+								)
+								(else
+									(theGame masterVolume: 1)
+								)
 							)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(KEY_F5
+						(`#5
 							(theGame save:)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(KEY_F7
+						(`#7
 							(theGame restore:)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(KEY_F9
+						(`#9
 							(theGame restart:)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
@@ -1056,38 +1037,30 @@
 	
 	(method (quitGame)
 		(babbleIcon view: 946 cycleSpeed: (* (+ howFast 1) 4))
-		(super
-			quitGame:
-				(Print
-					0
-					5
-					#button
-					{Do something of redeeming\nsocial value (Quit)}
-					1
-					#button
-					{Changed My Mind.\nLet's Play!}
-					0
-					#icon
-					babbleIcon
-					0
-					0
-				)
+		(super quitGame:
+			(Print 0 5
+				#button {Do something of redeeming\nsocial value (Quit)} 1
+				#button {Changed My Mind.\nLet's Play!} 0
+				#icon babbleIcon 0 0
+			)
 		)
 	)
 	
 	(method (pragmaFail)
-		(if (User canInput:) (NoResponse))
+		(if (User canInput:)
+			(NoResponse)
+		)
 	)
 )
 
-(instance ok of IconI
+(instance ok of IconItem
 	(properties
 		view 901
 		loop 3
 		cel 0
 		nsLeft 40
-		cursor 999
-		signal $0043
+		cursor ARROW_CURSOR
+		signal (| HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr {Select this Icon to close this window.}
 	)
 	
@@ -1100,13 +1073,13 @@
 	)
 )
 
-(instance invLook of IconI
+(instance invLook of IconItem
 	(properties
 		view 901
 		loop 2
 		cel 0
 		cursor 19
-		message 2
+		message verbLook
 		helpStr {Select this Icon then select an inventory item you'd like a description of.}
 	)
 	
@@ -1119,13 +1092,13 @@
 	)
 )
 
-(instance invHand of IconI
+(instance invHand of IconItem
 	(properties
 		view 901
 		loop 0
 		cel 0
 		cursor 20
-		message 3
+		message verbDo
 		helpStr {This allows you to do something to an item.}
 	)
 	
@@ -1138,13 +1111,13 @@
 	)
 )
 
-(instance invHelp of IconI
+(instance invHelp of IconItem
 	(properties
 		view 901
 		loop 1
 		cel 0
 		cursor 29
-		message 6
+		message verbHelp
 	)
 	
 	(method (init)
@@ -1156,12 +1129,12 @@
 	)
 )
 
-(instance invSelect of IconI
+(instance invSelect of IconItem
 	(properties
 		view 901
 		loop 4
 		cel 0
-		cursor 999
+		cursor ARROW_CURSOR
 		helpStr {This allows you to select an item.}
 	)
 	
@@ -1174,19 +1147,17 @@
 	)
 )
 
-(instance buckazoid of InvI
+(instance buckazoid of InvItem
 	(properties
 		view 700
 		cursor 1
-		signal $0002
+		signal IMMEDIATE
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2
-				(Printf
-					0
-					7
+			(verbLook
+				(Printf 0 7
 					buckazoids
 					(if (== buckazoids 1) {.} else {s.})
 				)
@@ -1195,223 +1166,247 @@
 	)
 )
 
-(instance jar of InvI
+(instance jar of InvItem
 	(properties
 		view 700
 		cel 1
 		cursor 15
-		signal $0002
+		signal IMMEDIATE
 		description {glass jar}
 		owner 70
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2
-				(if (== cel 2) (Print 0 8) else (Print 0 9))
+			(verbLook
+				(if (== cel 2)
+					(Print 0 8)
+				else
+					(Print 0 9)
+				)
 			)
 		)
 	)
 )
 
-(instance hintbook of InvI
+(instance hintbook of InvItem
 	(properties
 		view 700
 		cel 4
 		cursor 18
-		signal $0002
+		signal IMMEDIATE
 		description {An SQ 4 hintbook.}
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3
+			(verbDo
 				(cond 
-					((curRoom script?) (Print 0 10))
-					(
-					(and (OneOf curRoomNum 397 398) (not (Btst 31))) (Print 0 11))
-					((not (HaveMem 6800)) (Print 0 12))
+					((curRoom script?)
+						(Print 0 10)
+					)
+					((and (OneOf curRoomNum 397 398) (not (Btst fBoughtHintbook)))
+						(Print 0 11)
+					)
+					((not (HaveMem HintSize))
+						(Print 0 12)
+					)
 					(else
-						(Inv curIcon: (inventory at: 9) hide:)
-						(curRoom setScript: (ScriptID 708 0))
+						(Inventory curIcon: (inventory at: iPen) hide:)
+						(curRoom setScript: (ScriptID HINTBOOK 0))
 					)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
 
-(instance pen of InvI
+(instance pen of InvItem
 	(properties
 		view 700
 		cel 5
 		cursor 8
-		signal $0002
+		signal IMMEDIATE
 		description {Yes, it's a Reveal-O-matic electric hint revealer.}
 	)
 )
 
-(instance atmCard of InvI
+(instance atmCard of InvItem
 	(properties
 		view 700
 		cel 6
 		cursor 2
-		signal $0002
+		signal IMMEDIATE
 		description {An AutoBucks Teller Machine card.}
 	)
 )
 
-(instance plug of InvI
+(instance plug of InvItem
 	(properties
 		view 700
 		cel 7
 		cursor 5
-		signal $0002
+		signal IMMEDIATE
 		description {A PocketPal\05 adaptor plug.}
 	)
 )
 
-(instance cigar of InvI
+(instance cigar of InvItem
 	(properties
 		view 700
 		cel 8
 		cursor 3
-		signal $0002
+		signal IMMEDIATE
 		description {An obviously used stogie.}
 	)
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(4
+			(verbUse
 				(cond 
-					((!= theItem 13) 0)
-					(state (Print 0 13))
-					(else (Print 0 14) (= state 1))
+					((!= theItem iMatches) 0)
+					(state
+						(Print 0 13)
+					)
+					(else
+						(Print 0 14)
+						(= state 1)
+					)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
 
-(instance matches of InvI
+(instance matches of InvItem
 	(properties
 		view 700
 		cel 9
 		cursor 4
-		signal $0002
+		signal IMMEDIATE
 		description {A book of matches.}
 	)
 )
 
-(instance diskette of InvI
+(instance diskette of InvItem
 	(properties
 		view 700
 		cel 10
 		cursor 11
-		signal $0002
+		signal IMMEDIATE
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (Print 0 15))
+			(verbLook
+				(Print 0 15)
+			)
 		)
 	)
 )
 
-(instance rabbit of InvI
+(instance rabbit of InvItem
 	(properties
 		view 700
 		cel 11
 		cursor 9
-		signal $0002
+		signal IMMEDIATE
 		description {cute bunny}
 	)
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(2
+			(verbLook
 				(cond 
 					((!= view 700)
-						(Inv hide:)
+						(Inventory hide:)
 						(self view: 700 loop: 0 cel: 11)
-						(Inv show: ego)
+						(Inventory show: ego)
 					)
-					((not ((inventory at: 4) owner?))
-						(Inv hide:)
+					((not ((inventory at: iBattery) owner?))
+						(Inventory hide:)
 						(self view: 701 loop: 0 cel: 0)
-						(Inv show: ego)
+						(Inventory show: ego)
 					)
-					(else (Print 0 16))
+					(else
+						(Print 0 16)
+					)
 				)
 			)
-			(3
+			(verbDo
 				(if (== view 700)
 					0
 				else
-					(SolvePuzzle 67 3)
+					(SolvePuzzle fGotBattery 3)
 					(Print 0 17)
-					(Inv hide:)
-					(ego get: 4)
+					(Inventory hide:)
+					(ego get: iBattery)
 					(self view: 700 loop: 0 cel: 11)
-					(Inv show: ego)
+					(Inventory show: ego)
 				)
 			)
-			(4
+			(verbUse
 				(switch theItem
-					(4
+					(iBattery
 						(Print 0 18)
-						(Inv hide:)
-						(ego put: 4 0)
-						(Inv curIcon: 0 show: ego)
+						(Inventory hide:)
+						(ego put: iBattery 0)
+						(Inventory curIcon: 0 show: ego)
 					)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
 
-(instance battery of InvI
+(instance battery of InvItem
 	(properties
 		view 700
 		cel 12
 		cursor 13
-		signal $0002
+		signal IMMEDIATE
 		description {A battery.}
 	)
 )
 
-(instance oxygen_tank of InvI
+(instance oxygen_tank of InvItem
 	(properties
 		view 700
 		cel 13
 		cursor 12
-		signal $0002
+		signal IMMEDIATE
 		description {An oxygen tank.}
 		owner 335
 		name "oxygen tank"
 	)
 )
 
-(instance rope of InvI
+(instance rope of InvItem
 	(properties
 		view 700
 		cel 14
 		cursor 10
-		signal $0002
+		signal IMMEDIATE
 		description {A crummy piece of rope.}
 		owner 65
 	)
 )
 
-(instance laptop_computer of InvI
+(instance laptop_computer of InvItem
 	(properties
 		view 700
 		cel 15
 		cursor 17
-		signal $0002
+		signal IMMEDIATE
 		description {A handy Dandy PocketPal portable terminal.}
 		owner 55
 		name "laptop computer"
@@ -1419,47 +1414,49 @@
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(2
+			(verbLook
 				(cond 
 					((!= view 700)
-						(Inv hide:)
+						(Inventory hide:)
 						(self view: 700 loop: 0 cel: 15)
-						(Inv show: ego)
+						(Inventory show: ego)
 					)
-					((== ((inventory at: 4) owner?) 1) (Print 0 19))
+					((== ((inventory at: iBattery) owner?) 1)
+						(Print 0 19)
+					)
 					(else
-						(Inv hide:)
+						(Inventory hide:)
 						(self view: 701 loop: 0 cel: 1)
-						(Inv show: ego)
+						(Inventory show: ego)
 					)
 				)
 			)
-			(3
-				(if (== ((inventory at: 4) owner?) 1)
+			(verbDo
+				(if (== ((inventory at: iBattery) owner?) 1)
 					(Print 0 20)
-					(Inv hide:)
-					(ego get: 4)
-					(Inv show: ego)
+					(Inventory hide:)
+					(ego get: iBattery)
+					(Inventory show: ego)
 				else
 					(Print 0 21)
 				)
 			)
-			(4
+			(verbUse
 				(switch theItem
-					(4
-						(SolvePuzzle 72 3)
+					(iBattery
+						(SolvePuzzle fBatteryInLaptop 3)
 						(Print 0 22)
-						(Inv hide:)
+						(Inventory hide:)
 						(self view: 700 loop: 0 cel: 15)
-						(ego put: 4 1)
-						(Inv curIcon: 0 show: ego)
+						(ego put: iBattery 1)
+						(Inventory curIcon: 0 show: ego)
 					)
-					(11
-						(SolvePuzzle 71 3)
+					(iPlug
+						(SolvePuzzle fPlugInLaptop 3)
 						(Print 0 23)
-						(Inv hide:)
-						(ego put: 11 1)
-						(Inv curIcon: 0 show: ego)
+						(Inventory hide:)
+						(ego put: iPlug 1)
+						(Inventory curIcon: 0 show: ego)
 					)
 				)
 			)
@@ -1467,12 +1464,12 @@
 	)
 )
 
-(instance paper_with_gum of InvI
+(instance paper_with_gum of InvItem
 	(properties
 		view 700
 		loop 2
 		cursor 21
-		signal $0002
+		signal IMMEDIATE
 		description {It's Paper-wrapped gum - a Coarsegold dining delight.}
 		owner 297
 		name "paper with gum"
@@ -1480,27 +1477,33 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2
-				(if cel (Print 0 24) else (Print 0 25))
-			)
-			(3
-				(if (not cel)
-					(Inv hide:)
-					(self view: 700 loop: 2 cel: 1)
-					(Inv show: ego)
+			(verbLook
+				(if cel
+					(Print 0 24)
+				else
+					(Print 0 25)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(verbDo
+				(if (not cel)
+					(Inventory hide:)
+					(self view: 700 loop: 2 cel: 1)
+					(Inventory show: ego)
+				)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
 
-(instance bomb of InvI
+(instance bomb of InvItem
 	(properties
 		view 700
 		cel 3
 		cursor 22
-		signal $0002
+		signal IMMEDIATE
 		description {A piece of unstable ordnance.}
 		owner 40
 	)
@@ -1512,14 +1515,14 @@
 	)
 )
 
-(instance icon0 of IconI
+(instance icon0 of IconItem
 	(properties
 		view 900
 		loop 0
 		cel 0
 		cursor 6
-		message 1
-		signal $0041
+		message verbWalk
+		signal (| HIDEBAR RELVERIFY)
 		helpStr {This icon is for walking.}
 		maskView 900
 		maskLoop 14
@@ -1527,14 +1530,14 @@
 	)
 )
 
-(instance icon1 of IconI
+(instance icon1 of IconItem
 	(properties
 		view 900
 		loop 1
 		cel 0
 		cursor 19
-		message 2
-		signal $0041
+		message verbLook
+		signal (| HIDEBAR RELVERIFY)
 		helpStr {This icon is for looking.}
 		maskView 900
 		maskLoop 14
@@ -1542,28 +1545,28 @@
 	)
 )
 
-(instance icon2 of IconI
+(instance icon2 of IconItem
 	(properties
 		view 900
 		loop 2
 		cel 0
 		cursor 20
-		message 3
-		signal $0041
+		message verbDo
+		signal (| HIDEBAR RELVERIFY)
 		helpStr {This icon is for doing.}
 		maskView 900
 		maskLoop 14
 	)
 )
 
-(instance icon3 of IconI
+(instance icon3 of IconItem
 	(properties
 		view 900
 		loop 3
 		cel 0
 		cursor 7
-		message 5
-		signal $0041
+		message verbTalk
+		signal (| HIDEBAR RELVERIFY)
 		helpStr {This icon is for talking.}
 		maskView 900
 		maskLoop 14
@@ -1571,14 +1574,14 @@
 	)
 )
 
-(instance icon4 of IconI
+(instance icon4 of IconItem
 	(properties
 		view 900
 		loop 4
 		cel 0
-		cursor 999
-		message 4
-		signal $0041
+		cursor ARROW_CURSOR
+		message verbUse
+		signal (| HIDEBAR RELVERIFY)
 		helpStr {This window displays the current inventory item.}
 		maskView 900
 		maskLoop 14
@@ -1586,15 +1589,15 @@
 	)
 )
 
-(instance icon5 of IconI
+(instance icon5 of IconItem
 	(properties
 		view 900
 		loop 5
 		cel 0
-		cursor 999
-		type $0000
-		message 0
-		signal $0043
+		cursor ARROW_CURSOR
+		type nullEvt
+		message verbNone
+		signal (| HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr {This icon brings up the inventory window.}
 		maskView 900
 		maskLoop 14
@@ -1602,32 +1605,34 @@
 	)
 	
 	(method (select)
-		(if (super select:) (Inv showSelf: ego))
+		(if (super select:)
+			(Inventory showSelf: ego)
+		)
 	)
 )
 
-(instance icon6 of IconI
+(instance icon6 of IconItem
 	(properties
 		view 900
 		loop 10
 		cel 0
 		cursor 30
-		message 11
-		signal $0041
+		message verbSmell
+		signal (| HIDEBAR RELVERIFY)
 		helpStr {This icon is for smelling.}
 		maskView 900
 		maskLoop 14
 	)
 )
 
-(instance icon7 of IconI
+(instance icon7 of IconItem
 	(properties
 		view 900
 		loop 11
 		cel 0
 		cursor 31
-		message 10
-		signal $0041
+		message verbTaste
+		signal (| HIDEBAR RELVERIFY)
 		helpStr {This icon is for tasting.}
 		maskView 900
 		maskLoop 14
@@ -1635,14 +1640,14 @@
 	)
 )
 
-(instance icon8 of IconI
+(instance icon8 of IconItem
 	(properties
 		view 900
 		loop 7
 		cel 0
-		cursor 999
-		message 8
-		signal $0043
+		cursor ARROW_CURSOR
+		message ICON_CONTROL
+		signal (| HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr {This icon brings up the control panel.}
 		maskView 900
 		maskLoop 14
@@ -1657,14 +1662,14 @@
 	)
 )
 
-(instance icon9 of IconI
+(instance icon9 of IconItem
 	(properties
 		view 900
 		loop 9
 		cel 0
 		cursor 29
-		message 6
-		signal $0003
+		message verbHelp
+		signal (| RELVERIFY IMMEDIATE)
 		helpStr {This icon tells you about other icons.}
 		maskView 900
 		maskLoop 14
@@ -1672,48 +1677,44 @@
 )
 
 (instance sq4DoVerbCode of Code
-	(properties)
-	
-	(method (doit param1 param2 &tmp temp0)
-		(= temp0 (param2 description?))
-		(switch param1
+	(method (doit theVerb theObj &tmp objDesc)
+		(= objDesc (theObj description?))
+		(switch theVerb
 			(2
-				(if (param2 facingMe: ego)
-					(if (param2 lookStr?)
-						(Print (param2 lookStr?))
+				(if (theObj facingMe: ego)
+					(if (theObj lookStr?)
+						(Print (theObj lookStr?))
 					else
 						(NoResponse)
 					)
 				)
 			)
-			(else  (NoResponse))
+			(else
+				(NoResponse)
+			)
 		)
 	)
 )
 
 (instance sq4FtrInit of Code
-	(properties)
-	
-	(method (doit param1)
-		(if (== (param1 sightAngle?) 26505)
-			(param1 sightAngle: 90)
+	(method (doit theObj)
+		(if (== (theObj sightAngle?) ftrDefault)
+			(theObj sightAngle: 90)
 		)
-		(if (== (param1 actions?) 26505) (param1 actions: 0))
+		(if (== (theObj actions?) ftrDefault)
+			(theObj actions: 0)
+		)
 	)
 )
 
-(instance sq4Win of BorderWindow
-	(properties)
-)
+(instance sq4Win of BorderWindow)
 
-(instance invWin of InsetWindow
-	(properties)
-)
+(instance invWin of InsetWindow)
 
 (instance gcWin of BorderWindow
-	(properties)
-	
-	(method (open &tmp temp0 temp1 temp2 temp3 temp4 temp5 temp6 temp7 theColGray2 theColWhite temp10 temp11 temp12 temp13 [temp14 15] [temp29 4])
+	(method (open &tmp
+			temp0 theBevelWid t l r b theColor theMaps bottomColor topColor leftColor rightColor
+			thePri i [str 15] [len 4])
 		(self
 			top: (/ (- 200 (+ (CelHigh 947 1 1) 6)) 2)
 			left: (/ (- 320 (+ 151 (CelWide 947 0 1))) 2)
@@ -1732,10 +1733,7 @@
 			priority: 15
 		)
 		(super open:)
-		(DrawCel
-			947
-			0
-			5
+		(DrawCel 947 0 5
 			(+
 				(/
 					(-
@@ -1756,99 +1754,42 @@
 		(DrawCel 947 0 4 63 (- 37 (+ (CelHigh 947 0 4) 3)) 15)
 		(DrawCel 947 0 3 101 (- 37 (+ (CelHigh 947 0 4) 3)) 15)
 		(DrawCel 947 0 2 146 (- 37 (+ (CelHigh 947 0 4) 3)) 15)
-		(= temp5 (+ (= temp2 (+ 46 (CelHigh 947 0 1))) 13))
-		(= temp4
+		(= b (+ (= t (+ 46 (CelHigh 947 0 1))) 13))
+		(= r
 			(+
-				(= temp3 (+ 10 (CelWide 947 1 1)))
+				(= l (+ 10 (CelWide 947 1 1)))
 				(-
 					(+ 151 (CelWide 947 0 1))
 					(+ 10 (CelWide 947 1 1) 6)
 				)
 			)
 		)
-		(= temp12 15)
-		(= temp6 0)
-		(= theColGray2 colGray2)
-		(= temp11 (FindColor colGray3 colGray2))
-		(= temp10 (FindColor colGray5 colWhite))
-		(= theColWhite colWhite)
-		(= temp1 3)
-		(= temp7 3)
-		(Graph
-			grFILL_BOX
-			temp2
-			temp3
-			(+ temp5 1)
-			(+ temp4 1)
-			temp7
-			temp6
-			temp12
+		(= thePri 15)
+		(= theColor 0)
+		(= bottomColor colGray2)
+		(= rightColor (FindColor colGray3 colGray2))
+		(= leftColor (FindColor colGray5 colWhite))
+		(= topColor colWhite)
+		(= theBevelWid 3)
+		(= theMaps 3)
+		(Graph GFillRect t l (+ b 1) (+ r 1) theMaps theColor thePri)
+		(-= t theBevelWid)
+		(-= l theBevelWid)
+		(+= r theBevelWid)
+		(+= b theBevelWid)
+		(Graph GFillRect t l (+ t theBevelWid) r theMaps bottomColor thePri)
+		(Graph GFillRect (- b theBevelWid) l b r theMaps topColor thePri)
+		(for ((= i 0)) (< i theBevelWid) ((++ i))
+			(Graph GDrawLine (+ t i) (+ l i) (- b (+ i 1)) (+ l i) rightColor thePri -1)
+			(Graph GDrawLine (+ t i) (- r (+ i 1)) (- b (+ i 1)) (- r (+ i 1)) leftColor thePri -1)
 		)
-		(= temp2 (- temp2 temp1))
-		(= temp3 (- temp3 temp1))
-		(= temp4 (+ temp4 temp1))
-		(= temp5 (+ temp5 temp1))
-		(Graph
-			grFILL_BOX
-			temp2
-			temp3
-			(+ temp2 temp1)
-			temp4
-			temp7
-			theColGray2
-			temp12
-		)
-		(Graph
-			grFILL_BOX
-			(- temp5 temp1)
-			temp3
-			temp5
-			temp4
-			temp7
-			theColWhite
-			temp12
-		)
-		(= temp13 0)
-		(while (< temp13 temp1)
-			(Graph
-				grDRAW_LINE
-				(+ temp2 temp13)
-				(+ temp3 temp13)
-				(- temp5 (+ temp13 1))
-				(+ temp3 temp13)
-				temp11
-				temp12
-				-1
-			)
-			(Graph
-				grDRAW_LINE
-				(+ temp2 temp13)
-				(- temp4 (+ temp13 1))
-				(- temp5 (+ temp13 1))
-				(- temp4 (+ temp13 1))
-				temp10
-				temp12
-				-1
-			)
-			(++ temp13)
-		)
-		(Graph
-			grUPDATE_BOX
-			temp2
-			temp3
-			(+ temp5 1)
-			(+ temp4 1)
-			1
-		)
-		(Format @temp14 0 27 score possibleScore)
-		(TextSize @temp29 @temp14 999 0)
-		(Display
-			@temp14
-			dsFONT
-			999
-			dsCOLOR
-			(FindColor colGray5 colWhite)
-			dsCOORD
+		(Graph GShowBits t l (+ b 1) (+ r 1) 1)
+		(Format @str 0 27 score possibleScore)
+		(TextSize @len @str 999 0)
+		(Display @str
+			p_font 999
+			p_color (FindColor colGray5 colWhite)
+			p_at
 			(+
 				10
 				(CelWide 947 1 1)
@@ -1858,7 +1799,7 @@
 							(+ 151 (CelWide 947 0 1))
 							(+ 10 (CelWide 947 1 1) 6)
 						)
-						[temp29 3]
+						[len 3]
 					)
 					2
 				)
@@ -1875,7 +1816,7 @@
 		cel 1
 		nsLeft 67
 		nsTop 37
-		signal $0080
+		signal FIXED_POSN
 		helpStr {Raises and lowers the level of graphics detail.}
 		sliderView 947
 		topValue 3
@@ -1889,7 +1830,7 @@
 		cel 1
 		nsLeft 107
 		nsTop 37
-		signal $0080
+		signal FIXED_POSN
 		helpStr {Adjusts sound volume.}
 		sliderView 947
 		topValue 15
@@ -1903,7 +1844,7 @@
 		cel 1
 		nsLeft 147
 		nsTop 37
-		signal $0080
+		signal FIXED_POSN
 		helpStr {Adjusts the speed of the game's animation (within the limits of your computer's capability).}
 		sliderView 947
 		bottomValue 15
@@ -1918,7 +1859,7 @@
 		nsLeft 8
 		nsTop 6
 		message 9
-		signal $01c3
+		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr {Saves your current game (currently disabled).}
 	)
 )
@@ -1931,7 +1872,7 @@
 		nsLeft 8
 		nsTop 26
 		message 9
-		signal $01c3
+		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr {Restores a previously saved game (currently disabled).}
 	)
 )
@@ -1944,7 +1885,7 @@
 		nsLeft 8
 		nsTop 46
 		message 9
-		signal $01c3
+		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr {Restarts the Game.}
 	)
 )
@@ -1957,7 +1898,7 @@
 		nsLeft 8
 		nsTop 66
 		message 9
-		signal $01c3
+		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr {Exits the game.}
 	)
 )
@@ -1970,12 +1911,12 @@
 		nsLeft 8
 		nsTop 86
 		message 9
-		signal $01c3
+		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr {Information about the game.}
 	)
 )
 
-(instance iconHelp of IconI
+(instance iconHelp of IconItem
 	(properties
 		view 947
 		loop 7
@@ -1983,12 +1924,12 @@
 		nsLeft 34
 		nsTop 86
 		cursor 70
-		message 6
-		signal $0183
+		message verbHelp
+		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE)
 	)
 )
 
-(instance iconOk of IconI
+(instance iconOk of IconItem
 	(properties
 		view 947
 		loop 8
@@ -1997,7 +1938,7 @@
 		nsTop 106
 		cursor 70
 		message 9
-		signal $01c3
+		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr {Exits this menu.}
 	)
 )
