@@ -20,52 +20,55 @@
 
 (local
 	printRet
-	local1
+	quitCued
 	saveBits
 	armsGrabbing
-	local4
-	local5
+	musicCued
+	paletteCued
 	local6
 )
-(procedure (DoDisplay theString &tmp theMode theForeFont theBackFont theWidth theX theY theForeColor theBackColor i)
+(procedure (DoDisplay args &tmp theMode theForeFont theBackFont theWidth theX theY theForeColor theBackColor i)
 	(return
 		(if (== argc 1)
-			(Display 1 1 108 [theString 0])
+			(Display 1 1 p_restore [args 0])
 		else
 			(= theX (= theY -1))
 			(= theMode teJustCenter)
 			(= theForeFont 70)
 			(= theBackFont 73)
 			(= theWidth 160)
-			(= theForeColor myTextColor2)
+			(= theForeColor colWhite)
 			(= theBackColor 0)
-			(= i 1)
-			(while (< i argc)
-				(switch [theString i]
+			(for ((= i 1)) (< i argc) ((++ i))
+				(switch [args i]
 					(#mode
-						(= theMode [theString (++ i)])
+						(= theMode [args (++ i)])
 					)
 					(#font
-						(= theBackFont (+ (= theForeFont [theString (++ i)]) 1))
+						(= theBackFont
+							(+
+								(= theForeFont [args (++ i)])
+								1
+							)
+						)
 					)
 					(#width
-						(= theWidth [theString (++ i)])
+						(= theWidth [args (++ i)])
 					)
 					(#at
-						(= theX [theString (++ i)])
-						(= theY [theString (++ i)])
+						(= theX [args (++ i)])
+						(= theY [args (++ i)])
 					)
 					(#color
-						(= theForeColor [theString (++ i)])
+						(= theForeColor [args (++ i)])
 					)
 					(#back
-						(= theBackColor [theString (++ i)])
+						(= theBackColor [args (++ i)])
 					)
 				)
-				(++ i)
 			)
 			(= i
-				(Display [theString 0]
+				(Display [args 0]
 					p_at theX theY
 					p_color theBackColor
 					p_width theWidth
@@ -74,7 +77,7 @@
 					p_save
 				)
 			)
-			(Display [theString 0]
+			(Display [args 0]
 				p_at theX theY
 				p_color theForeColor
 				p_width theWidth
@@ -88,7 +91,7 @@
 
 (instance theDemo of Room
 	(properties
-		style 30
+		style FADEOUT
 	)
 	
 	(method (init &tmp temp0)
@@ -105,7 +108,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(if local1
+		(if quitCued
 			(switch
 				(= printRet
 					(Print 1 0
@@ -125,25 +128,22 @@
 					(= quit TRUE)
 				)
 			)
-			(theGame setCursor: 901 FALSE 1000 1000)
-			(= local1 0)
-			((User curEvent?) type: nullEvt)
+			(theGame setCursor: 901 0 1000 1000)
+			(= quitCued FALSE)
+			((User curEvent?) type: 0)
 		)
 		(if ((User curEvent?) type?)
 			(theGame setCursor: ARROW_CURSOR TRUE 153 133)
-			(= local1 1)
+			(= quitCued TRUE)
 		)
 	)
 )
 
 (instance demo1 of Script
-	(properties)
-	
 	(method (doit)
 		(super doit: &rest)
-		(if
-		(and local4 (== ((ScriptID 0 5) prevSignal?) 10))
-			(= local4 0)
+		(if (and musicCued (== ((ScriptID 0 5) prevSignal?) 10))
+			(= musicCued FALSE)
 			(self cue:)
 		)
 	)
@@ -163,10 +163,10 @@
 				((ScriptID 0 5) number: 801 loop: -1 playBed:)
 				(= seconds 2)
 			)
-			(2 (= local4 1))
+			(2 (= musicCued 1))
 			(3
 				(Sting play:)
-				(curRoom overlay: 114 4)
+				(curRoom overlay: 114 WIPEUP)
 				(= seconds 3)
 			)
 			(4
@@ -188,7 +188,8 @@
 				(star2 hide:)
 				(= saveBits
 					(DoDisplay
-						{In the far reaches of space, there lurks a danger that surpasses any danger that has ever lurked in the farthest reaches of space before...}
+						{In the far reaches of space, there lurks a danger that surpasses any danger that 
+						has ever lurked in the farthest reaches of space before...}
 						#at 152 5
 					)
 				)
@@ -198,19 +199,18 @@
 				(DoDisplay saveBits)
 				(= cycles 2)
 			)
-			(10 (curRoom setScript: demo2))
+			(10
+				(curRoom setScript: demo2)
+			)
 		)
 	)
 )
 
 (instance demo2 of Script
-	(properties)
-	
 	(method (doit)
 		(super doit: &rest)
-		(if
-		(and local4 (== ((ScriptID 0 5) prevSignal?) 10))
-			(= local4 0)
+		(if (and musicCued (== ((ScriptID 0 5) prevSignal?) 10))
+			(= musicCued FALSE)
 			(self cue:)
 		)
 	)
@@ -247,10 +247,12 @@
 				(globe setCycle: Forward init:)
 				(= cycles 2)
 			)
-			(1 (= local4 1))
+			(1
+				(= musicCued TRUE)
+			)
 			(2
 				(Sting number: 817 play:)
-				(curRoom overlay: 107 2)
+				(curRoom overlay: 107 WIPELEFT)
 				(= seconds 3)
 			)
 			(3
@@ -268,12 +270,18 @@
 				)
 			)
 			(5
-				(roger view: 53 setLoop: 0 cel: 0 setCycle: EndLoop self)
+				(roger
+					view: 53
+					setLoop: 0
+					cel: 0
+					setCycle: EndLoop self
+				)
 			)
 			(6
 				(= saveBits
 					(DoDisplay
-						{An evil race bent on galactic domination invades your starship and steals the Star Generator, an experimental device capable of destroying entire suns.}
+						{An evil race bent on galactic domination invades your starship and steals
+						 the Star Generator, an experimental device capable of destroying entire suns.}
 						#at 10 5
 					)
 				)
@@ -283,20 +291,21 @@
 				(DoDisplay saveBits)
 				(= cycles 1)
 			)
-			(8 (= cycles 2))
-			(9 (curRoom setScript: demo3))
+			(8
+				(= cycles 2)
+			)
+			(9
+				(curRoom setScript: demo3)
+			)
 		)
 	)
 )
 
 (instance demo3 of Script
-	(properties)
-	
 	(method (doit)
 		(super doit: &rest)
-		(if
-		(and local4 (== ((ScriptID 0 5) prevSignal?) 10))
-			(= local4 0)
+		(if (and musicCued (== ((ScriptID 0 5) prevSignal?) 10))
+			(= musicCued FALSE)
 			(self cue:)
 		)
 	)
@@ -350,10 +359,12 @@
 				(star4 setCycle: Forward init:)
 				(= cycles 2)
 			)
-			(1 (= local4 1))
+			(1
+				(= musicCued TRUE)
+			)
 			(2
 				(Sting number: 818 play:)
-				(curRoom overlay: 116 4)
+				(curRoom overlay: 116 WIPEUP)
 				(= seconds 3)
 			)
 			(3
@@ -365,7 +376,8 @@
 			(4
 				(= saveBits
 					(DoDisplay
-						{You are Roger Wilco, Space Janitor. A man with a destiny. A man with a mission. A man with a sponge mop. Hurtling towards a rendezvous with the unknown.}
+						{You are Roger Wilco, Space Janitor. A man with a destiny. A man with a mission.
+						 A man with a sponge mop. Hurtling towards a rendezvous with the unknown.}
 						#at 5 25
 					)
 				)
@@ -376,7 +388,9 @@
 				(DoDisplay saveBits)
 				(= cycles 1)
 			)
-			(6 (= cycles 2))
+			(6
+				(= cycles 2)
+			)
 			(7
 				((ScriptID 0 7) number: 804 loop: -1 play:)
 				(deltaur
@@ -408,7 +422,7 @@
 				(arcada cel: 8)
 				((ScriptID 0 5) fade:)
 				(tempSound dispose:)
-				(LoadMany 132 324 401 808 809 810 811)
+				(LoadMany SOUND 324 401 808 809 810 811)
 				(curRoom setScript: demo4)
 			)
 		)
@@ -416,8 +430,6 @@
 )
 
 (instance demo4 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -466,7 +478,7 @@
 				(= cycles 2)
 			)
 			(1
-				(curRoom overlay: 137 IRISOUT)
+				(curRoom overlay: 137 7)
 				(= seconds 3)
 			)
 			(2
@@ -496,7 +508,8 @@
 			(7
 				(= saveBits
 					(DoDisplay
-						{You represent the best and last hope of the Xenon race as you stride boldly forward in the face of overwhelming odds.}
+						{You represent the best and last hope of the Xenon race as you
+						 stride boldly forward in the face of overwhelming odds.}
 						#at 10 5
 					)
 				)
@@ -506,23 +519,35 @@
 				(DoDisplay saveBits)
 				(= cycles 1)
 			)
-			(9 (= cycles 2))
+			(9
+				(= cycles 2)
+			)
 			(10
 				(roger
 					view: 1
 					cel: 0
-					setLoop: egoGrooper
+					setLoop: sGroop
 					cycleSpeed: 0
 					setCycle: Walk
 					setMotion: MoveTo 203 151 self
 				)
 			)
 			(11
-				(roger view: 56 setLoop: 0 cel: 0 setCycle: CycleTo 6 1 self)
+				(roger
+					view: 56
+					setLoop: 0
+					cel: 0
+					setCycle: CycleTo 6 1 self
+				)
 			)
 			(12
 				((ScriptID 0 6) number: 809 loop: 1 play:)
-				(roger view: 56 setLoop: 0 cel: 7 setCycle: EndLoop self)
+				(roger
+					view: 56
+					setLoop: 0
+					cel: 7
+					setCycle: EndLoop self
+				)
 			)
 			(13
 				(roger
@@ -569,7 +594,9 @@
 				(DoDisplay saveBits)
 				(= cycles 1)
 			)
-			(20 (= cycles 2))
+			(20
+				(= cycles 2)
+			)
 			(21
 				((ScriptID 0 5) fade:)
 				((ScriptID 0 6) stop:)
@@ -580,8 +607,6 @@
 )
 
 (instance demo5 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -601,7 +626,7 @@
 					view: 1
 					posn: -10 165
 					cel: 0
-					setLoop: egoGrooper
+					setLoop: sGroop
 					setCycle: Walk
 					setMotion: MoveTo 70 180 self
 				)
@@ -664,7 +689,9 @@
 				(DoDisplay saveBits)
 				(= cycles 1)
 			)
-			(8 (= cycles 2))
+			(8
+				(= cycles 2)
+			)
 			(9
 				((ScriptID 0 5) fade:)
 				((ScriptID 0 6) vol: 127)
@@ -675,11 +702,11 @@
 )
 
 (instance demo6 of Script
-	(properties)
-	
 	(method (doit)
 		(super doit: &rest)
-		(if local5 (Palette 6 205 255 -1))
+		(if paletteCued
+			(Palette PALCycle 205 255 -1)
+		)
 		(if
 			(and
 				(== state 0)
@@ -718,8 +745,9 @@
 			(1
 				(= saveBits
 					(DoDisplay
-						{Step into Roger Wilco's boots and learn the importance of proper safety procedures as you confront the ultimate evil in Sierra On-Line's\n
-						SPACE QUEST I\nRoger Wilco and The Sarien Encounter.}
+						{Step into Roger Wilco's boots and learn the importance of proper
+						 safety procedures as you confront the ultimate evil in Sierra On-Line's
+						 \nSPACE QUEST I\nRoger Wilco and The Sarien Encounter.}
 						#at 10 5
 					)
 				)
@@ -786,12 +814,12 @@
 				(= cycles 2)
 			)
 			(12
-				(= local5 1)
+				(= paletteCued TRUE)
 				(curRoom overlay: 113 WIPEDOWN)
 				(= seconds 8)
 			)
 			(13
-				(= local5 0)
+				(= paletteCued FALSE)
 				(DrawPic 13 WIPEDOWN)
 				(roger setCycle: BegLoop)
 				(= cycles 1)
@@ -800,10 +828,14 @@
 				(egoHead setCel: 1)
 				(roger setLoop: 2 setCycle: EndLoop self)
 			)
-			(15 (= seconds 2))
+			(15
+				(= seconds 2)
+			)
 			(16
 				(roger setCycle: BegLoop)
-				(if (== ((ScriptID 0 5) prevSignal?) -1) (= cycles 1))
+				(if (== ((ScriptID 0 5) prevSignal?) -1)
+					(= cycles 1)
+				)
 			)
 			(17
 				((ScriptID 0 7) vol: 127)
@@ -815,8 +847,6 @@
 )
 
 (instance forwardScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
@@ -849,7 +879,7 @@
 	(method (setMotion)
 		(super setMotion: &rest)
 		(if (not armsGrabbing)
-			(= armsGrabbing 1)
+			(= armsGrabbing TRUE)
 			((ScriptID 0 6) number: 802 loop: 0 play:)
 		)
 	)
@@ -1270,7 +1300,9 @@
 	
 	(method (check)
 		(super check: &rest)
-		(if (== prevSignal -1) ((ScriptID 0 5) pause: 0))
+		(if (== prevSignal -1)
+			((ScriptID 0 5) pause: 0)
+		)
 	)
 )
 

@@ -1,122 +1,144 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 932)
+(script# LANGUAGE)
 (include game.sh)
+(include language.sh)
 (use Main)
 (use Intrface)
 
-(public
-	proc932_0 0
-	proc932_1 1
-	proc932_2 2
-	SaveSubLang 3
-	RestoreSubLang 4
-	proc932_5 5
-	proc932_6 6
-	proc932_7 7
-)
-
 (local
-	theTheGameSubtitleLang
-	local1
-)
-(procedure (proc932_0)
-	(localproc_003c 0 &rest)
+	savedSubLang = 0
+	savedSubLangLevel = 0
 )
 
-(procedure (proc932_1)
-	(localproc_003c 1 &rest)
+;;;(procedure
+;;;	PrintSplit	
+;;;	DisplaySplit
+;;;	LangSwitch
+;;;	SaveSubLang
+;;;	RestoreSubLang
+;;;	SwapLangs
+;;;	ShowSplit
+;;;	StrSplitInTwo
+;;;	IfEnglishElse
+;;;)
+
+(public
+	PrintSplit		0
+	DisplaySplit	1
+	LangSwitch		2
+	SaveSubLang		3
+	RestoreSubLang	4
+	SwapLangs		5
+	StrSplitInTwo	6
+	IfEnglishElse	7
 )
 
-(procedure (proc932_2 param1 param2 param3 param4)
-	(return
-		(cond 
-			((== (theGame printLang?) 1)
-				(if
-				(or (< argc 3) (== (theGame subtitleLang?) 0))
-					param1
-				else
-					param3
-				)
-			)
-			(
-			(or (< argc 4) (== (theGame subtitleLang?) 0)) param2)
-			(else param4)
+(enum
+	PRINT
+	DISPLAY
+)
+
+(procedure (PrintSplit)
+	(ShowSplit FALSE &rest)
+)
+
+(procedure (DisplaySplit)
+	(ShowSplit TRUE &rest)
+)
+
+(procedure (ShowSplit funIsDisplay &tmp mainLang subLang)
+	;;
+	;;Split a large bilingual Display into a separate one for each language
+	;;
+	(= subLang (theGame subtitleLang?))
+	(theGame subtitleLang: NULL)
+	(if funIsDisplay (Display &rest) else (Print &rest #first))
+	(if subLang
+		(= mainLang (theGame printLang?))
+		(theGame printLang: subLang)
+		(if funIsDisplay (Display &rest) else (Print &rest))
+		(theGame printLang: mainLang)
+	)
+	(theGame subtitleLang: subLang)
+)
+
+(procedure (LangSwitch EngVal ForVal EngForVal ForEngVal)
+	(if (== (theGame printLang?) ENGLISH)
+		(if (or (< argc 3) (== (theGame subtitleLang?) NULL))
+			EngVal
+		else 
+			EngForVal
+		)
+	else
+		(if (or (< argc 4) (== (theGame subtitleLang?) NULL))
+			ForVal
+		else 
+			ForEngVal
 		)
 	)
 )
 
-(procedure (SaveSubLang &tmp theGameSubtitleLang)
-	(if
-		(and
-			(not theTheGameSubtitleLang)
-			(= theGameSubtitleLang (theGame subtitleLang?))
-		)
-		(= theTheGameSubtitleLang theGameSubtitleLang)
-		(theGame subtitleLang: 0)
+(procedure (SaveSubLang &tmp subL)
+	(if (and
+			(not savedSubLang)
+			(= subL (theGame subtitleLang?))
+		);and
+		
+		(= savedSubLang subL)
+		(theGame subtitleLang: NULL)
 	)
-	(return theGameSubtitleLang)
+	(return subL)
 )
 
-(procedure (RestoreSubLang &tmp theTheTheGameSubtitleLang)
-	(if
-		(and
-			(= theTheTheGameSubtitleLang theTheGameSubtitleLang)
+(procedure (RestoreSubLang &tmp subL)
+	(if (and
+			(= subL savedSubLang)
 			(not (theGame subtitleLang?))
 		)
-		(theGame subtitleLang: theTheGameSubtitleLang)
-		(= theTheGameSubtitleLang 0)
+		(theGame subtitleLang: savedSubLang)
+		(= savedSubLang NULL)
 	)
-	(return theTheTheGameSubtitleLang)
+	(return subL)
 )
 
-(procedure (proc932_5 &tmp theGameSubtitleLang)
-	(return
-		(if (= theGameSubtitleLang (theGame subtitleLang?))
-			(theGame subtitleLang: (theGame printLang?))
-			(theGame printLang: theGameSubtitleLang)
-			(return 1)
-		else
-			0
-		)
+(procedure (SwapLangs &tmp subL)
+	(if (= subL (theGame subtitleLang?))
+		(theGame subtitleLang: (theGame printLang?))
+		(theGame printLang: subL)
+		(return TRUE)
+	;;else
+	;;	(return FALSE)
 	)
 )
 
-(procedure (proc932_6 param1 param2 param3 param4 &tmp theGamePrintLang theGameSubtitleLang temp2 [temp3 1000])
+(procedure (StrSplitInTwo engBuf forBuf bufOrNum optEntry 
+		&tmp mainL subL altLang [thisBuf 1000])
+	
 	(if (== argc 4)
-		(GetFarText @temp3 param3 param4)
+		(GetFarText @thisBuf bufOrNum optEntry)
 	else
-		(StrCpy @temp3 param3)
+		(StrCpy @thisBuf bufOrNum)
 	)
-	(= theGamePrintLang (theGame printLang?))
-	(= theGameSubtitleLang (theGame subtitleLang?))
-	(theGame printLang: 1 subtitleLang: 0)
-	(StrSplit param1 @temp3 0)
-	(if (= temp2 0)
-		(theGame printLang: temp2)
-		(StrSplit param2 @temp3 0)
+ 	
+ 	(= mainL (theGame printLang?))
+	(= subL (theGame subtitleLang?))
+	(theGame printLang: ENGLISH subtitleLang: NULL)
+	
+	(StrSplit engBuf @thisBuf NULL)
+	
+;	(= altLang (if (!= mainL ENGLISH) mainL else subL))
+	(= altLang ALTLANG)
+	(if altLang
+		(theGame printLang: altLang)
+		(StrSplit forBuf @thisBuf NULL)
 	else
-		(StrCpy param2 {})
+		(StrCpy forBuf {})
 	)
-	(theGame
-		printLang: theGamePrintLang
-		subtitleLang: theGameSubtitleLang
-	)
-	(return param1)
+	
+	(theGame printLang: mainL, subtitleLang: subL)
+	(return engBuf)
 )
 
-(procedure (proc932_7 param1 param2)
-	(return (if (== (theGame parseLang?) 1) param1 else param2))
-)
-
-(procedure (localproc_003c param1 &tmp theGamePrintLang theGameSubtitleLang)
-	(= theGameSubtitleLang (theGame subtitleLang?))
-	(theGame subtitleLang: 0)
-	(if param1 (Display &rest) else (Print &rest 117))
-	(if theGameSubtitleLang
-		(= theGamePrintLang (theGame printLang?))
-		(theGame printLang: theGameSubtitleLang)
-		(if param1 (Display &rest) else (Print &rest))
-		(theGame printLang: theGamePrintLang)
-	)
-	(theGame subtitleLang: theGameSubtitleLang)
+(procedure (IfEnglishElse EngVal ForVal)
+	(if (== (theGame parseLang?) ENGLISH) EngVal else ForVal)
 )

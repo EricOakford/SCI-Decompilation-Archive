@@ -15,34 +15,29 @@
 	(properties
 		value		2	; current location in path
 		points	0	; pointer to path array allocated in the kernel
-		xLast	0
-		yLast	0
-		obstacles 0
 	)
 	
-	(method (init actor theX theY whoCares opt obstList &tmp [buffer 30])
-		(if argc											 
+	(method (init actor theX theY whoCares opt)
+		(if argc
 			(= client actor)
 			(if (> argc 1)
-				(cond
-					((>= argc 6)
-						(= obstacles obstList)
-					)
-					((not (IsObject obstacles))
-						(= obstacles (curRoom obstacles?))
-					)
+				(if points
+					(Memory MDisposePtr points)
 				)
-				(if points (Memory MDisposePtr points))
-				(= points 
-					(AvoidPath 
+				(= points
+					(AvoidPath
 						(actor x?)
-						(actor y?) 
-						(= xLast theX) (= yLast theY) 
-						(if obstacles
-							(obstacles elements?)
+						(actor y?)
+						theX theY
+						(if (curRoom obstacles?)
+							((curRoom obstacles?) elements?)
+						else
+							FALSE
 						)
-						(if obstacles
-							(obstacles size?)
+						(if (curRoom obstacles?)
+							((curRoom obstacles?) size?)
+						else
+							FALSE
 						)
 						(if (>= argc 5)
 							opt
@@ -55,24 +50,15 @@
 					(= caller whoCares)
 				)
 			)
-			(self setTarget:)
 		)
+		(self setTarget:)
 		(super init:)
 	)
-
 	
 	(method (dispose)
 		(if points (Memory MDisposePtr points))
-		(= points NULL)
+		(= points 0)
 		(super dispose:)
-	)
-
-	(method (setTarget)
-		(if (!= (WordAt points value) $7777)
-			(= x (WordAt points value))
-			(= y (WordAt points (++ value)))
-			(++ value)
-		)
 	)
 	
 	(method (moveDone)
@@ -80,6 +66,14 @@
 			(super moveDone:)
 		else
 			(self init:)
+		)
+	)
+	
+	(method (setTarget)
+		(if (!= (WordAt points value) $7777)
+			(= x (WordAt points value))
+			(= y (WordAt points (++ value)))
+			(++ value)
 		)
 	)
 )

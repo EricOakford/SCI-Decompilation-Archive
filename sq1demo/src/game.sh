@@ -25,6 +25,9 @@
 	iBuckazoid
 )
 
+;Views
+(define vIcons 900)
+
 ;Verbs
 (enum 10
 	verbSmell	;10

@@ -3,7 +3,6 @@
 (include game.sh)
 (use Motion)
 
-
 (class Oscillate kindof Cycle
 	;;; Author J.Mark Hood 03/24/89
 	;;; Cycles client' cel forward and then backwards then forward again
