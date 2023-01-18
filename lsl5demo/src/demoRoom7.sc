@@ -28,7 +28,8 @@
 )
 
 (instance sCartoon of Script
-
+	(properties)
+	
 	(method (changeState newState &tmp [temp0 15])
 		(switch (= state newState)
 			(0
@@ -36,23 +37,21 @@
 				(addToPics doit:)
 				(DoDisplay {And since you also play the role of Passionate Patti,}
 					#at 10 20
-					#color myTextColor4
+					#color colMagenta
 					#font 2510
 					#width 130
 					#mode teJustCenter
 				)
-				(DoDisplay
-					{you must use your extensive talents to help the F.B.I.}
+				(DoDisplay {you must use your extensive talents to help the F.B.I.}
 					#at 10 62
-					#color myTextColor4
+					#color colMagenta
 					#font 2510
 					#width 130
 					#mode teJustCenter
 				)
-				(DoDisplay
-					{expose corruption in the music industry...}
+				(DoDisplay {expose corruption in the music industry...}
 					#at 10 105
-					#color myTextColor4
+					#color colMagenta
 					#font 2510
 					#width 130
 					#mode teJustCenter
@@ -75,10 +74,9 @@
 				(Patti setMotion: MoveTo 157 125 self)
 			)
 			(3
-				(DoDisplay
-					{\1CSay Inspector, is that a Baretta in your pocket or are you just glad to see me?"}
+				(DoDisplay {\1CSay Inspector, is that a Baretta in your pocket or are you just glad to see me?"}
 					#at -1 5
-					#color myTextColor5
+					#color colYellow
 					#font 2510
 					#mode teJustCenter
 				)

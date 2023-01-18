@@ -11,3 +11,6 @@
 (define pTitle			104)
 (define pDemoOpening1	111)
 (define pDemoOpening2	112)
+
+;Scripts
+(define COLORINIT 12)

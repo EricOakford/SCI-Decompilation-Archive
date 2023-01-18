@@ -27,8 +27,6 @@
 )
 
 (instance sCartoon of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -36,7 +34,9 @@
 				(water init:)
 				(limo init: setMotion: MoveTo 100 130 self)
 			)
-			(1 (= seconds 4))
+			(1
+				(= seconds 4)
+			)
 			(2
 				(UnLoad PICTURE 190)
 				(UnLoad VIEW 192)

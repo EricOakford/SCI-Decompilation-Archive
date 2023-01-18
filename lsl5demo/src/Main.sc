@@ -6,7 +6,6 @@
 (use PrintD)
 (use LoadMany)
 (use Sound)
-(use Window)
 (use Game)
 (use User)
 
@@ -16,49 +15,55 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	speed =  6
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	showStyle =  IRISOUT
-	aniInterval
-	theCursor
-	normalCursor =  ARROW_CURSOR
-	waitCursor =  20
-	userFont =  USERFONT
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  USERFONT
-	version
-	locales
-	curSaveDir
-	aniThreshold =  10
-	perspective
-	features
-	sortedFeatures
-	useSortedFeatures
-	egoBlindSpot
-	overlays =  -1
-	doMotionCue
-	systemWindow
-	demoDialogTime =  3
-	currentPalette
-	modelessPort
-	sysLogPath
+	ego										;pointer to ego
+	theGame									;ID of the Game instance
+	curRoom									;ID of current room
+	speed				=	6				;number of ticks between animations
+	quit									;when TRUE, quit game
+	cast					W				;collection of actors
+	regions									;set of current regions
+	timers									;list of timers in the game
+	sounds									;set of sounds being played
+	inventory								;set of inventory items in game
+	addToPics								;list of views added to the picture
+	curRoomNum								;current room number
+	prevRoomNum								;previous room number
+	newRoomNum								;number of room to change to
+	debugOn									;generic debug flag -- set from debug menu
+	score									;the player's current score
+	possibleScore							;highest possible score
+	showStyle			=	IRISOUT			;style of picture showing
+	aniInterval								;# of ticks it took to do the last animation cycle
+	theCursor								;the number of the current cursor
+	normalCursor		=	ARROW_CURSOR	;number of normal cursor form
+	waitCursor			=	HAND_CURSOR		;cursor number of "wait" cursor
+	userFont			=	USERFONT		;font to use for Print
+	smallFont			=	4		;small font for save/restore, etc.
+	lastEvent								;the last event (used by save/restore game)
+	modelessDialog							;the modeless Dialog known to User and Intrface
+	bigFont				=	USERFONT		;large font
+	version				=	0				;pointer to 'incver' version string
+											;***WARNING***  Must be set in room 0
+											; (usually to {x.yyy    } or {x.yyy.zzz})
+	locales									;set of current locales
+	curSaveDir								;address of current save drive/directory string
+	aniThreshold		=	10
+	perspective								;player's viewing angle:
+											;	 degrees away from vertical along y axis
+	features								;locations that may respond to events
+	sortedFeatures							;above+cast sorted by "visibility" to ego
+	useSortedFeatures	=	FALSE			;enable cast & feature sorting?
+	egoBlindSpot		=	0				;used by sortCopy to exclude 
+											;actors behind ego within angle 
+											;from straight behind. 
+											;Default zero is no blind spot
+	overlays			=	-1
+	doMotionCue								;a motion cue has occurred - process it
+	systemWindow							;ID of standard system window
+	demoDialogTime		=	3				;how long Prints stay up in demo mode
+	currentPalette							;
+	modelessPort		
+	sysLogPath								;used for system standard logfile path	
 		global43
 		global44
 		global45
@@ -78,34 +83,35 @@
 		global59
 		global60
 		global61
-	endSysLogPath
-	gameControls
-	ftrInitializer
-	doVerbCode
-	approachCode
-	useObstacles =  TRUE
-	theMenuBar
-	theIconBar
-	mouseX
-	mouseY
-	keyDownHandler
-	mouseDownHandler
-	directionHandler
-	speechHandler
-	lastVolume
-	pMouse
-	theDoits
-	eatMice =  60
-	user
-	syncBias
-	theSync
-	cDAudio
-	fastCast
-	inputFont
-	tickOffset
-	howFast
-	gameTime
-	narrator
+	endSysLogPath					;uses 20 globals
+	gameControls		
+	ftrInitializer		
+	doVerbCode			
+	firstSaidHandler				;will be the first to handle said events
+	useObstacles		=	TRUE	;will Ego use PolyPath or not?
+	theMenuBar						;points to TheMenuBar or Null	
+	theIconBar						;points to TheIconBar or Null	
+	mouseX				
+	mouseY				
+	keyDownHandler					;our EventHandlers, get called by the game
+	mouseDownHandler	
+	directionHandler	
+	gameCursor			
+	lastVolume			
+	pMouse				=	NULL	;pointer to a Pseudo-Mouse, or NULL
+	theDoits			=	NULL	;list of objects to get doits done every cycle
+	eatMice				=	60		;how many ticks minimum that a window stays up	
+	user				=	NULL	;pointer to specific applications User
+	;globals 81-99 are unused
+		global81
+		global82
+		global83
+		global84
+		global85
+		global86
+		global87
+		global88
+		global89
 		global90
 		global91
 		global92
@@ -127,51 +133,41 @@
 	global108
 	global109
 	global110
-	myTextColor
-	myRgtBordColor
-	myTopBordColor
-	myBackColor
-	myTextColor2
-	myTextColor3
-	myTextColor4
-	myTextColor5
-	myTextColor6
-	myTextColor7
-	myTextColor8
+	colBlack
+	colDBlue
+	colLBlue
+	colGray
+	colGreen
+	colRed
+	colMagenta
+	colYellow
+	colWhite
+	colLMagenta
+	colBrown
 )
 (procedure (DoDisplay args &tmp theMode theFont theWidth theX theY theForeColor i)
 	(= theX 1)
 	(= theY [args 1])
-	(= theMode 0)
+	(= theMode teJustLeft)
 	(= theFont 2510)
 	(= theWidth 318)
-	(= theForeColor myTextColor6)
+	(= theForeColor colWhite)
 	(for ((= i 1)) (< i argc) ((++ i))
 		(switch [args i]
 			(#mode
-				(= theMode
-					[args (++ i)]
-				)
+				(= theMode [args (++ i)])
 			)
 			(#font
-				(= theFont
-					[args (++ i)]
-				)
+				(= theFont [args (++ i)])
 			)
 			(#width
-				(= theWidth
-					[args (++ i)]
-				)
+				(= theWidth [args (++ i)])
 			)
 			(#at
-				(= theX
-					[args (++ i)]
-				)
+				(= theX [args (++ i)])
 				(= theY [args (++ i)])
 				(if (== theWidth 318)
-					(= theWidth
-						(- 320 theX)
-					)
+					(= theWidth (- 320 theX))
 				)
 			)
 			(#color
@@ -181,7 +177,7 @@
 	)
 	(Display [args 0]
 		p_at (+ theX 1) (+ theY 1)
-		p_color myTextColor
+		p_color colBlack
 		p_width theWidth
 		p_mode theMode
 		p_font theFont
@@ -200,11 +196,10 @@
 (instance demoMusic of Sound)
 
 (instance ll5 of Game
-	
 	(method (init &tmp [temp0 6])
-		(LoadMany PICTURE pDemoOpening1 pDemoOpening2)
-		(LoadMany CURSOR 20 69 ARROW_CURSOR)
-		(LoadMany FONT SYSFONT 2510)
+		(LoadMany PICTURE 111 112)
+		(LoadMany CURSOR HAND_CURSOR 69 ARROW_CURSOR)
+		(LoadMany FONT 0 2510)
 		(ColorInit)
 		(super init:)
 		(self setCursor: 69 TRUE 330 200)
@@ -215,8 +210,11 @@
 			canControl: FALSE
 			canInput: FALSE
 		)
-		((= theMusic demoMusic) owner: self init:)
-		(= waitCursor HAND_CURSOR)
+		((= theMusic demoMusic)
+			owner: self
+			init:
+		)
+		(= waitCursor 997)
 		(= version {x.yyy})
 		(= numVoices (DoSound NumVoices))
 		(if
@@ -230,12 +228,12 @@
 		)
 		(= systemWindow ll5Win)
 		(ll5Win
-			color: myTextColor6
-			back: myBackColor
-			topBordColor: myTopBordColor
-			lftBordColor: myTopBordColor
-			rgtBordColor: myRgtBordColor
-			botBordColor: myRgtBordColor
+			color: colWhite
+			back: colGray
+			topBordColor: colLBlue
+			lftBordColor: colLBlue
+			rgtBordColor: colDBlue
+			botBordColor: colDBlue
 		)
 		(self newRoom: 1)
 	)
@@ -246,9 +244,9 @@
 			(
 				(PrintD {Exit the demo?}
 					#new
-					#button {Oops!__Lemme see more!} FALSE
+					#button {Oops!__Lemme see more!} 0
 					#new
-					#button {Yeah, I gotta place an order!} TRUE
+					#button {Yeah, I gotta place an order!} 1
 				)
 				(theGame quitGame:)
 			)

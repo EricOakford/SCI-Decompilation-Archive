@@ -29,8 +29,6 @@
 )
 
 (instance sCartoon of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 15])
 		(switch (= state newState)
 			(0
@@ -38,7 +36,7 @@
 				(addToPics doit:)
 				(DoDisplay {Larry's job:}
 					#at 175 20
-					#color myTextColor4
+					#color colMagenta
 					#font 2510
 					#mode teJustCenter
 				)
@@ -47,25 +45,25 @@
 			(1
 				(DoDisplay {to find the}
 					#at 175 50
-					#color myTextColor4
+					#color colMagenta
 					#font 2510
 					#mode teJustCenter
 				)
 				(DoDisplay {show's hostess, the}
 					#at 175 70
-					#color myTextColor4
+					#color colMagenta
 					#font 2510
 					#mode teJustCenter
 				)
 				(DoDisplay {"Sexiest Woman}
 					#at 175 90
-					#color myTextColor4
+					#color colMagenta
 					#font 2510
 					#mode teJustCenter
 				)
 				(DoDisplay {in America!"}
 					#at 175 110
-					#color myTextColor4
+					#color colMagenta
 					#font 2510
 					#mode teJustCenter
 				)
@@ -79,10 +77,9 @@
 				(tongue init:)
 				(sundae init:)
 				(cherry init:)
-				(DoDisplay
-					{Learn what Larry finds attractive in women...}
+				(DoDisplay {Learn what Larry finds attractive in women...}
 					#at -1 10
-					#color myTextColor6
+					#color colWhite
 					#font 2510
 					#mode teJustCenter
 				)
@@ -98,13 +95,17 @@
 			(5
 				(tongue setCycle: CycleTo 4 1 self)
 			)
-			(6 (= cycles 2))
+			(6
+				(= cycles 2)
+			)
 			(7
 				(slurpSound play:)
 				(cherry dispose:)
 				(tongue setCycle: CycleTo 0 1 self)
 			)
-			(8 (= cycles 20))
+			(8
+				(= cycles 20)
+			)
 			(9
 				(wink setCycle: Oscillate 1)
 				(= cycles 20)

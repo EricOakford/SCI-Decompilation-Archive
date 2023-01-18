@@ -27,7 +27,6 @@
 )
 
 (instance sCartoon of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -35,24 +34,21 @@
 				(arms init:)
 				(patti init:)
 				(pattiDress init:)
-				(DoDisplay
-					{Teamed up again, Passionate Patti and Larry}
+				(DoDisplay {Teamed up again, Passionate Patti and Larry}
 					#at -1 5
-					#color myTextColor4
+					#color colMagenta
 					#font 2510
 					#mode teJustCenter
 				)
-				(DoDisplay
-					{bring new meanings to the term}
+				(DoDisplay {bring new meanings to the term}
 					#at -1 20
-					#color myTextColor4
+					#color colMagenta
 					#font 2510
 					#mode teJustCenter
 				)
-				(DoDisplay
-					{"INTERACTIVE SOFTWARE!"}
+				(DoDisplay {"INTERACTIVE SOFTWARE!"}
 					#at -1 160
-					#color myTextColor3
+					#color colRed
 					#font 2510
 					#mode teJustCenter
 				)

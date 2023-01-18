@@ -21,13 +21,13 @@
 	local63
 	local64
 )
-(procedure (Measure &tmp [sizeRect 2] strAddr temp3)
+(procedure (Measure &tmp [buf 2] strAddr saveBits)
 	(= strAddr (StrAt @str i))
-	(Format @sizeRect {%c} strAddr)
-	(= temp3
-		(Display @sizeRect
+	(Format @buf {%c} strAddr)
+	(= saveBits
+		(Display @buf
 			p_at theX 160
-			p_color myTextColor6
+			p_color colWhite
 			p_width 7
 			p_mode teJustLeft
 			p_font 2407
@@ -35,23 +35,25 @@
 		)
 	)
 	(if (and (< 21 i) (< i 29))
-		(= [typeBits (- i 22)] temp3)
+		(= [typeBits (- i 22)] saveBits)
 	else
-		(UnLoad MEMORY temp3)
+		(UnLoad MEMORY saveBits)
 	)
-	(= theX (+ theX 7))
-	(if (== 32 strAddr) (= theX (- theX 2)))
+	(+= theX 7)
+	(if (== 32 strAddr)
+		(-= theX 2)
+	)
 )
 
 (instance demoRoom2 of Room
 	(properties
-		picture pTitle
+		picture 104
 		style IRISIN
 	)
 	
 	(method (init)
-		(LoadMany PICTURE pTitle pBlack)
-		(LoadMany VIEW pTitle)
+		(LoadMany PICTURE 104 100)
+		(LoadMany VIEW 104)
 		(LoadMany SOUND 903 905)
 		(StrCpy @str
 			{Passionate Patti Does Pittsbua Little Undercover Work}
@@ -65,7 +67,6 @@
 )
 
 (instance sCartoon of Script
-	
 	(method (doit)
 		(super doit:)
 		(if local64
@@ -80,7 +81,7 @@
 				(theMusic number: 1 loop: -1 playBed:)
 				(DoDisplay {No, even worse, girls!__It's}
 					#at -1 1
-					#color myTextColor6
+					#color colWhite
 					#font 2510
 					#mode teJustCenter
 				)
@@ -92,13 +93,14 @@
 			(2
 				(DoDisplay {Back for Episode 4,}
 					#at -1 155
-					#color myTextColor6
+					#color colWhite
 					#font 2510
 					#mode teJustCenter
 				)
-				(DoDisplay {which he calls Larry 5!}
+				(DoDisplay
+					{which he calls Larry 5!}
 					#at -1 170
-					#color myTextColor6
+					#color colWhite
 					#font 2510
 					#mode teJustCenter
 				)
@@ -152,8 +154,8 @@
 			)
 			(8
 				(= speed 6)
-				(UnLoad PICTURE pTitle)
-				(UnLoad PICTURE pBlack)
+				(UnLoad PICTURE 104)
+				(UnLoad PICTURE 100)
 				(curRoom newRoom: 3)
 			)
 		)
@@ -164,7 +166,7 @@
 	(properties
 		x 63
 		y 18
-		view pTitle
+		view 104
 	)
 )
 
@@ -175,7 +177,7 @@
 		view 105
 		loop 4
 		priority 2
-		signal (| ignrAct skipCheck fixedLoop fixPriOn) ;$5810
+		signal (| ignrAct fixedLoop fixedCel fixPriOn)
 	)
 )
 
@@ -189,12 +191,12 @@
 )
 
 (instance sPasteThatBig5 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0)
-			(1 (larry setCycle: EndLoop self))
+			(1
+				(larry setCycle: EndLoop self)
+			)
 			(2
 				(wood hide:)
 				(larry setCel: 0 setLoop: 1 setCycle: EndLoop self)
@@ -214,8 +216,12 @@
 				(sCartoon cue:)
 				(= cycles 30)
 			)
-			(7 (larry setCycle: BegLoop self))
-			(8 (larry stopUpd:))
+			(7
+				(larry setCycle: BegLoop self)
+			)
+			(8
+				(larry stopUpd:)
+			)
 		)
 	)
 )

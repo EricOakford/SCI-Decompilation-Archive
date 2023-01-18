@@ -25,10 +25,11 @@
 )
 
 (instance sCartoon of Script
-
 	(method (doit)
 		(super doit:)
-		(if state (Palette PALCycle 8 15 -1))
+		(if state
+			(Palette PALCycle 8 15 -1)
+		)
 	)
 	
 	(method (changeState newState)
@@ -36,27 +37,38 @@
 			(0
 				(DoDisplay {Larry's in the entertainment industry now,}
 					#at -1 15
-					#color myTextColor5
+					#color colYellow
 					#font 2510
 					#mode teJustCenter
 				)
 				(DoDisplay {working on a new syndicated}
 					#at -1 30
-					#color myTextColor5
+					#color colYellow
 					#font 2510
 					#mode teJustCenter
 				)
 				(DoDisplay {television show...}
 					#at -1 45
-					#color myTextColor5
+					#color colYellow
 					#font 2510
 					#mode teJustCenter
 				)
 				(= cycles 10)
 			)
 			(1
-				((View new:) view: 118 x: 136 y: 169 init:)
-				((View new:) view: 118 cel: 1 x: 261 y: 127 init:)
+				((View new:)
+					view: 118
+					x: 136
+					y: 169
+					init:
+				)
+				((View new:)
+					view: 118
+					cel: 1
+					x: 261
+					y: 127
+					init:
+				)
 				(= cycles 32)
 			)
 			(2

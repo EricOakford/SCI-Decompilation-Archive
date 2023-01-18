@@ -12,18 +12,17 @@
 
 (instance demoRoom1 of Room
 	(properties
-		picture pDemoOpening2
+		picture 112
 	)
 	
 	(method (init)
-		(Load PICTURE pDemoOpening1 pDemoOpening2)
+		(Load PICTURE 111 112)
 		(super init:)
 		(self setScript: sCartoon)
 	)
 )
 
 (instance sCartoon of Script
-	
 	(method (doit)
 		(super doit:)
 		(if (and (< 0 state) (< state 4))
@@ -39,18 +38,18 @@
 				(theMusic number: 4 playBed: self)
 				(DoDisplay {He's back and...}
 					#at 20 10
-					#color myTextColor6
+					#color colWhite
 					#width 150
 					#font 2510
 				)
 			)
 			(1
-				(curRoom drawPic: pDemoOpening1 pBlack)
+				(curRoom drawPic: 111 PLAIN)
 				(leftNitemare init:)
 				(rightNitemare init:)
 				(DoDisplay {He's back and...}
 					#at 20 10
-					#color myTextColor6
+					#color colWhite
 					#width 150
 					#font 2510
 				)
@@ -59,7 +58,7 @@
 				(DoDisplay {Sylvester Stallone?}
 					#at 175 140
 					#width 143
-					#color myTextColor6
+					#color colWhite
 					#font 2510
 				)
 			)
@@ -67,7 +66,7 @@
 				(DoDisplay {Freddie Krueger?}
 					#at 185 155
 					#width 133
-					#color myTextColor6
+					#color colWhite
 					#font 2510
 				)
 			)
@@ -75,14 +74,13 @@
 				(DoDisplay {Dan Quayle?}
 					#at 219 170
 					#width 99
-					#color myTextColor6
-					#font
-					2510
+					#color colWhite
+					#font 2510
 				)
 			)
 			(5
-				(UnLoad PICTURE pDemoOpening1)
-				(UnLoad VIEW pDemoOpening1)
+				(UnLoad PICTURE 111)
+				(UnLoad VIEW 111)
 				(curRoom newRoom: 2)
 			)
 		)
@@ -93,7 +91,7 @@
 	(properties
 		x 131
 		y 53
-		view pDemoOpening1
+		view 111
 	)
 )
 
@@ -101,7 +99,7 @@
 	(properties
 		x 164
 		y 41
-		view pDemoOpening1
+		view 111
 		cel 1
 	)
 )

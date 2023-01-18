@@ -15,7 +15,7 @@
 )
 
 (local
-	local0
+	eyeTimer
 )
 (instance demoRoom8 of Room
 	(properties
@@ -33,20 +33,17 @@
 )
 
 (instance sCartoon of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 15])
 		(switch (= state newState)
 			(0
 				(nose init: setCycle: Forward)
-				(= local0 20)
+				(= eyeTimer 20)
 				(leftEye init:)
 				(rightEye init:)
 				(mouth init:)
-				(DoDisplay
-					{Remember Al Lowe's slogan:}
+				(DoDisplay {Remember Al Lowe's slogan:}
 					#at -1 171
-					#color myTextColor5
+					#color colYellow
 					#font 2510
 					#mode teJustCenter
 				)
@@ -59,10 +56,9 @@
 				else
 					(DrawPic 795)
 					(AlVoice play:)
-					(DoDisplay
-						{"BETTER BABES THRU TECHNOLOGY!"}
+					(DoDisplay {"BETTER BABES THRU TECHNOLOGY!"}
 						#at -1 171
-						#color myTextColor6
+						#color colWhite
 						#font 2510
 						#mode teJustCenter
 					)
@@ -82,19 +78,20 @@
 				(mouth dispose:)
 				(= cycles 5)
 			)
-			(4 (= local0 20) (= cycles 20))
+			(4
+				(= eyeTimer 20)
+				(= cycles 20)
+			)
 			(5
-				(DoDisplay
-					{Leisure Suit Larry 5 is available}
+				(DoDisplay {Leisure Suit Larry 5 is available}
 					#at -1 161
-					#color myTextColor5
+					#color colYellow
 					#font 2510
 					#mode teJustCenter
 				)
-				(DoDisplay
-					{at swinging software stores everywhere!}
+				(DoDisplay {at swinging software stores everywhere!}
 					#at -1 172
-					#color myTextColor5
+					#color colYellow
 					#font 2510
 					#mode teJustCenter
 				)
@@ -102,7 +99,7 @@
 			)
 			(6
 				(cast eachElementDo: #hide eachElementDo: #dispose)
-				(curRoom drawPic: 100 30)
+				(curRoom drawPic: 100 FADEOUT)
 				(theMusic fade:)
 				(= cycles 20)
 			)
@@ -140,10 +137,10 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (and local0 (not (-- local0)))
+		(if (and eyeTimer (not (-- eyeTimer)))
 			(self setCycle: Oscillate 1)
 			(leftEye setCycle: Oscillate 1)
-			(= local0 (Random 7 15))
+			(= eyeTimer (Random 7 15))
 		)
 	)
 )

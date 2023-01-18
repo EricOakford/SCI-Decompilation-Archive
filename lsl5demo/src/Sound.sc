@@ -34,10 +34,15 @@
 		(DoSound InitSound self)
 	)
 	
-	(method (dispose who)
-		(if (and argc (not who)) (= client 0))
+	(method (dispose doCue)
+		(if (and argc (not doCue))
+			(= client 0)
+		)
 		(sounds delete: self)
-		(if nodePtr (DoSound KillSound self) (= nodePtr 0))
+		(if nodePtr
+			(DoSound KillSound self)
+			(= nodePtr 0)
+		)
 		(super dispose:)
 	)
 	
@@ -55,13 +60,19 @@
 		(DoSound PlaySound self 1)
 	)
 	
-	(method (stop newVol)
-		(if (and argc (not newVol)) (= client 0))
-		(if nodePtr (DoSound StopSound self))
+	(method (stop doCue)
+		(if (and argc (not doCue))
+			(= client 0)
+		)
+		(if nodePtr
+			(DoSound StopSound self)
+		)
 	)
 	
 	(method (pause value)
-		(if (not argc) (= value TRUE))
+		(if (not argc)
+			(= value TRUE)
+		)
 		(DoSound
 			PauseSound
 			(if (self isMemberOf: Sound) self else 0)
@@ -78,12 +89,14 @@
 		(DoSound HoldSound self 0)
 	)
 	
-	(method (fade newVol fTicks fSteps fEnd param5 &tmp argCount)
+	(method (fade newVol fTicks fSteps fEnd doCue &tmp argCount)
 		(= argCount argc)
 		(if (and argc (IsObject [newVol (- argc 1)]))
 			(= client [newVol (= argCount (- argc 1))])
 		)
-		(if (and (> argc 4) param5) (= client 0))
+		(if (and (> argc 4) doCue)
+			(= client 0)
+		)
 		(if argCount
 			(DoSound FadeSound self newVol fTicks fSteps fEnd)
 		else
@@ -106,7 +119,9 @@
 		(if signal
 			(= prevSignal signal)
 			(= signal 0)
-			(if (IsObject client) (client cue: self))
+			(if (IsObject client)
+				(client cue: self)
+			)
 		)
 	)
 	
