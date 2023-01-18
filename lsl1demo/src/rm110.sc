@@ -51,14 +51,14 @@
 				(= seconds 3)
 			)
 			(1
-				(DoDisplay3 {Your mission as Larry Laffer:}
-					156 29 colBlack
+				(DoDisplay3 {Your mission as Larry Laffer:} 156
+					#back colBlack
 				)
 				(= seconds 3)
 			)
 			(2
-				(DoDisplay3 {seek out new civilizations...}
-					170 29 colBlack
+				(DoDisplay3 {seek out new civilizations...} 170
+					#back colBlack
 				)
 				(= seconds 2)
 			)
@@ -97,8 +97,8 @@
 				(rightEye setCycle: EndLoop self)
 			)
 			(10
-				(DoDisplay3 {...explore new life forms...}
-					136 29 colBlack
+				(DoDisplay3 {...explore new life forms...} 136
+					#back colBlack
 				)
 				(= seconds 3)
 			)
@@ -157,8 +157,9 @@
 				(= cycles 1)
 			)
 			(20
-				(DoDisplay3 {...and boldly go where no man has gone before!}
-					166 28 colRed 29 colDRed
+				(DoDisplay3 {...and boldly go where no man has gone before!} 166
+					#color colRed
+					#back colDRed
 				)
 				(soundFX number: 133 play:)
 				(UnLoad VIEW 140)

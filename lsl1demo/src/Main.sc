@@ -17,107 +17,113 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	speed =  6
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	showStyle =  7
-	aniInterval
-	theCursor
-	normalCursor =  999
-	waitCursor =  20
-	userFont =  1
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  1
-	version
-	locales
-	curSaveDir
-	aniThreshold =  10
-	perspective
-	features
-	sortedFeatures
-	useSortedFeatures
-	egoBlindSpot
-	overlays =  -1
-	doMotionCue
-	systemWindow
-	demoDialogTime =  3
-	currentPalette
-	modelessPort
-	sysLogPath
-	global43
-	global44
-	global45
-	global46
-	global47
-	global48
-	global49
-	global50
-	global51
-	global52
-	global53
-	global54
-	global55
-	global56
-	global57
-	global58
-	global59
-	global60
-	global61
-	endSysLogPath
-	gameControls
-	ftrInitializer
-	doVerbCode
-	firstSaidHandler
-	useObstacles =  1
-	theMenuBar
-	theIconBar
-	mouseX
-	mouseY
-	keyDownHandler
-	mouseDownHandler
-	directionHandler
-	gameCursor
-	lastVolume
-	pMouse
-	theDoits
-	eatMice =  60
-	user
-	global81
-	global82
-	global83
-	global84
-	global85
-	global86
-	global87
-	global88
-	global89
-	global90
-	global91
-	global92
-	global93
-	global94
-	global95
-	global96
-	global97
-	global98
-	lastSysGlobal
-	theMusic
+	ego										;pointer to ego
+	theGame									;ID of the Game instance
+	curRoom									;ID of current room
+	speed				=	6				;number of ticks between animations
+	quit									;when TRUE, quit game
+	cast									;collection of actors
+	regions									;set of current regions
+	timers									;list of timers in the game
+	sounds									;set of sounds being played
+	inventory								;set of inventory items in game
+	addToPics								;list of views added to the picture
+	curRoomNum								;current room number
+	prevRoomNum								;previous room number
+	newRoomNum								;number of room to change to
+	debugOn									;generic debug flag -- set from debug menu
+	score									;the player's current score
+	possibleScore							;highest possible score
+	showStyle			=	IRISOUT			;style of picture showing
+	aniInterval								;# of ticks it took to do the last animation cycle
+	theCursor								;the number of the current cursor
+	normalCursor		=	ARROW_CURSOR	;number of normal cursor form
+	waitCursor			=	HAND_CURSOR		;cursor number of "wait" cursor
+	userFont			=	USERFONT		;font to use for Print
+	smallFont			=	4		;small font for save/restore, etc.
+	lastEvent								;the last event (used by save/restore game)
+	modelessDialog							;the modeless Dialog known to User and Intrface
+	bigFont				=	USERFONT		;large font
+	version				=	0				;pointer to 'incver' version string
+											;***WARNING***  Must be set in room 0
+											; (usually to {x.yyy    } or {x.yyy.zzz})
+	locales									;set of current locales
+	curSaveDir								;address of current save drive/directory string
+	aniThreshold		=	10
+	perspective								;player's viewing angle:
+											;	 degrees away from vertical along y axis
+	features								;locations that may respond to events
+	sortedFeatures							;above+cast sorted by "visibility" to ego
+	useSortedFeatures	=	FALSE			;enable cast & feature sorting?
+	egoBlindSpot		=	0				;used by sortCopy to exclude 
+											;actors behind ego within angle 
+											;from straight behind. 
+											;Default zero is no blind spot
+	overlays			=	-1
+	doMotionCue								;a motion cue has occurred - process it
+	systemWindow							;ID of standard system window
+	demoDialogTime		=	3				;how long Prints stay up in demo mode
+	currentPalette							;
+	modelessPort		
+	sysLogPath								;used for system standard logfile path	
+		global43
+		global44
+		global45
+		global46
+		global47
+		global48
+		global49
+		global50
+		global51
+		global52
+		global53
+		global54
+		global55
+		global56
+		global57
+		global58
+		global59
+		global60
+		global61
+	endSysLogPath					;uses 20 globals
+	gameControls		
+	ftrInitializer		
+	doVerbCode			
+	firstSaidHandler				;will be the first to handle said events
+	useObstacles		=	TRUE	;will Ego use PolyPath or not?
+	theMenuBar						;points to TheMenuBar or Null	
+	theIconBar						;points to TheIconBar or Null	
+	mouseX				
+	mouseY				
+	keyDownHandler					;our EventHandlers, get called by the game
+	mouseDownHandler	
+	directionHandler	
+	gameCursor			
+	lastVolume			
+	pMouse				=	NULL	;pointer to a Pseudo-Mouse, or NULL
+	theDoits			=	NULL	;list of objects to get doits done every cycle
+	eatMice				=	60		;how many ticks minimum that a window stays up	
+	user				=	NULL	;pointer to specific applications User
+	;globals 81-99 are unused
+		global81
+		global82
+		global83
+		global84
+		global85
+		global86
+		global87
+		global88
+		global89
+		global90
+		global91
+		global92
+		global93
+		global94
+		global95
+		global96
+		global97
+		global98
+	lastSysGlobal	theMusic
 	global101
 	numColors
 	numVoices

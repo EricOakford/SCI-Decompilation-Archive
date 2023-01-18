@@ -381,8 +381,12 @@
 			)
 			(39
 				(DoDisplay1 1)
-				(DoDisplay1 {With all the sophisticated} 160 29 colDBlue)
-				(DoDisplay2 {humor of the original...} 174 29 colDBlue)
+				(DoDisplay1 {With all the sophisticated} 160
+					#back colDBlue
+				)
+				(DoDisplay2 {humor of the original...} 174
+					#back colDBlue
+				)
 				(dog
 					setLoop: 7
 					setCycle: Walk
@@ -396,11 +400,11 @@
 				(fakeEgo loop: 2 setScript: sLarryLookAround)
 				(DoDisplay2 1)
 				(DoDisplay1 1)
-				(DoDisplay1 {featuring our new, "no-typing,"}
-					160 29 colDBlue
+				(DoDisplay1 {featuring our new, "no-typing,"} 160
+					#back colDBlue
 				)
-				(DoDisplay2 {point-and-grope interface...}
-					174 29 colDBlue
+				(DoDisplay2 {point-and-grope interface...} 174
+					#back colDBlue
 				)
 				(fakeEye
 					x: (fakeEgo x?)
@@ -423,11 +427,11 @@
 				)
 				(DoDisplay1 1)
 				(DoDisplay2 1)
-				(DoDisplay3 {...perfect for those times when}
-					160 29 colDBlue
+				(DoDisplay3 {...perfect for those times when} 160
+					#back colDBlue
 				)
-				(DoDisplay3 {two hands are just one too many!}
-					174 29 colDBlue
+				(DoDisplay3 {two hands are just one too many!} 174
+					#back colDBlue
 				)
 				(= seconds 3)
 			)
@@ -438,27 +442,31 @@
 				(= cycles 1)
 			)
 			(45
-				(DoDisplay3 {Great new graphics and animation,}
-					30 28 colRed 29 colDRed
+				(DoDisplay3 {Great new graphics and animation,} 30
+					#color colRed
+					#back colDRed
 				)
 				(= seconds 4)
 			)
 			(46
-				(DoDisplay3  {advanced VGA and music card support,}
-					50 28 colRed 29 colDRed
+				(DoDisplay3  {advanced VGA and music card support,} 50
+					#color colRed
+					#back colDRed
 				)
 				(= seconds 4)
 			)
 			(47
-				(DoDisplay3 {but with the same wacky, risque humor}
-					70 28 colRed 29 colDRed
+				(DoDisplay3 {but with the same wacky, risque humor} 70
+					#color colRed
+					#back colDRed
 				)
-				(DoDisplay3 {that made it Rolling Stone Magazine's}
-					90 28 colRed
-					29 colDRed
+				(DoDisplay3 {that made it Rolling Stone Magazine's} 90
+					#color colRed
+					#back colDRed
 				) 
-				(DoDisplay3 {Hot Game of the Year}
-					110 28 colRed 29 colDRed
+				(DoDisplay3 {Hot Game of the Year} 110
+					#color colRed
+					#back colDRed
 				)
 				(= scriptTimer (+ (GetTime SYSTIME1) 6))
 				(UnLoad PICTURE 110)

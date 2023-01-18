@@ -43,9 +43,11 @@
 				(= seconds 3)
 			)
 			(2
-				(DoDisplay3 {Available at:} 150 29 colBlack)
-				(DoDisplay3 {swinging software stores everywhere!}
-					164 29 colBlack
+				(DoDisplay3 {Available at:} 150
+					#back colBlack
+				)
+				(DoDisplay3 {swinging software stores everywhere!} 164
+					#back colBlack
 				)
 				(UnLoad PICTURE 160)
 				(UnLoad PICTURE 160)

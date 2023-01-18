@@ -51,16 +51,19 @@
 			(0
 				(fakeEgo setCycle: Walk setMotion: MoveTo 160 125 self)
 				(DoDisplay3 {"Leisure Suit Larry in the}
-					(+= theX addX) 29 colBlack
+					(+= theX addX)
+					#back colBlack
 				)
 				(DoDisplay3 {Land of the Lounge Lizards"}
-					(+= theX addX) 29 colBlack
+					(+= theX addX)
+					#back colBlack
 				)
 				(= cycles 20)
 			)
 			(1
 				(DoDisplay3 {...more graphic(s) than ever before!}
-					(+ theX addX 8) 29 colBlack
+					(+ theX addX 8)
+					#back colBlack
 				)
 			)
 		)
@@ -141,7 +144,7 @@
 		y 89
 		view 160
 		loop 2
-		signal $0800
+		signal fixedLoop
 	)
 	
 	(method (cue)
