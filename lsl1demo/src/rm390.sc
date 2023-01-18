@@ -15,25 +15,30 @@
 (local
 	scriptTimer
 	theX =  7
-	local2 =  12
+	addX =  12
 )
 (instance rm390 of Room
 	(properties
-		picture pHoneymoonSuite
+		picture 160
 		style IRISIN
 	)
 	
 	(method (init)
 		(fakeEgo init:)
 		(super init:)
-		(theMusic number: 901 loop: 1 vol: 127 priority: 50 playBed:)
+		(theMusic
+			number: 901
+			loop: 1
+			vol: 127
+			priority: 50
+			playBed:
+		)
 		(eve init:)
 		(self setScript: sRoomScript)
 	)
 )
 
 (instance sRoomScript of Script
-	
 	(method (doit)
 		(super doit: &rest)
 		(if (and (not (eve script?)) (< (fakeEgo x?) 200))
@@ -44,21 +49,18 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(fakeEgo setCycle: Walk setMotion: MoveTo pHoneymoonSuite 125 self)
-				(SCIDisplay {"Leisure Suit Larry in the}
-					(= theX (+ theX local2))
-					#back myTextColor
+				(fakeEgo setCycle: Walk setMotion: MoveTo 160 125 self)
+				(DoDisplay3 {"Leisure Suit Larry in the}
+					(+= theX addX) 29 colBlack
 				)
-				(SCIDisplay {Land of the Lounge Lizards"}
-					(= theX (+ theX local2))
-					#back myTextColor
+				(DoDisplay3 {Land of the Lounge Lizards"}
+					(+= theX addX) 29 colBlack
 				)
 				(= cycles 20)
 			)
 			(1
-				(SCIDisplay {...more graphic(s) than ever before!}
-					(+ theX local2 8)
-					#back myTextColor
+				(DoDisplay3 {...more graphic(s) than ever before!}
+					(+ theX addX 8) 29 colBlack
 				)
 			)
 		)
@@ -66,11 +68,10 @@
 )
 
 (instance sEve of Script
-
 	(method (doit)
 		(super doit: &rest)
 		(if (== (theMusic prevSignal?) 10)
-			(= register TRUE)
+			(= register 1)
 		)
 		(if
 			(and
@@ -84,26 +85,39 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(eve setLoop: 0 setCel: 0 setCycle: EndLoop self)
+				(eve
+					setLoop: 0
+					setCel: 0
+					setCycle: EndLoop self
+				)
 			)
 			(1
-				(eve setLoop: 1 setCel: 0 setCycle: EndLoop self)
+				(eve
+					setLoop: 1
+					setCel: 0
+					setCycle: EndLoop self
+				)
 			)
 			(2
-				(fakeEgo loop: 3 cel: 0 x: 155 setCycle: EndLoop self)
+				(fakeEgo
+					loop: 3
+					cel: 0
+					x: 155
+					setCycle: EndLoop self
+				)
 			)
 			(3
 				(= scriptTimer (+ (GetTime SYSTIME1) 7))
 				(= cycles 1)
 			)
 			(4
-				(UnLoad VIEW pToilet)
-				(UnLoad PICTURE pToilet)
+				(UnLoad VIEW 150)
+				(UnLoad PICTURE 150)
 				(UnLoad SOUND 902)
 				(UnLoad SOUND 132)
 				(UnLoad SOUND 133)
 				(UnLoad SOUND 130)
-				(LoadMany PICTURE pTitle1 pTitle2)
+				(LoadMany PICTURE 170 180)
 			)
 			(5
 				(curRoom newRoom: 700)
@@ -116,7 +130,7 @@
 	(properties
 		x 137
 		y 132
-		view pHoneymoonSuite
+		view 160
 		cycleSpeed 3
 	)
 )
@@ -125,9 +139,9 @@
 	(properties
 		x 249
 		y 89
-		view pHoneymoonSuite
+		view 160
 		loop 2
-		signal fixedLoop
+		signal $0800
 	)
 	
 	(method (cue)

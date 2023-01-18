@@ -16,6 +16,7 @@
 
 (script# SAVE)
 (include game.sh)
+(include language.sh)
 (use Main)
 (use Intrface)
 (use Language)
@@ -324,7 +325,7 @@
 					(self dispose:)
 					; confirm deletion
 					(if (not (PrintD
-							{Are you sure you want to\rdelete this saved game?}
+							{Are you sure you want to\ndelete this saved game?}
 							#new:
 							#button: {_No_} 0
 							#button:	{Yes} 1

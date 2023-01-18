@@ -15,7 +15,7 @@
 )
 (instance rm700 of Room
 	(properties
-		picture pTitle1
+		picture 170
 		style IRISIN
 	)
 	
@@ -26,7 +26,6 @@
 )
 
 (instance sRoomScript of Script
-	
 	(method (doit)
 		(super doit: &rest)
 		(if (and (== state 2) (== (theMusic prevSignal?) -1))
@@ -36,24 +35,24 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 10))
+			(0
+				(= cycles 10)
+			)
 			(1
-				(curRoom style: SCROLLUP drawPic: 180)
+				(curRoom style: 42 drawPic: 180)
 				(= seconds 3)
 			)
 			(2
-				(SCIDisplay {Available at:} 150
-					#back myTextColor
+				(DoDisplay3 {Available at:} 150 29 colBlack)
+				(DoDisplay3 {swinging software stores everywhere!}
+					164 29 colBlack
 				)
-				(SCIDisplay {swinging software stores everywhere!} 164
-					#back myTextColor
-				)
-				(UnLoad VIEW pHoneymoonSuite)
-				(UnLoad PICTURE pHoneymoonSuite)
-				(UnLoad PICTURE pTitle1)
-				(LoadMany PICTURE pOutsideBarAGI pOutsideBarSCI pBlack)
-				(LoadMany VIEW pOutsideBarSCI pOutsideBarAGI)
-				(Load FONT USERFONT)
+				(UnLoad PICTURE 160)
+				(UnLoad PICTURE 160)
+				(UnLoad PICTURE 170)
+				(LoadMany PICTURE 100 110 120)
+				(LoadMany VIEW 110 100)
+				(Load FONT 1)
 				(Load FONT 312)
 				(LoadMany SOUND 906 900 903 905 904 102)
 			)

@@ -16,3 +16,6 @@
 (define pHoneymoonSuite	160)
 (define pTitle1			170)
 (define pTitle2			180)
+
+; Scripts
+(define COLORINIT	12)

@@ -10,10 +10,10 @@
 
 (public
 	ll1 0
-	AGIDisplay1 1
-	AGIDisplay2 2
-	SCIDisplay 3
-	VGAOrEGA 4
+	DoDisplay1 1
+	DoDisplay2 2
+	DoDisplay3 3
+	FindColor 4
 )
 
 (local
@@ -34,16 +34,16 @@
 	debugOn
 	score
 	possibleScore
-	showStyle =  IRISOUT
+	showStyle =  7
 	aniInterval
 	theCursor
-	normalCursor =  ARROW_CURSOR
+	normalCursor =  999
 	waitCursor =  20
-	userFont =  USERFONT
+	userFont =  1
 	smallFont =  4
 	lastEvent
 	modelessDialog
-	bigFont =  USERFONT
+	bigFont =  1
 	version
 	locales
 	curSaveDir
@@ -60,31 +60,31 @@
 	currentPalette
 	modelessPort
 	sysLogPath
-		global43
-		global44
-		global45
-		global46
-		global47
-		global48
-		global49
-		global50
-		global51
-		global52
-		global53
-		global54
-		global55
-		global56
-		global57
-		global58
-		global59
-		global60
-		global61
+	global43
+	global44
+	global45
+	global46
+	global47
+	global48
+	global49
+	global50
+	global51
+	global52
+	global53
+	global54
+	global55
+	global56
+	global57
+	global58
+	global59
+	global60
+	global61
 	endSysLogPath
 	gameControls
 	ftrInitializer
 	doVerbCode
-	approachCode
-	useObstacles =  TRUE
+	firstSaidHandler
+	useObstacles =  1
 	theMenuBar
 	theIconBar
 	mouseX
@@ -92,30 +92,30 @@
 	keyDownHandler
 	mouseDownHandler
 	directionHandler
-	speechHandler
+	gameCursor
 	lastVolume
 	pMouse
 	theDoits
 	eatMice =  60
 	user
-		global81
-		global82
-		global83
-		global84
-		global85
-		global86
-		global87
-		global88
-		global89
-		global90
-		global91
-		global92
-		global93
-		global94
-		global95
-		global96
-		global97
-		global98
+	global81
+	global82
+	global83
+	global84
+	global85
+	global86
+	global87
+	global88
+	global89
+	global90
+	global91
+	global92
+	global93
+	global94
+	global95
+	global96
+	global97
+	global98
 	lastSysGlobal
 	theMusic
 	global101
@@ -128,29 +128,29 @@
 	global108
 	global109
 	saveBits
-	myTextColor
-	myTextColor2
-	myTextColor3
-	myTextColor4
-	myTextColor5
-	myTextColor6
-	myTextColor7
-	myTextColor8
-	myTextColor9
+	colBlack
+	colBlue
+	colGreen
+	colRed
+	colMagenta
+	colYellow
+	colWhite
+	colLGreen
+	colDGreen
 	saveBits1
 	saveBits2
 	saveBits3
-	myTextColor10
-	myTextColor11
-	myTextColor12
-	myBotBordColor
-	myRgtBordColor
-	myBackColor
-	myLftBordColor
-	myTopBordColor
+	colDRed
+	colDBlue
+	colGray1
+	colGray2
+	colGray3
+	colGray4
+	colGray5
+	colGray6
 	theMusic2
 )
-(procedure (AGIDisplay1 args &tmp theMode theFont theWidth theX theY theForeColor theBackColor i)
+(procedure (DoDisplay1 args &tmp theMode theFont theWidth theX theY theForeColor theBackColor i)
 	(return
 		(if (== argc 1)
 			(Display 0 0 p_restore saveBits)
@@ -161,14 +161,14 @@
 			(= theMode teJustCenter)
 			(= theFont 312)
 			(= theWidth 318)
-			(= theForeColor myTextColor7)
-			(= theBackColor myTextColor4)
+			(= theForeColor colWhite)
+			(= theBackColor colRed)
 			(for ((= i 2)) (< i argc) ((++ i))
 				(switch [args i]
 					(#mode
 						(= theMode [args (++ i)])
 					)
-					(#font
+					(33
 						(= theFont [args (++ i)])
 					)
 					(#width
@@ -187,8 +187,7 @@
 				)
 			)
 			(= saveBits2
-				(Display
-					[args 0]
+				(Display [args 0]
 					p_at (+ theX 1) (+ theY 1)
 					p_color theBackColor
 					p_width theWidth
@@ -198,8 +197,7 @@
 				)
 			)
 			(= saveBits
-				(Display
-					[args 0]
+				(Display [args 0]
 					p_at theX theY
 					p_color theForeColor
 					p_width theWidth
@@ -213,7 +211,7 @@
 	)
 )
 
-(procedure (AGIDisplay2 args &tmp theMode theFont theWidth theX theY theForeColor theBackColor i)
+(procedure (DoDisplay2 args &tmp theMode theFont theWidth theX theY theForeColor theBackColor i)
 	(return
 		(if (== argc 1)
 			(Display 0 0 p_restore saveBits1)
@@ -224,8 +222,8 @@
 			(= theMode teJustCenter)
 			(= theFont 312)
 			(= theWidth 318)
-			(= theForeColor myTextColor7)
-			(= theBackColor myTextColor4)
+			(= theForeColor colWhite)
+			(= theBackColor colRed)
 			(for ((= i 2)) (< i argc) ((++ i))
 				(switch [args i]
 					(#mode
@@ -250,8 +248,7 @@
 				)
 			)
 			(= saveBits3
-				(Display
-					[args 0]
+				(Display [args 0]
 					p_at (+ theX 1) (+ theY 1)
 					p_color theBackColor
 					p_width theWidth
@@ -261,8 +258,7 @@
 				)
 			)
 			(= saveBits1
-				(Display
-					[args 0]
+				(Display [args 0]
 					p_at theX theY
 					p_color theForeColor
 					p_width theWidth
@@ -276,14 +272,14 @@
 	)
 )
 
-(procedure (SCIDisplay args &tmp theMode theFont theWidth theX theY theForeColor theBackColor i)
+(procedure (DoDisplay3 args &tmp theMode theFont theWidth theX theY theForeColor theBackColor i)
 	(= theX 1)
 	(= theY [args 1])
 	(= theMode teJustCenter)
 	(= theFont 312)
 	(= theWidth 318)
-	(= theForeColor myTextColor7)
-	(= theBackColor myTextColor4)
+	(= theForeColor colWhite)
+	(= theBackColor colRed)
 	(for ((= i 2)) (< i argc) ((++ i))
 		(switch [args i]
 			(#mode
@@ -307,16 +303,14 @@
 			)
 		)
 	)
-	(Display
-		[args 0]
+	(Display [args 0]
 		p_at (+ theX 1) (+ theY 1)
 		p_color theBackColor
 		p_width theWidth
 		p_mode theMode
 		p_font theFont
 	)
-	(Display
-		[args 0]
+	(Display [args 0]
 		p_at theX theY
 		p_color theForeColor
 		p_width theWidth
@@ -325,26 +319,25 @@
 	)
 )
 
-(procedure (VGAOrEGA vga ega)
-	(if (< vga 0)
-		(= vga 0)
+(procedure (FindColor col256 col16)
+	(if (< col256 0)
+		(= col256 0)
 	)
-	(if (> vga 255)
-		(= vga 255)
+	(if (> col256 255)
+		(= col256 255)
 	)
-	(if (< ega 0)
-		(= ega 0)
+	(if (< col16 0)
+		(= col16 0)
 	)
-	(if (> ega 15)
-		(= ega 15)
+	(if (> col16 15)
+		(= col16 15)
 	)
-	(return vga)
+	(return col256)
 )
 
 (instance egoObj of Ego)
 
 (instance ll1 of Game
-
 	(method (init &tmp [temp0 6])
 		(ColorInit)
 		(super init:)
@@ -356,9 +349,15 @@
 			canControl: FALSE
 			canInput: FALSE
 		)
-		((= theMusic longSong) owner: self init:)
-		((= theMusic2 longSong2) owner: self init:)
-		(= waitCursor HAND_CURSOR)
+		((= theMusic longSong)
+			owner: self
+			init:
+		)
+		((= theMusic2 longSong2)
+			owner: self
+			init:
+		)
+		(= waitCursor 997)
 		(= version {x.yyy})
 		(if
 			(and
@@ -371,12 +370,12 @@
 		)
 		(= systemWindow ll1Win)
 		(ll1Win
-			color: myTextColor
-			back: (VGAOrEGA myBackColor myTextColor12)
-			topBordColor: myTopBordColor
-			lftBordColor: (VGAOrEGA myLftBordColor myTextColor7)
-			rgtBordColor: (VGAOrEGA myRgtBordColor myBotBordColor)
-			botBordColor: myBotBordColor
+			color: colBlack
+			back: (FindColor colGray4 colGray1)
+			topBordColor: colGray6
+			lftBordColor: (FindColor colGray5 colWhite)
+			rgtBordColor: (FindColor colGray3 colGray2)
+			botBordColor: colGray2
 		)
 		(self newRoom: 100)
 	)
