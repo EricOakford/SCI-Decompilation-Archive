@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 809)
-(include sci.sh)
+(script# INERTIA) ;809
+(include game.sh)
 (use Main)
 (use PolyPath)
 (use Sound)
@@ -10,8 +10,8 @@
 
 
 (local
-	[local0 18] = [359 338 22 0 67 23 112 68 157 113 202 158 247 203 292 248 337 293]
-	[theXOff 18] = [0 -1 0 -1 1 -1 1 0 1 1 0 1 -1 1 -1 0 -1 -1]
+	local0 = [359 338 22 0 67 23 112 68 157 113 202 158 247 203 292 248 337 293]
+	theXOff = [0 -1 0 -1 1 -1 1 0 1 1 0 1 -1 1 -1 0 -1 -1]
 )
 (class Inertia of Code
 	(properties
@@ -28,28 +28,48 @@
 	)
 	
 	(method (init theClient)
-		(if argc (= client theClient) else (= client ego))
+		(if argc
+			(= client theClient)
+		else
+			(= client ego)
+		)
 		(= xOff
 			(= yOff
 				(= inertia (= swimCnt (= inertizing (= oldMover 0))))
 			)
 		)
 		(= oldDir (client heading?))
-		(if (client mover?) (= oldMover (client mover?)))
-		(if (== client ego) (client setScript: inertiaScript))
+		(if (client mover?)
+			(= oldMover (client mover?))
+		)
+		(if (== client ego)
+			(client setScript: inertiaScript)
+		)
 		(client code: self)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp i)
 		(cond 
-			((client isBlocked:) (self moveDone:))
+			((client isBlocked:)
+				(self moveDone:)
+			)
 			(inertizing
 				(cond 
-					(
-					(and (== (client heading?) oldDir) (client mover?)) (self moveDone:))
-					((> swimCnt 0) (self doMove:) (-- swimCnt))
-					((> inertia 0) (self doMove:) (-- inertia) (= swimCnt inertia))
-					(else (self moveDone:))
+					((and (== (client heading?) oldDir) (client mover?))
+						(self moveDone:)
+					)
+					((> swimCnt 0)
+						(self doMove:)
+						(-- swimCnt)
+					)
+					((> inertia 0)
+						(self doMove:)
+						(-- inertia)
+						(= swimCnt inertia)
+					)
+					(else
+						(self moveDone:)
+					)
 				)
 			)
 			(
@@ -67,18 +87,16 @@
 					(!= (client heading?) oldDir)
 					(and (not (client mover?)) oldMover)
 				)
-				(= temp0 0)
-				(while (< temp0 17)
+				(for ((= i 0)) (< i 17) ((+= i 2))
 					(if
 						(and
-							(>= [local0 temp0] oldDir)
-							(>= oldDir [local0 (+ temp0 1)])
+							(>= [local0 i] oldDir)
+							(>= oldDir [local0 (+ i 1)])
 						)
-						(= xOff [theXOff temp0])
-						(= yOff [theXOff (+ temp0 1)])
-						(= temp0 17)
+						(= xOff [theXOff i])
+						(= yOff [theXOff (+ i 1)])
+						(= i 17)
 					)
-					(= temp0 (+ temp0 2))
 				)
 				(= inertizing 1)
 				(= swimCnt inertia)
@@ -90,7 +108,9 @@
 	
 	(method (dispose)
 		(client moveSpeed: oldSpeed code: 0)
-		(if (== client ego) (client setScript: 0))
+		(if (== client ego)
+			(client setScript: 0)
+		)
 		(= client 0)
 		(super dispose:)
 	)
@@ -114,26 +134,15 @@
 	)
 )
 
-(class Swim of Fwd
-	(properties
-		client 0
-		caller 0
-		cycleDir 1
-		cycleCnt 0
-		completed 0
-	)
-	
+(class Swim of Forward
 	(method (doit)
-		(if
-		(and (client mover?) (not (client isBlocked:)))
+		(if (and (client mover?) (not (client isBlocked:)))
 			(super doit:)
 		)
 	)
 )
 
 (instance InertTo of Motion
-	(properties)
-	
 	(method (doit &tmp temp0)
 		(if (self onTarget:)
 			(self moveDone:)
@@ -166,8 +175,6 @@
 )
 
 (instance inertiaScript of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(directionHandler addToFront: self)
@@ -184,12 +191,12 @@
 			((event claimed?) (return))
 			(
 				(or
-					(!= (theIconBar curIcon?) (theIconBar at: 0))
+					(!= (theIconBar curIcon?) (theIconBar at: ICON_WALK))
 					(not (User controls?))
-					(!= (event type?) 16384)
+					(!= (event type?) userEvent)
 					(event modifiers?)
 				)
-				(if (& (event type?) evJOYSTICK)
+				(if (& (event type?) direction)
 					(jetSound number: 502 loop: 1 play:)
 				)
 				(super handleEvent: event)
@@ -203,12 +210,10 @@
 				)
 				(jetSound number: 502 loop: 1 play:)
 				(User prevDir: 0)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 		)
 	)
 )
 
-(instance jetSound of Sound
-	(properties)
-)
+(instance jetSound of Sound)

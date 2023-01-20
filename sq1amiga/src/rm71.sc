@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 71)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use LoadMany)
@@ -14,26 +14,26 @@
 )
 
 (local
-	local0
+	paletteCued
 	local1 =  3
 	saveBits
 )
-(instance rm71 of Rm
+(instance rm71 of Room
 	(properties
 		picture 16
 	)
 	
 	(method (init)
-		(if (Btst 53)
-			(Load rsVIEW 215)
-			(LoadMany 132 411 312)
+		(if (Btst fStartedSelfDestruct)
+			(Load VIEW 215)
+			(LoadMany SOUND 411 312)
 		else
-			(LoadMany 128 115 217)
+			(LoadMany VIEW 115 217)
 		)
 		(theMusic fade:)
 		(super init:)
 		(ship init:)
-		(if (Btst 54)
+		(if (Btst fDeltaurSelfDestructs)
 			(self setScript: blowUp)
 		else
 			(self setScript: flyOffDeltaur)
@@ -42,8 +42,6 @@
 )
 
 (instance flyOffDeltaur of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -51,14 +49,14 @@
 					loop: 5
 					init:
 					setPri: 0
-					ignoreHorizon: 1
+					ignoreHorizon: TRUE
 					cel: 0
 					posn: 117 72
 					setMotion: MoveTo 0 -5 self
 				)
 			)
 			(1
-				(if (Btst 53)
+				(if (Btst fStartedSelfDestruct)
 					(curRoom setScript: blowUp)
 				else
 					(curRoom setScript: endGame)
@@ -69,11 +67,11 @@
 )
 
 (instance endGame of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 2))
+			(0
+				(= cycles 2)
+			)
 			(1
 				(Print 71 0)
 				(curRoom setScript: flyingPod)
@@ -83,11 +81,11 @@
 )
 
 (instance blowUp of Script
-	(properties)
-	
 	(method (doit)
 		(super doit: &rest)
-		(if (== local0 1) (Palette 6 208 255 -1))
+		(if (== paletteCued TRUE)
+			(Palette PALCycle 208 255 -1)
+		)
 	)
 	
 	(method (changeState newState)
@@ -101,8 +99,8 @@
 			)
 			(1
 				(soundFx number: 805 loop: 1 play: 90)
-				(explosion init: setCycle: CT 2 1 self)
-				(= local0 1)
+				(explosion init: setCycle: CycleTo 2 1 self)
+				(= paletteCued TRUE)
 				(= cycles 4)
 			)
 			(2
@@ -111,15 +109,15 @@
 				(= cycles 4)
 			)
 			(3
-				(explosion setCycle: CT 4 1 self)
+				(explosion setCycle: CycleTo 4 1 self)
 			)
 			(4
 				(ship dispose:)
-				(explosion setCycle: End self)
+				(explosion setCycle: EndLoop self)
 				(head
 					show:
 					moveSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 10
 					setStep: 5 5
 					setMotion: MoveTo -50 50
@@ -127,7 +125,7 @@
 				(tail
 					show:
 					moveSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 8
 					setStep: 6 6
 					setMotion: MoveTo 477 327
@@ -135,7 +133,7 @@
 				(side1
 					show:
 					moveSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 10
 					setStep: 8 8
 					setMotion: MoveTo 493 7
@@ -143,7 +141,7 @@
 				(side2
 					show:
 					moveSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 8
 					setStep: 6 6
 					setMotion: MoveTo -108 224
@@ -154,8 +152,8 @@
 				(= cycles 75)
 			)
 			(6
-				(= local0 0)
-				(if (or (Btst 51) (Btst 52) (Btst 54))
+				(= paletteCued FALSE)
+				(if (or (Btst fLeftDeltaurPodBay) (Btst fPodGone) (Btst fDeltaurSelfDestructs))
 					(EgoDead 949 0 0 71 1)
 				else
 					(self setScript: flyingPod)
@@ -166,41 +164,38 @@
 )
 
 (instance flyingPod of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(curRoom drawPic: 17)
 				(theMusic
-					number: (if (> numVoices 4) 702 else 701)
+					number: (if (> numVoices 4) 702 else 701)	;Amiga change. However, there is no sound 702.
 					loop: -1
-					flags: 1
+					flags: mNOPAUSE
 					play:
-				)
-				(ship dispose:)
-				(if (Btst 53)
+				)				(ship dispose:)
+				(if (Btst fStartedSelfDestruct)
 					(explosion dispose:)
 					(head dispose:)
 					(tail dispose:)
 					(side1 dispose:)
 					(side2 dispose:)
 				)
-				(UnLoad 128 215)
-				(UnLoad 128 115)
+				(UnLoad VIEW 215)
+				(UnLoad VIEW 115)
 				(= cycles 3)
 			)
 			(1
 				(planet
-					loop: (if (not (Btst 53)) 6 else 0)
+					loop: (if (not (Btst fStartedSelfDestruct)) 6 else 0)
 					init:
 					posn: 355 76
 					setPri: 4
 					stopUpd:
 				)
-				(star setCycle: Fwd init: setPri: 0)
-				(star2 setCycle: Fwd init: setPri: 0)
-				(star3 setCycle: Fwd init: setPri: 0)
+				(star setCycle: Forward init: setPri: 0)
+				(star2 setCycle: Forward init: setPri: 0)
+				(star3 setCycle: Forward init: setPri: 0)
 				(escapePod
 					setPri: -1
 					setLoop: 3
@@ -209,7 +204,7 @@
 					setPri: 4
 					setMotion: MoveTo 120 117 self
 				)
-				(exhaust init: setCycle: Fwd)
+				(exhaust init: setCycle: Forward)
 			)
 			(2
 				(if (> (planet x?) 253)
@@ -223,7 +218,7 @@
 				(= cycles 1)
 			)
 			(3
-				(if (not (Btst 53))
+				(if (not (Btst fStartedSelfDestruct))
 					(curRoom setScript: destroyXenon)
 				else
 					(escapePod setMotion: MoveTo 452 78 self)
@@ -241,14 +236,14 @@
 					setMotion: MoveTo 267 42 self
 				)
 			)
-			(6 (curRoom newRoom: 68))
+			(6
+				(curRoom newRoom: 68)
+			)
 		)
 	)
 )
 
 (instance destroyXenon of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -257,28 +252,35 @@
 				(planet stopUpd:)
 				(= cycles 1)
 			)
-			(1 (Print 71 2) (= cycles 1))
-			(2 (= seconds 2))
+			(1
+				(Print 71 2)
+				(= cycles 1)
+			)
+			(2
+				(= seconds 2)
+			)
 			(3
-				(= saveBits (Graph grSAVE_BOX 74 0 78 245 1))
-				(Graph grDRAW_LINE 76 0 76 244 colLGreen 1 0 0)
-				(Graph grDRAW_LINE 75 0 75 122 colLGreen 1 0 0)
-				(Graph grDRAW_LINE 77 0 77 122 colLGreen 1 0 0)
-				(Graph grUPDATE_BOX 74 0 78 245 1)
+				(= saveBits (Graph GSaveBits 74 0 78 245 1))
+				(Graph GDrawLine 76 0 76 244 colLGreen 1 0 0)
+				(Graph GDrawLine 75 0 75 122 colLGreen 1 0 0)
+				(Graph GDrawLine 77 0 77 122 colLGreen 1 0 0)
+				(Graph GShowBits 74 0 78 245 1)
 				(soundFx number: 312 loop: 1 play:)
 				(= ticks 80)
 			)
 			(4
-				(Graph grRESTORE_BOX saveBits)
-				(Graph grUPDATE_BOX 74 0 78 245 1)
+				(Graph GRestoreBits saveBits)
+				(Graph GShowBits 74 0 78 245 1)
 				(soundFx number: 411 loop: 1 play:)
-				(planet cycleSpeed: 5 setCycle: End self)
+				(planet cycleSpeed: 5 setCycle: EndLoop self)
 			)
 			(5
 				(planet dispose:)
 				(= seconds 4)
 			)
-			(6 (EgoDead 950 0 0 71 3))
+			(6
+				(EgoDead 950 0 0 71 3)
+			)
 		)
 	)
 )
@@ -288,7 +290,7 @@
 		x 162
 		y 82
 		view 215
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 6
 	)
 )
@@ -300,7 +302,7 @@
 		view 215
 		cel 1
 		priority 2
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 2
 	)
 )
@@ -310,7 +312,7 @@
 		x 106
 		y 51
 		view 115
-		signal $4800
+		signal (| ignrAct fixedLoop)
 		cycleSpeed 2
 	)
 )
@@ -321,7 +323,7 @@
 		y 105
 		view 115
 		loop 3
-		signal $4800
+		signal (| ignrAct fixedLoop)
 		cycleSpeed 2
 	)
 )
@@ -332,7 +334,7 @@
 		y 73
 		view 115
 		loop 1
-		signal $4800
+		signal (| ignrAct fixedLoop)
 		cycleSpeed 2
 	)
 )
@@ -344,7 +346,7 @@
 		view 115
 		loop 2
 		priority 4
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		cycleSpeed 2
 	)
 )
@@ -392,7 +394,7 @@
 		y 145
 		view 217
 		loop 3
-		signal $4800
+		signal (| ignrAct fixedLoop)
 		cycleSpeed 2
 		moveSpeed 2
 	)
@@ -405,7 +407,7 @@
 		view 217
 		loop 4
 		priority 5
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 2
 		moveSpeed 2
 	)

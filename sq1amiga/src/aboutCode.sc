@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 811)
-(include sci.sh)
+(script# ABOUT)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use System)
@@ -10,8 +10,6 @@
 )
 
 (instance aboutCode of Code
-	(properties)
-	
 	(method (doit)
 		(Printf 811 0 version)
 		(Print 811 1)

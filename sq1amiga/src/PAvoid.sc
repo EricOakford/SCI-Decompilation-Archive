@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 927)
-(include sci.sh)
+(script# PAVOID)
+(include game.sh)
 (use PolyPath)
 (use Polygon)
 (use System)

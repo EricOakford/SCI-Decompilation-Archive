@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 817)
-(include sci.sh)
+(script# ELEVATOR) ;817
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Feature)
@@ -16,45 +16,7 @@
 
 (class Elevator of Prop
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		description 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 26505
-		lookStr 0
-		yStep 2
-		view 0
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0000
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
 		cycleSpeed 8
-		script 0
-		cycler 0
-		timer 0
-		detailLevel 0
 		whereTo 0
 		level 0
 		busy 0
@@ -67,7 +29,7 @@
 		unlockScript 0
 		exitScript 0
 		lockStr 0
-		state $0000
+		state 0
 		pauseCounter 0
 		moveToX 0
 		moveToY 0
@@ -77,16 +39,16 @@
 		rectR 0
 	)
 	
-	(method (init &tmp temp0)
+	(method (init &tmp cWide)
 		(super init: &rest)
 		(if (== level currentFloor)
 			(if (== curRoomNum 10)
-				(self approachVerbs: 3 4)
+				(self approachVerbs: verbDo verbUse)
 			else
-				(self approachVerbs: 3)
+				(self approachVerbs: verbDo)
 			)
 		else
-			(self _approachVerbs: 26505)
+			(self _approachVerbs: ftrDefault)
 		)
 		(if light
 			(light
@@ -96,20 +58,20 @@
 				posn: x (- y (+ (CelHigh view loop cel) 2))
 			)
 		)
-		(= temp0 (CelWide view loop cel))
+		(= cWide (CelWide view loop cel))
 		(= rectT y)
-		(= rectL (- x (- (/ temp0 2) 3)))
-		(= rectR (+ x (- (/ temp0 2) 3)))
+		(= rectL (- x (- (/ cWide 2) 3)))
+		(= rectR (+ x (- (/ cWide 2) 3)))
 		(= rectB (+ y 10))
 		(= approachX x)
 		(= approachY (+ y (/ (- rectB y) 2)))
 		(self stopUpd: moveToX: x moveToY: (- y 7))
 		(if exiting
-			(= busy 1)
+			(= busy TRUE)
 			(ego posn: moveToX moveToY setHeading: 180)
 			(self open:)
 		else
-			(self ignoreActors: 0)
+			(self ignoreActors: FALSE)
 		)
 	)
 	
@@ -117,24 +79,27 @@
 		(super doit:)
 		(if (== state 6)
 			(if exiting
-				(if
-				(== (++ pauseCounter) (if (>= howFast 1) 40 else 20))
+				(if (== (++ pauseCounter) (if (>= howFast medium) 40 else 20))
 					(= pauseCounter 0)
 					(self cue:)
 				)
 			)
-			(if (not exiting) (self cue:))
+			(if (not exiting)
+				(self cue:)
+			)
 		)
 	)
 	
 	(method (dispose)
-		(if light (light dispose:))
+		(if light
+			(light dispose:)
+		)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(3
+			(verbDo
 				(if (ego inRect: rectL rectT rectR rectB)
 					(HandsOff)
 					(self open:)
@@ -142,16 +107,20 @@
 					(super doVerb: theVerb theItem &rest)
 				)
 			)
-			(4
+			(verbUse
 				(if locked
-					(if (== theItem 1)
+					(if (== theItem iKeyCard)
 						(cond 
 							(unlockScript
-								(= locked 0)
+								(= locked FALSE)
 								(= state 5)
 								(curRoom setScript: unlockScript self)
 							)
-							(species (= locked 0) (HandsOff) (self open:))
+							(species
+								(= locked FALSE)
+								(HandsOff)
+								(self open:)
+							)
 						)
 					else
 						(super doVerb: theVerb theItem &rest)
@@ -175,20 +144,24 @@
 	
 	(method (cue)
 		(switch state
-			(5 (self open:))
+			(5
+				(self open:)
+			)
 			(6
 				(= state 4)
 				(ego setMotion: 0)
 				(if (and light (not exiting))
 					(light setCel: (+ (light cel?) 1) forceUpd:)
 				)
-				(self ignoreActors: 1 setCycle: End self)
+				(self ignoreActors: TRUE setCycle: EndLoop self)
 				(if openSnd (elevatorSound number: openSnd play:))
 			)
 			(4
 				(self stopUpd:)
 				(if exiting
-					(if polyCode (self perform: polyCode))
+					(if polyCode
+						(self perform: polyCode)
+					)
 					(= state 2)
 					(ego
 						setPri: -1
@@ -205,7 +178,7 @@
 			)
 			(2
 				(= state 1)
-				(self setCycle: Beg self)
+				(self setCycle: BegLoop self)
 				(if closeSnd (elevatorSound number: closeSnd play:))
 			)
 			(1
@@ -214,15 +187,15 @@
 				(if (and light (not exiting))
 					(light setCel: (- (light cel?) 1) forceUpd:)
 				)
-				(self _approachVerbs: 26505)
+				(self _approachVerbs: ftrDefault)
 				(= busy 0)
 				(cond 
 					(exiting
 						(= exiting 0)
 						(if (== curRoomNum 10)
-							(self approachVerbs: 3 4)
+							(self approachVerbs: verbDo verbUse)
 						else
-							(self approachVerbs: 3)
+							(self approachVerbs: verbDo)
 						)
 						(if exitScript
 							(curRoom setScript: exitScript)
@@ -230,16 +203,20 @@
 							(HandsOn)
 						)
 					)
-					((IsObject whereTo) (whereTo exiting: 1 open:))
-					(else (curRoom newRoom: whereTo))
+					((IsObject whereTo)
+						(whereTo exiting: TRUE open:)
+					)
+					(else
+						(curRoom newRoom: whereTo)
+					)
 				)
 			)
 			(0 0)
 		)
 	)
 	
-	(method (inFront &tmp temp0)
-		(= temp0 0)
+	(method (inFront &tmp ret)
+		(= ret 0)
 		(if
 			(and
 				(not busy)
@@ -251,28 +228,32 @@
 				(!= ((ego mover?) client?) CueObj)
 				(!= (CueObj theInvItem?) 1)
 			)
-			(= temp0 (= busy 1))
+			(= ret (= busy TRUE))
 		)
-		(return temp0)
+		(return ret)
 	)
 	
 	(method (open)
 		(if (and locked (not exiting))
 			(if (== locked 1)
 				(= locked 2)
-				(if lockStr (Printf 817 0 lockStr) else (Print 817 1))
+				(if lockStr
+					(Printf 817 0 lockStr)
+				else
+					(Print 817 1)
+				)
 			)
 			(self startUpd:)
 			(HandsOn)
 		else
 			(HandsOff)
-			(= busy 1)
+			(= busy TRUE)
 			(= state 6)
-			(if exiting (ego posn: moveToX moveToY setPri: 0))
+			(if exiting
+				(ego posn: moveToX moveToY setPri: 0)
+			)
 		)
 	)
 )
 
-(instance elevatorSound of Sound
-	(properties)
-)
+(instance elevatorSound of Sound)

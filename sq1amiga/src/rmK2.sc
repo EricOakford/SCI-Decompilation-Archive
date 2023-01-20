@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 138)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use SQRoom)
 (use LoadMany)
@@ -13,17 +13,17 @@
 )
 
 (local
-	local0
+	theEdge
 )
 (instance rmK2 of SQRoom
 	(properties
 		picture 38
-		style $0008
+		style DISSOLVE
 		horizon 125
 	)
 	
 	(method (init)
-		(switch (= local0 ((User alterEgo?) edgeHit?))
+		(switch (= theEdge ((User alterEgo?) edgeHit?))
 			(3
 				(ego x: (Random 120 200))
 				(= north prevRoomNum)
@@ -41,9 +41,9 @@
 				(= east prevRoomNum)
 			)
 		)
-		(LoadMany 128 18 420)
+		(LoadMany VIEW 18 420)
 		(ego init:)
-		(self setRegions: 704)
+		(self setRegions: KERONA)
 		(super init:)
 	)
 	
@@ -53,8 +53,6 @@
 )
 
 (instance egoDead of Script
-	(properties)
-	
 	(method (doit)
 		(super doit: &rest)
 		(cond 
@@ -126,13 +124,12 @@
 					(= cycles 24)
 				)
 			)
-			(2 (ego setCycle: End self))
+			(2 (ego setCycle: EndLoop self))
 			(3
-				(EgoDead
-					18
-					0
-					7
-					{Whoa! Those big guys pack a powerful appetite. Did you feel the way that thing just chomped right through your skeletal system? That had to hurt! The grell burps in solitary satisfaction. He doesn't often get nice, warm meals like you.}
+				(EgoDead 18 0 7
+					{Whoa! Those big guys pack a powerful appetite. 
+					Did you feel the way that thing just chomped right through your skeletal system? That had to hurt! 
+					The grell burps in solitary satisfaction. He doesn't often get nice, warm meals like you.}
 				)
 			)
 		)

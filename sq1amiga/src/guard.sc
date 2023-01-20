@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 157)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Grooper)
@@ -28,17 +28,27 @@
 			posn: 327 223 moveSpeed (theGame egoMoveSpeed?)
 			cycleSpeed: (theGame egoMoveSpeed?)
 			setCycle: Walk
-			setLoop: Grooper
+			setLoop: GradualLooper
 		)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3 (Print 157 0))
-			(2 (Print 157 1))
-			(11 (Print 157 2))
-			(12 (Print 157 2))
-			(4 (Print 157 3))
+			(verbDo
+				(Print 157 0)
+			)
+			(verbLook
+				(Print 157 1)
+			)
+			(verbTaste
+				(Print 157 2)
+			)
+			(verbSmell
+				(Print 157 2)
+			)
+			(verbUse
+				(Print 157 3)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -47,22 +57,28 @@
 )
 
 (instance killEgo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(guard init: show: setMotion: MoveTo 270 175 self)
 			)
-			(1 (Face ego guard self))
+			(1
+				(Face ego guard self)
+			)
 			(2
 				(cond 
-					((& (ego onControl: 0) $0010) (guard setLoop: 1))
-					((& (ego onControl: 0) $0040) (guard setLoop: 4))
-					(else (guard setLoop: 5))
+					((& (ego onControl: 0) cRED)
+						(guard setLoop: 1)
+					)
+					((& (ego onControl: 0) cBROWN)
+						(guard setLoop: 4)
+					)
+					(else
+						(guard setLoop: 5)
+					)
 				)
-				(guard view: 415 cel: 0 setCycle: End self)
+				(guard view: 415 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(ego
@@ -70,10 +86,13 @@
 					setLoop: 1
 					cycleSpeed: 6
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(4 (EgoDead) (self dispose:))
+			(4
+				(EgoDead)
+				(self dispose:)
+			)
 		)
 	)
 )

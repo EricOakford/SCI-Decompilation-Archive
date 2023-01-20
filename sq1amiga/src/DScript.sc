@@ -1,29 +1,16 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 818)
-(include sci.sh)
+(script# DSCRIPT) ;818
+(include game.sh)
 (use Main)
 (use System)
 
 
 (class DScript of Script
 	(properties
-		client 0
-		state $ffff
-		start 0
-		timer 0
-		cycles 0
-		seconds 0
-		lastSeconds 0
-		ticks 0
-		lastTicks 0
-		register 0
-		script 0
-		caller 0
-		next 0
 		save1 0
 		DTimer 10
 		counter 0
-		clrByKey 1
+		clrByKey TRUE
 	)
 	
 	(method (init)
@@ -42,7 +29,9 @@
 	
 	(method (doit)
 		(super doit:)
-		(if save1 (-- counter))
+		(if save1
+			(-- counter)
+		)
 	)
 	
 	(method (dispose)
@@ -56,12 +45,14 @@
 		(if clrByKey
 			(cond 
 				((and save1 (<= counter 0))
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(self restore:)
 					(= seconds 0)
 					(= cycles 1)
 				)
-				(save1 (event claimed: 1))
+				(save1
+					(event claimed: TRUE)
+				)
 				((super handleEvent: event))
 			)
 		else
@@ -71,7 +62,7 @@
 	
 	(method (restore)
 		(if save1
-			(Display 818 0 108 save1)
+			(Display 818 0 p_restore save1)
 			(= save1 0)
 			(= counter DTimer)
 		)

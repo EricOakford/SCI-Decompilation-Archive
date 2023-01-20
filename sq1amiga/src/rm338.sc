@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 338)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use SQRoom)
 (use Actor)
@@ -12,7 +12,7 @@
 (instance rm338 of SQRoom
 	(properties
 		picture 38
-		style $0008
+		style DISSOLVE
 		horizon 150
 		north 37
 		east 18
@@ -22,7 +22,7 @@
 	
 	(method (init)
 		(ego init:)
-		(self setRegions: 704)
+		(self setRegions: KERONA)
 		(super init:)
 		(addToPics add: pod eachElementDo: #init doit:)
 	)

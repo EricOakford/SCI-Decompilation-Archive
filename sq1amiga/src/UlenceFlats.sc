@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 702)
-(include sci.sh)
+(script# ULENCE) ;702
+(include game.sh)
 (use Main)
 (use Intrface)
 (use PAvoid)
@@ -21,9 +21,7 @@
 	robot 1
 )
 
-(instance ulenceRegion of Rgn
-	(properties)
-	
+(instance ulenceRegion of Region
 	(method (init)
 		(super init:)
 		(if
@@ -34,19 +32,19 @@
 			)
 			(theMusic number: 601 loop: -1 play:)
 		)
-		(if (Btst 33)
+		(if (Btst fHaveNavDroid)
 			(robot
 				init:
 				illegalBits: (if (OneOf curRoomNum 46 45) 64 else 0)
 				posn:
 					(switch (ego edgeHit?)
-						(4 (+ droidX 319))
-						(2 (- droidX 319))
+						(WEST (+ droidX 319))
+						(EAST (- droidX 319))
 						(else  (ego x?))
 					)
 					(switch (ego edgeHit?)
-						(3 (- (curRoom horizon?) 10))
-						(1 280)
+						(SOUTH (- (curRoom horizon?) 10))
+						(NORTH 280)
 						(else  droidY)
 					)
 				setLoop: roboGroop
@@ -66,7 +64,9 @@
 	(method (doit)
 		(cond 
 			((curRoom script?) 0)
-			((== (ego onControl: 1) 16384) (curRoom setScript: zapEgo))
+			((== (ego onControl: origin) cYELLOW)
+				(curRoom setScript: zapEgo)
+			)
 		)
 		(super doit:)
 	)
@@ -79,8 +79,7 @@
 	)
 	
 	(method (newRoom n)
-		(if
-		(and (!= n 45) (not (OneOf n 40 41 42 45 46 47)))
+		(if (and (!= n 45) (not (OneOf n 40 41 42 45 46 47)))
 			(theMusic fade:)
 		)
 		(super newRoom: n)
@@ -90,18 +89,28 @@
 (instance mountains of Feature
 	(properties
 		description {mountains}
-		onMeCheck $0080
-		lookStr {In the distance is the galaxy-famous Skihairy mountain range. Nestled in its southernmost slopes is the renowned YoMammy National Park, usually hip-deep in tourists this time of year. Oh, well - maybe next trip.}
+		onMeCheck cLGREY
+		lookStr {In the distance is the galaxy-famous Skihairy mountain range. 
+		Nestled in its southernmost slopes is the renowned YoMammy National Park, 
+		usually hip-deep in tourists this time of year. Oh, well - maybe next trip.}
 	)
 	
 	(method (doVerb theVerb)
 		(= x ((User curEvent?) x?))
 		(= y ((User curEvent?) y?))
 		(switch theVerb
-			(3 (Print 702 0))
-			(5 (Print 702 1))
-			(12 (Print 702 2))
-			(11 (Print 702 3))
+			(verbDo
+				(Print 702 0)
+			)
+			(verbTalk
+				(Print 702 1)
+			)
+			(verbSmell
+				(Print 702 2)
+			)
+			(verbTaste
+				(Print 702 3)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -112,7 +121,7 @@
 (instance keronaSky of Feature
 	(properties
 		description {sky}
-		onMeCheck $0200
+		onMeCheck cLBLUE
 		lookStr {What a sky this planet has! You've never seen its like outside a toxic waste dump.}
 	)
 	
@@ -120,10 +129,18 @@
 		(= x ((User curEvent?) x?))
 		(= y ((User curEvent?) y?))
 		(switch theVerb
-			(3 (Print 702 4))
-			(5 (Print 702 5))
-			(12 (Print 702 6))
-			(11 (Print 702 7))
+			(verbDo
+				(Print 702 4)
+			)
+			(verbTalk
+				(Print 702 5)
+			)
+			(verbSmell
+				(Print 702 6)
+			)
+			(verbTaste
+				(Print 702 7)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -134,7 +151,7 @@
 (instance bigMoon of Feature
 	(properties
 		description {big moon}
-		onMeCheck $0100
+		onMeCheck cGREY
 		lookStr {Kerona has two moons. This one's the bigger of two.}
 	)
 	
@@ -148,7 +165,7 @@
 (instance smallMoon of Feature
 	(properties
 		description {small moon}
-		onMeCheck $2000
+		onMeCheck cLMAGENTA
 		lookStr {Kerona has two moons. This one's the smaller of two.}
 	)
 	
@@ -162,21 +179,28 @@
 (instance radarPost of Feature
 	(properties
 		description {radar post}
-		onMeCheck $0400
+		onMeCheck cLGREEN
 		lookStr {The settlement of Ulence Flats is surrounded by these force field generators. They repel such undesirables such as the grell which thrive below the sands. It will allow only airborne vehicles in or out.}
 	)
 	
 	(method (init)
-		(= y (if (== curRoomNum 41) 200 else 1))
+		(= y (if (== curRoomNum 41) 200 else 0)) ;1))
 		(super init: &rest)
 	)
 	
 	(method (doVerb theVerb)
+		;Amiga expanion
 		(= x ((User curEvent?) x?))
-		(if (!= y 200) (= y ((User curEvent?) y?)))
+		(if (!= y 200)
+			(= y ((User curEvent?) y?))
+		)
 		(switch theVerb
-			(3 (Print 702 8))
-			(4 (Print 702 9))
+			(verbDo
+				(Print 702 8)
+			)
+			(verbUse
+				(Print 702 9)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -187,7 +211,7 @@
 (instance desert of Feature
 	(properties
 		description {desert}
-		onMeCheck $0800
+		onMeCheck cLCYAN
 		lookStr {Kerona's relatively flat desert stretches out into the distance.}
 	)
 	
@@ -203,22 +227,30 @@
 		description {your pilot droid}
 		lookStr {Your new pilot droid appears to be a bit dinged up, but functional. You hope that he knows more about piloting a spaceship than you do.}
 		view 451
-		signal $2000
+		signal ignrHrz
 	)
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(5 (Print 702 10))
-			(3 (Print 702 11))
-			(4
-				(if (OneOf theItem 4 15)
+			(verbTalk
+				(Print 702 10)
+			)
+			(verbDo
+				(Print 702 11)
+			)
+			(verbUse
+				(if (OneOf theItem iKnife iWidget)
 					(Print 702 12)
 				else
 					(super doVerb: theVerb theItem)
 				)
 			)
-			(12 (Print 702 13))
-			(11 (Print 702 14))
+			(verbSmell
+				(Print 702 13)
+			)
+			(verbTaste
+				(Print 702 14)
+			)
 			(else 
 				(super doVerb: theVerb theItem)
 			)
@@ -226,15 +258,13 @@
 	)
 )
 
-(instance roboGroop of Grooper
-	(properties)
-)
+(instance roboGroop of GradualLooper)
 
 (instance zapEgo of Script
-	(properties)
-	
 	(method (doit)
-		(if (& (ego signal?) $0400) (self changeState: 3))
+		(if (& (ego signal?) blocked)
+			(self changeState: 3)
+		)
 		(super doit: &rest)
 	)
 	
@@ -260,7 +290,7 @@
 								((<= (ego heading?) 270) 5)
 								(else 1)
 							)
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(ego
@@ -268,7 +298,7 @@
 						cel: 0
 						setLoop: (if (< (ego heading?) 180) 2 else 3)
 						cycleSpeed: 7
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 				(zapSound number: 602 loop: 1 play:)
@@ -283,14 +313,15 @@
 						else
 							(- (ego priority?) 1)
 						)
-					setCycle: End
+					setCycle: EndLoop
 				)
 			)
+
 			(1
 				(if (>= zapCount 4)
 					(EgoDead 29 2 0 702 15)
 				else
-					(ego loop: (+ (ego loop?) 2) cel: 0 setCycle: End self)
+					(ego loop: (+ (ego loop?) 2) cel: 0 setCycle: EndLoop self)
 				)
 			)
 			(2
@@ -325,14 +356,14 @@
 						)
 					)
 				)
-				(ego setCycle: Rev setMotion: MoveFwd 10 self)
+				(ego setCycle: Reverse setMotion: MoveFwd 10 self)
 			)
 			(3
 				(= register (ego loop?))
 				(NormalEgo 0 1 61)
 				(ego loop: register)
 				(zap dispose:)
-				(if (not (Btst 38))
+				(if (not (Btst fZappedByBarrier))
 					(= cycles 8)
 				else
 					(HandsOn)
@@ -342,7 +373,7 @@
 			(4
 				(Print 702 16)
 				(Print 702 17)
-				(Bset 38)
+				(Bset fZappedByBarrier)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -354,7 +385,7 @@
 	(properties
 		view 58
 		loop 8
-		signal $6000
+		signal (| ignrAct ignrHrz)
 	)
 )
 

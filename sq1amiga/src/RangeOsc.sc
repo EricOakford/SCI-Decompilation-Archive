@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 819)
-(include sci.sh)
+(script# RANGEOSC) ;819
+(include game.sh)
 (use Motion)
 
 (public
@@ -9,25 +9,24 @@
 
 (class RangeOsc of Cycle
 	(properties
-		client 0
-		caller 0
-		cycleDir 1
-		cycleCnt 0
-		completed 0
 		howManyCycles -1
 		firstC 0
 		lastC 0
 	)
 	
-	(method (init param1 theHowManyCycles theFirstC theLastC theCaller)
-		(if (>= argc 2) (= howManyCycles theHowManyCycles))
-		(if (>= argc 5) (= caller theCaller))
-		(super init: param1)
+	(method (init who howMany fCel lCel whoCares)
+		(if (>= argc 2)
+			(= howManyCycles howMany)
+		)
+		(if (>= argc 5)
+			(= caller whoCares)
+		)
+		(super init: who)
 		(if (>= argc 3)
-			(= firstC theFirstC)
+			(= firstC fCel)
 			(if (>= argc 4)
-				(if theLastC
-					(= lastC theLastC)
+				(if lCel
+					(= lastC lCel)
 				else
 					(= lastC (client lastCel:))
 				)
@@ -54,9 +53,11 @@
 	(method (cycleDone)
 		(if howManyCycles
 			(client cel: (self nextCel:))
-			(if (> howManyCycles 0) (-- howManyCycles))
+			(if (> howManyCycles 0)
+				(-- howManyCycles)
+			)
 		else
-			(= completed 1)
+			(= completed TRUE)
 			(self motionCue:)
 		)
 	)

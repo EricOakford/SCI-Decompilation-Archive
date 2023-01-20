@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 302)
-(include sci.sh)
+(script# ZZTOP) ;302
+(include game.sh)
 (use Intrface)
 (use Motion)
 (use Actor)
@@ -14,17 +14,10 @@
 	ZZTop3 4
 )
 
-(instance forwardScript of Script
-	(properties)
-)
+(instance forwardScript of Script)
 
 (class FROR of Cycle
 	(properties
-		client 0
-		caller 0
-		cycleDir 1
-		cycleCnt 0
-		completed 0
 		firstStaticCel 0
 		lastStaticCel 0
 		minCyclesToGo 100
@@ -32,21 +25,23 @@
 		cyclesToGo 1
 	)
 	
-	(method (init param1 theMinCyclesToGo theMaxCyclesToGo theFirstStaticCel theLastStaticCel)
-		(super init: param1)
+	(method (init who minCycles maxCycles firstCel lastCel)
+		(super init: who)
 		(if (> argc 1)
-			(= minCyclesToGo theMinCyclesToGo)
+			(= minCyclesToGo minCycles)
 			(if (> argc 2)
-				(= maxCyclesToGo theMaxCyclesToGo)
+				(= maxCyclesToGo maxCycles)
 				(if (> argc 3)
-					(= firstStaticCel theFirstStaticCel)
-					(if (> argc 4) (= lastStaticCel theLastStaticCel))
+					(= firstStaticCel firstCel)
+					(if (> argc 4)
+						(= lastStaticCel lastCel)
+					)
 				)
 			)
 		)
 	)
 	
-	(method (doit &tmp fRORNextCel)
+	(method (doit &tmp theNextCel)
 		(if (not (-- cyclesToGo))
 			(= cyclesToGo (Random minCyclesToGo maxCyclesToGo))
 			(= cycleDir (- 1 (Random 0 2)))
@@ -54,12 +49,16 @@
 				(client cel: (Random firstStaticCel lastStaticCel))
 			)
 		)
-		(= fRORNextCel (self nextCel:))
+		(= theNextCel (self nextCel:))
 		(if cycleDir
 			(cond 
-				((== cycleDir 1) (client cel: fRORNextCel))
-				((< fRORNextCel 0) (client cel: (client lastCel:)))
-				(else (client cel: fRORNextCel))
+				((== cycleDir 1)
+					(client cel: theNextCel)
+				)
+				((< theNextCel 0)
+					(client cel: (client lastCel:))
+				)
+				(else (client cel: theNextCel))
 			)
 		)
 	)
@@ -89,21 +88,47 @@
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(3 (Print 302 0))
-			(11 (Print 302 1))
-			(12 (Print 302 2))
-			(5 (Print 302 3))
-			(4
+			(verbDo
+				(Print 302 0)
+			)
+			(verbTaste
+				(Print 302 1)
+			)
+			(verbSmell
+				(Print 302 2)
+			)
+			(verbTalk
+				(Print 302 3)
+			)
+			(verbUse
 				(switch theItem
-					(10 (Print 302 4))
-					(0 (Print 302 5))
-					(15 (Print 302 6))
-					(2 (Print 302 7))
-					(4 (Print 302 8))
-					(5 (Print 302 9))
-					(11 (Print 302 10))
-					(17 (Print 302 11))
-					(18 (Print 302 11))
+					(iBuckazoid
+						(Print 302 4)
+					)
+					(iCartridge
+						(Print 302 5)
+					)
+					(iWidget
+						(Print 302 6)
+					)
+					(iGadget
+						(Print 302 7)
+					)
+					(iKnife
+						(Print 302 8)
+					)
+					(iDehydratedWater
+						(Print 302 9)
+					)
+					(iJetpack
+						(Print 302 10)
+					)
+					(iBarCoupon
+						(Print 302 11)
+					)
+					(iDroidsBUsCoupon
+						(Print 302 11)
+					)
 					(else 
 						(super doVerb: theVerb theItem)
 					)
@@ -126,28 +151,54 @@
 		loop 1
 		cel 5
 		priority 6
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 4
 		detailLevel 2
 	)
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(3 (Print 302 0))
-			(11 (Print 302 1))
-			(12 (Print 302 2))
-			(5 (Print 302 3))
-			(4
+			(verbDo
+				(Print 302 0)
+			)
+			(verbTaste
+				(Print 302 1)
+			)
+			(verbSmell
+				(Print 302 2)
+			)
+			(verbTalk
+				(Print 302 3)
+			)
+			(verbUse
 				(switch theItem
-					(10 (Print 302 4))
-					(0 (Print 302 5))
-					(15 (Print 302 6))
-					(2 (Print 302 7))
-					(4 (Print 302 8))
-					(5 (Print 302 9))
-					(11 (Print 302 10))
-					(17 (Print 302 11))
-					(18 (Print 302 11))
+					(iCartridge
+						(Print 302 4)
+					)
+					(iBuckazoid
+						(Print 302 5)
+					)
+					(iWidget
+						(Print 302 6)
+					)
+					(iGadget
+						(Print 302 7)
+					)
+					(iKnife
+						(Print 302 8)
+					)
+					(iDehydratedWater
+						(Print 302 9)
+					)
+					(iJetpack
+						(Print 302 10)
+					)
+					(iBarCoupon
+						(Print 302 11)
+					)
+					(iDroidsBUsCoupon
+						(Print 302 11)
+					)
 					(else 
 						(super doVerb: theVerb theItem)
 					)
@@ -167,31 +218,57 @@
 		description {guitar}
 		lookStr {On stage are two heavily-bearded gents and a relatively clean-shaven drummer. They're one of the hottest bands in the quadrant.}
 		view 433
-		loop 1
+		loop 1 ;2
 		cel 3
 		priority 6
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 4
 		detailLevel 2
 	)
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(3 (Print 302 0))
-			(11 (Print 302 1))
-			(12 (Print 302 2))
-			(5 (Print 302 3))
-			(4
+			(verbDo
+				(Print 302 0)
+			)
+			(verbTaste
+				(Print 302 1)
+			)
+			(verbSmell
+				(Print 302 2)
+			)
+			(verbTalk
+				(Print 302 3)
+			)
+			(verbUse
 				(switch theItem
-					(10 (Print 302 4))
-					(0 (Print 302 5))
-					(15 (Print 302 6))
-					(2 (Print 302 7))
-					(4 (Print 302 8))
-					(5 (Print 302 9))
-					(11 (Print 302 10))
-					(17 (Print 302 11))
-					(18 (Print 302 11))
+					(iCartridge
+						(Print 302 4)
+					)
+					(iBuckazoid
+						(Print 302 5)
+					)
+					(iWidget
+						(Print 302 6)
+					)
+					(iGadget
+						(Print 302 7)
+					)
+					(iKnife
+						(Print 302 8)
+					)
+					(iDehydratedWater
+						(Print 302 9)
+					)
+					(iJetpack
+						(Print 302 10)
+					)
+					(iBarCoupon
+						(Print 302 11)
+					)
+					(iDroidsBUsCoupon
+						(Print 302 11)
+					)
 					(else 
 						(super doVerb: theVerb theItem)
 					)

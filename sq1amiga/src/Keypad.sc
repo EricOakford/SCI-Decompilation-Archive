@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 400)
-(include sci.sh)
+(script# KEYPAD)
+(include game.sh)
 (use Main)
 (use rm103)
 (use Intrface)
@@ -23,16 +23,16 @@
 	saveBits
 	local21
 	wrongCodeCount
-	[local23 17] = [185 180 175 170 165 160 155 150 145 140 135 130 125 120 115 -1]
+	local23 = [185 180 175 170 165 160 155 150 145 140 135 130 125 120 115 -1]
 )
-(procedure (localproc_001e)
+(procedure (RestoreBits)
 	(if saveBits
-		(Display 400 0 108 saveBits)
+		(Display 400 0 p_restore saveBits)
 		(= saveBits 0)
 	)
 )
 
-(procedure (localproc_0034)
+(procedure (InitButtons)
 	(oneBut init: @buttons)
 	(twoBut init: @buttons)
 	(threeBut init: @buttons)
@@ -47,7 +47,7 @@
 	(quitBut init: whoToCue: quitScript)
 )
 
-(procedure (localproc_00d2)
+(procedure (DisposeButtons)
 	(oneBut dispose:)
 	(twoBut dispose:)
 	(threeBut dispose:)
@@ -64,13 +64,11 @@
 )
 
 (instance raisePad of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(theGame setCursor: waitCursor 1 160 100)
+				(theGame setCursor: waitCursor TRUE 160 100)
 				(keyPad y: 185 ignoreActors: init:)
 				(soundFx number: 358 loop: 1 play:)
 				(= cycles 1)
@@ -85,9 +83,9 @@
 			(2
 				(keyPad signal: (| (keyPad signal?) $0101))
 				(soundFx stop:)
-				(localproc_0034)
+				(InitButtons)
 				(HandsOn)
-				(theIconBar disable: 0 3 4 5)
+				(theIconBar disable: ICON_WALK ICON_TALK ICON_SMELL ICON_TASTE)
 				(client register: 1)
 				(= cycles 1)
 			)
@@ -105,8 +103,6 @@
 )
 
 (instance lowerPad of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 49 2) cycles: 1)
 		(beep dispose:)
@@ -118,14 +114,14 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(theGame setCursor: waitCursor 1 160 190)
+				(theGame setCursor: waitCursor TRUE 160 190)
 				(keyPad signal: (& (keyPad signal?) $feff))
 				(= local21 15)
 				(soundFx number: 358 loop: 1 play:)
 				(= cycles 6)
 			)
 			(1
-				(localproc_00d2)
+				(DisposeButtons)
 				(= cycles 2)
 			)
 			(2
@@ -147,8 +143,6 @@
 )
 
 (instance enterScript of Script
-	(properties)
-	
 	(method (dispose)
 		(StrCpy @buttons {})
 		(super dispose:)
@@ -157,16 +151,24 @@
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
-				(localproc_001e)
-				(theGame setCursor: waitCursor 1 160 100)
+				(RestoreBits)
+				(theGame setCursor: waitCursor TRUE 160 100)
 				(keyPad signal: (& (keyPad signal?) $feff))
 				(= cycles 1)
 			)
 			(1
 				(cond 
-					((not (StrLen @buttons)) (Print 400 1) (self dispose:))
-					((< (StrLen @buttons) 4) (Print 400 2) (self dispose:))
-					(else (= cycles 1))
+					((not (StrLen @buttons))
+						(Print 400 1)
+						(self dispose:)
+					)
+					((< (StrLen @buttons) 4)
+						(Print 400 2)
+						(self dispose:)
+					)
+					(else
+						(= cycles 1)
+					)
 				)
 			)
 			(2
@@ -235,45 +237,47 @@
 				(cond 
 					((== (StrCmp @buttons @sectorNumber) 0)
 						(Print 400 3)
-						(= shipDestination 2)
+						(= shipDestination shipDELTAUR)
 						((ScriptID 49 2) setScript: lowerPad)
 						(= cycles 1)
 					)
 					((== (++ wrongCodeCount) 3)
-						(= shipDestination 1)
+						(= shipDestination shipWRONGSECTOR)
 						(Print 400 3)
 						((ScriptID 49 2) setScript: lowerPad)
 						(= cycles 1)
 					)
-					(else (Print 400 4) (= cycles 1))
+					(else
+						(Print 400 4)
+						(= cycles 1)
+					)
 				)
 			)
-			(3 (self dispose:))
+			(3
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance keyFlashScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(User canInput: 0)
+				(User canInput: FALSE)
 				(client setPri: 11)
-				(Animate (cast elements?) 0)
+				(Animate (cast elements?) FALSE)
 				(if register (beep number: register play:))
 				(= cycles 1)
 			)
 			(1
 				(client setPri: 0)
-				(Animate (cast elements?) 0)
+				(Animate (cast elements?) FALSE)
 				(= cycles 1)
 			)
 			(2
-				(User canInput: 1)
-				(if
-				(and (client whoToCue?) (not (keyPad script?)))
+				(User canInput: TRUE)
+				(if (and (client whoToCue?) (not (keyPad script?)))
 					(keyPad setScript: (client whoToCue?))
 				)
 				(= register 0)
@@ -284,8 +288,6 @@
 )
 
 (instance quitScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -296,47 +298,11 @@
 	)
 )
 
-(class KeyPadButton of Prop
+(class KeyPadButton400 of Prop
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
+		name "KeyPadButton"
 		description {button}
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 26505
 		lookStr {These buttons allow you to enter a code into the computer.}
-		yStep 2
-		view 0
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0000
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		cycleSpeed 0
-		script 0
-		cycler 0
-		timer 0
-		detailLevel 0
 		theString 0
 		strToCat 0
 		maxLen 4
@@ -360,7 +326,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3 (self flash:))
+			(verbDo
+				(self flash:)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -370,40 +338,29 @@
 	(method (cue)
 		(if strToCat
 			(if (< (StrLen theString) maxLen)
-				(localproc_001e)
+				(RestoreBits)
 				(StrCat theString strToCat)
 				(= saveBits
-					(Display
-						theString
-						dsCOORD
-						(+ (keyPad x?) 5)
-						(+ (- (keyPad y?) 10) 20)
-						dsCOLOR
-						colLED
-						dsALIGN
-						0
-						dsFONT
-						30
-						dsSAVEPIXELS
+					(Display theString
+						p_at (+ (keyPad x?) 5) (+ (- (keyPad y?) 10) 20)
+						p_color colLED
+						p_mode teJustLeft
+						p_font 30
+						p_save
 					)
 				)
 			else
-				(Display
-					theString
-					dsCOORD
-					(+ (keyPad x?) 5)
-					(+ (- (keyPad y?) 10) 20)
-					dsCOLOR
-					colLED
-					dsALIGN
-					0
-					dsFONT
-					30
+				(Display theString
+					p_at (+ (keyPad x?) 5) (+ (- (keyPad y?) 10) 20)
+					p_color colLED
+					p_mode teJustLeft
+					p_font 30
 				)
 			)
 		)
 	)
 	
+	;Amiga addition
 	(method (flash)
 		(if (not script)
 			(self setScript: keyFlashScript self tone)
@@ -411,64 +368,31 @@
 	)
 )
 
-(instance beep of Sound
-	(properties)
-)
+(instance beep of Sound)
 
-(instance myCast of List
-	(properties)
-)
+(instance myCast of List)
 
 (class FastHand2 of View
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		description 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $0000
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 26505
-		lookStr 0
-		yStep 2
 		view 502
 		loop 0
 		cel 2
 		priority 14
-		underBits 0
-		signal $0010
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
+		signal fixPriOn
 	)
 	
-	(method (doit &tmp userCurEvent userCurEventX userCurEventY)
+	(method (doit &tmp event evtX evtY)
 		(if
 			(not
-				(& ((= userCurEvent (User curEvent?)) type?) $0007)
+				(& ((= event (User curEvent?)) type?) (| keyDown mouseDown mouseUp))
 			)
-			(userCurEvent localize:)
-			(= userCurEventX (userCurEvent x?))
-			(= userCurEventY (userCurEvent y?))
+			(event localize:)
+			(= evtX (event x?))
+			(= evtY (event y?))
 			(if
 				(and
-					(InRect 224 115 295 187 userCurEventX userCurEventY)
-					(== (theIconBar curIcon?) (theIconBar at: 2))
+					(InRect 224 115 295 187 evtX evtY)
+					(== (theIconBar curIcon?) (theIconBar at: ICON_DO))
 				)
 				(self internalEvent:)
 			)
@@ -478,11 +402,12 @@
 	
 	(method (dispose)
 		(if (== theCursor 69)
-			(theGame setCursor: ((theIconBar curIcon?) cursor?) 1)
+			(theGame setCursor: ((theIconBar curIcon?) cursor?) TRUE)
 		)
 		(super dispose:)
 	)
 	
+	;EO: hopefully someone can figure this out
 	(method (internalEvent &tmp temp0 temp1 temp2)
 		(asm
 			pushi    #curEvent
@@ -661,11 +586,9 @@ code_0b36:
 	)
 )
 
-(instance hand of FastHand2
-	(properties)
-)
+(instance hand of FastHand2)
 
-(instance keyPad of Prop
+(instance keyPad of Prop ;View
 	(properties
 		x 238
 		y 185
@@ -681,12 +604,12 @@ code_0b36:
 		(self setPri: 7)
 		(mouseDownHandler addToFront: self)
 		(keyDownHandler addToFront: self)
-		(theIconBar disable: 0)
+		(theIconBar disable: ICON_WALK)
 	)
 	
 	(method (dispose)
 		(super dispose: &rest)
-		(theGame setCursor: ((theIconBar curIcon?) cursor?) 1)
+		(theGame setCursor: ((theIconBar curIcon?) cursor?) TRUE)
 		(keyDownHandler delete: self)
 		(mouseDownHandler delete: self)
 		(HandsOn)
@@ -698,16 +621,17 @@ code_0b36:
 		x 270
 		y 139
 		description {Enter}
-		lookStr {This button confirms entry of the code you keyed-in.}
+		;Amiga fix
+		lookStr {This button confirms entry of the code you keyed-in.} ;and begins the search for the corresponding cartridge.
 		view 502
 		loop 1
 		cel 11
-		signal $4000
+		signal ignrAct
 		tone 351
 	)
 )
 
-(instance quitBut of KeyPadButton
+(instance quitBut of KeyPadButton400
 	(properties
 		x 248
 		y 169
@@ -716,12 +640,12 @@ code_0b36:
 		view 502
 		loop 1
 		cel 12
-		signal $4000
+		signal ignrAct
 		tone 352
 	)
 )
 
-(instance oneBut of KeyPadButton
+(instance oneBut of KeyPadButton400
 	(properties
 		x 238
 		y 139
@@ -729,13 +653,13 @@ code_0b36:
 		lookStr {These buttons allow you to enter a code into the computer.}
 		view 502
 		loop 1
-		signal $4000
+		signal ignrAct
 		strToCat {A}
 		tone 341
 	)
 )
 
-(instance twoBut of KeyPadButton
+(instance twoBut of KeyPadButton400
 	(properties
 		x 248
 		y 139
@@ -744,13 +668,13 @@ code_0b36:
 		view 502
 		loop 1
 		cel 1
-		signal $4000
+		signal ignrAct
 		strToCat {B}
 		tone 342
 	)
 )
 
-(instance threeBut of KeyPadButton
+(instance threeBut of KeyPadButton400
 	(properties
 		x 258
 		y 139
@@ -759,13 +683,13 @@ code_0b36:
 		view 502
 		loop 1
 		cel 2
-		signal $4000
+		signal ignrAct
 		strToCat {C}
 		tone 343
 	)
 )
 
-(instance fourBut of KeyPadButton
+(instance fourBut of KeyPadButton400
 	(properties
 		x 238
 		y 149
@@ -774,13 +698,13 @@ code_0b36:
 		view 502
 		loop 1
 		cel 3
-		signal $4000
+		signal ignrAct
 		strToCat {D}
 		tone 344
 	)
 )
 
-(instance fiveBut of KeyPadButton
+(instance fiveBut of KeyPadButton400
 	(properties
 		x 248
 		y 149
@@ -789,13 +713,13 @@ code_0b36:
 		view 502
 		loop 1
 		cel 4
-		signal $4000
+		signal ignrAct
 		strToCat {E}
 		tone 345
 	)
 )
 
-(instance sixBut of KeyPadButton
+(instance sixBut of KeyPadButton400
 	(properties
 		x 258
 		y 149
@@ -804,13 +728,13 @@ code_0b36:
 		view 502
 		loop 1
 		cel 5
-		signal $4000
+		signal ignrAct
 		strToCat {F}
 		tone 346
 	)
 )
 
-(instance sevenBut of KeyPadButton
+(instance sevenBut of KeyPadButton400
 	(properties
 		x 238
 		y 159
@@ -819,13 +743,13 @@ code_0b36:
 		view 502
 		loop 1
 		cel 6
-		signal $4000
+		signal ignrAct
 		strToCat {G}
 		tone 347
 	)
 )
 
-(instance eightBut of KeyPadButton
+(instance eightBut of KeyPadButton400
 	(properties
 		x 248
 		y 159
@@ -834,13 +758,13 @@ code_0b36:
 		view 502
 		loop 1
 		cel 7
-		signal $4000
+		signal ignrAct
 		strToCat {H}
 		tone 348
 	)
 )
 
-(instance nineBut of KeyPadButton
+(instance nineBut of KeyPadButton400
 	(properties
 		x 258
 		y 159
@@ -849,13 +773,13 @@ code_0b36:
 		view 502
 		loop 1
 		cel 8
-		signal $4000
+		signal ignrAct
 		strToCat {I}
 		tone 349
 	)
 )
 
-(instance zeroBut of KeyPadButton
+(instance zeroBut of KeyPadButton400
 	(properties
 		x 238
 		y 169
@@ -864,7 +788,7 @@ code_0b36:
 		view 502
 		loop 1
 		cel 9
-		signal $4000
+		signal ignrAct
 		strToCat {J}
 		tone 350
 	)

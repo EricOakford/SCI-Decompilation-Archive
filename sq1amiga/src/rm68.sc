@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 68)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Talker)
@@ -17,13 +17,13 @@
 	rm68 0
 )
 
-(instance rm68 of Rm
+(instance rm68 of Room
 	(properties
 		picture 68
 	)
 	
 	(method (init)
-		(LoadMany 128 44 468 470 472 516)
+		(LoadMany VIEW 44 468 470 472 516)
 		(greenBldg init:)
 		(twoGuys init:)
 		(stadium init:)
@@ -34,7 +34,7 @@
 		(bubbleGum init:)
 		(guy2 init:)
 		(clarkKent init:)
-		(Load rsSOUND 535)
+		(Load SOUND 535)
 		(ego
 			init:
 			normal: 0
@@ -52,7 +52,7 @@
 			posn: -100 40
 			xStep: 13
 			yStep: 6
-			setCycle: Fwd
+			setCycle: Forward
 		)
 		(self setScript: roomControl)
 		(xen6 init:)
@@ -65,29 +65,31 @@
 )
 
 (instance crowdGoesWild of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(xen6 setCycle: End self)
-				(xen8 setCycle: Fwd cycleSpeed: 8)
-				(xen9 setCycle: End)
-				(xen3 setCycle: Osc 2)
+				(xen6 setCycle: EndLoop self)
+				(xen8 setCycle: Forward cycleSpeed: 8)
+				(xen9 setCycle: EndLoop)
+				(xen3 setCycle: Oscillate 2)
 			)
-			(1 (= seconds 2))
+			(1
+				(= seconds 2)
+			)
 			(2
-				(xen6 setCycle: End self)
-				(xen8 setCycle: Fwd cycleSpeed: 8)
-				(xen9 setCycle: End)
-				(xen3 setCycle: Osc 2)
+				(xen6 setCycle: EndLoop self)
+				(xen8 setCycle: Forward cycleSpeed: 8)
+				(xen9 setCycle: EndLoop)
+				(xen3 setCycle: Oscillate 2)
 			)
-			(3 (= seconds 2))
+			(3
+				(= seconds 2)
+			)
 			(4
-				(xen6 setCycle: End self)
-				(xen8 setCycle: Fwd cycleSpeed: 8)
-				(xen9 setCycle: End)
-				(xen3 setCycle: Osc 2)
+				(xen6 setCycle: EndLoop self)
+				(xen8 setCycle: Forward cycleSpeed: 8)
+				(xen9 setCycle: EndLoop)
+				(xen3 setCycle: Oscillate 2)
 			)
 			(5 (self dispose:))
 		)
@@ -95,11 +97,11 @@
 )
 
 (instance roomControl of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 15))
+			(0
+				(= cycles 15)
+			)
 			(1
 				(self setScript: lottaPraise self)
 			)
@@ -130,37 +132,28 @@
 )
 
 (instance lottaPraise of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(leaderTalker
 					posn: 120 120
-					init:
-						leaderBust
-						leaderMouth
-						leaderEyes
+					init: leaderBust leaderMouth leaderEyes
 						{"Roger Wilco, we, the people of Xenon, extend our limitless appreciation and eternal gratitude for your acts of heroism."}
-						0
-						0
-						0
-						self
+						0 0 0 self
 				)
 			)
 			(1
 				(leaderTalker
 					say:
 						{"Because of your bravery, the planet Xenon, and indeed the entire galaxy, has been saved from domination by the evil (not to mention ugly) Sariens."}
-						0
-						0
-						0
-						self
+						0 0 0 self
 				)
-				(if (not (ego has: 0))
+				(if (not (ego has: iCartridge))
 					(leaderTalker
 						say:
-							{"Now, if you'd only been smart enough to bring along the data cartridge containing the construction specifications, we'd be able build a new Star Generator, thereby saving Xenon from the horrors of a rapidly cooling planet. Oh, well. You are just a janitor."}
+							{"Now, if you'd only been smart enough to bring along the data cartridge containing the construction specifications, 
+							we'd be able build a new Star Generator, thereby saving Xenon from the horrors of a rapidly cooling planet. 
+							Oh, well. You are just a janitor."}
 					)
 				)
 			)
@@ -168,20 +161,14 @@
 				(leaderTalker
 					say:
 						{"It is my honor to present you with the coveted Golden Mop, a symbol of pride and accomplishment to members of your esteemed profession."}
-						0
-						0
-						0
-						self
+						0 0 0 self
 				)
 			)
 			(3
 				(leaderTalker
 					say:
 						{"Henceforth and for all time you will be known as Hero of Xenon."}
-						0
-						0
-						1
-						self
+						0 0 1 self
 				)
 			)
 			(4
@@ -193,64 +180,64 @@
 )
 
 (instance greenGirlGives of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client cycleSpeed: 10 setCycle: End self)
+				(client cycleSpeed: 10 setCycle: EndLoop self)
 			)
 			(1
 				(client setLoop: 1 cel: 0)
 				(greenGirlBodyPart init:)
 				(= cycles 3)
 			)
-			(2 (= cycles (Random 30 150)))
+			(2
+				(= cycles (Random 30 150))
+			)
 			(3
 				(= state 1)
-				(greenGirlBodyPart cycleSpeed: 5 setCycle: End self)
+				(greenGirlBodyPart cycleSpeed: 5 setCycle: EndLoop self)
 			)
 		)
 	)
 )
 
 (instance xenonLeaderReceives of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(xenonLeader cycleSpeed: 10 setCycle: End self)
+				(xenonLeader cycleSpeed: 10 setCycle: EndLoop self)
 			)
 			(1
-				(xenonLeader cel: 0 cycleSpeed: 10 setCycle: CT 5 1 self)
+				(xenonLeader cel: 0 cycleSpeed: 10 setCycle: CycleTo 5 1 self)
 			)
 			(2
-				(ego cycleSpeed: 10 setCycle: End)
-				(xenonLeader setCycle: CT 10 1 self)
+				(ego cycleSpeed: 10 setCycle: EndLoop)
+				(xenonLeader setCycle: CycleTo 10 1 self)
 			)
 			(3
 				(ego setLoop: 1 cel: 0)
 				(= seconds 3)
 			)
 			(4
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 				(xenonLeader cycleSpeed: 8 cel: 10)
 				(= cycles 2)
 			)
 			(5
-				(client setCycle: End self)
+				(client setCycle: EndLoop self)
 				(ego setScript: egoReceivesAward self)
 			)
-			(6 (= seconds 3))
-			(7 (self dispose:))
+			(6
+				(= seconds 3)
+			)
+			(7
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance egoReceivesAward of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -262,14 +249,14 @@
 			(1
 				(self setScript: crowdGoesWild self)
 			)
-			(2 (self dispose:))
+			(2
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance rocketsRedGlare1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -283,21 +270,21 @@
 					x: (Random 20 300)
 					y: (Random 10 60)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(client hide:)
 				(= cycles (Random 5 15))
 			)
-			(3 (self changeState: 0))
+			(3
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance rocketsRedGlare2 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -311,21 +298,21 @@
 					x: (Random 20 300)
 					y: (Random 10 60)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(client hide:)
 				(= cycles (Random 5 15))
 			)
-			(3 (self changeState: 0))
+			(3
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance rocketsRedGlare3 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -339,21 +326,21 @@
 					x: (Random 20 300)
 					y: (Random 10 60)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(client hide:)
 				(= cycles (Random 5 15))
 			)
-			(3 (self changeState: 0))
+			(3
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance zoomingRockets of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -367,13 +354,13 @@
 				(ship xStep: 10 setLoop: 10 setMotion: MoveTo 215 40 self)
 			)
 			(3
-				(fireworks1 show: setPri: 10 posn: 225 40 setCycle: Osc 1)
-				(fireworks2 show: setPri: 10 posn: 225 40 setCycle: Osc 1)
-				(fireworks3 show: setPri: 10 posn: 225 40 setCycle: Osc 1)
+				(fireworks1 show: setPri: 10 posn: 225 40 setCycle: Oscillate 1)
+				(fireworks2 show: setPri: 10 posn: 225 40 setCycle: Oscillate 1)
+				(fireworks3 show: setPri: 10 posn: 225 40 setCycle: Oscillate 1)
 				(ship setMotion: MoveTo 235 40 self)
 			)
 			(4
-				(explosion init: posn: 230 65 setCycle: End self)
+				(explosion init: posn: 230 65 setCycle: EndLoop self)
 				(fireworks1 setPri: 1 hide:)
 				(fireworks2 setPri: 1 hide:)
 				(fireworks3 setPri: 1 hide:)
@@ -383,17 +370,19 @@
 				(explosion dispose:)
 				(self setScript: closingCredits self)
 			)
-			(6 (self dispose:))
+			(6
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance closingCredits of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 25))
+			(0
+				(= seconds 25)
+			)
 			(1
 				(curRoom newRoom: 2)
 				(self dispose:)
@@ -449,7 +438,7 @@
 		view 470
 		cel 11
 		priority 6
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -460,7 +449,7 @@
 		description {greenGirl}
 		view 472
 		priority 6
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 6
 	)
 )
@@ -473,7 +462,7 @@
 		view 472
 		loop 2
 		priority 6
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 6
 	)
 )
@@ -485,7 +474,7 @@
 		description {king}
 		view 468
 		priority 7
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 6
 	)
 )
@@ -497,7 +486,7 @@
 		description {fireworks1}
 		view 468
 		loop 7
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 6
 	)
 )
@@ -509,7 +498,7 @@
 		description {fireworks2}
 		view 468
 		loop 8
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 6
 	)
 )
@@ -521,7 +510,7 @@
 		description {fireworks3}
 		view 468
 		loop 9
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 6
 	)
 )
@@ -534,7 +523,7 @@
 		view 468
 		loop 10
 		priority 1
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 6
 		moveSpeed 6
 	)
@@ -550,29 +539,23 @@
 		view 468
 		loop 12
 		priority 1
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 6
 		moveSpeed 6
 	)
 )
 
-(instance fire1 of Sound
-	(properties)
-)
+(instance fire1 of Sound)
 
-(instance fire2 of Sound
-	(properties)
-)
+(instance fire2 of Sound)
 
-(instance fire3 of Sound
-	(properties)
-)
+(instance fire3 of Sound)
 
 (instance greenBldg of Feature
 	(properties
 		description {green bldg}
 		sightAngle 45
-		onMeCheck $2000
+		onMeCheck cLMAGENTA
 	)
 )
 
@@ -580,7 +563,7 @@
 	(properties
 		description {two guys}
 		sightAngle 45
-		onMeCheck $4000
+		onMeCheck cYELLOW
 	)
 )
 
@@ -588,7 +571,7 @@
 	(properties
 		description {stadium}
 		sightAngle 45
-		onMeCheck $1000
+		onMeCheck cLRED
 	)
 )
 
@@ -596,7 +579,7 @@
 	(properties
 		description {blue bldg}
 		sightAngle 45
-		onMeCheck $0400
+		onMeCheck cLGREEN
 	)
 )
 
@@ -604,7 +587,7 @@
 	(properties
 		description {apartment buildings}
 		sightAngle 45
-		onMeCheck $0200
+		onMeCheck cLBLUE
 	)
 )
 
@@ -612,7 +595,7 @@
 	(properties
 		description {guy 1}
 		sightAngle 45
-		onMeCheck $0800
+		onMeCheck cLCYAN
 	)
 )
 
@@ -620,7 +603,7 @@
 	(properties
 		description {cheerers}
 		sightAngle 45
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 )
 
@@ -628,7 +611,7 @@
 	(properties
 		description {bubbleGum chewer}
 		sightAngle 45
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 )
 
@@ -636,7 +619,7 @@
 	(properties
 		description {guy 2}
 		sightAngle 45
-		onMeCheck $0010
+		onMeCheck cRED
 	)
 )
 
@@ -644,7 +627,7 @@
 	(properties
 		description {clark Kent}
 		sightAngle 45
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 )
 
@@ -653,6 +636,8 @@
 		x 124
 		y 181
 		view 168
+		cycleSpeed 6	;EO: added from NRS speed patch
+
 	)
 )
 
@@ -661,6 +646,7 @@
 		x 58
 		y 189
 		view 268
+		cycleSpeed 6	;EO: added from NRS speed patch
 	)
 )
 
@@ -670,6 +656,7 @@
 		y 159
 		view 168
 		loop 1
+		cycleSpeed 6	;EO: added from NRS speed patch
 	)
 )
 
@@ -679,5 +666,6 @@
 		y 189
 		view 168
 		loop 2
+		cycleSpeed 6	;EO: added from NRS speed patch		
 	)
 )

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 300)
-(include sci.sh)
+(script# BLUESBROS) ;300
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Osc)
@@ -15,20 +15,24 @@
 )
 
 (instance bluesBrothers of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client setLoop: register cel: 0 setCycle: Fwd)
+				(client
+					setLoop: register
+					cel: 0
+					setCycle: Forward
+				)
 				(= cycles (Random 45 150))
 			)
-			(1 (client setCycle: End self))
+			(1
+				(client setCycle: EndLoop self)
+			)
 			(2
 				(client
 					setLoop: (+ register 1)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -40,7 +44,7 @@
 				(client
 					setLoop: (+ register 2)
 					cel: 0
-					setCycle: Osc (Random 2 15) self
+					setCycle: Oscillate (Random 2 15) self
 				)
 			)
 			(4
@@ -53,7 +57,7 @@
 				(client
 					setLoop: (+ register 1)
 					cel: (if (not register) 2 else 3)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 		)
@@ -68,28 +72,54 @@
 		lookStr {There are a couple of non-galactic looking humanoids cranking out some unfamiliar sounding tunes. They seem interested solely in the music they are performing.}
 		view 434
 		priority 6
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		cycleSpeed 4
 		detailLevel 2
 	)
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(3 (Print 300 0))
-			(11 (Print 300 1))
-			(12 (Print 300 2))
-			(5 (Print 300 3))
-			(4
+			(verbDo
+				(Print 300 0)
+			)
+			(verbTaste
+				(Print 300 1)
+			)
+			(verbSmell
+				(Print 300 2)
+			)
+			(verbTalk
+				(Print 300 3)
+			)
+			(verbUse
 				(switch theItem
-					(10 (Print 300 4))
-					(0 (Print 300 5))
-					(15 (Print 300 6))
-					(2 (Print 300 7))
-					(4 (Print 300 8))
-					(5 (Print 300 9))
-					(11 (Print 300 10))
-					(17 (Print 300 11))
-					(18 (Print 300 11))
+					(iBuckazoid
+						(Print 300 4)
+					)
+					(iCartridge
+						(Print 300 5)
+					)
+					(iWidget
+						(Print 300 6)
+					)
+					(iGadget
+						(Print 300 7)
+					)
+					(iKnife
+						(Print 300 8)
+					)
+					(iDehydratedWater
+						(Print 300 9)
+					)
+					(iJetpack
+						(Print 300 10)
+					)
+					(iBarCoupon
+						(Print 300 11)
+					)
+					(iDroidsBUsCoupon
+						(Print 300 11)
+					)
 					(else 
 						(super doVerb: theVerb theItem)
 					)
@@ -107,32 +137,59 @@
 		x 163
 		y 90
 		description {humanoids}
-		lookStr {There are a couple of non-galactic looking humanoids cranking out some unfamiliar sounding tunes. They seem interested solely in the music they are performing.}
+		lookStr {There are a couple of non-galactic looking humanoids cranking out some unfamiliar sounding tunes. 
+		They seem interested solely in the music they are performing.}
 		view 434
 		loop 3
 		priority 6
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		cycleSpeed 4
 		detailLevel 2
 	)
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(3 (Print 300 12))
-			(11 (Print 300 1))
-			(12 (Print 300 2))
-			(5 (Print 300 13))
-			(4
+			(verbDo
+				(Print 300 12)
+			)
+			(verbTaste
+				(Print 300 1)
+			)
+			(verbSmell
+				(Print 300 2)
+			)
+			(verbTalk
+				(Print 300 13)
+			)
+			(verbUse
 				(switch theItem
-					(10 (Print 300 4))
-					(0 (Print 300 5))
-					(15 (Print 300 6))
-					(2 (Print 300 7))
-					(4 (Print 300 8))
-					(5 (Print 300 9))
-					(11 (Print 300 10))
-					(17 (Print 300 11))
-					(18 (Print 300 11))
+					(iBuckazoid
+						(Print 300 4)
+					)
+					(iCartridge
+						(Print 300 5)
+					)
+					(iWidget
+						(Print 300 6)
+					)
+					(iGadget
+						(Print 300 7)
+					)
+					(iKnife
+						(Print 300 8)
+					)
+					(iDehydratedWater
+						(Print 300 9)
+					)
+					(iJetpack
+						(Print 300 10)
+					)
+					(iBarCoupon
+						(Print 300 11)
+					)
+					(iDroidsBUsCoupon
+						(Print 300 11)
+					)
 					(else 
 						(super doVerb: theVerb theItem)
 					)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 806)
-(include sci.sh)
+(script# REGPATH) ;806
+(include game.sh) (include regpath.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -8,21 +8,7 @@
 
 (class RegionPath of MoveTo
 	(properties
-		client 0
-		caller 0
-		x 0
-		y 0
-		dx 0
-		dy 0
-		b-moveCnt 0
-		b-i1 0
-		b-i2 0
-		b-di 0
-		b-xAxis 0
-		b-incr 0
-		completed 1
-		xLast 0
-		yLast 0
+		completed TRUE
 		currentRoom 0
 		value -1
 		endType 1
@@ -34,47 +20,49 @@
 		theOldSignal 0
 	)
 	
-	(method (init theClient theCaller theIntermediate theEndType &tmp clientZ)
+	(method (init actor toCall inter reset &tmp theZ)
 		(if completed
 			(if argc
-				(= client theClient)
+				(= client actor)
 				(if (>= argc 2)
-					(= caller theCaller)
+					(= caller toCall)
 					(if (>= argc 3)
-						(= intermediate theIntermediate)
-						(if (>= argc 4) (= endType theEndType))
+						(= intermediate inter)
+						(if (>= argc 4)
+							(= endType reset)
+						)
 					)
 				)
 			)
 			(if (not initialized)
-				(self nextRoom: initialized: 1)
+				(self nextRoom: initialized: TRUE)
 				(if (not savedOldStuff)
 					(= theOldBits (client illegalBits?))
 					(= theOldSignal (client signal?))
-					(= savedOldStuff 1)
+					(= savedOldStuff TRUE)
 				)
 				(client illegalBits: 0 ignoreActors:)
 			)
-			(= completed 0)
+			(= completed FALSE)
 			(self next:)
 		)
 		(super init:)
-		(= clientZ (client z?))
+		(= theZ (client z?))
 		(cond 
 			((== currentRoom curRoomNum)
-				(if (>= clientZ 1000)
+				(if (>= theZ 1000)
 					(client
-						z: (- clientZ 1000)
+						z: (- theZ 1000)
 						illegalBits: theOldBits
 						signal: theOldSignal
 					)
 				)
 			)
-			((< clientZ 1000)
+			((< theZ 1000)
 				(client
-					z: (+ clientZ 1000)
+					z: (+ theZ 1000)
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 				)
 			)
 		)
@@ -91,13 +79,13 @@
 	)
 	
 	(method (moveDone)
-		(= completed 1)
+		(= completed TRUE)
 		(if (self atEnd:)
-			(self value: -1 initialized: 0)
+			(self value: -1 initialized: FALSE)
 			(if endType (self init:) else (super moveDone:))
 		else
 			(if intermediate (intermediate cue: (/ value 2)))
-			(if (== (self at: (+ value 1)) 32767)
+			(if (== (self at: (+ value 1)) NEXTROOM)
 				(self nextRoom:)
 			)
 			(self init:)
@@ -111,9 +99,9 @@
 	
 	(method (atEnd)
 		(return
-			(if (== (self at: (+ value 1)) -32768)
+			(if (== (self at: (+ value 1)) PATHEND)
 			else
-				(== (self at: (+ value 2)) -32768)
+				(== (self at: (+ value 2)) PATHEND)
 			)
 		)
 	)
@@ -123,12 +111,11 @@
 			currentRoom: (self at: (= value (+ value 2)))
 			next:
 		)
-		(if
-		(and (!= currentRoom curRoomNum) (< (client z?) 1000))
+		(if (and (!= currentRoom curRoomNum) (< (client z?) 1000))
 			(client
 				z: (+ (client z?) 1000)
 				illegalBits: 0
-				ignoreActors: 1
+				ignoreActors: TRUE
 			)
 		)
 		(client posn: x y)

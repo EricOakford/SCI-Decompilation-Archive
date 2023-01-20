@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 402)
-(include sci.sh)
+(script# WARBIRD) ;402
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -12,8 +12,6 @@
 )
 
 (instance romulanWarbird of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -24,17 +22,21 @@
 				(self setScript: (ScriptID 49 5) self)
 			)
 			(2
-				(warBird init: setCycle: Beg self)
+				(warBird init: setCycle: BegLoop self)
 			)
-			(3 (= seconds 3))
+			(3
+				(= seconds 3)
+			)
 			(4
-				(warBird setCycle: End setMotion: MoveTo 31 4 self)
+				(warBird setCycle: EndLoop setMotion: MoveTo 31 4 self)
 			)
 			(5
 				(warBird dispose:)
 				(= seconds 3)
 			)
-			(6 (EgoDead 945 0 0 402 1))
+			(6
+				(EgoDead 945 0 0 402 1)
+			)
 		)
 	)
 )
@@ -45,7 +47,7 @@
 		y 69
 		view 119
 		priority 2
-		signal $5810
+		signal (| ignrAct fixedLoop fixedCel fixPriOn)
 		cycleSpeed 6
 		moveSpeed 2
 	)

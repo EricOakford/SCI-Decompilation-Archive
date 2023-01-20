@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 303)
-(include sci.sh)
+(script# SLOTGUY) ;303
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -15,8 +15,6 @@
 )
 
 (instance prepareToDie of Script
-	(properties)
-	
 	(method (init)
 		(= register (Random 7 14))
 		(super init: &rest)
@@ -24,23 +22,31 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles (Random 30 60)))
+			(0
+				(= cycles (Random 30 60))
+			)
 			(1
 				(if
 					(and
 						(<= (-- register) 0)
-						(not (== (ego view?) 30))
-						(not (& (ego onControl:) $4002))
+						(not (== (ego view?) 30))	;Amiga change
+						(not (& (ego onControl:) (| cYELLOW cBLUE)))
 					)
 					(HandsOff)
-					(if (not (== (ego view?) 30)) (Face ego slotGuy))
+					(if (not (== (ego view?) 30))
+						(Face ego slotGuy)
+					)
 					(self changeState: 6)
 				else
-					(slotGuy setLoop: 1 cycleSpeed: 8 setCycle: End self)
+					(slotGuy
+						setLoop: 1
+						cycleSpeed: 8
+						setCycle: EndLoop self
+					)
 				)
 			)
 			(2
-				((ScriptID 43 2) setCycle: Fwd)
+				((ScriptID 43 2) setCycle: Forward)
 				(= cycles (Random 15 60))
 			)
 			(3
@@ -49,7 +55,7 @@
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -58,21 +64,29 @@
 					setLoop: 2
 					cel: 2
 					cycleSpeed: 1
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(5
-				(if (== client ego) (= seconds 2) else (= cycles 3))
+				(if (== client ego)
+					(= seconds 2)
+				else
+					(= cycles 3)
+				)
 			)
 			(6
-				(self setScript: (ScriptID 43 1) self (ScriptID 303 1))
+				(self setScript: (ScriptID 43 1) self (ScriptID SLOTGUY 1))
 			)
 			(7
 				(cond 
-					((== client ego) (curRoom newRoom: 42))
+					((== client ego)
+						(curRoom newRoom: 42)
+					)
 					((not sittingAtBar)
 						(HandsOn)
-						(if (== (ego view?) 30) (User canControl: 0))
+						(if (== (ego view?) 30)
+							(User canControl: FALSE)
+						)
 					)
 				)
 				(theMusic2 stop:)
@@ -91,7 +105,7 @@
 		view 443
 		loop 1
 		priority 7
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (dispose)
@@ -100,25 +114,49 @@
 		(super dispose:)
 		(self delete:)
 		(UnLoad 443)
-		(DisposeScript 303)
+		(DisposeScript SLOTGUY)
 	)
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(11 (Print 303 0))
-			(5 (Print 303 1))
-			(12 (Print 303 2))
-			(4
+			(verbTaste
+				(Print 303 0)
+			)
+			(verbTalk
+				(Print 303 1)
+			)
+			(verbSmell
+				(Print 303 2)
+			)
+			(verbUse
 				(switch theItem
-					(10 (Print 303 3))
-					(0 (Print 303 4))
-					(15 (Print 303 5))
-					(2 (Print 303 6))
-					(4 (Print 303 7))
-					(5 (Print 303 8))
-					(11 (Print 303 9))
-					(17 (Print 303 10))
-					(18 (Print 303 10))
+					(iBuckazoid
+						(Print 303 3)
+					)
+					(iCartridge
+						(Print 303 4)
+					)
+					(iWidget
+						(Print 303 5)
+					)
+					(iGadget
+						(Print 303 6)
+					)
+					(iKnife
+						(Print 303 7)
+					)
+					(iDehydratedWater
+						(Print 303 8)
+					)
+					(iJetpack
+						(Print 303 9)
+					)
+					(iBarCoupon
+						(Print 303 10)
+					)
+					(iDroidsBUsCoupon
+						(Print 303 10)
+					)
 					(else 
 						(super doVerb: theVerb theItem)
 					)
