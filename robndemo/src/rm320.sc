@@ -13,11 +13,15 @@
 )
 
 (procedure (localproc_000e)
-	(if cDAudio (bowSound vol: 120 changeState:))
+	(if numDACs
+		(bowSound vol: 120 changeState:)
+	)
 )
 
 (procedure (localproc_0021)
-	(if cDAudio (bowSound vol: 92 changeState:))
+	(if numDACs
+		(bowSound vol: 92 changeState:)
+	)
 )
 
 (instance rm320 of Room
@@ -40,9 +44,11 @@
 			(bowSound dispose:)
 			(curRoom newRoom: 95)
 		)
-		(if (and cDAudio (voice prevSignal?))
+		(if (and numDACs (voice prevSignal?))
 			(switch (voice number?)
-				(506 (voice number: 507 play:))
+				(506
+					(voice number: 507 play:)
+				)
 				(507
 					(voice dispose:)
 					(localproc_000e)
@@ -111,7 +117,7 @@
 		view 326
 		loop 1
 		priority 3
-		signal $1810
+		signal (| fixedLoop fixedCel fixPriOn)
 	)
 )
 
@@ -203,50 +209,52 @@
 				(= cycles 3)
 			)
 			(2
-				(if cDAudio
+				(if numDACs
 					(voice init: play:)
 				)
 				(Display 320 0
 					p_at 6 3
 					p_time 10
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 				)
 				(Display 320 0
 					p_at 5 2
 					p_time 10
-					p_font SYSFONT
+					p_font 0
 					p_color 30
 				)
 				(Display 320 1
 					p_at 19 13
 					p_time 10
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 				)
 				(Display 320 2
 					p_at 18 12
 					p_time 10
-					p_font SYSFONT
+					p_font 0
 					p_color 30
 				)
 				(Display 320 3
 					p_at 81 23
 					p_time 10
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 				)
 				(Display 320 3
 					p_at 80 22
 					p_time 10
-					p_font SYSFONT
+					p_font 0
 					p_color 30
 				)
 				(= cycles 65)
 			)
-			(3 (= cycles 10))
+			(3
+				(= cycles 10)
+			)
 			(4
-				(= global126 1)
+				(= talkerOnScreen TRUE)
 				(curRoom drawPic: 330)
 				(InitAddToPics targetLeft targetRight banner)
 				(hand init:)
@@ -256,7 +264,7 @@
 				(= cycles 4)
 			)
 			(5
-				(= global126 0)
+				(= talkerOnScreen FALSE)
 				(= cycles 13)
 			)
 			(6
@@ -294,19 +302,19 @@
 				(= cycles 6)
 			)
 			(12
-				(if cDAudio
+				(if numDACs
 					(voice number: 508 init: play:)
 				)
 				(Display 320 4
 					p_at 56 6
 					p_time 4
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 				)
 				(Display 320 4
 					p_at 55 5
 					p_time 4
-					p_font SYSFONT
+					p_font 0
 					p_color 30
 				)
 				(= cycles 40)

@@ -7,3 +7,4 @@
 (include system.sh) (include sci2.sh)
 
 (define RHEGO 813)
+(define TAPESTRY 850)

@@ -13,11 +13,15 @@
 )
 
 (procedure (localproc_000e)
-	(if cDAudio (introSound vol: 117 changeState:))
+	(if numDACs
+		(introSound vol: 117 changeState:)
+	)
 )
 
 (procedure (localproc_0021)
-	(if cDAudio (introSound vol: 90 changeState:))
+	(if numDACs
+		(introSound vol: 90 changeState:)
+	)
 )
 
 (instance rm220 of Room
@@ -48,14 +52,16 @@
 	)
 	
 	(method (doit)
-		(if (and cDAudio (voice prevSignal?))
+		(if (and numDACs (voice prevSignal?))
 			(switch (voice number?)
 				(502
 					(voice dispose:)
 					(localproc_000e)
 					(robMouth dispose:)
 				)
-				(503 (voice number: 504 play:))
+				(503
+					(voice number: 504 play:)
+				)
 				(504
 					(voice dispose:)
 					(localproc_000e)
@@ -185,24 +191,41 @@
 )
 
 (instance moveOn of Script
-	(properties)
-	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
-			(0 (= cycles 4))
-			(1 (ego setCycle: EndLoop self))
-			(2 (= cycles 4))
-			(3 (will setCycle: EndLoop self))
+			(0
+				(= cycles 4)
+			)
+			(1
+				(ego setCycle: EndLoop self)
+			)
+			(2
+				(= cycles 4)
+			)
+			(3
+				(will setCycle: EndLoop self)
+			)
 			(4
 				(will signal: -32735)
-				(ego setLoop: 8 cel: 0 cycleSpeed: 1 setCycle: EndLoop self)
+				(ego
+					setLoop: 8
+					cel: 0
+					cycleSpeed: 1
+					setCycle: EndLoop self
+				)
 			)
 			(5
 				(ego stopUpd:)
-				(sHead cycleSpeed: 1 setCycle: EndLoop self)
+				(sHead
+					cycleSpeed: 1
+					setCycle: EndLoop self
+				)
 			)
 			(6
-				(sHead cycleSpeed: 1 setCycle: BegLoop self)
+				(sHead
+					cycleSpeed: 1
+					setCycle: BegLoop self
+				)
 			)
 			(7
 				(localproc_0021)
@@ -211,75 +234,75 @@
 			)
 			(8
 				(robMouth init: setCycle: Forward)
-				(if cDAudio
+				(if numDACs
 					(voice init: play:)
 				)
 				(Display 220 0
 					p_at 103 40
 					p_time 7
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 					p_dispose
 				)
 				(Display 220 0
 					p_at 102 39
 					p_time 7
-					p_font SYSFONT
+					p_font 0
 					p_color 30
 					p_dispose
 				)
 				(Display 220 1
 					p_at 111 50
 					p_time 7
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 					p_dispose
 				)
 				(Display 220 1
 					p_at 110 49
 					p_time 7
-					p_font SYSFONT
+					p_font 0
 					p_color 30
 					p_dispose
 				)
 				(Display 220 2
 					p_at 95 60
 					p_time 7
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 					p_dispose
 				)
 				(Display 220 2
 					p_at 94 59
 					p_time 7
-					p_font SYSFONT
+					p_font 0
 					p_color 30
 					p_dispose
 				)
 				(Display 220 3
 					p_at 130 70
 					p_time 7
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 					p_dispose
 				)
 				(Display 220 3
 					p_at 129 69
 					p_time 7
-					p_font SYSFONT
+					p_font 0
 					p_color 30
 					p_dispose
 				)
 				(= cycles 65)
 			)
 			(9
-				(if (== cDAudio 0)
+				(if (== numDACs 0)
 					(robMouth dispose:)
 				)
 				(= cycles 14)
 			)
 			(10
-				(= global126 1)
+				(= talkerOnScreen TRUE)
 				(curRoom drawPic: 119)
 				(InitAddToPics sher)
 				(john init:)
@@ -290,12 +313,17 @@
 				(= cycles 5)
 			)
 			(11
-				(= global126 0)
+				(= talkerOnScreen FALSE)
 				(tuck setCycle: EndLoop self)
 			)
-			(12 (john setCycle: EndLoop self))
+			(12
+				(john setCycle: EndLoop self)
+			)
 			(13
-				(sHead cycleSpeed: 1 setCycle: EndLoop self)
+				(sHead
+					cycleSpeed: 1
+					setCycle: EndLoop self
+				)
 			)
 			(14
 				(ego stopUpd:)
@@ -305,59 +333,63 @@
 				(sHead cycleSpeed: 1 setCycle: BegLoop self)
 			)
 			(15
-				(if cDAudio (voice number: 503 init: play:))
+				(if numDACs
+					(voice number: 503 init: play:)
+				)
 				(Display 220 4
 					p_at 48 40
 					p_time 9
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 				)
 				(Display 220 4
 					p_at 47 41
 					p_time 9
-					p_font SYSFONT
+					p_font 0
 					p_color 15
 				)
 				(Display 220 5
 					p_at 49 50
 					p_time 9
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 				)
 				(Display 220 5
 					p_at 48 51
 					p_time 9
-					p_font SYSFONT
+					p_font 0
 					p_color 15
 				)
 				(Display 220 6
 					p_at 44 60
 					p_time 9
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 				)
 				(Display 220 6
 					p_at 43 61
 					p_time 9
-					p_font SYSFONT
+					p_font 0
 					p_color 15
 				)
 				(Display 220 7
 					p_at 76 70
 					p_time 9
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 				)
 				(Display 220 7
 					p_at 75 71
 					p_time 9
-					p_font SYSFONT
+					p_font 0
 					p_color 15
 				)
 				(= cycles 65)
 			)
 			(16
-				(if (not cDAudio) (sherMouth dispose:))
+				(if (not numDACs)
+					(sherMouth dispose:)
+				)
 				(john setCycle: BegLoop)
 				(= cycles 40)
 			)

@@ -4,7 +4,7 @@
 (use Intrface)
 (use TapestryWindow)
 (use PMouse)
-(use GControl)
+(use SlideIcon)
 (use BordWind)
 (use IconBar)
 (use LoadMany)
@@ -25,49 +25,55 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	speed =  6
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	showStyle =  IRISOUT
-	aniInterval
-	theCursor
-	normalCursor =  ARROW_CURSOR
-	waitCursor =  20
-	userFont =  USERFONT
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  USERFONT
-	version
-	locales
-	curSaveDir
-	aniThreshold =  10
-	perspective
-	features
-	sortedFeatures
-	useSortedFeatures
-	egoBlindSpot
-	overlays =  -1
-	doMotionCue
-	systemWindow
-	demoDialogTime =  3
-	currentPalette
-	modelessPort
-	sysLogPath
+	ego										;pointer to ego
+	theGame									;ID of the Game instance
+	curRoom									;ID of current room
+	speed				=	6				;number of ticks between animations
+	quit									;when TRUE, quit game
+	cast									;collection of actors
+	regions									;set of current regions
+	timers									;list of timers in the game
+	sounds									;set of sounds being played
+	inventory								;set of inventory items in game
+	addToPics								;list of views added to the picture
+	curRoomNum								;current room number
+	prevRoomNum								;previous room number
+	newRoomNum								;number of room to change to
+	debugOn									;generic debug flag -- set from debug menu
+	score									;the player's current score
+	possibleScore							;highest possible score
+	showStyle			=	IRISOUT			;style of picture showing
+	aniInterval								;# of ticks it took to do the last animation cycle
+	theCursor								;the number of the current cursor
+	normalCursor		=	ARROW_CURSOR	;number of normal cursor form
+	waitCursor			=	HAND_CURSOR		;cursor number of "wait" cursor
+	userFont			=	USERFONT		;font to use for Print
+	smallFont			=	4		;small font for save/restore, etc.
+	lastEvent								;the last event (used by save/restore game)
+	modelessDialog							;the modeless Dialog known to User and Intrface
+	bigFont				=	USERFONT		;large font
+	version				=	0				;pointer to 'incver' version string
+											;***WARNING***  Must be set in room 0
+											; (usually to {x.yyy    } or {x.yyy.zzz})
+	locales									;set of current locales
+	curSaveDir								;address of current save drive/directory string
+	aniThreshold		=	10
+	perspective								;player's viewing angle:
+											;	 degrees away from vertical along y axis
+	features								;locations that may respond to events
+	sortedFeatures							;above+cast sorted by "visibility" to ego
+	useSortedFeatures	=	FALSE			;enable cast & feature sorting?
+	egoBlindSpot		=	0				;used by sortCopy to exclude 
+											;actors behind ego within angle 
+											;from straight behind. 
+											;Default zero is no blind spot
+	overlays			=	-1
+	doMotionCue								;a motion cue has occurred - process it
+	systemWindow							;ID of standard system window
+	demoDialogTime		=	3				;how long Prints stay up in demo mode
+	currentPalette							;
+	modelessPort		
+	sysLogPath								;used for system standard logfile path	
 		global43
 		global44
 		global45
@@ -87,27 +93,29 @@
 		global59
 		global60
 		global61
-	endSysLogPath
-	gameControls
-	ftrInitializer
-	doVerbCode
-	approachCode
-	useObstacles =  TRUE
-	theMenuBar
-	theIconBar
-	mouseX
-	mouseY
-	keyDownHandler
-	mouseDownHandler
-	directionHandler
-	speechHandler
-	lastVolume
-	pMouse
-	theDoits
-	eatMice =  60
-	user
-	syncBias
-	theSync
+	endSysLogPath					;uses 20 globals
+	gameControls		
+	ftrInitializer		
+	doVerbCode			
+	firstSaidHandler				;will be the first to handle said events
+	useObstacles		=	TRUE	;will Ego use PolyPath or not?
+	theMenuBar						;points to TheMenuBar or Null	
+	theIconBar						;points to TheIconBar or Null	
+	mouseX				
+	mouseY				
+	keyDownHandler					;our EventHandlers, get called by the game
+	mouseDownHandler	
+	directionHandler	
+	gameCursor			
+	lastVolume			
+	pMouse				=	NULL	;pointer to a Pseudo-Mouse, or NULL
+	theDoits			=	NULL	;list of objects to get doits done every cycle
+	eatMice				=	60		;how many ticks minimum that a window stays up	
+	user				=	NULL	;pointer to specific applications User
+	syncBias						;; globals used by sync.sc (will be removed shortly)
+	theSync							
+
+	;globals 83-99 are unused
 		global83
 		global84
 		global85
@@ -150,8 +158,8 @@
 	introSound
 	loveSound
 	bowSound
-	cDAudio
-	global126
+	numDACs
+	talkerOnScreen
 	global127
 	global128
 	global129
@@ -276,57 +284,58 @@
 	global248
 	global249
 	gameFlags
-	global251
-	global252
-	global253
-	global254
-	global255
-	global256
-	global257
-	global258
-	global259
-	global260
-	global261
-	global262
-	global263
-	global264
-	global265
-	global266
-	global267
-	global268
-	global269
-	global270
-	global271
-	global272
-	global273
-	global274
-	global275
-	global276
-	global277
-	global278
-	global279
-	global280
-	global281
-	global282
-	global283
-	global284
-	global285
-	global286
-	global287
-	global288
-	global289
-	global290
-	global291
-	global292
-	global293
-	global294
-	global295
-	global296
-	global297
-	global298
-	global299
-	global300
+		global251
+		global252
+		global253
+		global254
+		global255
+		global256
+		global257
+		global258
+		global259
+		global260
+		global261
+		global262
+		global263
+		global264
+		global265
+		global266
+		global267
+		global268
+		global269
+		global270
+		global271
+		global272
+		global273
+		global274
+		global275
+		global276
+		global277
+		global278
+		global279
+		global280
+		global281
+		global282
+		global283
+		global284
+		global285
+		global286
+		global287
+		global288
+		global289
+		global290
+		global291
+		global292
+		global293
+		global294
+		global295
+		global296
+		global297
+		global298
+		global299
+		global300
 )
+
 (procedure (HandsOff)
 	(User canControl: FALSE canInput: FALSE)
 	(theGame setCursor: waitCursor TRUE 189 85)
@@ -351,8 +360,7 @@
 			(= theWidth 320)
 			(= theForeColor 127)
 			(= theBackColor 126)
-			(= i 1)
-			(while (< i argc)
+			(for ((= i 1)) (< i argc) ((++ i))
 				(switch [args i]
 					(#mode
 						(= theMode [args (++ i)])
@@ -374,7 +382,6 @@
 						(= theBackColor [args (++ i)])
 					)
 				)
-				(++ i)
 			)
 			(= i
 				(Display [args 0]
@@ -413,23 +420,13 @@
 
 (procedure (Bset flagEnum &tmp oldState)
 	(= oldState (Btst flagEnum))
-	(= [gameFlags (/ flagEnum 16)]
-		(|
-			[gameFlags (/ flagEnum 16)]
-			(>> $8000 (mod flagEnum 16))
-		)
-	)
+	(|= [gameFlags (/ flagEnum 16)] (>> $8000 (mod flagEnum 16)))
 	(return oldState)
 )
 
 (procedure (Bclr flagEnum &tmp oldState)
 	(= oldState (Btst flagEnum))
-	(= [gameFlags (/ flagEnum 16)]
-		(&
-			[gameFlags (/ flagEnum 16)]
-			(~ (>> $8000 (mod flagEnum 16)))
-		)
-	)
+	(&= [gameFlags (/ flagEnum 16)] (~ (>> $8000 (mod flagEnum 16))))
 	(return oldState)
 )
 
@@ -477,17 +474,15 @@
 (instance DH of EventHandler)
 
 (instance RH of Game
-	
 	(method (init &tmp [temp0 21])
-		(LoadMany SCRIPT 95 220 210 320 850 MOTION)
+		(LoadMany SCRIPT 95 220 210 320 TAPESTRY MOTION)
 		(LoadMany TEXT 95 220 210 320)
 		(LoadMany PICTURE 95 96 211 216 119 330)
 		(LoadMany VIEW 95 216 217 124 326 331)
-		(Load FONT SYSFONT)
+		(Load FONT 0)
 		(LoadMany SOUND
-			1 100 101 501 502 503
-			504 505 506 507 508
-			995 998 999
+			1 100 101 501 502 503 504 505
+			506 507 508 995 998 999
 		)
 		(= systemWindow TapestryWindow)
 		(= useSortedFeatures FALSE)
@@ -498,10 +493,18 @@
 		((= keyDownHandler KH) add:)
 		((= directionHandler DH) add:)
 		(= ego egoObj)
-		((= forestSound forestNoise) owner: self)
-		((= introSound introSong) owner: self)
-		((= loveSound loveSong) owner: self)
-		((= bowSound bowSong) owner: self)
+		((= forestSound forestNoise)
+			owner: self
+		)
+		((= introSound introSong)
+			owner: self
+		)
+		((= loveSound loveSong)
+			owner: self
+		)
+		((= bowSound bowSong)
+			owner: self
+		)
 		(User
 			alterEgo: ego
 			verbMessager: 0
@@ -509,11 +512,11 @@
 			canInput: FALSE
 		)
 		(self setCursor: theCursor TRUE 304 172)
-		(= waitCursor HAND_CURSOR)
+		(= waitCursor 997)
 		(= userFont SYSFONT)
 		(= global117 0)
 		(= version {0.004})
-		(= cDAudio (DoSound NumDACs))
+		(= numDACs (DoSound NumDACs))
 		(= numVoices (DoSound NumVoices))
 		(if
 			(and
@@ -561,7 +564,9 @@
 	)
 	
 	(method (startRoom roomNum)
-		(if pMouse (pMouse stop:))
+		(if pMouse
+			(pMouse stop:)
+		)
 		(LoadMany FALSE POLYPATH POLYGON STOPWALK)
 		(HandsOn)
 		(HandsOff)
@@ -582,7 +587,7 @@
 	
 	(method (select)
 		(if (super select:)
-			(if global126
+			(if talkerOnScreen
 				(return)
 			else
 				(theIconBar hide:)
@@ -663,7 +668,6 @@
 )
 
 (instance gcWindow of BorderWindow
-	
 	(method (open)
 		(self
 			top: 45
@@ -684,7 +688,6 @@
 )
 
 (instance aboutCode of Code
-	
 	(method (doit)
 		(Printf 0 0 version)
 		(Print 0 1

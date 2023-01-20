@@ -16,6 +16,7 @@
 
 (script# SAVE)
 (include game.sh)
+(include language.sh)
 (use Main)
 (use Intrface)
 (use Language)
@@ -503,7 +504,7 @@
 		(theGame parseLang: ENGLISH)				 ;;added for Japanese version
 		(= result
 			(Print 
-				SAVE 1
+				SAVE 3
 				#font: SYSFONT
 				#edit: (StrCpy @newDir where) DIRECTORYSIZE
 				#button: {OK} 1
@@ -528,7 +529,7 @@
 			(return TRUE)
 		else
 			(Print
-				(Format @str SAVE 2 @newDir)
+				(Format @str SAVE 4 @newDir)
 				#font:SYSFONT
 			)
 		)
@@ -540,7 +541,7 @@
 )
 
 (procedure (NeedDescription)
-	(Print SAVE 3 #font:SYSFONT)
+	(Print SAVE 5 #font:SYSFONT)
 )
 
 (instance selectorI of DSelector

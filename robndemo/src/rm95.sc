@@ -12,12 +12,12 @@
 )
 
 (local
-	local0
-	local1
-	local2 =  114
-	local3 =  26
-	local4
-	local5
+	saveBits
+	saveBits2
+	brownLineColor =  114
+	goldLineColor =  26
+	paletteCued
+	roomCycles
 	[local6 2]
 )
 (instance rm95 of Room
@@ -34,35 +34,36 @@
 		(self setScript: countDown)
 	)
 	
-	(method (doit &tmp temp0 temp1)
-		(++ local5)
-		(= temp0 3)
-		(if local4 (Palette 6 241 255 -1))
+	(method (doit &tmp palBlue temp1)
+		(++ roomCycles)
+		(= palBlue 3)
+		(if paletteCued
+			(Palette PALCycle 241 255 -1))
 		(cond 
-			((== (mod local5 10) 0)
-				(Palette 6 216 218 temp0)
-				(Palette 6 233 235 temp0)
-				(Palette 6 225 227 temp0)
+			((== (mod roomCycles 10) 0)
+				(Palette 6 216 218 palBlue)
+				(Palette 6 233 235 palBlue)
+				(Palette 6 225 227 palBlue)
 			)
-			((== (mod local5 10) 2)
-				(Palette 6 217 219 temp0)
-				(Palette 6 234 236 temp0)
-				(Palette 6 227 229 temp0)
+			((== (mod roomCycles 10) 2)
+				(Palette 6 217 219 palBlue)
+				(Palette 6 234 236 palBlue)
+				(Palette 6 227 229 palBlue)
 			)
-			((== (mod local5 10) 4)
-				(Palette 6 218 220 temp0)
-				(Palette 6 235 237 temp0)
-				(Palette 6 228 230 temp0)
+			((== (mod roomCycles 10) 4)
+				(Palette 6 218 220 palBlue)
+				(Palette 6 235 237 palBlue)
+				(Palette 6 228 230 palBlue)
 			)
-			((== (mod local5 10) 6)
-				(Palette 6 219 221 temp0)
-				(Palette 6 236 238 temp0)
-				(Palette 6 229 231 temp0)
+			((== (mod roomCycles 10) 6)
+				(Palette 6 219 221 palBlue)
+				(Palette 6 236 238 palBlue)
+				(Palette 6 229 231 palBlue)
 			)
-			((== (mod local5 10) 8)
-				(Palette 6 220 222 temp0)
-				(Palette 6 237 239 temp0)
-				(Palette 6 230 232 temp0)
+			((== (mod roomCycles 10) 8)
+				(Palette 6 220 222 palBlue)
+				(Palette 6 237 239 palBlue)
+				(Palette 6 230 232 palBlue)
 			)
 		)
 		(super doit:)
@@ -131,50 +132,54 @@
 )
 
 (instance countDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(forestSound vol: 117 init: play:)
-				(Graph GDrawLine 63 67 0 130 local2 -1 -1)
-				(Graph GDrawLine 63 66 0 129 local3 -1 -1)
-				(Graph GDrawLine 71 68 189 127 local2 -1 -1)
-				(Graph GDrawLine 71 67 189 126 local3 -1 -1)
+				(Graph GDrawLine 63 67 0 130 brownLineColor -1 -1)
+				(Graph GDrawLine 63 66 0 129 goldLineColor -1 -1)
+				(Graph GDrawLine 71 68 189 127 brownLineColor -1 -1)
+				(Graph GDrawLine 71 67 189 126 goldLineColor -1 -1)
 				(= cycles 2)
 			)
-			(1 (= cycles 15))
+			(1
+				(= cycles 15)
+			)
 			(2
-				(if cDAudio (robin init: play:))
+				(if numDACs
+					(robin init: play:)
+				)
 				(Display 95 0
 					p_at 128 26
 					p_time 4
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 				)
 				(Display 95 1
 					p_at 104 36
 					p_time 4
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 				)
 				(Display 95 0
 					p_at 127 25
 					p_time 4
-					p_font SYSFONT
+					p_font 0
 					p_color 30
 				)
 				(Display 95 1
 					p_at 103 35
 					p_time 4
-					p_font SYSFONT
+					p_font 0
 					p_color 30
 				)
 				(= cycles 18)
 			)
-			(3 (= cycles 4))
+			(3
+				(= cycles 4)
+			)
 			(4
-				(= global126 1)
+				(= talkerOnScreen TRUE)
 				(self setScript: bowString self)
 			)
 			(5
@@ -190,32 +195,34 @@
 				(= cycles 4)
 			)
 			(8
-				(= global126 1)
+				(= talkerOnScreen TRUE)
 				(curRoom drawPic: 95)
 				(grin init:)
-				(Graph GDrawLine 0 142 38 142 local2 -1 -1)
-				(Graph GDrawLine 0 141 38 141 local3 -1 -1)
-				(Graph GDrawLine 47 142 65 142 local2 -1 -1)
-				(Graph GDrawLine 46 141 66 141 local3 -1 -1)
-				(Graph GDrawLine 72 142 78 142 local2 -1 -1)
-				(Graph GDrawLine 73 141 86 141 local3 -1 -1)
-				(Graph GDrawLine 82 142 85 142 local2 -1 -1)
-				(Graph GDrawLine 107 142 131 142 local2 -1 -1)
-				(Graph GDrawLine 107 141 160 141 local3 -1 -1)
-				(Graph GDrawLine 148 142 160 142 local2 -1 -1)
-				(Graph GDrawLine 168 142 189 142 local2 -1 -1)
-				(Graph GDrawLine 168 141 189 141 local3 -1 -1)
+				(Graph GDrawLine 0 142 38 142 brownLineColor -1 -1)
+				(Graph GDrawLine 0 141 38 141 goldLineColor -1 -1)
+				(Graph GDrawLine 47 142 65 142 brownLineColor -1 -1)
+				(Graph GDrawLine 46 141 66 141 goldLineColor -1 -1)
+				(Graph GDrawLine 72 142 78 142 brownLineColor -1 -1)
+				(Graph GDrawLine 73 141 86 141 goldLineColor -1 -1)
+				(Graph GDrawLine 82 142 85 142 brownLineColor -1 -1)
+				(Graph GDrawLine 107 142 131 142 brownLineColor -1 -1)
+				(Graph GDrawLine 107 141 160 141 goldLineColor -1 -1)
+				(Graph GDrawLine 148 142 160 142 brownLineColor -1 -1)
+				(Graph GDrawLine 168 142 189 142 brownLineColor -1 -1)
+				(Graph GDrawLine 168 141 189 141 goldLineColor -1 -1)
 				(curRoom overlay: 96)
 				(= cycles 3)
 			)
 			(9
-				(= global126 0)
+				(= talkerOnScreen FALSE)
 				(introSound init: play:)
 				(forestSound dispose:)
-				(= local4 1)
+				(= paletteCued TRUE)
 				(= cycles 5)
 			)
-			(10 (= seconds 10))
+			(10
+				(= seconds 10)
+			)
 			(11
 				(curRoom newRoom: 220)
 				(self dispose:)
@@ -225,8 +232,6 @@
 )
 
 (instance bowString of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -238,46 +243,48 @@
 				(= cycles 2)
 			)
 			(1
-				(= global126 0)
+				(= talkerOnScreen FALSE)
 				(hand dispose:)
 				(arrow dispose:)
-				(= local0 (Graph GSaveBits 0 132 189 141 1))
-				(= local1 (Graph GSaveBits 0 143 189 151 1))
-				(Graph GDrawLine 30 139 159 139 local2 -1 -1)
-				(Graph GDrawLine 70 136 119 136 local2 -1 -1)
-				(Graph GDrawLine 90 133 99 133 local2 -1 -1)
-				(Graph GDrawLine 30 144 159 144 local3 -1 -1)
-				(Graph GDrawLine 70 147 119 147 local3 -1 -1)
-				(Graph GDrawLine 90 150 99 150 local3 -1 -1)
-				(Graph GDrawLine 0 142 189 142 local2 1 -1)
-				(Graph GDrawLine 0 141 189 141 local3 1 -1)
+				(= saveBits (Graph GSaveBits 0 132 189 141 1))
+				(= saveBits2 (Graph GSaveBits 0 143 189 151 1))
+				(Graph GDrawLine 30 139 159 139 brownLineColor -1 -1)
+				(Graph GDrawLine 70 136 119 136 brownLineColor -1 -1)
+				(Graph GDrawLine 90 133 99 133 brownLineColor -1 -1)
+				(Graph GDrawLine 30 144 159 144 goldLineColor -1 -1)
+				(Graph GDrawLine 70 147 119 147 goldLineColor -1 -1)
+				(Graph GDrawLine 90 150 99 150 goldLineColor -1 -1)
+				(Graph GDrawLine 0 142 189 142 brownLineColor 1 -1)
+				(Graph GDrawLine 0 141 189 141 goldLineColor 1 -1)
 				(Graph GReAnimate 0 64 189 148)
 				(= cycles 1)
 			)
 			(2
 				(thwip init: play:)
-				(Graph GRestoreBits local0)
-				(Graph GRestoreBits local1)
+				(Graph GRestoreBits saveBits)
+				(Graph GRestoreBits saveBits2)
 				(Graph GReAnimate 0 132 189 141)
 				(Graph GReAnimate 0 143 189 151)
 				(= cycles 1)
 			)
 			(3
-				(= local0 (Graph GSaveBits 0 132 189 141 1))
-				(= local1 (Graph GSaveBits 0 143 189 151 1))
-				(Graph GDrawLine 30 139 159 139 local3 -1 -1)
-				(Graph GDrawLine 30 144 159 144 local2 -1 -1)
+				(= saveBits (Graph GSaveBits 0 132 189 141 1))
+				(= saveBits2 (Graph GSaveBits 0 143 189 151 1))
+				(Graph GDrawLine 30 139 159 139 goldLineColor -1 -1)
+				(Graph GDrawLine 30 144 159 144 brownLineColor -1 -1)
 				(Graph GReAnimate 0 64 189 148)
 				(= cycles 1)
 			)
 			(4
-				(Graph GRestoreBits local0)
-				(Graph GRestoreBits local1)
+				(Graph GRestoreBits saveBits)
+				(Graph GRestoreBits saveBits2)
 				(Graph GReAnimate 0 132 189 141)
 				(Graph GReAnimate 0 143 189 151)
 				(= cycles 1)
 			)
-			(5 (self dispose:))
+			(5
+				(self dispose:)
+			)
 		)
 	)
 )

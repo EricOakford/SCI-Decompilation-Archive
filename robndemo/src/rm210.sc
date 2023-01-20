@@ -67,59 +67,76 @@
 )
 
 (instance mama of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(kissers cycleSpeed: 1 setCycle: EndLoop self)
+				(kissers
+					cycleSpeed: 1
+					setCycle: EndLoop self
+				)
 			)
-			(1 (= cycles 8))
+			(1
+				(= cycles 8)
+			)
 			(2
-				(if cDAudio
+				(if numDACs
 					(voice init: play:)
 				)
 				(Display 210 0
 					p_at 72 16
 					p_time 7
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 				)
 				(Display 210 1
 					p_at 53 26
 					p_time 7
-					p_font SYSFONT
+					p_font 0
 					p_color 0
 				)
 				(Display 210 0
 					p_at 71 15
 					p_time 7
-					p_font SYSFONT
+					p_font 0
 					p_color 30
 				)
 				(Display 210 1
 					p_at 52 25
 					p_time 7
-					p_font SYSFONT
+					p_font 0
 					p_color 30
 				)
-				(kissers cycleSpeed: 1 setCycle: BegLoop self)
+				(kissers
+					cycleSpeed: 1
+					setCycle: BegLoop self
+				)
 			)
-			(3 (= cycles 20))
+			(3
+				(= cycles 20)
+			)
 			(4
-				(kissers loop: 1 cycleSpeed: 1 setCycle: EndLoop)
+				(kissers
+					loop: 1
+					cycleSpeed: 1
+					setCycle: EndLoop
+				)
 				(= cycles 42)
 			)
 			(5
-				(kissers loop: 2 cel: 0 cycleSpeed: 2 setCycle: EndLoop self)
+				(kissers
+					loop: 2
+					cel: 0
+					cycleSpeed: 2
+					setCycle: EndLoop self
+				)
 			)
 			(6
-				(= global126 1)
+				(= talkerOnScreen TRUE)
 				(curRoom drawPic: 211)
 				(= cycles 2)
 			)
 			(7
-				(= global126 0)
+				(= talkerOnScreen FALSE)
 				(kissers dispose:)
 				(mHead setPri: 14 init:)
 				(rHead setPri: 15 init:)
@@ -128,11 +145,20 @@
 			)
 			(8 (= cycles 23))
 			(9
-				(mHead setPri: 14 cycleSpeed: 1 setCycle: EndLoop)
-				(rHead setPri: 15 cycleSpeed: 1 setCycle: EndLoop)
+				(mHead
+					setPri: 14
+					cycleSpeed: 1
+					setCycle: EndLoop)
+				(rHead
+					setPri: 15
+					cycleSpeed: 1
+					setCycle: EndLoop
+				)
 				(= cycles 43)
 			)
-			(10 (self dispose:))
+			(10
+				(self dispose:)
+			)
 		)
 	)
 )
