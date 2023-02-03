@@ -127,7 +127,7 @@
 	(method (doit)
 		(super doit:)
 		(if
-		(and (IsObjectOnControl ego 2) (not (curRoom script?)))
+		(and (SteppedOn ego 2) (not (curRoom script?)))
 			(curRoom newRoom: 500)
 		)
 	)
@@ -842,7 +842,7 @@
 		(= systemWindow theSpeakWindow)
 		(switch curTalker
 			(42
-				(= talkWidth (WhichLanguage 130 90 90 90 100))
+				(= talkWidth (FindLanguage 130 90 90 90 100))
 				(systemWindow
 					tailX: (- (guard1 x?) 30)
 					tailY: (- (guard1 y?) 70)
@@ -851,7 +851,7 @@
 				)
 			)
 			(43
-				(= talkWidth (WhichLanguage 130 90 90 90 100))
+				(= talkWidth (FindLanguage 130 90 90 90 100))
 				(systemWindow
 					tailX: (- (guard2 x?) 10)
 					tailY: (- (guard2 y?) 90)
@@ -860,7 +860,7 @@
 				)
 			)
 			(19
-				(= talkWidth (WhichLanguage 80 90 90 90 80))
+				(= talkWidth (FindLanguage 80 90 90 90 80))
 				(systemWindow
 					tailX: (ego x?)
 					tailY: (- (ego y?) 65)

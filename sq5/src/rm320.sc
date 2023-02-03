@@ -180,12 +180,12 @@
 		(cond 
 			(
 				(and
-					(IsObjectOnControl ego 64)
+					(SteppedOn ego 64)
 					(not (curRoom script?))
 				)
 				(curRoom setScript: sUseTunnel 0 0)
 			)
-			((IsObjectOnControl ego 128) (curRoom newRoom: 325))
+			((SteppedOn ego 128) (curRoom newRoom: 325))
 			(
 				(and
 					(InRect 130 135 140 145 ego)

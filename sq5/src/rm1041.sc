@@ -84,7 +84,6 @@
 )
 
 (instance sClosing of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -93,7 +92,7 @@
 				(theMusic2 fade:)
 				(PalVary PALVARYKILL)
 				(DrawPic 1 BLACKOUT)
-				(proc0_11)
+				(HideStatus)
 				(= seconds 3)
 			)
 			(1

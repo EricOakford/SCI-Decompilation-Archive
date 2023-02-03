@@ -180,25 +180,25 @@
 	(method (doit)
 		(super doit:)
 		(if
-		(and (IsObjectOnControl ego 4) (not (curRoom script?)))
+		(and (SteppedOn ego 4) (not (curRoom script?)))
 			(= global131 2)
 			(curRoom newRoom: 400)
 		)
 		(if
-		(and (IsObjectOnControl ego 2) (not (curRoom script?)))
+		(and (SteppedOn ego 2) (not (curRoom script?)))
 			(theGame handsOff:)
 			(curRoom newRoom: 400)
 		)
 		(if
 			(and
-				(IsObjectOnControl ego 256)
+				(SteppedOn ego 256)
 				(not (curRoom script?))
 			)
 			(Bset 100)
 			(curRoom newRoom: 400)
 		)
 		(if
-		(and (IsObjectOnControl ego 8) (not (curRoom script?)))
+		(and (SteppedOn ego 8) (not (curRoom script?)))
 			(switch global131
 				(0
 					(curRoom setScript: sGotoTop)

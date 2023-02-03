@@ -14,8 +14,7 @@
 	gcWin 1
 )
 
-(class SQ5ControlItem of ControlIcon
-	
+(class SQ5ControlItem of ControlIcon	
 	(method (select)
 		(super select: &rest)
 		(self doit:)
@@ -120,21 +119,48 @@
 	)
 )
 
-(instance gameControlCode of Code
-	
+(instance gameControlCode of Code	
 	(method (doit)
 		(= gameControls SQ5GameControls)
 		(gameControls
 			add:
 				detailSlider
-				(volumeSlider theObj: theGame selector: #masterVolume yourself:)
-				(speedSlider theObj: ego selector: #setSpeed yourself:)
-				(iconSave theObj: theGame selector: #save yourself:)
-				(iconRestore theObj: theGame selector: #restore yourself:)
-				(iconRestart theObj: theGame selector: #restart yourself:)
-				(iconQuit theObj: theGame selector: #quitGame yourself:)
+				(volumeSlider
+					theObj: theGame
+					selector: #masterVolume
+					yourself:
+				)
+				(speedSlider
+					theObj: ego
+					selector: #setSpeed
+					yourself:
+				)
+				(iconSave
+					theObj: theGame
+					selector: #save
+					yourself:
+				)
+				(iconRestore
+					theObj: theGame
+					selector: #restore
+					yourself:
+				)
+				(iconRestart
+					theObj: theGame
+					selector: #restart
+					yourself:
+				)
+				(iconQuit
+					theObj: theGame
+					selector: #quitGame
+					yourself:
+				)
 				iconOk
-				(iconAbout theObj: theGame selector: #showAbout yourself:)
+				(iconAbout
+					theObj: theGame
+					selector: #showAbout
+					yourself:
+				)
 				iconHelp
 			eachElementDo: #highlightColor 0
 			eachElementDo: #lowlightColor 4
@@ -150,87 +176,86 @@
 )
 
 (instance gcWin of BorderWindow
-	
-	(method (open &tmp temp0 [ofBuf 25] [str 25] thePri)
+	(method (open &tmp temp0 [scoreBuf 25] [str 25] thePri)
 		(= thePri -1)
 		(self
-			top: (/ (- 200 (+ (CelHigh 995 1 1) 6)) 2)
-			left: (/ (- 320 (+ 151 (CelWide 995 0 1))) 2)
+			top: (/ (- 200 (+ (CelHigh vGameControls 1 1) 6)) 2)
+			left: (/ (- 320 (+ 151 (CelWide vGameControls lSliderText 1))) 2)
 			bottom:
 				(+
-					(CelHigh 995 1 1)
+					(CelHigh vGameControls 1 1)
 					6
-					(/ (- 200 (+ (CelHigh 995 1 1) 6)) 2)
+					(/ (- 200 (+ (CelHigh vGameControls 1 1) 6)) 2)
 				)
 			right:
 				(+
 					151
-					(CelWide 995 0 1)
-					(/ (- 320 (+ 151 (CelWide 995 0 1))) 2)
+					(CelWide vGameControls lSliderText 1)
+					(/ (- 320 (+ 151 (CelWide vGameControls lSliderText 1))) 2)
 				)
 			priority: thePri
 		)
 		(super open:)
-		(DrawCel 995 0 5
+		(DrawCel vGameControls lSliderText 5
 			(+
 				(/
 					(-
-						(- (+ 151 (CelWide 995 0 1)) (+ 4 (CelWide 995 1 1)))
-						(CelWide 995 0 5)
+						(- (+ 151 (CelWide vGameControls lSliderText 1)) (+ 4 (CelWide vGameControls 1 1)))
+						(CelWide vGameControls lSliderText 5)
 					)
 					2
 				)
 				4
-				(CelWide 995 1 1)
+				(CelWide vGameControls 1 1)
 			)
 			3
 			thePri
 		)
-		(DrawCel 995 1 1 4 3 thePri)
-		(DrawCel 995 1 0 94 38 thePri)
-		(DrawCel 995 1 0 135 38 thePri)
-		(DrawCel 995 0 4 63
-			(WhichLanguage
-				(- (- 37 (+ (CelHigh 995 0 4) 3)) 9)
-				(- 37 (+ (CelHigh 995 0 4) 3))
-				(- 37 (+ (CelHigh 995 0 4) 3))
-				(- 37 (+ (CelHigh 995 0 4) 3))
-				(- 37 (+ (CelHigh 995 0 4) 3))
+		(DrawCel vGameControls 1 1 4 3 thePri)
+		(DrawCel vGameControls 1 0 94 38 thePri)
+		(DrawCel vGameControls 1 0 135 38 thePri)
+		(DrawCel vGameControls lSliderText 4 63
+			(FindLanguage
+				(- (- 37 (+ (CelHigh vGameControls lSliderText 4) 3)) 9)
+				(- 37 (+ (CelHigh vGameControls lSliderText 4) 3))
+				(- 37 (+ (CelHigh vGameControls lSliderText 4) 3))
+				(- 37 (+ (CelHigh vGameControls lSliderText 4) 3))
+				(- 37 (+ (CelHigh vGameControls lSliderText 4) 3))
 			)
 			thePri
 		)
-		(DrawCel 995 0 3 101
-			(WhichLanguage
-				(- (- 37 (+ (CelHigh 995 0 4) 3)) 9)
-				(- 37 (+ (CelHigh 995 0 4) 3))
-				(- 37 (+ (CelHigh 995 0 4) 3))
-				(- 37 (+ (CelHigh 995 0 4) 3))
-				(- 37 (+ (CelHigh 995 0 4) 3))
+		(DrawCel vGameControls lSliderText 3 101
+			(FindLanguage
+				(- (- 37 (+ (CelHigh vGameControls lSliderText 4) 3)) 9)
+				(- 37 (+ (CelHigh vGameControls lSliderText 4) 3))
+				(- 37 (+ (CelHigh vGameControls lSliderText 4) 3))
+				(- 37 (+ (CelHigh vGameControls lSliderText 4) 3))
+				(- 37 (+ (CelHigh vGameControls lSliderText 4) 3))
 			)
 			thePri
 		)
-		(DrawCel 995 0 2
-			(WhichLanguage 140 146 146 146 146)
-			(WhichLanguage
-				(- (- 37 (+ (CelHigh 995 0 4) 3)) 9)
-				(- 37 (+ (CelHigh 995 0 4) 3))
-				(- 37 (+ (CelHigh 995 0 4) 3))
-				(- 37 (+ (CelHigh 995 0 4) 3))
-				(- 37 (+ (CelHigh 995 0 4) 3))
+		(DrawCel vGameControls lSliderText 2
+			(FindLanguage 140 146 146 146 146)
+			(FindLanguage
+				(- (- 37 (+ (CelHigh vGameControls lSliderText 4) 3)) 9)
+				(- 37 (+ (CelHigh vGameControls lSliderText 4) 3))
+				(- 37 (+ (CelHigh vGameControls lSliderText 4) 3))
+				(- 37 (+ (CelHigh vGameControls lSliderText 4) 3))
+				(- 37 (+ (CelHigh vGameControls lSliderText 4) 3))
 			)
 			thePri
 		)
-		(DrawCel 995 9 0
-			(+ 5 (CelWide 995 1 1))
-			(+ 38 (CelHigh 995 0 1))
+		(DrawCel vGameControls 9 0
+			(+ 5 (CelWide vGameControls 1 1))
+			(+ 38 (CelHigh vGameControls lSliderText 1))
 			thePri
 		)
-		(Graph GShowBits 12 1 15 (+ 151 (CelWide 995 0 1)) 1)
-		(Message MsgGet 0 N_OUTOF NULL 1 1 @ofBuf)
-		(Format @str {%d %s %d} score @ofBuf possibleScore)
+		(Graph GShowBits 12 1 15 (+ 151 (CelWide vGameControls lSliderText 1)) 1)
+		(Message MsgGet 0 N_OUTOF NULL 1 1 @scoreBuf)
+		(Format @str {%d %s %d} score @scoreBuf possibleScore)
 		(Display @str
 			p_font userFont
-			p_at (+ 5 (CelWide 995 1 1) 6) (+ 38 (CelHigh 995 0 1) 15)
+			p_at (+ 5 (CelWide vGameControls 1 1) 6) (+ 38 (CelHigh vGameControls lSliderText 1) 15)
 		)
 		(SetPort 0)
 	)
@@ -238,15 +263,15 @@
 
 (instance detailSlider of Slider
 	(properties
-		view 995
-		loop 0
+		view vGameControls
+		loop lSliderText
 		cel 1
 		nsLeft 139
 		nsTop 73
 		signal FIXED_POSN
 		noun N_DETAIL
 		helpVerb V_HELP
-		sliderView 995
+		sliderView vGameControls
 		bottomValue 1
 		topValue 3
 	)
@@ -261,30 +286,30 @@
 
 (instance volumeSlider of Slider
 	(properties
-		view 995
-		loop 0
+		view vGameControls
+		loop lSliderText
 		cel 1
 		nsLeft 179
 		nsTop 73
 		signal FIXED_POSN
 		noun N_VOLUME
 		helpVerb V_HELP
-		sliderView 995
+		sliderView vGameControls
 		topValue 15
 	)
 )
 
 (instance speedSlider of Slider
 	(properties
-		view 995
-		loop 0
+		view vGameControls
+		loop lSliderText
 		cel 1
 		nsLeft 219
 		nsTop 73
 		signal FIXED_POSN
 		noun N_SPEED
 		helpVerb V_HELP
-		sliderView 995
+		sliderView vGameControls
 		bottomValue 15
 	)
 	
@@ -316,8 +341,8 @@
 
 (instance iconSave of SQ5ControlItem
 	(properties
-		view 995
-		loop 2
+		view vGameControls
+		loop lSaveButton
 		cel 0
 		nsLeft 80
 		nsTop 42
@@ -330,8 +355,8 @@
 
 (instance iconRestore of SQ5ControlItem
 	(properties
-		view 995
-		loop 3
+		view vGameControls
+		loop lRestoreButton
 		cel 0
 		nsLeft 80
 		nsTop 62
@@ -344,8 +369,8 @@
 
 (instance iconRestart of SQ5ControlItem
 	(properties
-		view 995
-		loop 4
+		view vGameControls
+		loop lRestartButton
 		cel 0
 		nsLeft 80
 		nsTop 82
@@ -358,8 +383,8 @@
 
 (instance iconQuit of SQ5ControlItem
 	(properties
-		view 995
-		loop 5
+		view vGameControls
+		loop lQuitButton
 		cel 0
 		nsLeft 80
 		nsTop 102
@@ -372,8 +397,8 @@
 
 (instance iconAbout of SQ5ControlItem
 	(properties
-		view 995
-		loop 6
+		view vGameControls
+		loop lAboutButton
 		cel 0
 		nsLeft 80
 		nsTop 142
@@ -386,8 +411,8 @@
 
 (instance iconHelp of IconItem
 	(properties
-		view 995
-		loop 7
+		view vGameControls
+		loop lHelpButton
 		cel 0
 		nsLeft 106
 		nsTop 142
@@ -401,8 +426,8 @@
 
 (instance iconOk of IconItem
 	(properties
-		view 995
-		loop 8
+		view vGameControls
+		loop lOKButton
 		cel 0
 		nsLeft 80
 		nsTop 122

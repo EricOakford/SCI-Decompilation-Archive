@@ -148,7 +148,7 @@
 	(method (doit)
 		(Palette palANIMATE 225 234 2)
 		(if
-		(and (IsObjectOnControl ego 4) (not (curRoom script?)))
+		(and (SteppedOn ego 4) (not (curRoom script?)))
 			(curRoom setScript: sRogExits)
 		)
 		(super doit: &rest)

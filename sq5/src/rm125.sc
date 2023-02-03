@@ -523,7 +523,7 @@
 	(method (init)
 		(= font userFont)
 		(= systemWindow theSpeakWindow)
-		(= talkWidth (WhichLanguage 150 150 150 150 90))
+		(= talkWidth (FindLanguage 150 150 150 150 90))
 		(systemWindow tailX: 152 tailY: 75 xOffset: 0)
 		(super init: 0 0 daveMouth &rest)
 	)

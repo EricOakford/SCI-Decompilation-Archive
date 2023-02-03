@@ -132,12 +132,12 @@
 	(method (doit)
 		(super doit:)
 		(if
-		(and (IsObjectOnControl ego 8) (not (curRoom script?)))
+		(and (SteppedOn ego 8) (not (curRoom script?)))
 			(curRoom newRoom: 410)
 		)
 		(if
 			(and
-				(IsObjectOnControl ego 32)
+				(SteppedOn ego 32)
 				(not (curRoom script?))
 			)
 			(Bset 101)

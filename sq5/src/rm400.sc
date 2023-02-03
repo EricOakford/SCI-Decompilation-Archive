@@ -91,7 +91,7 @@
 		(super doit:)
 		(if
 			(and
-				(IsObjectOnControl ego 2)
+				(SteppedOn ego 2)
 				(== global131 1)
 				(not (curRoom script?))
 			)
@@ -99,7 +99,7 @@
 			(curRoom newRoom: 410)
 		)
 		(if
-		(and (IsObjectOnControl ego 8) (not (curRoom script?)))
+		(and (SteppedOn ego 8) (not (curRoom script?)))
 			(Bset 100)
 			(curRoom newRoom: 410)
 		)

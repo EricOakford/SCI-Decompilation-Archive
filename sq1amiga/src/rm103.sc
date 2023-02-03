@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 103)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Arcada)
@@ -21,16 +21,16 @@
 	[theButtons 10]
 	[cartCode 11]
 	local21
-	[local22 17] = [185 180 175 170 165 160 155 150 145 140 135 130 125 120 115 -1]
+	local22 = [185 180 175 170 165 160 155 150 145 140 135 130 125 120 115 -1]
 )
-(procedure (localproc_000e)
+(procedure (RestoreBits)
 	(if ((ScriptID 700 0) saveBits?)
 		(Display 103 0 108 ((ScriptID 700 0) saveBits?))
 		((ScriptID 700 0) saveBits: 0)
 	)
 )
 
-(procedure (localproc_0048)
+(procedure (InitButtons)
 	(oneBut init: @theButtons stopUpd:)
 	(twoBut init: @theButtons)
 	(threeBut init: @theButtons)
@@ -51,7 +51,7 @@
 	)
 )
 
-(procedure (localproc_0124)
+(procedure (DisposeButtons)
 	(oneBut dispose:)
 	(twoBut dispose:)
 	(threeBut dispose:)
@@ -67,31 +67,18 @@
 	(hand dispose:)
 )
 
-(instance rm103 of Rm
+(instance rm103 of Room
 	(properties
 		picture 103
 	)
 	
 	(method (init)
-		(Load rsPIC 102)
-		(LoadMany
-			132
-			358
-			340
-			341
-			342
-			343
-			344
-			345
-			346
-			347
-			348
-			349
-			350
-			351
-			352
+		(Load PICTURE 102)
+		(LoadMany SOUND
+			358 340 341 342 343 344 345
+			346 347 348 349 350 351 352
 		)
-		(self setRegions: 700)
+		(self setRegions: ARCADA)
 		(super init:)
 		(myCast add:)
 		(if (!= (theMusic number?) 355)
@@ -101,11 +88,11 @@
 		(egoArm init:)
 		(exitRoom init:)
 		(if (ArcadaCheck 551 16)
-			((ScriptID 700 0)
-				rFlag1: (& ((ScriptID 700 0) rFlag1?) $ffef)
+			((ScriptID ARCADA 0)
+				rFlag1: (& ((ScriptID ARCADA 0) rFlag1?) $ffef)
 			)
-			((ScriptID 700 0)
-				rFlag1: (| ((ScriptID 700 0) rFlag1?) $0020)
+			((ScriptID ARCADA 0)
+				rFlag1: (| ((ScriptID ARCADA 0) rFlag1?) $0020)
 			)
 			(droid init: stopUpd:)
 			(droidArm init: stopUpd:)
@@ -124,16 +111,16 @@
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(2
+			(verbLook
 				(if (cast contains: keyPad)
 					(Print 103 1)
 				else
 					(Print 103 2)
 				)
 			)
-			(4
+			(verbUse
 				(switch theItem
-					(0
+					(iCartridge
 						(if (cast contains: keyPad)
 							(Print 103 3)
 						else
@@ -152,24 +139,22 @@
 	)
 )
 
-(instance myCast of List
-	(properties)
-)
+(instance myCast of List)
 
 (instance getTheCart of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 1))
-			(1 (curRoom newRoom: 3))
+			(0
+				(= cycles 1)
+			)
+			(1
+				(curRoom newRoom: 3)
+			)
 		)
 	)
 )
 
 (instance returnToComputer of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -180,14 +165,14 @@
 				(curRoom drawPic: 103 10)
 				(= cycles 2)
 			)
-			(1 (self dispose:))
+			(1
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance lookAtMonitor of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -200,35 +185,35 @@
 			(1
 				(self setScript: raisePad self)
 			)
-			(2 (self dispose:))
+			(2
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance egoGrabCart of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(droidArm setCycle: CT 1 1 self)
+				(droidArm setCycle: CycleTo 1 1 self)
 			)
 			(1
 				(egoArm
 					setLoop: 4
 					cel: 0
 					setPri: (+ (droidArm priority?) 1)
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(2
 				(soundFx number: 303 loop: 1 play:)
-				((ScriptID 700 0)
-					rFlag1: (& ((ScriptID 700 0) rFlag1?) $ffdf)
+				((ScriptID ARCADA 0)
+					rFlag1: (& ((ScriptID ARCADA 0) rFlag1?) $ffdf)
 				)
-				(droidArm setCycle: End self)
-				(egoArm setCycle: End)
+				(droidArm setCycle: EndLoop self)
+				(egoArm setCycle: EndLoop)
 				(ego get: 0)
 			)
 			(3
@@ -239,8 +224,6 @@
 )
 
 (instance EnterScript of Script
-	(properties)
-	
 	(method (dispose)
 		(StrCpy @theButtons {})
 		(super dispose:)
@@ -249,7 +232,7 @@
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
-				(localproc_000e)
+				(RestoreBits)
 				(if (not (StrLen @theButtons))
 					(Print 103 4)
 					(self dispose:)
@@ -258,7 +241,7 @@
 				)
 			)
 			(1
-				(switch ((ScriptID 700 0) cartNumber?)
+				(switch ((ScriptID ARCADA 0) cartNumber?)
 					(1 (StrCpy @cartCode {BHCA}))
 					(2 (StrCpy @cartCode {BCHE}))
 					(3 (StrCpy @cartCode {BHBH}))
@@ -283,12 +266,12 @@
 				(if
 					(and
 						(not (ArcadaCheck 551 32))
-						(not (ego has: 0))
+						(not (ego has: iCartridge))
 						(== (StrCmp @theButtons @cartCode) 0)
 					)
 					(HandsOff)
 					(= cycles 1)
-					(theGame setCursor: waitCursor 1 160 190)
+					(theGame setCursor: waitCursor TRUE 160 190)
 				else
 					(self changeState: 4)
 				)
@@ -298,8 +281,8 @@
 			)
 			(3
 				(Print 103 5)
-				((ScriptID 700 0)
-					rFlag1: (| ((ScriptID 700 0) rFlag1?) $0010)
+				((ScriptID ARCADA 0)
+					rFlag1: (| ((ScriptID ARCADA 0) rFlag1?) $0010)
 				)
 				(curRoom newRoom: 3)
 			)
@@ -321,9 +304,9 @@
 				)
 				(if
 					(and
-						(not (ego has: 0))
+						(not (ego has: iCartridge))
 						(> selfDestructTimer 30)
-						(< (= selfDestructTimer (- selfDestructTimer 120)) 30)
+						(< (-= selfDestructTimer 120) 30)
 					)
 					(= selfDestructTimer 30)
 				)
@@ -334,13 +317,11 @@
 )
 
 (instance raisePad of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(theGame setCursor: waitCursor 1 160 100)
+				(theGame setCursor: waitCursor TRUE 160 100)
 				(keyPad y: 185 ignoreActors: init:)
 				(soundFx number: 358 loop: 1 play:)
 				(= cycles 1)
@@ -355,9 +336,9 @@
 			(2
 				(keyPad signal: (| (keyPad signal?) $0100) stopUpd:)
 				(soundFx stop:)
-				(localproc_0048)
+				(InitButtons)
 				(HandsOn)
-				(theIconBar disable: 0 3 4 5)
+				(theIconBar disable: ICON_WALK ICON_TALK ICON_SMELL ICON_TASTE)
 				(self dispose:)
 			)
 		)
@@ -365,13 +346,11 @@
 )
 
 (instance lowerPad of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(localproc_0124)
+				(DisposeButtons)
 				(keyPad signal: (& (keyPad signal?) $feff))
 				(= local21 15)
 				(soundFx number: 358 loop: 1 play:)
@@ -399,26 +378,25 @@
 )
 
 (instance keyFlashScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(User canInput: 0)
+				(User canInput: FALSE)
 				(client setPri: 11)
-				(Animate (cast elements?) 0)
-				(if register (beep number: register play:))
+				(Animate (cast elements?) FALSE)
+				(if register
+					(beep number: register play:)
+				)
 				(= cycles 1)
 			)
 			(1
 				(client setPri: 0)
-				(Animate (cast elements?) 0)
+				(Animate (cast elements?) FALSE)
 				(= cycles 1)
 			)
 			(2
-				(User canInput: 1)
-				(if
-				(and (client whoToCue?) (not (curRoom script?)))
+				(User canInput: TRUE)
+				(if (and (client whoToCue?) (not (curRoom script?)))
 					(curRoom setScript: (client whoToCue?))
 				)
 				(= register 0)
@@ -429,18 +407,16 @@
 )
 
 (instance pushButtons of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(egoArm setLoop: 3 cel: 0 setCycle: Fwd)
+				(egoArm setLoop: 3 cel: 0 setCycle: Forward)
 				(= cycles (Random 10 20))
 			)
 			(1
 				(Print 103 11)
-				(egoArm setCycle: Beg)
+				(egoArm setCycle: BegLoop)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -485,11 +461,11 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3
+			(verbDo
 				(self cel: 1)
-				(Animate (cast elements?) 0)
-				(Animate (cast elements?) 0)
-				(Animate (cast elements?) 0)
+				(Animate (cast elements?) FALSE)
+				(Animate (cast elements?) FALSE)
+				(Animate (cast elements?) FALSE)
 				(curRoom newRoom: 3)
 			)
 			(else 
@@ -514,8 +490,8 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3
-				(SolvePuzzle 5 130)
+			(verbDo
+				(SolvePuzzle 5 fGetCartridge)
 				(curRoom setScript: egoGrabCart)
 			)
 			(else 
@@ -537,9 +513,15 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3 (Print 103 12))
-			(4 (Print 103 13))
-			(5 (Print 103 14))
+			(verbDo
+				(Print 103 12)
+			)
+			(verbUse
+				(Print 103 13)
+			)
+			(verbTalk
+				(Print 103 14)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -550,19 +532,19 @@
 (instance monitor of Feature
 	(properties
 		description {cracked monitor}
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(2
+			(verbLook
 				(curRoom setScript: lookAtMonitor)
 			)
-			(3
+			(verbDo
 				(curRoom setScript: lookAtMonitor)
 			)
-			(4
-				(if (== theItem 0)
+			(verbUse
+				(if (== theItem iCartridge)
 					(Print 103 3)
 				else
 					(super doVerb: theVerb theItem &rest)
@@ -578,7 +560,7 @@
 (instance console of Feature
 	(properties
 		description {data computer}
-		onMeCheck $0040
+		onMeCheck cBROWN
 		lookStr {This is the Data Retrieval console.}
 	)
 )
@@ -586,13 +568,13 @@
 (instance controlPanel of Feature
 	(properties
 		description {control panel}
-		onMeCheck $0002
+		onMeCheck cBLUE
 		lookStr {This is the control panel for the Data Retrieval console.}
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3
+			(verbDo
 				(curRoom setScript: lookAtMonitor)
 			)
 			(else 
@@ -605,7 +587,7 @@
 (instance lights of Feature
 	(properties
 		description {lights}
-		onMeCheck $0010
+		onMeCheck cRED
 		lookStr {These are some highly decorative illumination devices for the console.}
 	)
 )
@@ -613,7 +595,7 @@
 (instance egoFeat of Feature
 	(properties
 		description {yourself}
-		onMeCheck $0008
+		onMeCheck cCYAN
 		lookStr {It's you and you're darned handsome if you do say so yourself.}
 	)
 )
@@ -621,13 +603,13 @@
 (instance buttons of Feature
 	(properties
 		description {buttons}
-		onMeCheck $0080
+		onMeCheck cLGREY
 		lookStr {Buttons reside here. You hate buttons. They confuse you so.}
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3
+			(verbDo
 				(curRoom setScript: pushButtons)
 			)
 			(else 
@@ -637,61 +619,30 @@
 	)
 )
 
-(instance beep of Sound
-	(properties)
-)
+(instance beep of Sound)
 
 (class FastHand of View
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		description 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $0000
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 26505
-		lookStr 0
-		yStep 2
 		view 502
 		loop 0
 		cel 2
 		priority 14
-		underBits 0
-		signal $0010
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
+		signal fixPriOn
 	)
 	
-	(method (doit &tmp userCurEvent userCurEventX userCurEventY)
+	(method (doit &tmp event evtX evtY)
 		(if
 			(not
-				(& ((= userCurEvent (User curEvent?)) type?) $0007)
+				(& ((= event (User curEvent?)) type?) (| keyDown mouseDown mouseUp))
 			)
-			(userCurEvent localize:)
-			(= userCurEventX (userCurEvent x?))
-			(= userCurEventY (userCurEvent y?))
+			(event localize:)
+			(= evtX (event x?))
+			(= evtY (event y?))
 			(if
 				(and
-					(InRect 224 115 295 187 userCurEventX userCurEventY)
+					(InRect 224 115 295 187 evtX evtY)
 					(not (curRoom script?))
-					(== (theIconBar curIcon?) (theIconBar at: 2))
+					(== (theIconBar curIcon?) (theIconBar at: ICON_DO))
 				)
 				(self internalEvent:)
 			)
@@ -701,7 +652,7 @@
 	
 	(method (dispose)
 		(if (== theCursor 69)
-			(theGame setCursor: ((theIconBar curIcon?) cursor?) 1)
+			(theGame setCursor: ((theIconBar curIcon?) cursor?) TRUE)
 		)
 		(super dispose:)
 	)
@@ -911,9 +862,7 @@ code_1441:
 	)
 )
 
-(instance hand of FastHand
-	(properties)
-)
+(instance hand of FastHand)
 
 (instance keyPad of View
 	(properties
@@ -931,59 +880,23 @@ code_1441:
 		(self setPri: 2)
 		(mouseDownHandler addToFront: self)
 		(keyDownHandler addToFront: self)
-		(theIconBar disable: 0)
+		(theIconBar disable: ICON_WALK)
 	)
 	
 	(method (dispose)
 		(super dispose: &rest)
-		(theGame setCursor: ((theIconBar curIcon?) cursor?) 1)
+		(theGame setCursor: ((theIconBar curIcon?) cursor?) TRUE)
 		(keyDownHandler delete: self)
 		(mouseDownHandler delete: self)
 		(HandsOn)
 	)
 )
 
-(class KeyPadButton of Prop
+(class KeyPadButton103 of Prop
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
+		name {KeyPadButton}
 		description {button}
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 26505
 		lookStr {These buttons allow you to enter a code into the computer.}
-		yStep 2
-		view 0
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0000
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		cycleSpeed 0
-		script 0
-		cycler 0
-		timer 0
-		detailLevel 0
 		theString 0
 		strToCat 0
 		maxLen 4
@@ -991,10 +904,10 @@ code_1441:
 		whoToCue 0
 	)
 	
-	(method (init theTheString)
+	(method (init str)
 		(super init:)
 		(self setPri: 0)
-		(= theString theTheString)
+		(= theString str)
 		(mouseDownHandler addToFront: self)
 		(keyDownHandler addToFront: self)
 	)
@@ -1007,7 +920,9 @@ code_1441:
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3 (self flash:))
+			(verbDo
+				(self flash:)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -1017,36 +932,24 @@ code_1441:
 	(method (cue)
 		(if strToCat
 			(if (< (StrLen theString) maxLen)
-				(localproc_000e)
+				(RestoreBits)
 				(StrCat theString strToCat)
-				((ScriptID 700 0)
+				((ScriptID ARCADA 0)
 					saveBits:
-						(Display
-							theString
-							dsCOORD
-							(+ (keyPad x?) 5)
-							(+ (- (keyPad y?) 10) 20)
-							dsCOLOR
-							colLED
-							dsALIGN
-							0
-							dsFONT
-							30
-							dsSAVEPIXELS
+						(Display theString
+							p_at (+ (keyPad x?) 5) (+ (- (keyPad y?) 10) 20)
+							p_color colLED
+							p_mode teJustLeft
+							p_font 30
+							p_save
 						)
 				)
 			else
-				(Display
-					theString
-					dsCOORD
-					(+ (keyPad x?) 5)
-					(+ (- (keyPad y?) 10) 20)
-					dsCOLOR
-					colLED
-					dsALIGN
-					0
-					dsFONT
-					30
+				(Display theString
+					p_at (+ (keyPad x?) 5) (+ (- (keyPad y?) 10) 20)
+					p_color colLED
+					p_mode teJustLeft
+					p_font 30
 				)
 			)
 		)
@@ -1059,7 +962,7 @@ code_1441:
 	)
 )
 
-(instance enterBut of KeyPadButton
+(instance enterBut of KeyPadButton103
 	(properties
 		x 270
 		y 139
@@ -1068,12 +971,12 @@ code_1441:
 		view 502
 		loop 1
 		cel 11
-		signal $4000
+		signal ignrAct
 		tone 351
 	)
 )
 
-(instance quitBut of KeyPadButton
+(instance quitBut of KeyPadButton103
 	(properties
 		x 248
 		y 169
@@ -1082,135 +985,135 @@ code_1441:
 		view 502
 		loop 1
 		cel 12
-		signal $4000
+		signal ignrAct
 		tone 352
 	)
 )
 
-(instance oneBut of KeyPadButton
+(instance oneBut of KeyPadButton103
 	(properties
 		x 238
 		y 139
 		view 502
 		loop 1
-		signal $4000
+		signal ignrAct
 		strToCat {A}
 		tone 341
 	)
 )
 
-(instance twoBut of KeyPadButton
+(instance twoBut of KeyPadButton103
 	(properties
 		x 248
 		y 139
 		view 502
 		loop 1
 		cel 1
-		signal $4000
+		signal ignrAct
 		strToCat {B}
 		tone 342
 	)
 )
 
-(instance threeBut of KeyPadButton
+(instance threeBut of KeyPadButton103
 	(properties
 		x 258
 		y 139
 		view 502
 		loop 1
 		cel 2
-		signal $4000
+		signal ignrAct
 		strToCat {C}
 		tone 343
 	)
 )
 
-(instance fourBut of KeyPadButton
+(instance fourBut of KeyPadButton103
 	(properties
 		x 238
 		y 149
 		view 502
 		loop 1
 		cel 3
-		signal $4000
+		signal ignrAct
 		strToCat {D}
 		tone 344
 	)
 )
 
-(instance fiveBut of KeyPadButton
+(instance fiveBut of KeyPadButton103
 	(properties
 		x 248
 		y 149
 		view 502
 		loop 1
 		cel 4
-		signal $4000
+		signal ignrAct
 		strToCat {E}
 		tone 345
 	)
 )
 
-(instance sixBut of KeyPadButton
+(instance sixBut of KeyPadButton103
 	(properties
 		x 258
 		y 149
 		view 502
 		loop 1
 		cel 5
-		signal $4000
+		signal ignrAct
 		strToCat {F}
 		tone 346
 	)
 )
 
-(instance sevenBut of KeyPadButton
+(instance sevenBut of KeyPadButton103
 	(properties
 		x 238
 		y 159
 		view 502
 		loop 1
 		cel 6
-		signal $4000
+		signal ignrAct
 		strToCat {G}
 		tone 347
 	)
 )
 
-(instance eightBut of KeyPadButton
+(instance eightBut of KeyPadButton103
 	(properties
 		x 248
 		y 159
 		view 502
 		loop 1
 		cel 7
-		signal $4000
+		signal ignrAct
 		strToCat {H}
 		tone 348
 	)
 )
 
-(instance nineBut of KeyPadButton
+(instance nineBut of KeyPadButton103
 	(properties
 		x 258
 		y 159
 		view 502
 		loop 1
 		cel 8
-		signal $4000
+		signal ignrAct
 		strToCat {I}
 		tone 349
 	)
 )
 
-(instance zeroBut of KeyPadButton
+(instance zeroBut of KeyPadButton103
 	(properties
 		x 238
 		y 169
 		view 502
 		loop 1
 		cel 9
-		signal $4000
+		signal ignrAct
 		strToCat {J}
 		tone 350
 	)

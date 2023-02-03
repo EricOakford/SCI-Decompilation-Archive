@@ -1,0 +1,15 @@
+;;; Sierra Script
+;;; 790.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+
+;;; NOUNS
+
+(define N_ROOM 13)
+(define N_GET_CLOSER 4)
+(define N_NITRO 12)
+(define N_NITRO_DOOR 8)
+(define N_USE_COMM 17)
+

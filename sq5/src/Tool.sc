@@ -39,7 +39,7 @@
 		dsALIGN
 		1
 		dsCOLOR
-		global152
+		colWhite
 	)
 	(Message msgGET 226 17 4 0 1 @temp0)
 	(Display
@@ -54,7 +54,7 @@
 		dsALIGN
 		1
 		dsCOLOR
-		global152
+		colWhite
 	)
 	(Message msgGET 226 3 4 0 1 @temp0)
 	(Display
@@ -69,7 +69,7 @@
 		dsALIGN
 		1
 		dsCOLOR
-		global152
+		colWhite
 	)
 )
 

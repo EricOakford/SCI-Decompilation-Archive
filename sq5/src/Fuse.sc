@@ -208,7 +208,7 @@
 				dsALIGN
 				1
 				dsCOLOR
-				global155
+				colGreen
 			)
 		else
 			(theFuse setMotion: MoveTo 15 120)
@@ -258,7 +258,7 @@
 						dsALIGN
 						1
 						dsCOLOR
-						global155
+						colGreen
 					)
 					(socketList addToFront: socket3)
 				)
@@ -292,7 +292,7 @@
 				dsALIGN
 				1
 				dsCOLOR
-				global155
+				colGreen
 			)
 			(= z (= socket 0))
 		else
@@ -470,7 +470,7 @@
 			dsALIGN
 			1
 			dsCOLOR
-			global155
+			colGreen
 		)
 	)
 	
@@ -488,7 +488,7 @@
 				dsALIGN
 				1
 				dsCOLOR
-				global155
+				colGreen
 			)
 		)
 		(super doit: &rest)

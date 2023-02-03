@@ -123,13 +123,13 @@
 			(= local1 1)
 		)
 		(cond 
-			((and (IsObjectOnControl ego cBLUE) (not (curRoom script?)))
+			((and (SteppedOn ego cBLUE) (not (curRoom script?)))
 				(curRoom setScript: sExitToHall)
 			)
-			((and (IsObjectOnControl ego cGREEN) (not (curRoom script?)))
+			((and (SteppedOn ego cGREEN) (not (curRoom script?)))
 				(curRoom setScript: sDownLeftStairs)
 			)
-			((and (IsObjectOnControl ego cCYAN) (not (curRoom script?)))
+			((and (SteppedOn ego cCYAN) (not (curRoom script?)))
 				(if (< (ego y?) 139)
 					(curRoom setScript: sUpDownLittleStairs 0 0)
 				else

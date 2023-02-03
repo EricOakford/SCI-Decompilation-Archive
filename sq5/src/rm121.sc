@@ -132,7 +132,7 @@
 			)
 			(
 				(and
-					(IsObjectOnControl ego cLMAGENTA)
+					(SteppedOn ego cLMAGENTA)
 					(< (ego heading?) 180)
 				)
 				(curRoom setScript: sExitToCrest)

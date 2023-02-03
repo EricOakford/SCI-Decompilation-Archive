@@ -779,13 +779,13 @@
 	)
 	
 	(method (init)
-		(= talkWidth (WhichLanguage 250 170 250 170 170))
+		(= talkWidth (FindLanguage 250 170 250 170 170))
 		(= font userFont)
 		(= systemWindow SpeakWindow)
 		(systemWindow
-			tailX: (WhichLanguage 164 164 164 164 124)
-			tailY: (WhichLanguage 42 46 42 46 46)
-			xOffset: (WhichLanguage 5 5 5 5 -5)
+			tailX: (FindLanguage 164 164 164 164 124)
+			tailY: (FindLanguage 42 46 42 46 46)
+			xOffset: (FindLanguage 5 5 5 5 -5)
 		)
 		(if rogShocked
 			(rogMouth loop: 7 nsTop: 13 nsLeft: 42)

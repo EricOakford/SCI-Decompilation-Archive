@@ -664,11 +664,11 @@
 	(method (init)
 		(= font userFont)
 		(= systemWindow SpeakWindow)
-		(= talkWidth (WhichLanguage 220 220 220 220 150))
+		(= talkWidth (FindLanguage 220 220 220 220 150))
 		(systemWindow
 			tailX: 80
 			tailY: 160
-			xOffset: (WhichLanguage 105 105 105 105 65)
+			xOffset: (FindLanguage 105 105 105 105 65)
 		)
 		(super init: rogBust rogEyes rogMouth &rest)
 	)

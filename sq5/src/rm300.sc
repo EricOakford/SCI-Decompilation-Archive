@@ -443,7 +443,7 @@
 	(properties)
 	
 	(method (doit)
-		(if (IsObjectOnControl ego 8192)
+		(if (SteppedOn ego 8192)
 			(if (== state 0) (self dispose:))
 			(if (fireBall mover?)
 				(= state 20)

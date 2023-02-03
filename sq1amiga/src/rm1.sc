@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 1)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use RangeOsc)
 (use Osc)
@@ -21,10 +21,10 @@
 
 (local
 	local0
-	local1
+	palCycleTimer
 	[local2 2]
 	local4
-	local5
+	palBlue
 	local6
 	local7
 	local8
@@ -32,36 +32,23 @@
 	saveBits
 	saveBits2
 )
-(instance rm1 of Rm
+(instance rm1 of Room
 	(properties
 		picture 106
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
-		(LoadMany 128 602 118 119 601 198 600 114)
-		(LoadMany
-			129
-			300
-			301
-			302
-			303
-			14
-			120
-			121
-			122
-			123
-			124
-			125
-			126
-			127
+		(LoadMany VIEW 602 118 119 601 198 600 114)
+		(LoadMany PICTURE
+			300 301 302 303 14 120 121 122 123 124 125 126 127
 		)
-		(LoadMany 132 1 464 2 3 5 6 803)
+		(LoadMany SOUND 1 464 2 3 5 6 803)
 		(theIconBar disable:)
 		(super init:)
 		(keyDownHandler addToFront: self)
 		(mouseDownHandler addToFront: self)
-		(theGame setCursor: waitCursor 0)
+		(theGame setCursor: waitCursor FALSE)
 		(self setScript: open1)
 	)
 	
@@ -69,23 +56,25 @@
 		(super doit:)
 		(switch curPic
 			(300
-				(if (> (++ local1) 2)
-					(Palette 6 224 255 -1)
-					(= local1 0)
+				(if (> (++ palCycleTimer) 2)
+					(Palette PALCycle 224 255 -1)
+					(= palCycleTimer 0)
 				)
 			)
 			(301
-				(if (> (++ local1) 4) (= local1 0))
+				(if (> (++ palCycleTimer) 4)
+					(= palCycleTimer 0)
+				)
 			)
 			(302
-				(if (> (++ local1) 0)
-					(Palette 6 224 255 -1)
-					(Palette 6 15 39 1)
-					(Palette 6 56 63 1)
-					(Palette 6 196 197 1)
-					(= local1 0)
+				(if (> (++ palCycleTimer) 0)
+					(Palette PALCycle 224 255 -1)
+					(Palette PALCycle 15 39 1)
+					(Palette PALCycle 56 63 1)
+					(Palette PALCycle 196 197 1)
+					(= palCycleTimer 0)
 				)
-				(if (& (sputnik onControl: 0) $0002)
+				(if (& (sputnik onControl: 0) cBLUE)
 					(shadow
 						x: (+ (sputnik x?) 15)
 						y: (+ (sputnik y?) 10)
@@ -97,15 +86,19 @@
 				)
 			)
 			(303
-				(if (> (++ local1) 2)
-					(Palette 6 224 255 -1)
-					(= local1 0)
+				(if (> (++ palCycleTimer) 2)
+					(Palette PALCycle 224 255 -1)
+					(= palCycleTimer 0)
 				)
-				(if (and local5 (not (-- local0)))
-					(= local5 (+ local5 local4))
-					(Palette 4 224 255 local5)
-					(if (not local5) (self cue:))
-					(if (== local5 100) (= local5 0))
+				(if (and palBlue (not (-- local0)))
+					(+= palBlue local4)
+					(Palette PALIntensity 224 255 palBlue)
+					(if (not palBlue)
+						(self cue:)
+					)
+					(if (== palBlue 100)
+						(= palBlue 0)
+					)
 					(= local0 1)
 				)
 			)
@@ -117,56 +110,52 @@
 			(and
 				(event type?)
 				(!= script open4)
-				(!= (event message?) KEY_F2)
-				(!= (curRoom curPic?) 99)
+				(!= (event message?) `#2)
+				(!= (curRoom curPic?) 99)	;Amiga addition
 				(== curRoomNum newRoomNum)
 			)
-			(event claimed: 1)
-			(Sound pause: 1)
+			(event claimed: TRUE)
+			(Sound pause: TRUE)
 			(theIconBar enable:)
-			(theGame setCursor: normalCursor 1 160 100)
+			(theGame setCursor: normalCursor TRUE 160 100)
 			(switch
-				(PrintD
-					{Would you like to skip\nthe introduction or\nwatch the whole thing?}
-					67
-					100
-					60
-					106
-					81
-					{Skip it}
-					1
-					106
-					81
-					{Watch it}
-					2
-					106
-					81
-					{Restore a Game}
-					3
+				(PrintD {Would you like to skip\nthe introduction or\nwatch the whole thing?}
+					#at 100 60
+					#new
+					#button {Skip it} 1
+					#new
+					#button {Watch it} 2
+					#new
+					#button {Restore a Game} 3
 				)
 				(1
 					(if (!= (theMusic number?) 2)
 						(theMusic number: 2 loop: -1 play:)
 					else
-						(Sound pause: 0)
+						(Sound pause: FALSE)
 					)
-					(if saveBits (Display 1 0 108 saveBits) (= saveBits 0))
+					(if saveBits
+						(Display 1 0 p_restore saveBits)
+						(= saveBits 0)
+					)
 					(if saveBits2
-						(Display 1 0 108 saveBits2)
+						(Display 1 0 p_restore saveBits2)
 						(= saveBits2 0)
 					)
 					(self setScript: open4)
 					(= local9 1)
 				)
-				(2 (Sound pause: 0))
+				(2
+					(Sound pause: FALSE)
+				)
 				(3
-					(Sound pause: 0)
+					(Sound pause: FALSE)
 					(theGame restore:)
 				)
 			)
-			(Sound pause: 0)
+			(Sound pause: FALSE)
 			(theIconBar disable: hide:)
-			(theGame setCursor: waitCursor 0)
+			(theGame setCursor: waitCursor FALSE)
 		)
 	)
 	
@@ -178,16 +167,13 @@
 )
 
 (instance open1 of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (and local6 (== (theMusic prevSignal?) -1))
 			(theMusic prevSignal: 0)
 			(self cue:)
 		)
-		(if
-		(and (== state 1) (== (theMusic prevSignal?) 10))
+		(if (and (== state 1) (== (theMusic prevSignal?) 10))
 			(theMusic prevSignal: 0)
 			(self cue:)
 		)
@@ -213,9 +199,9 @@
 				0
 			)
 			(2
-				(neon1 init: cycleSpeed: 20 setCycle: Fwd)
-				(neon2 init: cycleSpeed: 20 setCycle: Fwd)
-				(neon3 init: cycleSpeed: 20 setCycle: Fwd)
+				(neon1 init: cycleSpeed: 20 setCycle: Forward)
+				(neon2 init: cycleSpeed: 20 setCycle: Forward)
+				(neon3 init: cycleSpeed: 20 setCycle: Forward)
 				(sign1 init: posn: 223 165 setCycle: RangeOsc -1 0 0)
 				(curRoom drawPic: 300 -32759)
 				(= seconds 2)
@@ -224,17 +210,11 @@
 				(= saveBits
 					(DoDisplay
 						{\03 1991 Sierra On-Line, Inc.}
-						30
-						0
-						28
-						colYellow
-						29
-						colBlack
-						70
-						240
-						67
-						63
-						181
+						#mode teJustLeft
+						#color colYellow
+						#back colBlack
+						#width 240
+						#at 63 181
 					)
 				)
 				(= seconds 5)
@@ -250,21 +230,21 @@
 				(sfxSnd number: 6 play:)
 			)
 			(5
-				(Display 1 0 108 saveBits)
+				(Display 1 0 p_restore saveBits)
 				(= saveBits 0)
 				(= seconds 2)
 			)
 			(6
 				(sfxSnd stop:)
-				(sign1 setCycle: End self)
+				(sign1 setCycle: EndLoop self)
 			)
 			(7
 				(sign1 dispose:)
 				(neon1 dispose:)
 				(neon2 dispose:)
 				(neon3 dispose:)
-				(curRoom drawPic: 301 13)
-				(globe1 init: setCycle: Fwd)
+				(curRoom drawPic: 301 SCROLLUP)
+				(globe1 init: setCycle: Forward)
 				(= cycles 10)
 			)
 			(8
@@ -280,13 +260,13 @@
 					moveSpeed: 4
 					setMotion: MoveTo 145 30 self
 				)
-				(flame1 init: cycleSpeed: 4 setCycle: Fwd)
+				(flame1 init: cycleSpeed: 4 setCycle: Forward)
 			)
 			(9
-				(ship setCycle: End setMotion: MoveTo 199 45 self)
+				(ship setCycle: EndLoop setMotion: MoveTo 199 45 self)
 			)
 			(10
-				(ship setCycle: Beg setMotion: MoveTo 275 53 self)
+				(ship setCycle: BegLoop setMotion: MoveTo 275 53 self)
 			)
 			(11
 				(ship setMotion: MoveTo 399 50 self)
@@ -307,13 +287,13 @@
 					moveSpeed: 2
 					setMotion: MoveTo 237 137 self
 				)
-				(flame2 init: cycleSpeed: 2 setCycle: Fwd)
+				(flame2 init: cycleSpeed: 2 setCycle: Forward)
 			)
 			(14
-				(ship setCycle: End setMotion: MoveTo 109 162 self)
+				(ship setCycle: EndLoop setMotion: MoveTo 109 162 self)
 			)
 			(15
-				(ship setCycle: Beg setMotion: MoveTo 43 173 self)
+				(ship setCycle: BegLoop setMotion: MoveTo 43 173 self)
 			)
 			(16
 				(ship setMotion: MoveTo -40 175 self)
@@ -335,13 +315,13 @@
 					moveSpeed: 0
 					setMotion: MoveTo 77 49 self
 				)
-				(flame3 init: cycleSpeed: 0 setCycle: Fwd)
+				(flame3 init: cycleSpeed: 0 setCycle: Forward)
 			)
 			(19
-				(ship setCycle: End setMotion: MoveTo 220 98 self)
+				(ship setCycle: EndLoop setMotion: MoveTo 220 98 self)
 			)
 			(20
-				(ship setCycle: Beg setMotion: MoveTo 283 110 self)
+				(ship setCycle: BegLoop setMotion: MoveTo 283 110 self)
 			)
 			(21
 				(ship setMotion: MoveTo 418 110 self)
@@ -357,8 +337,8 @@
 				(letterE init: hide: cycleSpeed: 0)
 				(letterN init: hide: cycleSpeed: 0)
 				(curRoom drawPic: 302 13)
-				(jet1 init: cycleSpeed: 2 setCycle: Fwd)
-				(jet2 init: cycleSpeed: 2 setCycle: Fwd)
+				(jet1 init: cycleSpeed: 2 setCycle: Forward)
+				(jet2 init: cycleSpeed: 2 setCycle: Forward)
 				(electricalThing init: setCycle: RandCycle cycleSpeed: 0)
 				(shadow init: setLoop: 15 setPri: 11 hide:)
 				(soundFx number: 464 loop: -1 play: 40 fade: 127 30 20 0)
@@ -376,68 +356,68 @@
 					setMotion: MoveTo 357 57 sputnik
 					setPri: 12
 					cycleSpeed: 4
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 2)
 			)
 			(23
 				(sfxSnd number: 5 play:)
-				(letterA setCycle: Fwd show:)
+				(letterA setCycle: Forward show:)
 				(= cycles 5)
 			)
 			(24
 				(letterA hide:)
-				(letterS setCycle: Fwd show:)
+				(letterS setCycle: Forward show:)
 				(= cycles 5)
 			)
 			(25
 				(letterS hide:)
-				(letterA setCycle: Fwd show:)
+				(letterA setCycle: Forward show:)
 				(= cycles 5)
 			)
 			(26
 				(letterA hide:)
-				(letterR setCycle: Fwd show:)
+				(letterR setCycle: Forward show:)
 				(= cycles 5)
 			)
 			(27
 				(letterR hide:)
-				(letterI setCycle: Fwd show:)
+				(letterI setCycle: Forward show:)
 				(= cycles 5)
 			)
 			(28
 				(letterI hide:)
-				(letterE setCycle: Fwd show:)
+				(letterE setCycle: Forward show:)
 				(= cycles 5)
 			)
 			(29
 				(letterE hide:)
-				(letterN setCycle: Fwd show:)
+				(letterN setCycle: Forward show:)
 				(= cycles 5)
 			)
 			(30
 				(letterN hide:)
-				(letterE setCycle: Fwd show:)
+				(letterE setCycle: Forward show:)
 				(= cycles 5)
 			)
 			(31
 				(letterE hide:)
-				(letterI setCycle: Fwd show:)
+				(letterI setCycle: Forward show:)
 				(= cycles 5)
 			)
 			(32
 				(letterI hide:)
-				(letterR setCycle: Fwd show:)
+				(letterR setCycle: Forward show:)
 				(= cycles 5)
 			)
 			(33
 				(letterR hide:)
-				(letterA setCycle: Fwd show:)
+				(letterA setCycle: Forward show:)
 				(= cycles 5)
 			)
 			(34
 				(letterA hide:)
-				(letterS setCycle: Fwd show:)
+				(letterS setCycle: Forward show:)
 				(= cycles 5)
 			)
 			(35
@@ -456,11 +436,11 @@
 				(letterI dispose:)
 				(letterE dispose:)
 				(letterN dispose:)
-				(LoadMany 129 303 120 121 122 123 124 125 126 127)
+				(LoadMany PICTURE 303 120 121 122 123 124 125 126 127)
 				(= ticks 1)
 			)
 			(37
-				(curRoom drawPic: 303 13)
+				(curRoom drawPic: 303 SCROLLUP)
 				(sputnik
 					init:
 					posn: 340 120
@@ -469,32 +449,32 @@
 					setStep: 5 3
 					moveSpeed: 6
 					cycleSpeed: 6
-					setCycle: Rev
+					setCycle: Reverse
 					hide:
 				)
 				(= seconds 2)
 			)
 			(38
-				(= local5 1)
+				(= palBlue 1)
 				(= local4 1)
 				(= local0 1)
 				(soundFx number: 464 loop: -1 play: 40 fade: 127 30 20 0)
 				(sputnik show: setMotion: MoveTo -10 240)
-				(curRoom overlay: 120 100)
+				(curRoom overlay: 120 PLAIN)
 				(= seconds 5)
 			)
 			(39
-				(= local5 99)
+				(= palBlue 99)
 				(= local4 -1)
 				(= local0 1)
 			)
 			(40
 				(sputnik dispose:)
-				(curRoom drawPic: 303 100)
+				(curRoom drawPic: 303 PLAIN)
 				(= seconds 2)
 			)
 			(41
-				(= local5 1)
+				(= palBlue 1)
 				(= local4 1)
 				(= local0 1)
 				(curRoom overlay: 121 100)
@@ -556,19 +536,19 @@
 				(comet dispose:)
 			)
 			(60
-				(= local5 99)
+				(= palBlue 99)
 				(= local4 -1)
 				(= local0 1)
 			)
 			(61
-				(curRoom drawPic: 303 100)
+				(curRoom drawPic: 303 PLAIN)
 				(= seconds 2)
 			)
 			(62
-				(= local5 1)
+				(= palBlue 1)
 				(= local4 1)
 				(= local0 1)
-				(curRoom overlay: 122 100)
+				(curRoom overlay: 122 PLAIN)
 				(sputnik
 					init:
 					posn: -30 -30
@@ -577,19 +557,19 @@
 					setStep: 5 3
 					moveSpeed: 6
 					cycleSpeed: 6
-					setCycle: Rev
+					setCycle: Reverse
 					setMotion: MoveTo 330 200
 				)
 				(= seconds 7)
 			)
 			(63
-				(= local5 99)
+				(= palBlue 99)
 				(= local4 -1)
 				(= local0 1)
 			)
 			(64
 				(sputnik dispose:)
-				(curRoom drawPic: 303 100)
+				(curRoom drawPic: 303 PLAIN)
 				(= seconds 2)
 			)
 			(65
@@ -599,29 +579,29 @@
 					view: 118
 					setLoop: 3
 					posn: 21 200
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 6
 					setStep: 3 2
 					moveSpeed: 2
 					setMotion: MoveTo 330 5 ship
 				)
-				(curRoom overlay: 123 100)
+				(curRoom overlay: 123 PLAIN)
 				(= seconds 2)
 			)
 			(66
-				(= local5 1)
+				(= palBlue 1)
 				(= local4 1)
 				(= local0 1)
 				(= seconds 6)
 			)
 			(67
-				(= local5 99)
+				(= palBlue 99)
 				(= local4 -1)
 				(= local0 1)
 			)
 			(68
-				(curRoom drawPic: 303 100)
-				(curRoom overlay: 124 100)
+				(curRoom drawPic: 303 PLAIN)
+				(curRoom overlay: 124 PLAIN)
 				(= local7 1)
 				(theMusic2 number: 4 loop: 1 play: 40 hold: 1)
 				(ship
@@ -638,16 +618,16 @@
 					moveSpeed: 4
 					setMotion: MoveTo 145 30 self
 				)
-				(flame1 init: cycleSpeed: 4 setCycle: Fwd)
+				(flame1 init: cycleSpeed: 4 setCycle: Forward)
 			)
 			(69
-				(ship setCycle: End setMotion: MoveTo 199 45 self)
+				(ship setCycle: EndLoop setMotion: MoveTo 199 45 self)
 			)
 			(70
-				(= local5 1)
+				(= palBlue 1)
 				(= local4 1)
 				(= local0 1)
-				(ship setCycle: Beg setMotion: MoveTo 275 53 self)
+				(ship setCycle: BegLoop setMotion: MoveTo 275 53 self)
 			)
 			(71
 				(ship setMotion: MoveTo 399 50 self)
@@ -668,13 +648,13 @@
 					moveSpeed: 2
 					setMotion: MoveTo 237 137 self
 				)
-				(flame2 init: cycleSpeed: 2 setCycle: Fwd)
+				(flame2 init: cycleSpeed: 2 setCycle: Forward)
 			)
 			(74
-				(ship setCycle: End setMotion: MoveTo 109 162 self)
+				(ship setCycle: EndLoop setMotion: MoveTo 109 162 self)
 			)
 			(75
-				(ship setCycle: Beg setMotion: MoveTo 43 173 self)
+				(ship setCycle: BegLoop setMotion: MoveTo 43 173 self)
 			)
 			(76
 				(ship setMotion: MoveTo -40 175 self)
@@ -684,7 +664,7 @@
 				(flame2 dispose:)
 			)
 			(78
-				(= local5 99)
+				(= palBlue 99)
 				(= local4 -1)
 				(= local0 1)
 				(= local7 1)
@@ -699,13 +679,13 @@
 					moveSpeed: 0
 					setMotion: MoveTo 77 49 self
 				)
-				(flame3 init: cycleSpeed: 0 setCycle: Fwd)
+				(flame3 init: cycleSpeed: 0 setCycle: Forward)
 			)
 			(79
-				(ship setCycle: End setMotion: MoveTo 220 98 self)
+				(ship setCycle: EndLoop setMotion: MoveTo 220 98 self)
 			)
 			(80
-				(ship setCycle: Beg setMotion: MoveTo 283 110 self)
+				(ship setCycle: BegLoop setMotion: MoveTo 283 110 self)
 			)
 			(81
 				(ship setMotion: MoveTo 418 110 self)
@@ -725,16 +705,16 @@
 					setStep: 5 3
 					moveSpeed: 6
 					cycleSpeed: 10
-					setCycle: 0
+					setCycle: 0	;Amiga addition
 				)
-				(curRoom drawPic: 303 100)
+				(curRoom drawPic: 303 PLAIN)
 				(= seconds 2)
 			)
 			(84
-				(= local5 1)
+				(= palBlue 1)
 				(= local4 1)
 				(= local0 1)
-				(curRoom overlay: 125 100)
+				(curRoom overlay: 125 PLAIN)
 				(= seconds 3)
 			)
 			(85
@@ -742,26 +722,26 @@
 				(= seconds 1)
 			)
 			(86
-				(sputnik setCycle: Beg)
+				(sputnik setCycle: BegLoop)
 				(= seconds 3)
 			)
 			(87
-				(sputnik setCycle: End)
+				(sputnik setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(88
 				(sputnik dispose:)
-				(= local5 99)
+				(= palBlue 99)
 				(= local4 -1)
 				(= local0 1)
 				(= seconds 3)
 			)
 			(89
-				(curRoom drawPic: 303 100)
+				(curRoom drawPic: 303 PLAIN)
 				(= seconds 2)
 			)
 			(90
-				(curRoom overlay: 126 100)
+				(curRoom overlay: 126 PLAIN)
 				(ship
 					init:
 					view: 118
@@ -770,7 +750,7 @@
 					cycleSpeed: 4
 					moveSpeed: 2
 					posn: 204 -7
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo -10 136
 				)
 				(arcada
@@ -780,7 +760,7 @@
 					setStep: 3 2
 					cycleSpeed: 6
 					moveSpeed: 2
-					setCycle: Rev
+					setCycle: Reverse
 					posn: 330 -10
 					setMotion: MoveTo -10 220
 				)
@@ -791,20 +771,20 @@
 					setStep: 1 1
 					cycleSpeed: 3
 					moveSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 					posn: 330 77
 					setMotion: MoveTo 164 220
 				)
 				(= seconds 1)
 			)
 			(91
-				(= local5 1)
+				(= palBlue 1)
 				(= local4 1)
 				(= local0 1)
 				(= seconds 6)
 			)
 			(92
-				(= local5 99)
+				(= palBlue 99)
 				(= local4 -1)
 				(= local0 1)
 			)
@@ -815,15 +795,15 @@
 				(= seconds 3)
 			)
 			(94
-				(curRoom drawPic: 303 100)
+				(curRoom drawPic: 303 PLAIN)
 				(= seconds 1)
 			)
 			(95
-				(= local5 1)
+				(= palBlue 1)
 				(= local4 1)
 				(= local0 1)
 				(theMusic number: 2 loop: -1 play:)
-				(curRoom overlay: 127 100)
+				(curRoom overlay: 127 PLAIN)
 				(= seconds 1)
 			)
 			(96
@@ -837,7 +817,7 @@
 					yStep: 1
 					moveSpeed: 3
 					x: 280
-					y: 210
+					y: 210 ;200
 					setMotion: MoveFwd 1000
 				)
 				(= seconds 6)
@@ -845,7 +825,7 @@
 			(97
 				(deltaur
 					init:
-					signal: (| (deltaur signal?) $6000)
+					signal: (| (deltaur signal?) (| ignrAct ignrHrz))
 					show:
 					view: 198
 					setLoop: 0
@@ -862,12 +842,12 @@
 				(= seconds 2)
 			)
 			(99
-				(= local5 99)
+				(= palBlue 99)
 				(= local4 -1)
 				(= local0 1)
 			)
 			(100
-				(curRoom drawPic: 303 100)
+				(curRoom drawPic: 303 PLAIN)
 				(= seconds 2)
 			)
 			(101
@@ -876,8 +856,11 @@
 				(= cycles 10)
 			)
 			(102
-				(curRoom drawPic: 303 100)
-				(if (< howFast 2) (= state (+ state 4)))
+				(curRoom drawPic: 303 PLAIN)
+				;Amiga addition
+				(if (< howFast 2)
+					(+= state 4)
+				)
 				(= seconds 1)
 			)
 			(103
@@ -899,7 +882,7 @@
 			(104
 				(deltaur
 					init:
-					signal: (| (deltaur signal?) $6000)
+					signal: (| (deltaur signal?) (| ignrAct ignrHrz))
 					show:
 					view: 198
 					setLoop: 0
@@ -921,21 +904,13 @@
 			)
 			(107
 				(= saveBits2
-					(Display
-						1
-						1
-						dsALIGN
-						1
-						dsFONT
-						300
-						dsCOLOR
-						colYellow
-						dsWIDTH
-						240
-						dsCOORD
-						40
-						30
-						dsSAVEPIXELS
+					(Display 1 1
+						p_mode teJustCenter
+						p_font 300
+						p_color colYellow
+						p_width 240
+						p_at 40 30
+						p_save
 					)
 				)
 				(= seconds 15)
@@ -948,7 +923,9 @@
 			(109
 				(self setScript: open4 self)
 			)
-			(110 (= local6 1))
+			(110
+				(= local6 1)
+			)
 			(111
 				(= local6 0)
 				(curRoom setScript: leave)
@@ -958,19 +935,17 @@
 )
 
 (instance leave of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cast eachElementDo: #dispose)
 				(theIconBar disable: hide:)
-				(theGame setCursor: waitCursor 0)
+				(theGame setCursor: waitCursor FALSE)
 				(curRoom drawPic: 99 -32759)
 				(= seconds 1)
 			)
 			(1
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(curRoom newRoom: 4)
 				(self dispose:)
 			)
@@ -979,30 +954,28 @@
 )
 
 (instance open4 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Palette 4 0 256 100)
+				(Palette PALIntensity 0 256 100)
 				(curRoom drawPic: 14 -32759)
 				(cast eachElementDo: #hide)
 				(armsL init: setPri: 12)
 				(armsR init:)
-				(star1 setCycle: Osc -1 init:)
-				(star2 setCycle: Osc -1 init:)
-				(star3 setCycle: Osc -1 init:)
+				(star1 setCycle: Oscillate -1 init:)
+				(star2 setCycle: Oscillate -1 init:)
+				(star3 setCycle: Oscillate -1 init:)
 				(armsL stopUpd:)
 				(armsR stopUpd:)
 				(= seconds 2)
 			)
 			(1
-				(armsL startUpd: setCycle: Beg)
-				(armsR startUpd: setCycle: End self)
+				(armsL startUpd: setCycle: BegLoop)
+				(armsR startUpd: setCycle: EndLoop self)
 			)
 			(2
 				(soundFx number: 803 loop: 1 play:)
-				(ShakeScreen 3 7)
+				(ShakeScreen shakeSDiagonal 7)
 				(armsR stopUpd:)
 				(armsL stopUpd:)
 				(= seconds 2)
@@ -1030,10 +1003,10 @@
 		view 602
 		loop 14
 		priority 1
-		signal $6810
+		signal (| ignrAct fixedLoop ignrHrz fixPriOn)
 		xStep 4
 	)
-	
+	;Amiga addition
 	(method (setStep xs ys)
 		(if (== howFast 0)
 			(super setStep: (* xs 2) (* ys 2))
@@ -1049,14 +1022,14 @@
 		y 20
 		view 601
 		loop 2
-		signal $6010
+		signal (| ignrAct ignrHrz fixPriOn)
 		xStep 4
 	)
 	
 	(method (cue)
 		(soundFx fade:)
 	)
-	
+	;Amiga addition
 	(method (setStep xs ys)
 		(if (== howFast 0)
 			(super setStep: (* xs 2) (* ys 2))
@@ -1096,7 +1069,7 @@
 		yStep 6
 		view 602
 		loop 3
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		xStep 6
 	)
 	
@@ -1108,7 +1081,7 @@
 	(method (cue)
 		(soundFx fade: 0 30 20 1)
 	)
-	
+	;Amiga addition
 	(method (setStep xs ys)
 		(if (== howFast 0)
 			(super setStep: (* xs 2) (* ys 2))
@@ -1125,10 +1098,10 @@
 		yStep 6
 		view 602
 		loop 15
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		xStep 6
 	)
-	
+	;Amiga addition
 	(method (setStep xs ys)
 		(if (== howFast 0)
 			(super setStep: (* xs 2) (* ys 2))
@@ -1145,7 +1118,7 @@
 		view 602
 		loop 5
 		cel 4
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 1
 	)
 )
@@ -1157,7 +1130,7 @@
 		view 602
 		loop 6
 		cel 4
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 1
 	)
 )
@@ -1169,43 +1142,43 @@
 		view 602
 		loop 4
 		priority 11
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 5
 	)
 )
 
-(instance neon1 of Prop
+(instance neon1 of Prop ;Actor
 	(properties
 		x 25
 		y 70
 		view 600
 		loop 2
 		priority 10
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 2
 	)
 )
 
-(instance neon2 of Prop
+(instance neon2 of Prop ;Actor
 	(properties
 		x 104
 		y 145
 		view 600
 		loop 3
 		priority 10
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 2
 	)
 )
 
-(instance neon3 of Prop
+(instance neon3 of Prop ;Actor
 	(properties
 		x 296
 		y 24
 		view 600
 		loop 4
 		priority 10
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 2
 	)
 )
@@ -1218,7 +1191,7 @@
 		loop 7
 		cel 2
 		priority 10
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -1230,7 +1203,7 @@
 		loop 8
 		cel 4
 		priority 10
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -1241,7 +1214,7 @@
 		view 602
 		loop 9
 		priority 10
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -1253,7 +1226,7 @@
 		loop 10
 		cel 3
 		priority 10
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -1265,7 +1238,7 @@
 		loop 11
 		cel 5
 		priority 10
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -1277,7 +1250,7 @@
 		loop 12
 		cel 2
 		priority 10
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -1285,7 +1258,7 @@
 	(properties
 		view 601
 		loop 12
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 	)
 	
 	(method (doit)
@@ -1298,7 +1271,7 @@
 	(properties
 		view 601
 		loop 9
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 	)
 	
 	(method (doit)
@@ -1312,7 +1285,7 @@
 		view 601
 		loop 8
 		priority 9
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 	)
 	
 	(method (doit)
@@ -1334,7 +1307,7 @@
 		yStep 1
 		view 198
 		loop 1
-		signal $4000
+		signal ignrAct
 		moveSpeed 2
 	)
 )
@@ -1343,7 +1316,7 @@
 	(properties
 		x 330
 		view 198
-		signal $4000
+		signal ignrAct
 		xStep 4
 		moveSpeed 2
 	)
@@ -1355,7 +1328,7 @@
 		y 78
 		view 114
 		cel 2
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		cycleSpeed 24
 	)
 )
@@ -1366,7 +1339,7 @@
 		y 98
 		view 114
 		loop 3
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		cycleSpeed 24
 	)
 )

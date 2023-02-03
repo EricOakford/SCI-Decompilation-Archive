@@ -362,7 +362,7 @@
 									((cast at: t) brBottom?)
 									((cast at: t) brRight?)
 									1
-									myTextColor
+									colBlack
 									-1
 									-1
 								)
@@ -372,7 +372,7 @@
 						(`@z
 							(= quit TRUE)
 						)
-						(KEY_QUESTION
+						(`?
 							(Prints
 								{Debug options:______(Page 1 of 5)\n\n
 								___A - Show cast\n

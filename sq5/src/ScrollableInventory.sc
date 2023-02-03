@@ -21,6 +21,7 @@
 		upIcon 0
 		downIcon 0
 	)
+
 	
 	(method (dispose)
 		(if (IsObject items)
@@ -65,7 +66,7 @@
 		)
 		(self highlight: theIcon 1)
 	)
-
+	
 	(method (retreat amount &tmp theIcon toMove highlightedNo nextIcon)
 		;EO: this has been freshly decompiled. It should be tested.
 		(= toMove (if argc amount else 1))
@@ -94,10 +95,10 @@
 		)
 		(self highlight: theIcon 1)
 	)
-		
+	
 	(method (drawInvWindow whom selection
 						&tmp numOwned tallestInv widestInv numIcons tallestIcon iconBarWidth
-						cWide cHigh node obj invW invH iTop iLeft iBottom iRight numRows atX atY i
+						cWide cHigh node obj invW invH iTop iLeft iBottom iRight theNumRows atX atY i
 						theCurPos invWin)
 		(= theCurPos
 			(= numOwned
@@ -195,7 +196,7 @@
 				)
 			)
 			(= atY
-				(= numRows
+				(= theNumRows
 					(+
 						4
 						(if (invWin respondsTo: #xOffset)
@@ -219,7 +220,7 @@
 					(obj
 						nsLeft:
 							(+
-								numRows
+								theNumRows
 								(/
 									(-
 										widestInv
@@ -249,14 +250,14 @@
 						nsBottom: (+ (obj nsTop?) cHigh)
 					)
 					(if (-- i)
-						(= numRows (+ numRows widestInv))
+						(= theNumRows (+ theNumRows widestInv))
 					else
 						(= i numCols)
 						(= atX (+ atX tallestInv))
-						(= numRows atY)
+						(= theNumRows atY)
 					)
 				else
-					(= numRows (obj nsLeft?))
+					(= theNumRows (obj nsLeft?))
 					(= atX (obj nsTop?))
 				)
 				(obj show:)
@@ -264,7 +265,7 @@
 				(++ theCurPos)
 			)
 		)
-		(= numRows (/ (- (- (invWin right?) (invWin left?) ) iconBarWidth) 2))
+		(= theNumRows (/ (- (- (invWin right?) (invWin left?) ) iconBarWidth) 2))
 		(= invH (- (invWin bottom?) (invWin top?)))
 		(= atX $7FFF)
 		(if firstThru
@@ -281,13 +282,13 @@
 					(if (not (& (obj signal?) FIXED_POSN))
 						(if (== atX $7FFF) (= atX (- invH cHigh)))
 						(obj
-							nsLeft: numRows
+							nsLeft: theNumRows
 							nsTop: atX
 							nsBottom: (+ atX cHigh)
-							nsRight: (+ numRows cWide)
+							nsRight: (+ theNumRows cWide)
 						)
 					)
-					(= numRows (+ (obj nsLeft?) cWide))
+					(= theNumRows (+ (obj nsLeft?) cWide))
 					(= atX (obj nsTop?))
 					(obj signal: (& (obj signal?) (~ DISABLED)))
 					(obj show:)

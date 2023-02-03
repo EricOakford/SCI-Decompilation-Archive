@@ -178,7 +178,7 @@
 			)
 		)
 		(cond 
-			((IsObjectOnControl ego cLMAGENTA)
+			((SteppedOn ego cLMAGENTA)
 				(ego y: (+ (ego y?) 1) setMotion: 0)
 				(messager say: N_AT_BOTTOM NULL NULL 0)
 			)

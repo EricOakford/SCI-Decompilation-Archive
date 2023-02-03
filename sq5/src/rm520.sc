@@ -1105,7 +1105,7 @@
 		(= systemWindow theSpeakWindow)
 		(systemWindow
 			tailX: 112
-			tailY: (WhichLanguage 60 50 50 50 50)
+			tailY: (FindLanguage 60 50 50 50 50)
 			xOffset: 100
 			isBottom: 1
 		)
@@ -1156,7 +1156,7 @@
 			tailX: 110
 			tailY: 31
 			xOffset: 105
-			isBottom: (WhichLanguage 0 1 1 1 1)
+			isBottom: (FindLanguage 0 1 1 1 1)
 		)
 		(switch local1
 			(3 (self loop: 1 cel: 0))
@@ -1215,7 +1215,7 @@
 		(= systemWindow theSpeakWindow)
 		(systemWindow
 			tailX: 195
-			tailY: (WhichLanguage 50 40 40 40 40)
+			tailY: (FindLanguage 50 40 40 40 40)
 			xOffset: -70
 			isBottom: 1
 		)
@@ -1281,7 +1281,7 @@
 		(= systemWindow theSpeakWindow)
 		(systemWindow
 			tailX: 71
-			tailY: (WhichLanguage 58 48 48 48 48)
+			tailY: (FindLanguage 58 48 48 48 48)
 			xOffset: 60
 			isBottom: 1
 		)

@@ -117,18 +117,17 @@
 		(super doit:)
 		(if
 			(and
-				(IsObjectOnControl ego cRED)
+				(SteppedOn ego cRED)
 				(not (curRoom script?))
 			)
 			(curRoom setScript: sDontGoThere)
 		)
-		(if
-		(and (IsObjectOnControl ego cGREEN) (not (curRoom script?)))
+		(if (and (SteppedOn ego cGREEN) (not (curRoom script?)))
 			(curRoom setScript: sDownTheDrain)
 		)
 		(if
 			(and
-				(IsObjectOnControl ego cMAGENTA)
+				(SteppedOn ego cMAGENTA)
 				(not (curRoom script?))
 				(ego setMotion: PolyPath 92 92)
 			)

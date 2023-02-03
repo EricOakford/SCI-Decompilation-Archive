@@ -32,14 +32,15 @@
 	Btst 1
 	Bset 2
 	Bclr 3
-	DisableIcons 4
-	IsObjectOnControl 5
+	RestoreIB 4
+	SteppedOn 5
 	NormalEgo 6
+	;no number 7
 	Face 8
 	EgoDead 9
 	SolvePuzzle 10
-	proc0_11 11
-	WhichLanguage 12
+	HideStatus 11
+	FindLanguage 12
 )
 
 (local
@@ -144,17 +145,17 @@
 		global98
 	lastSysGlobal
 	debugging
-	dongle =  1234
+	gameCode =  1234
 	numColors
 	numVoices
 	global104 =  100
 	global105
 	theStopGroop
 	global107
-	oldCurIcon
+	theCurIcon
 	oldCanControl
 	oldCanInput
-	disabledIcons
+	iconSettings
 	global112
 	eurekaCurLocation
 	curTestQuestion
@@ -194,17 +195,17 @@
 	global148
 	global149
 	global150
-	myTextColor
-	global152
-	global153
-	global154
-	global155
-	global156
-	global157
-	global158
-	myBackColor
-	myLowlightColor
-	currentEgoView =  1
+	colBlack
+	colWhite
+	colRed
+	colYellow
+	colGreen
+	colBlue
+	colMagenta
+	colCyan
+	colGray1
+	colGray2
+	currentEgoView =  vEgoStarcon
 	gRegister
 	global163
 	global164
@@ -256,40 +257,28 @@
 
 (procedure (Bset flagEnum &tmp oldState)
 	(= oldState (Btst flagEnum))
-	(= [gameFlags (/ flagEnum 16)]
-		(|
-			[gameFlags (/ flagEnum 16)]
-			(>> $8000 (mod flagEnum 16))
-		)
-	)
+	(|= [gameFlags (/ flagEnum 16)] (>> $8000 (mod flagEnum 16)))
 	(return oldState)
 )
 
 (procedure (Bclr flagEnum &tmp oldState)
 	(= oldState (Btst flagEnum))
-	(= [gameFlags (/ flagEnum 16)]
-		(&
-			[gameFlags (/ flagEnum 16)]
-			(~ (>> $8000 (mod flagEnum 16)))
-		)
-	)
+	(&= [gameFlags (/ flagEnum 16)] (~ (>> $8000 (mod flagEnum 16))))
 	(return oldState)
 )
 
-(procedure (DisableIcons &tmp i)
+(procedure (RestoreIB &tmp i)
 	(user canControl: oldCanControl canInput: oldCanInput)
-	(= i 0)
-	(while (< i 8)
-		(if (& disabledIcons (>> $8000 i))
+	(for ((= i 0)) (< i 8) ((++ i))
+		(if (& iconSettings (>> $8000 i))
 			(theIconBar disable: i)
 		)
-		(++ i)
 	)
 )
 
-(procedure (IsObjectOnControl theObj theControl)
+(procedure (SteppedOn who color)
 	(return
-		(if (& (theObj onControl: origin) theControl)
+		(if (& (who onControl: origin) color)
 			(return TRUE)
 		else
 			FALSE
@@ -309,7 +298,9 @@
 			(ego loop: theLoop)
 		)
 	)
-	(if (ego looper?) ((ego looper?) dispose:))
+	(if (ego looper?)
+		((ego looper?) dispose:)
+	)
 	(ego
 		setStep: 5 2
 		illegalBits: 0
@@ -338,48 +329,50 @@
 	)
 )
 
-(procedure (Face actor1 actor2 both whoToCue &tmp ang1To2 theX theY temp3 temp4)
-	(= temp3 0)
+(procedure (Face who theObjOrX theObjOrY whoCares &tmp theHeading lookX looKY whoToCue temp4)
+	(= whoToCue 0)
 	(= temp4 0)
-	(if (IsObject actor2)
-		(= theX (actor2 x?))
-		(= theY (actor2 y?))
+	(if (IsObject theObjOrX)
+		(= lookX (theObjOrX x?))
+		(= looKY (theObjOrX y?))
 		(if (> argc 2)
-			(if (IsObject both)
-				(= temp3 both)
+			(if (IsObject theObjOrY)
+				(= whoToCue theObjOrY)
 			else
-				(= temp4 both)
+				(= temp4 theObjOrY)
 			)
-			(if (== argc 4) (= temp3 whoToCue))
+			(if (== argc 4)
+				(= whoToCue whoCares)
+			)
 		)
 	else
-		(= theX actor2)
-		(= theY both)
-		(if (== argc 4) (= temp3 whoToCue))
+		(= lookX theObjOrX)
+		(= looKY theObjOrY)
+		(if (== argc 4)
+			(= whoToCue whoCares)
+		)
 	)
-	(if temp4 (Face actor2 actor1))
-	(= ang1To2
-		(GetAngle (actor1 x?) (actor1 y?) theX theY)
+	(if temp4
+		(Face theObjOrX who)
 	)
-	(actor1
-		setHeading: ang1To2 (if (IsObject temp3) temp3 else 0)
-	)
+	(= theHeading (GetAngle (who x?) (who y?) lookX looKY))
+	(who setHeading: theHeading (if (IsObject whoToCue) whoToCue else 0))
 )
 
 (procedure (EgoDead theReason)
 	(if (not argc)
-		(= deathReason 1)
+		(= deathReason deathSLACKER)
 	else
 		(= deathReason theReason)
 	)
 	(curRoom newRoom: 20)
 )
 
-(procedure (SolvePuzzle flagEnum points)
-	(if (not (Btst flagEnum))
-		(= score (+ score points))
+(procedure (SolvePuzzle pFlag pValue)
+	(if (not (Btst pFlag))
+		(+= score pValue)
 		(sq5StatusLineCode doit:)
-		(Bset flagEnum)
+		(Bset pFlag)
 		(rm0Sound
 			priority: 15
 			number: 1000
@@ -390,7 +383,7 @@
 	)
 )
 
-(procedure (proc0_11 &tmp port)
+(procedure (HideStatus &tmp port)
 	(= port (GetPort))
 	(SetPort -1)
 	(Graph GFillRect 0 0 10 320 1 0 -1 -1)
@@ -398,7 +391,7 @@
 	(SetPort port)
 )
 
-(procedure (WhichLanguage german spanish french italian english)
+(procedure (FindLanguage german spanish french italian english)
 	(switch (theGame printLang?)
 		(GERMAN german)
 		(SPANISH spanish)
@@ -436,8 +429,7 @@
 	)
 )
 
-(instance sq5StatusLineCode of Code
-	
+(instance sq5StatusLineCode of Code	
 	(method (doit &tmp [scoreBuf 50] [statusBuf 50] port)
 		(= port (GetPort))
 		(SetPort -1)
@@ -458,7 +450,6 @@
 )
 
 (instance sq5IconBar of IconBar
-	
 	(method (show)
 		(if (IsObject curInvIcon)
 			(curInvIcon loop: 2)
@@ -497,8 +488,13 @@
 						(SetPort oldPort)
 					)
 				)
-				(modelessDialog (modelessDialog dispose:) (Animate (cast elements?) FALSE))
-				(else (= lastIcon 0))
+				(modelessDialog
+					(modelessDialog dispose:)
+					(Animate (cast elements?) FALSE)
+				)
+				(else
+					(= lastIcon 0)
+				)
 			)
 			(event dispose:)
 		)
@@ -516,7 +512,6 @@
 )
 
 (class SQ5 of Game
-	
 	(method (init &tmp [temp0 7] versionFile)
 		Print
 		DButton
@@ -553,7 +548,9 @@
 		(= pMouse PseudoMouse)
 		(= global105 1)
 		(ego setLoop: theStopGroop)
-		(if (== numColors 256) (Bset fIsVGA))
+		(if (== numColors 256)
+			(Bset fIsVGA)
+		)
 		(TextFonts 1605 999 1005 1007 1008 2106 1307 2306 5220)
 		(TextColors 0 15 26 31 34 52 63)
 		(= version {x.yyy.zzz})
@@ -568,8 +565,14 @@
 		(= messager testMessager)
 		(= debugging TRUE)	;added to enable debug features
 		(= theSpeakWindow (SpeakWindow new:))
-		(systemWindow color: 0 back: myBackColor)
-		(theGame setCursor: theCursor TRUE 304 172 detailLevel: 3)
+		(systemWindow
+			color: 0
+			back: colGray1
+		)
+		(theGame
+			setCursor: theCursor TRUE 304 172
+			detailLevel: 3
+		)
 		((= theMusic1 sq5Music1)
 			number: 1
 			owner: self
@@ -608,7 +611,7 @@
 	(method (doit)
 		(if (GameIsRestarting)
 			(if (OneOf curRoomNum 100 104 110 106 107)
-				(proc0_11)
+				(HideStatus)
 			else
 				(sq5StatusLineCode doit:)
 			)
@@ -639,7 +642,7 @@
 	
 	(method (startRoom roomNum &tmp [temp0 4])
 		(if (OneOf roomNum 100 104 110 106 107)
-			(proc0_11)
+			(HideStatus)
 		else
 			(sq5StatusLineCode doit:)
 		)
@@ -872,14 +875,14 @@
 	)
 	
 	(method (handsOff)
-		(if (not oldCurIcon)
-			(= oldCurIcon (theIconBar curIcon?))
+		(if (not theCurIcon)
+			(= theCurIcon (theIconBar curIcon?))
 		)
 		(= oldCanControl (user canControl:))
 		(= oldCanInput (user canInput:))
 		(user canControl: FALSE canInput: FALSE)
 		(ego setMotion: 0)
-		(= disabledIcons 0)
+		(= iconSettings 0)
 		(theIconBar eachElementDo: #perform checkIcon)
 		(theIconBar curIcon: (theIconBar at: ICON_CONTROL))
 		(theIconBar disable:)
@@ -919,15 +922,15 @@
 			)
 		)
 		(if (and argc param1)
-			(DisableIcons)
+			(RestoreIB)
 		)
 		(if (not (theIconBar curInvIcon?))
 			(theIconBar disable: ICON_ITEM)
 		)
-		(if oldCurIcon
-			(theIconBar curIcon: oldCurIcon)
-			(theGame setCursor: (oldCurIcon cursor?))
-			(= oldCurIcon 0)
+		(if theCurIcon
+			(theIconBar curIcon: theCurIcon)
+			(theGame setCursor: (theCurIcon cursor?))
+			(= theCurIcon 0)
 			(if
 				(and
 					(== (theIconBar curIcon?) (theIconBar at: ICON_ITEM))
@@ -955,7 +958,7 @@
 
 (instance walkCursor of Cursor
 	(properties
-		view 980
+		view vWalkCursor
 	)
 	
 	(method (init)
@@ -976,28 +979,30 @@
 
 (instance icon0 of IconItem
 	(properties
-		view 990
-		loop 0
+		view vIcons
+		loop lIconWalk
 		cel 0
-		cursor 980
+		cursor vWalkCursor
 		type (| userEvent walkEvent)
 		message V_WALK
 		signal (| HIDEBAR RELVERIFY)
-		maskView 990
-		maskLoop 13
+		maskView vIcons
+		maskLoop lIconDisabled
 		noun N_WALK
 		helpVerb V_HELP
 	)
 	
 	(method (init)
-		(= lowlightColor myLowlightColor)
+		(= lowlightColor colGray2)
 		(= cursor walkCursor)
 		(super init:)
 	)
 	
 	(method (show)
 		(cond 
-			((Btst fEgoIsFly) (= loop 14))
+			((Btst fEgoIsFly)
+				(= loop 14)
+			)
 			((and (== curRoomNum 119) (== (ego view?) 136))
 				(= loop 15)
 			)
@@ -1022,103 +1027,103 @@
 
 (instance icon1 of IconItem
 	(properties
-		view 990
-		loop 1
+		view vIcons
+		loop lIconLook
 		cel 0
-		cursor 981
+		cursor vLooKCursor
 		message V_LOOK
 		signal (| HIDEBAR RELVERIFY)
-		maskView 990
-		maskLoop 13
+		maskView vIcons
+		maskLoop lIconDisabled
 		noun N_LOOK
 		helpVerb V_HELP
 	)
 	
 	(method (init)
-		(= lowlightColor myLowlightColor)
+		(= lowlightColor colGray2)
 		(super init:)
 	)
 )
 
 (instance icon2 of IconItem
 	(properties
-		view 990
-		loop 2
+		view vIcons
+		loop lIconHand
 		cel 0
-		cursor 982
+		cursor vDoCursor
 		message V_DO
 		signal (| HIDEBAR RELVERIFY)
-		maskView 990
-		maskLoop 13
+		maskView vIcons
+		maskLoop lIconDisabled
 		noun N_DO
 		helpVerb V_HELP
 	)
 	
 	(method (init)
-		(= lowlightColor myLowlightColor)
+		(= lowlightColor colGray2)
 		(super init:)
 	)
 )
 
 (instance icon3 of IconItem
 	(properties
-		view 990
-		loop 3
+		view vIcons
+		loop lIconTalk
 		cel 0
-		cursor 983
+		cursor vTalkCursor
 		message V_TALK
 		signal (| HIDEBAR RELVERIFY)
-		maskView 990
-		maskLoop 13
+		maskView vIcons
+		maskLoop lIconDisabled
 		maskCel 4
 		noun N_TALK
 		helpVerb V_HELP
 	)
 	
 	(method (init)
-		(= lowlightColor myLowlightColor)
+		(= lowlightColor colGray2)
 		(super init:)
 	)
 )
 
 (instance icon4 of IconItem
 	(properties
-		view 990
-		loop 10
+		view vIcons
+		loop lIconCommand
 		cel 1
-		cursor 984
+		cursor vCommandCursor
 		message V_COMMAND
 		signal (| HIDEBAR RELVERIFY)
-		maskView 990
-		maskLoop 13
+		maskView vIcons
+		maskLoop lIconDisabled
 		maskCel 4
 		noun N_ORDER
 		helpVerb V_HELP
 	)
 	
 	(method (init)
-		(= lowlightColor myLowlightColor)
+		(= lowlightColor colGray2)
 		(super init:)
 	)
 )
 
 (instance icon6 of IconItem
 	(properties
-		view 990
-		loop 4
+		view vIcons
+		loop lIconInvItem
 		cel 0
 		cursor ARROW_CURSOR
 		message NULL
 		signal (| HIDEBAR RELVERIFY)
-		maskView 990
-		maskLoop 13
+		maskView vIcons
+		maskLoop lIconDisabled
 		maskCel 4
 		noun N_USEIT
 		helpVerb V_HELP
 	)
 	
 	(method (init)
-		(= lowlightColor myLowlightColor)
+		(= lowlightColor colGray2)
 		(super init:)
 	)
 	
@@ -1224,21 +1229,21 @@
 
 (instance icon7 of IconItem
 	(properties
-		view 990
-		loop 5
+		view vIcons
+		loop lIconInventory
 		cel 0
 		cursor ARROW_CURSOR
 		type nullEvt
 		message NULL
 		signal (| HIDEBAR RELVERIFY IMMEDIATE)
-		maskView 990
-		maskLoop 13
+		maskView vIcons
+		maskLoop lIconDisabled
 		noun N_INVENTORY
 		helpVerb V_HELP
 	)
 	
 	(method (init)
-		(= lowlightColor myLowlightColor)
+		(= lowlightColor colGray2)
 		(super init:)
 	)
 	
@@ -1259,20 +1264,20 @@
 
 (instance icon8 of IconItem
 	(properties
-		view 990
-		loop 7
+		view vIcons
+		loop lIconControls
 		cel 0
 		cursor ARROW_CURSOR
 		message V_USEIT
 		signal (| HIDEBAR RELVERIFY IMMEDIATE)
-		maskView 990
-		maskLoop 13
+		maskView vIcons
+		maskLoop lIconDisabled
 		noun N_CONTROL
 		helpVerb V_HELP
 	)
 	
 	(method (init)
-		(= lowlightColor myLowlightColor)
+		(= lowlightColor colGray2)
 		(super init:)
 	)
 	
@@ -1291,52 +1296,48 @@
 
 (instance icon9 of IconItem
 	(properties
-		view 990
-		loop 9
+		view vIcons
+		loop lIconHelp
 		cel 0
-		cursor 989
+		cursor vHelpCursor
 		type helpEvent
-		message 5
+		message V_HELP
 		signal (| RELVERIFY IMMEDIATE)
-		maskView 990
-		maskLoop 13
+		maskView vIcons
+		maskLoop lIconDisabled
 		noun N_HELP
 		helpVerb V_HELP
 	)
 	
 	(method (init)
-		(= lowlightColor myLowlightColor)
-		(if modelessDialog (modelessDialog dispose:))
+		(= lowlightColor colGray2)
+		(if modelessDialog
+			(modelessDialog dispose:)
+		)
 		(super init:)
 	)
 )
 
 (instance checkIcon of Code
-	(properties)
-	
 	(method (doit theIcon)
 		(if
 			(and
 				(theIcon isKindOf: IconItem)
 				(& (theIcon signal?) DISABLED)
 			)
-			(= disabledIcons
-				(| disabledIcons (>> FORCE (theIconBar indexOf: theIcon)))
-			)
+			(|= iconSettings(>> $8000 (theIconBar indexOf: theIcon)))
 		)
 	)
 )
 
 (instance lb2DoVerbCode of Code
-	(properties)
-	
 	(method (doit theVerb theObj)
 		(if (User canControl:)
 			(if (== theObj ego)
 				(if (Message MsgSize 0 N_EGO theVerb NULL 1)
 					(messager say: N_EGO theVerb NULL 0 0 0)
 				else
-					(messager say: 22 0 0 (Random 1 2) 0 0)
+					(messager say: N_EGO NULL NULL (Random 1 2) 0 0)
 				)
 			else
 				(switch theVerb
@@ -1361,8 +1362,6 @@
 )
 
 (instance lb2FtrInit of Code
-	(properties)
-	
 	(method (doit theObj)
 		(if (== (theObj sightAngle?) ftrDefault)
 			(theObj sightAngle: 90)
@@ -1381,19 +1380,17 @@
 )
 
 (instance lb2ApproachCode of Code
-	(properties)
-	
 	(method (doit theVerb)
 		(switch theVerb
-			(V_LOOK 1)
-			(V_TALK 2)
-			(V_WALK 4)
-			(V_DO 8)
-			(V_SPIKE 16)
-			(V_COMMAND 32)
-			(V_ANTACID 64)
-			(V_OXYGEN_TANK 128)
-			(else  -32768)
+			(V_LOOK $0001)
+			(V_TALK $0002)
+			(V_WALK $0004)
+			(V_DO $0008)
+			(V_SPIKE $0010)
+			(V_COMMAND $0020)
+			(V_ANTACID $0040)
+			(V_OXYGEN_TANK $0080)
+			(else $8000)
 		)
 	)
 )
@@ -1401,16 +1398,14 @@
 (instance sq5Win of BorderWindow)
 
 (instance sQ5Narrator of Narrator
-	
 	(method (init)
 		(= font userFont)
-		(self back: myBackColor)
+		(self back: colGray1)
 		(super init: &rest)
 	)
 )
 
 (instance testMessager of Messager
-	
 	(method (findTalker who &tmp theTalker)
 		(= curTalker who)
 		(if

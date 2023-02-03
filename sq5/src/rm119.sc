@@ -1897,7 +1897,7 @@
 			(0
 				(systemWindow
 					tailX: 132
-					tailY: (WhichLanguage 38 38 38 38 35)
+					tailY: (FindLanguage 38 38 38 38 35)
 					xOffset: 40
 					isBottom: 1
 				)
@@ -1906,7 +1906,7 @@
 				(self talkWidth: 200 textX: -40)
 				(systemWindow
 					tailX: 160
-					tailY: (WhichLanguage 80 80 80 80 65)
+					tailY: (FindLanguage 80 80 80 80 65)
 					xOffset: -30
 					isBottom: 1
 				)

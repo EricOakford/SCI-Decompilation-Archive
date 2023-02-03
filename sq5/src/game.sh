@@ -175,3 +175,54 @@
 (define f1025FlipSwitch			248)
 (define f1050PukoidsTransformed	249)
 (define f1040CallCliffy			250)
+
+
+;Views
+(define vEgo				0)
+(define vEgoStarcon			1)
+(define vEgoStand			2)
+(define vEgoStandStarcon	3)
+(define vEgoRunning			4)
+
+;Cursor views
+(define vWalkCursor 	980)
+(define vLooKCursor		981)
+(define vDoCursor		982)
+(define vTalkCursor		983)
+(define vCommandCursor	984)
+(define vExitCursor		986)
+(define vHelpCursor		989)
+
+; Interface views
+(define vIcons	990)
+	(enum
+		lIconWalk
+		lIconLook
+		lIconHand
+		lIconTalk
+		lIconInvItem
+		lIconInventory
+		lIconDummy1
+		lIconControls
+		lIconDummy2
+		lIconHelp
+		lIconCommand
+		lIconDummy3
+		lIconDummy4
+		lIconDisabled
+		lIconFly
+		lIconScrub
+	)
+(define vGameControls	995)
+	(enum
+		lSliderText
+		lControlFixtures
+		lSaveButton
+		lRestoreButton
+		lRestartButton
+		lQuitButton
+		lAboutButton
+		lHelpButton
+		lOKButton
+		lControlScore
+	)

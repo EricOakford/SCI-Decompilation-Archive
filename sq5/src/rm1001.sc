@@ -96,7 +96,7 @@
 			(= local0 1)
 		)
 		(cond 
-			((and (IsObjectOnControl ego cBLUE) (not (curRoom script?)))
+			((and (SteppedOn ego cBLUE) (not (curRoom script?)))
 				(curRoom setScript: sExitToHall)
 			)
 			(

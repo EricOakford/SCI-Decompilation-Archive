@@ -903,7 +903,7 @@
 		(Display @str
 			p_font userFont
 			p_at 65 25
-			p_color global153
+			p_color colRed
 		)
 	)
 	
@@ -913,7 +913,7 @@
 			(Display @str
 				p_font userFont
 				p_at 65 25
-				p_color (if (= local1 (not local1)) global154 else global153)
+				p_color (if (= local1 (not local1)) colYellow else colRed)
 			)
 		)
 		(super doit: &rest)
@@ -923,7 +923,7 @@
 		(Display @str
 			p_font userFont
 			p_at 65 25
-			p_color myTextColor
+			p_color colBlack
 		)
 		(super dispose: &rest)
 	)

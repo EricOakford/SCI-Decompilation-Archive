@@ -605,7 +605,7 @@
 	)
 	
 	(method (init)
-		(= y (WhichLanguage 138 142 138 142 142))
+		(= y (FindLanguage 138 142 138 142 142))
 		(self setCycle: Forward)
 		(super init: &rest)
 	)

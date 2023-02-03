@@ -120,14 +120,14 @@
 	(method (doit)
 		(if
 			(and
-				(IsObjectOnControl ego cRED)
+				(SteppedOn ego cRED)
 				(not (curRoom script?))
 			)
 			(curRoom setScript: sDontGoThere)
 		)
 		(if
 			(and
-				(IsObjectOnControl ego cLGREEN)
+				(SteppedOn ego cLGREEN)
 				(not (curRoom script?))
 			)
 			(curRoom setScript: sDownTheDrain)

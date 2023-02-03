@@ -136,7 +136,7 @@
 			pushi    2
 			lsg      ego
 			pushi    2
-			callb    IsObjectOnControl,  4
+			callb    SteppedOn,  4
 			bnt      code_02e2
 			pushi    90
 			pushi    #heading
@@ -168,7 +168,7 @@ code_02e2:
 			pushi    2
 			lsg      ego
 			pushi    16384
-			callb    IsObjectOnControl,  4
+			callb    SteppedOn,  4
 			bnt      code_0319
 			pushi    90
 			pushi    #heading
@@ -198,7 +198,7 @@ code_0319:
 			pushi    2
 			lsg      ego
 			pushi    64
-			callb    IsObjectOnControl,  4
+			callb    SteppedOn,  4
 			bnt      code_033a
 			pushi    #script
 			pushi    0

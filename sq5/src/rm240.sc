@@ -385,7 +385,7 @@
 		(cond 
 			(script 0)
 			(
-			(and (IsObjectOnControl ego 16) (== global126 3)) (self setScript: (ScriptID 243 8)))
+			(and (SteppedOn ego 16) (== global126 3)) (self setScript: (ScriptID 243 8)))
 		)
 	)
 	
