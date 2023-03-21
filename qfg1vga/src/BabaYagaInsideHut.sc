@@ -86,7 +86,7 @@
 		(if (ego has: iMandrake)
 			(Bclr fBabaCurse)
 		)
-		(cSound fade:)
+		(theMusic fade:)
 		(teleport number: 28 init:)
 		(Bclr fBabaHutOpen)
 		(bubbleMusic init: play:)

@@ -68,7 +68,7 @@
 	(method (dispose)
 		(= nightPalette 0)
 		(saurMusic dispose:)
-		(spareSound number: (SoundFX 7) loop: 1 play:)
+		(theMusic2 number: (SoundFX 7) loop: 1 play:)
 		(DisposeScript 419)
 		(super dispose:)
 	)

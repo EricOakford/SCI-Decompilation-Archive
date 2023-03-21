@@ -21,11 +21,11 @@
 			(and
 				(not Night)
 				(or
-					(!= (cSound number?) 93)
-					(== (cSound prevSignal?) -1)
+					(!= (theMusic number?) 93)
+					(== (theMusic prevSignal?) -1)
 				)
 			)
-			(cSound priority: 0 number: 93 loop: -1 play:)
+			(theMusic priority: 0 number: 93 loop: -1 play:)
 		)
 		(super init: &rest)
 	)

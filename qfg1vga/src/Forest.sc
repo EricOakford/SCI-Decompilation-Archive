@@ -53,10 +53,10 @@
 		(= sound (if Night 32 else 25))
 		(if
 			(or
-				(== (cSound prevSignal?) -1)
-				(!= (cSound number?) sound)
+				(== (theMusic prevSignal?) -1)
+				(!= (theMusic number?) sound)
 			)
-			(cSound stop: number: sound loop: -1 priority: 0 play:)
+			(theMusic stop: number: sound loop: -1 priority: 0 play:)
 		)
 		(= initEgoX 0)
 		(= initEgoY 0)

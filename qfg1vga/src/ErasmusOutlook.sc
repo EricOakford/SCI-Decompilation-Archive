@@ -74,7 +74,7 @@
 ;;;		(road init:)
 ;;;		(longShot init:)
 		
-		(cSound fade:)
+		(theMusic fade:)
 		(StatusLine enable:)
 		(= theEyeIcon (theIconBar at: ICON_LOOK))
 		(theIconBar curIcon: theEyeIcon)

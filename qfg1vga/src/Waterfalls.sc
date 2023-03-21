@@ -128,7 +128,7 @@
 ;;;		(theCliff init:)
 		
 		(rocks init: approachVerbs: V_DO)
-		(cSound stop:)
+		(theMusic stop:)
 		(smlSplash1 init: setCycle: Forward)
 		(smlSplash2 init: setCycle: Forward)
 		(smlSplash3 init: setCycle: Forward)

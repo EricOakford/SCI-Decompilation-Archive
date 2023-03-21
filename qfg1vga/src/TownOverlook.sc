@@ -793,7 +793,7 @@
 			)
 			(1 (HandsOn) (self dispose:))
 			(2
-				(cSound number: 22 loop: 1 priority: 0 play:)
+				(theMusic number: 22 loop: 1 priority: 0 play:)
 				(SolvePuzzle f65LeaveTown 1)
 				(ego setMotion: MoveTo 75 114 self)
 			)

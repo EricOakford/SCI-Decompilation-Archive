@@ -168,7 +168,7 @@
 		(LoadMany VIEW 93 550 5 523 510 538 426 524 538)
 		(Load SOUND 23)
 		(Load SCRIPT DPATH)
-		(cSound priority: 1 number: 23 loop: -1 play:)
+		(theMusic priority: 1 number: 23 loop: -1 play:)
 		(super init:)
 		(self
 			setFeatures:
@@ -320,7 +320,7 @@
 	
 	(method (dispose)
 		(= nightPalette 0)
-		(cSound stop:)
+		(theMusic stop:)
 		(DisposeScript DPATH)
 		(super dispose:)
 	)

@@ -298,7 +298,7 @@
 		(bird init: setScript: preening)
 		(ego init: posn: 137 243)
 		(healerTeller init: healer @healerTellMainBranch @healerTellTree @healerTellKeys)
-		(cSound number: 122 loop: -1 init: play:)
+		(theMusic number: 122 loop: -1 init: play:)
 		(curRoom setScript: egoEnters)
 	)
 	
@@ -320,7 +320,7 @@
 	
 	(method (dispose)
 		(= nightPalette 0)
-		(cSound fade:)
+		(theMusic fade:)
 		(Bset fBeenIn55)
 		(super dispose:)
 	)

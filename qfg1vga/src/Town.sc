@@ -12,7 +12,7 @@
 (instance Town of Region
 	(method (init)
 		(if (not (OneOf curRoomNum 300 310 311 320 330 333 334))
-			(cSound stop:)
+			(theMusic stop:)
 		)
 		(mouseDownHandler addToFront: self)
 		(keyDownHandler addToFront: self)

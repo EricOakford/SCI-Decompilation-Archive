@@ -77,7 +77,7 @@
 (instance playMusic of Script
 	(method (doit)
 		(super doit: &rest)
-		(if (and (== state 0) (== (cSound prevSignal?) -1))
+		(if (and (== state 0) (== (theMusic prevSignal?) -1))
 			(self cue:)
 		)
 	)
@@ -85,13 +85,13 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(cSound number: 999 loop: 1 play:)
+				(theMusic number: 999 loop: 1 play:)
 			)
 			(1
 				(= cycles 5)
 			)
 			(2
-				(cSound loop: -1 number: 61 play:)
+				(theMusic loop: -1 number: 61 play:)
 			)
 		)
 	)

@@ -34,10 +34,10 @@
 		(= soundNum (if Night 32 else 25))
 		(if
 			(or
-				(== (cSound prevSignal?) -1)
-				(!= (cSound number?) soundNum)
+				(== (theMusic prevSignal?) -1)
+				(!= (theMusic number?) soundNum)
 			)
-			(cSound stop: number: soundNum loop: -1 priority: 0 play:)
+			(theMusic stop: number: soundNum loop: -1 priority: 0 play:)
 		)
 		(super init: &rest)
 		(= saveSortedFeatures useSortedFeatures)

@@ -108,7 +108,7 @@
 		(LoadMany VIEW 22 23 19 531 516 1022)
 		(LoadMany SOUND 23 28 66)
 		(super init:)
-		(cSound number: 23 loop: -1 play:)
+		(theMusic number: 23 loop: -1 play:)
 		(cond 
 			((Btst fGaveSkullGem)
 				(= hutState hutGAVEGEM)

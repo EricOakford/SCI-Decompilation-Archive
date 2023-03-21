@@ -207,7 +207,7 @@
 ;;;		(jailWindow init:)
 ;;;		(onScissors init:)
 		
-		(cSound fade:)
+		(theMusic fade:)
 		(self setRegions: STREET TOWN)
 		(if (or (not Night) (and (== prevRoomNum 65) (Btst fTownGateOpen)))
 			(openedGate init: stopUpd:)

@@ -219,13 +219,13 @@
 					(dirE
 						(if (and highlightedIcon (highlightedIcon state?))
 							(self select: obj 1)
-							(spareSound number: 63 loop: 1 play:)
+							(theMusic2 number: 63 loop: 1 play:)
 						)
 					)
 					(dirW
 						(if (and highlightedIcon (highlightedIcon state?))
 							(self select: obj 0)
-							(spareSound number: 63 loop: 1 play:)
+							(theMusic2 number: 63 loop: 1 play:)
 						)
 					)
 					(dirN
@@ -243,13 +243,13 @@
 					(dirNE
 						(if (obj state?)
 							(self select: obj 3)
-							(spareSound number: 63 loop: 1 play:)
+							(theMusic2 number: 63 loop: 1 play:)
 						)
 					)
 					(dirSE
 						(if (obj state?)
 							(self select: obj 2)
-							(spareSound number: 63 loop: 1 play:)
+							(theMusic2 number: 63 loop: 1 play:)
 						)
 					)
 				)
@@ -287,11 +287,11 @@
 					)
 					((== evtMod shiftDown)
 						(self select: obj 1)
-						(spareSound number: 63 loop: 1 play:)
+						(theMusic2 number: 63 loop: 1 play:)
 					)
 					(else
 						(self select: obj 0)
-						(spareSound number: 63 loop: 1 play:)
+						(theMusic2 number: 63 loop: 1 play:)
 					)
 				)
 			)

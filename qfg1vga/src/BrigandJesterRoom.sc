@@ -178,7 +178,7 @@
 		(LoadMany RES_SCRIPT REVERSE JUMP CHASE WANDER)
 		MoveCycle
 		DPath
-		(cSound stop:)
+		(theMusic stop:)
 		(curRoom
 			addObstacle:
 				((Polygon new:)

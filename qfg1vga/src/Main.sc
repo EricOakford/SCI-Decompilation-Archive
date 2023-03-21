@@ -139,7 +139,7 @@
 	egoX
 	egoY
 	debugging
-	cSound					;music object, current playing music?
+	theMusic					;music object, current playing music?
 	daySheriffBreakIn		;this is the game day that you broke into the Sheriff's house.
 							;After this day, the door will be barred, and you can no longer break in.
 	dayLOLBreakIn			;this is the game day that you broke into the Little Old Lady's house.
@@ -452,9 +452,9 @@
 	ogreDeathDay =  1000			;day defeated Ogre
 	brutusHealth					;HP for Brutus in target range
 	manaCounter =  MANA_RATE		;MP Countdown
-	spareSound						;music playing in the arenas during a battle
+	theMusic2						;music playing in the arenas during a battle
 	magesMazePlayCount				;The number of times the hero has played Mage's Maze
-	disabledIcons					;which icons are disabled
+	iconSettings					;which icons are disabled
 	global419						;unused
 	saveCursorX
 	saveCursorY
@@ -503,7 +503,7 @@
 		canInput: FALSE
 	)
 	(= egoSpeed speed)
-	(= disabledIcons 0)
+	(= iconSettings 0)
 	(theIconBar eachElementDo: #perform checkIcon)
 	(theIconBar disable:
 		ICON_WALK
@@ -582,21 +582,11 @@
 )
 
 (procedure (Bset flagEnum)
-	(= [gameFlags (/ flagEnum 16)]
-		(|
-			[gameFlags (/ flagEnum 16)]
-			(>> $8000 (mod flagEnum 16))
-		)
-	)
+	(|= [gameFlags (/ flagEnum 16)] (>> $8000 (mod flagEnum 16)))
 )
 
 (procedure (Bclr flagEnum)
-	(= [gameFlags (/ flagEnum 16)]
-		(&
-			[gameFlags (/ flagEnum 16)]
-			(~ (>> $8000 (mod flagEnum 16)))
-		)
-	)
+	(&= [gameFlags (/ flagEnum 16)] (~ (>> $8000 (mod flagEnum 16))))
 )
 
 (procedure (Btst flagEnum)
@@ -718,8 +708,7 @@
 	
 	(method (learn what howWell &tmp num)
 		(= num (if (== argc 1) 5 else howWell))
-		(if
-		(and [egoStats MAGIC] (> num [egoStats what]))
+		(if (and [egoStats MAGIC] (> num [egoStats what]))
 			(= [egoStats what] num)
 			(|= spellMask
 				(switch (- what OPEN)
@@ -843,7 +832,7 @@
 					(BUTCHER narrator)
 					(CHIEFTHIEF (ScriptID 332 1))
 					(CRUSHER narrator)
-					(22 narrator)
+					(KOBOLD narrator)	;just a guess, since he does have an unused talking view
 					(DRYAD (ScriptID 76 1))
 					(ELSA97 (ScriptID 97 1))
 					(ERASMUS (ScriptID 31 1))
@@ -908,12 +897,12 @@
 		(HaveMem 999)
 		(= pMouse PseudoMouse)
 		(= numVoices (DoSound NumVoices))
-		((= cSound longSong)
+		((= theMusic longSong)
 			owner: self
 			flags: mNOPAUSE
 			init:
 		)
-		((= spareSound longSong2)
+		((= theMusic2 longSong2)
 			owner: self
 			flags: mNOPAUSE
 			init:
@@ -1432,7 +1421,7 @@
 				(theIcon isKindOf: IconItem)
 				(& (theIcon signal?) DISABLED)
 			)
-			(|= disabledIcons (>> $8000 (theIconBar indexOf: theIcon)))
+			(|= iconSettings (>> $8000 (theIconBar indexOf: theIcon)))
 		)
 	)
 )

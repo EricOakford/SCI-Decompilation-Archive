@@ -138,7 +138,7 @@
 			(entrance init:)
 		)
 		(super init:)
-		(cSound fade:)
+		(theMusic fade:)
 		(NormalEgo)
 		(ego init: ignoreActors: TRUE)
 		(rocksUR init:)
@@ -175,7 +175,7 @@
 				status: 1
 				setScript: sRandBounce
 			)
-			(cSound stop:)
+			(theMusic stop:)
 			(antSound init:)
 			(antHits init:)
 		else

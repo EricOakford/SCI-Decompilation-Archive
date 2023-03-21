@@ -38,7 +38,7 @@
 	(method (init)
 		(LoadMany RES_VIEW 97 465 503)
 		(LoadMany RES_SOUND 88 66)
-		(cSound fade:)
+		(theMusic fade:)
 		(curRoom
 			addObstacle:
 				((Polygon new:)

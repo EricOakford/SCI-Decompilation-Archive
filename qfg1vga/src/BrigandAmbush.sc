@@ -269,7 +269,7 @@
 		;(theLog init:)
 		
 		(NormalEgo)
-		(cSound stop:)
+		(theMusic stop:)
 		(brigandS number: 73 init: play:)
 		(archer1 init: stopUpd:)
 		(archer2 init: stopUpd:)

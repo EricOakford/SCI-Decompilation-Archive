@@ -74,10 +74,10 @@
 		(= soundNum (if Night 32 else 25))
 		(if
 			(or
-				(== (cSound prevSignal?) -1)
-				(!= (cSound number?) soundNum)
+				(== (theMusic prevSignal?) -1)
+				(!= (theMusic number?) soundNum)
 			)
-			(cSound stop: number: soundNum loop: -1 priority: 0 play:)
+			(theMusic stop: number: soundNum loop: -1 priority: 0 play:)
 		)
 		(super init: &rest)
 		(curRoom
@@ -585,7 +585,7 @@
 				(if (not Night)
 					(if
 					(and (Btst fSavedBarnard) (not beenInside) (not (Btst fBarnardReward)))
-						(cSound prevSignal: 0)
+						(theMusic prevSignal: 0)
 						(ego setScript: GuardsTrumpet self)
 					else
 						(self cue:)
@@ -638,10 +638,10 @@
 		(super doit: &rest)
 		(if
 			(or
-				(== (cSound prevSignal?) 10)
-				(== (cSound prevSignal?) 20)
+				(== (theMusic prevSignal?) 10)
+				(== (theMusic prevSignal?) 20)
 			)
-			(cSound prevSignal: 0)
+			(theMusic prevSignal: 0)
 			(self cue:)
 		)
 	)
@@ -659,14 +659,14 @@
 			)
 			(2
 				(lGuard stopUpd:)
-				(cSound number: 96 loop: -1 priority: 5 play:)
+				(theMusic number: 96 loop: -1 priority: 5 play:)
 			)
 			(3
 				(rGuard cycleSpeed: 6 setCycle: EndLoop self)
 			)
 			(4 (rGuard stopUpd:))
 			(5
-				(cSound pause: 1)
+				(theMusic pause: 1)
 				(lGuard setCycle: BegLoop)
 				(rGuard setCycle: BegLoop self)
 			)
@@ -694,7 +694,7 @@
 			(2
 				(HandsOff)
 				(theGame setCursor: waitCursor)
-				(cSound pause: 0)
+				(theMusic pause: 0)
 				(messager say: N_ROOM NULL C_INVITED 1 self)
 			)
 			(3

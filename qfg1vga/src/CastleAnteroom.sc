@@ -788,7 +788,7 @@
 				(messager say: N_BARON NULL C_EARNREWARD 0 self)
 			)
 			(8
-				(cSound fade:)
+				(theMusic fade:)
 				(= seconds 2)
 			)
 			(9

@@ -65,7 +65,7 @@
 	(method (dispose)
 		(= nightPalette 0)
 		(minoMusic dispose:)
-		(spareSound number: (SoundFX 38) loop: 1 play:)
+		(theMusic2 number: (SoundFX 38) loop: 1 play:)
 		(DisposeScript FORCOUNT)
 		(DisposeScript 419)
 		(super dispose:)

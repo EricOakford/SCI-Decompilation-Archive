@@ -93,8 +93,8 @@
 		)
 		(roundRobin start: (if (== prevRoomNum 203) 2 else 0))
 		(self setScript: roundRobin)
-		(if (and (not (cSound handle?)) (!= (cSound number?) 61))
-			(cSound loop: -1 number: 61 play:)
+		(if (and (not (theMusic handle?)) (!= (theMusic number?) 61))
+			(theMusic loop: -1 number: 61 play:)
 		)
 	)
 	
@@ -389,11 +389,11 @@
 		(cond 
 			((< howFast fast) 0)
 			((and local0 (== (fightChar cel?) 2))
-				(spareSound number: 993 setVol: 127 loop: 1 play:)
+				(theMusic2 number: 993 setVol: 127 loop: 1 play:)
 				(= local0 0)
 			)
 			((and local1 (== (thiefChar cel?) 2))
-				(spareSound number: 109 setVol: 127 loop: 1 play:)
+				(theMusic2 number: 109 setVol: 127 loop: 1 play:)
 				(= local1 0)
 			)
 		)
@@ -454,7 +454,7 @@
 				(cast eachElementDo: #stopUpd)
 				(if (> howFast medium)
 					(mageArm init: setCycle: EndLoop self)
-					(spareSound number: 992 setVol: 127 loop: 1 play:)
+					(theMusic2 number: 992 setVol: 127 loop: 1 play:)
 				else
 					(= ticks 20)
 				)
@@ -514,7 +514,7 @@
 			(12
 				(curRoom drawPic: (curRoom picture?) 9)
 				(= seconds 5)
-				(spareSound number: 28 setVol: 127 loop: 1 play:)
+				(theMusic2 number: 28 setVol: 127 loop: 1 play:)
 			)
 			(13
 				(curRoom newRoom: 203)

@@ -401,7 +401,7 @@
 				(ego posn: 235 183 setMotion: MoveTo 235 175)
 			)
 		)
-		(cSound number: 21 setLoop: 1 play:)
+		(theMusic number: 21 setLoop: 1 play:)
 		(pillow init:)
 	)
 	

@@ -52,7 +52,7 @@
 	(method (dispose)
 		(= nightPalette 0)
 		(trollMusic stop:)
-		(spareSound number: (SoundFX 38) loop: 1 play:)
+		(theMusic2 number: (SoundFX 38) loop: 1 play:)
 		(DisposeScript 419)
 		(super dispose:)
 	)

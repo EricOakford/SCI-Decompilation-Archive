@@ -43,7 +43,7 @@
 		(= nightPalette 0)
 		(ogreMusic dispose:)
 		(DisposeScript 419)
-		(spareSound number: (SoundFX 38) loop: 1 play:)
+		(theMusic2 number: (SoundFX 38) loop: 1 play:)
 		(super dispose:)
 	)
 )

@@ -1368,7 +1368,7 @@
 				(if (or (== heroType FIGHTER) (== heroType MAGIC_USER))
 					(SolvePuzzle f15BeatKobold 10)
 				)
-				(cSound number: 20 loop: -1 play:)
+				(theMusic number: 20 loop: -1 play:)
 				(if fightingKobold
 					(curRoom setScript: stopFight)
 				else

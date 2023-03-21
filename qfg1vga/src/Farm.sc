@@ -140,7 +140,7 @@
 			)
 		)
 		(super init:)
-		(cSound fade:)
+		(theMusic fade:)
 		(features
 			add:
 				vase

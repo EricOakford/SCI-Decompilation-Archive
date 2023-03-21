@@ -53,4 +53,5 @@
 (define FAIRY3 49)
 (define FAIRY4 50)
 (define FAIRY5 51)
+(define KOBOLD 22)
 

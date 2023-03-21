@@ -121,7 +121,7 @@
 		(LoadMany VIEW 530 30 199)
 		(LoadMany SOUND 28)
 		(super init:)
-		(cSound number: 115 loop: -1 init: play:)
+		(theMusic number: 115 loop: -1 init: play:)
 		(bobSound init:)
 		(= saveSortedFeatures useSortedFeatures)
 		(= useSortedFeatures FALSE)

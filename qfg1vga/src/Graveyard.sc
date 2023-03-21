@@ -129,7 +129,7 @@
 ;;;		(theGrass init:)
 ;;;		(theMortuary init:)
 		
-		(cSound fade:)
+		(theMusic fade:)
 		(if
 			(and
 				(not (ego has: iMandrake))

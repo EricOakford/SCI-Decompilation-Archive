@@ -139,7 +139,7 @@
 				(Bset fOgreGone)
 			)
 		)
-		(cSound fade:)
+		(theMusic fade:)
 		(super init:)
 		(features add: cave rocks trees)
 		;UPGRADE

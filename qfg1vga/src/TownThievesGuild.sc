@@ -316,7 +316,7 @@
 			setScript: knifeScript
 		)
 		(if (== prevRoomNum 340)
-			(cSound fade: 127 20 5 0)
+			(theMusic fade: 127 20 5 0)
 			(ego
 				view: 4
 				posn: 160 160
@@ -329,7 +329,7 @@
 			(NormalEgo)
 			(chiefThief setScript: chiefBored)
 		else
-			(cSound number: 8 loop: -1 init: play:)
+			(theMusic number: 8 loop: -1 init: play:)
 			(ego
 				view: 4
 				setLoop: 3
@@ -1036,7 +1036,7 @@
 						(ego has: iDagger)
 						(or (>= (ego has: iSilver) 5) (>= (ego has: iGold) 1))
 					)
-					(cSound fade: 63 20 5 0)
+					(theMusic fade: 63 20 5 0)
 					(curRoom newRoom: 340)
 				else
 					(messager say: N_CHIEF V_DO)
@@ -1567,7 +1567,7 @@
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 60))
 			(1
-				(cSound fade: 63 20 5 0)
+				(theMusic fade: 63 20 5 0)
 				(curRoom newRoom: 340)
 			)
 		)

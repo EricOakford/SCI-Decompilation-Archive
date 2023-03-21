@@ -157,20 +157,20 @@
 ;;;		(snow init:)
 ;;;		(snowyRocks init:)
 		
-		(cSound fade:)
+		(theMusic fade:)
 		(NormalEgo)
 		(ChangeGait MOVE_WALK FALSE)
 		(if giantGone
-			(cSound number: 47)
+			(theMusic number: 47)
 			(ego posn: 1 158 init: setMotion: MoveTo 25 158)
 		else
-			(cSound number: 48)
+			(theMusic number: 48)
 			(frostSound number: 14 init:)
 			(ego posn: 1 158 init: setScript: egoInit)
 			(caveMouth init:)
 			(giantTeller init: giant @giantTellMainBranch @giantTellTree @giantTellKeys)
 		)
-		(cSound loop: 1 play: self)
+		(theMusic loop: 1 play: self)
 	)
 	
 	(method (doit)
@@ -232,7 +232,7 @@
 				)
 			)
 			(else 
-				(cSound number: 47 loop: -1 play:)
+				(theMusic number: 47 loop: -1 play:)
 			)
 		)
 		(= cueWhat 0)
@@ -590,7 +590,7 @@
 			(4
 				(giant dispose:)
 				(caveMouth dispose:)
-				(cSound number: 47 play:)
+				(theMusic number: 47 play:)
 				(= giantGone TRUE)
 				(self dispose:)
 				(HandsOn)

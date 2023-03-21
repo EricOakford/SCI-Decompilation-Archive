@@ -22,7 +22,7 @@
 	
 	(method (init)
 		(Load VIEW 702)
-		(cSound stop:)
+		(theMusic stop:)
 		(self setRegions: FOREST)
 		(super init:)
 		(StatusLine enable:)

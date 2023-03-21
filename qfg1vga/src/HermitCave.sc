@@ -170,7 +170,7 @@
 		(candle init: setPri: 14 cycleSpeed: 8 setCycle: Forward)
 		(hermitTeller init: hermit @hermitTellMainBranch @hermitTellTree @hermitTellKeys)
 		(hermit init: actions: hermitTeller setPri: 10)
-		(cSound number: 71 loop: -1 play: 90)
+		(theMusic number: 71 loop: -1 play: 90)
 		(hermitSound init: play:)
 		(pfSnd number: 28)
 		(self setScript: introToHenry)

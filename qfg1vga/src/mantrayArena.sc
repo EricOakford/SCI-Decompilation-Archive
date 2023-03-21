@@ -66,7 +66,7 @@
 	(method (dispose)
 		(= nightPalette 0)
 		(stingerMusic dispose:)
-		(spareSound number: (SoundFX 38) play:)
+		(theMusic2 number: (SoundFX 38) play:)
 		(DisposeScript DPATH)
 		(super dispose:)
 	)

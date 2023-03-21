@@ -115,7 +115,7 @@
 		(= nightPalette 0)
 		(gobMusic stop:)
 		(DisposeScript 419)
-		(spareSound number: (SoundFX 7) loop: 1 play:)
+		(theMusic2 number: (SoundFX 7) loop: 1 play:)
 		(super dispose:)
 	)
 )

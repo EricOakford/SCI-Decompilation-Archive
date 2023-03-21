@@ -45,7 +45,7 @@
 	(method (dispose)
 		(= nightPalette 0)
 		(dragMusic stop:)
-		(spareSound number: (SoundFX 38) loop: 1 play:)
+		(theMusic2 number: (SoundFX 38) loop: 1 play:)
 		(super dispose:)
 	)
 )

@@ -279,7 +279,7 @@
 		(super init:)
 		(LoadMany RES_VIEW 446 vGoblin)
 		(NormalEgo)
-		(cSound stop:)
+		(theMusic stop:)
 		(goblinMusic play:)
 		(if (or (!= prevRoomNum vGoblin) monsterHealth)
 			(switch numGoblins

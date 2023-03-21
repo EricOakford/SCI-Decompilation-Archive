@@ -287,7 +287,7 @@
 			(ego init: posn: 164 119 loop: 3)
 			(HandsOn)
 		else
-			(cSound number: 110 loop: -1 init: play:)
+			(theMusic number: 110 loop: -1 init: play:)
 			(ego init: setLoop: 1 posn: 276 148)
 			(NormalEgo)
 		)

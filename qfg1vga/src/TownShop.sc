@@ -148,7 +148,7 @@
 			(theWindow init:)
 		)
 		(self setRegions: TOWN)
-		(cSound priority: 0 number: 93 loop: -1 play:)
+		(theMusic priority: 0 number: 93 loop: -1 play:)
 		(shopTeller init: proprietor @shopTellMainBranch @shopTellTree @shopTellKeys)
 		(proprietor actions: shopTeller init:)
 		(stove init: setCycle: Forward)

@@ -133,7 +133,7 @@
 		(Load SCRIPT PCHASE)
 		(Load SCRIPT PAVOID)
 		(leTimer setReal: self 6)
-		(cSound number: 23 loop: -1 play:)
+		(theMusic number: 23 loop: -1 play:)
 	)
 	
 	(method (doit)

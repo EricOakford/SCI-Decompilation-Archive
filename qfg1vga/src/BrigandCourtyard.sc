@@ -225,7 +225,7 @@
 	(method (init)
 		(LoadMany VIEW 94 194 590 3 515 536 537)
 		(LoadMany SOUND 73 35 81 6 4 9 4)
-		(cSound number: 73 loop: -1 play:)
+		(theMusic number: 73 loop: -1 play:)
 		(curRoom
 			addObstacle:
 				((Polygon new:)

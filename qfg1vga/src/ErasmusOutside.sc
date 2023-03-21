@@ -88,7 +88,7 @@
 ;;;		(theWindow init:)
 		
 		(super init:)
-		(cSound number: 114 loop: -1 init: play:)
+		(theMusic number: 114 loop: -1 init: play:)
 		(= saveSortedFeatures useSortedFeatures)
 		(= useSortedFeatures FALSE)
 		(= saveSpeed speed)

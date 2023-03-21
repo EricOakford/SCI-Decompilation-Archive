@@ -81,7 +81,7 @@
 	(theGame setCursor: normalCursor TRUE)
 	(sounds eachElementDo: #stop)
 	(if deathMusic
-		(cSound
+		(theMusic
 			number: deathMusic
 			priority: 15
 			loop: 1 110
@@ -594,7 +594,13 @@
 )
 
 (procedure (SoundFX soundNum)
-	(return soundNum)
+;;;	(return
+;;;		(if (> numVoices 4)
+			(return soundNum)
+;;;		else
+;;;			(return (+ 100 soundNum))
+;;;		)
+;;;	)
 )
 
 (procedure (SolvePuzzle flagEnum points charType)

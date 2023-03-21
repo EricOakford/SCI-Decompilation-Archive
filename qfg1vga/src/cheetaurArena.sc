@@ -139,7 +139,7 @@
 		(= nightPalette 0)
 		(cheetMusic stop:)
 		(cheetRoar dispose:)
-		(spareSound number: (SoundFX 38) loop: 1 play:)
+		(theMusic2 number: (SoundFX 38) loop: 1 play:)
 		(DisposeScript 419)
 		(super dispose:)
 	)

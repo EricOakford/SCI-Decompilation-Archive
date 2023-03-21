@@ -94,7 +94,7 @@
 		(|= disabledActions ACTION_RUN)
 		(|= disabledActions ACTION_SNEAK)
 		(Load VIEW 10)
-		(cSound stop: number: 24 loop: -1 play:)
+		(theMusic stop: number: 24 loop: -1 play:)
 		(super init:)
 		(magicStone init: approachVerbs: V_DO)
 		(fruit init: approachVerbs: V_DO)
@@ -191,7 +191,7 @@
 	)
 	
 	(method (newRoom n)
-		(cSound fade:)
+		(theMusic fade:)
 		(super newRoom: n)
 	)
 )

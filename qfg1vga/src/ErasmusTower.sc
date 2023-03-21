@@ -223,7 +223,7 @@
 		else
 			(ego init: actions: egoActions)
 			(cheese init:)
-			(cSound number: 117 loop: -1 init: play:)
+			(theMusic number: 117 loop: -1 init: play:)
 			(self setScript: intoTheTower)
 		)
 	)
@@ -1178,7 +1178,7 @@
 			(3
 				(doorSound stop:)
 				(Bset fWizKnowsEgoHasMagic)
-				(cSound fade:)
+				(theMusic fade:)
 				(curRoom newRoom: 32)
 			)
 		)
