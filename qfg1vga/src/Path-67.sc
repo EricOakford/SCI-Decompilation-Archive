@@ -840,7 +840,7 @@
 			(2
 				(HandsOff)
 				(theIconBar enable: ICON_LOOK)
-				(ChangeTheCursor 2)
+				(SetCurIcon 2)
 				(user canInput: TRUE)
 				(ego loop: 3)
 				(if (== enter67 6)

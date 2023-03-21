@@ -255,7 +255,7 @@
 	)
 	(cond 
 		(egoEscaped
-			(ChangeTheCursor 1)
+			(SetCurIcon 1)
 			(if (== vMonster 435)
 				(monster
 					setCycle: Walk

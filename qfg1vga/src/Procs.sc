@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# PROCS) ;814
-(include game.sh) (include "814.shm")
+(include game.sh) (include "815.shm")
 (use Main)
 (use CastCalm)
 (use CastOpen)
@@ -42,9 +42,9 @@
 	EatMeal 27
 	WtCarried 28
 	CanPickLocks 29
-	SaveTheCursor 30
-	RestoreTheCursor 31
-	ChangeTheCursor 32
+	SaveCurIcon 30
+	LoadCurIcon 31
+	SetCurIcon 32
 	VerbSpell 33
 )
 
@@ -52,9 +52,11 @@
 	local0
 )
 (procedure (EgoDead message title cel loop view
-		&tmp deadMsg deadTitle deadCel deadLoop deadView msgY msgX msgHeight [msgBuf 150] [titleBuf 50] [msgLen 4] [titleLen 4])
+		&tmp deadMsg deadTitle deadCel deadLoop deadView
+		msgY msgX msgHeight
+		[msgBuf 150] [titleBuf 50] [msgLen 4] [titleLen 4])
 		;EO: msgBuf increased from 120 to 150. This prevents really long messages from overlapping into the title.
-		;set up the death message, title, and icon
+	;set up the death message, title, and icon
 	(= deadMsg
 		(if (and argc message) message else C_DIE_GENERIC)
 	)
@@ -176,7 +178,7 @@
 
 (procedure (ChangeGait newGait gaitMsg &tmp temp0)
 	(if (and gaitMsg (not (User canControl:)))
-		(messager say: N_DIALOG NULL NULL 4 0 PROCS)
+		(messager say: N_PROCS NULL NULL 4 0 PROCS)
 		(return)
 	)
 	(if (!= newGait -1)
@@ -212,14 +214,14 @@
 	)
 )
 
-(procedure (NormalEgo theLoop theView theStoppedView &tmp moveView stopView dir)
+(procedure (NormalEgo theLoop theView stopView &tmp moveView sView dir)
 	(= moveView
 		(switch egoGait
-			(MOVE_RUN 5)
-			(MOVE_SNEAK 6)
-			(else  0)
+			(MOVE_RUN vEgoRun)
+			(MOVE_SNEAK vEgoSneak)
+			(else  vEgo)
 		))
-	(= stopView (if (== egoGait MOVE_SNEAK) 8 else 4))
+	(= sView (if (== egoGait MOVE_SNEAK) vEgoSneakStand else vEgoStand))
 	(ChangeGait -1 FALSE)
 	(if (not (User controls?))
 		(theGame setCursor: waitCursor)
@@ -228,7 +230,9 @@
 		(ego loop: theLoop)
 		(if (> argc 1)
 			(= moveView theView)
-			(if (> argc 2) (= stopView theStoppedView))
+			(if (> argc 2)
+				(= sView stopView)
+			)
 		)
 	)
 	(= dir
@@ -248,24 +252,24 @@
 		view: moveView
 		setLoop: -1
 		setLoop: (ScriptID 0 1)
-		setCycle: StopWalk stopView
+		setCycle: StopWalk sView
 		illegalBits: cWHITE
 		ignoreHorizon:
-		ignoreActors: 0
+		ignoreActors: FALSE
 		heading: dir
 	)
 )
 
 (procedure (AlreadyDone)
-	(messager say: N_DIALOG NULL NULL 5 0 PROCS)
+	(messager say: N_PROCS NULL NULL 5 0 PROCS)
 )
 
 (procedure (CantDo)
-	(messager say: N_DIALOG NULL NULL 6 0 PROCS)
+	(messager say: N_PROCS NULL NULL 6 0 PROCS)
 )
 
 (procedure (DontHave)
-	(messager say: N_DIALOG NULL NULL 7 0 PROCS)
+	(messager say: N_PROCS NULL NULL 7 0 PROCS)
 )
 
 (procedure (RedrawCast)
@@ -276,27 +280,29 @@
 	(return (> (MemoryInfo FreeHeap) howMuch))
 )
 
-(procedure (Face actor1 actor2 both whoToCue &tmp ang1To2 theX theY i)
-	(= i 0)
-	(if (IsObject actor2)
-		(= theX (actor2 x?))
-		(= theY (actor2 y?))
-		(if (== argc 3) (= i both))
-	else
-		(= theX actor2)
-		(= theY both)
-		(if (== argc 4) (= i whoToCue))
-	)
-	(= ang1To2
-		(GetAngle (actor1 x?) (actor1 y?) theX theY)
-	)
-	(cond 
-		((> (Abs (- ang1To2 (ego heading?))) 23)
-			(actor1
-				setHeading: ang1To2 (if (IsObject i) i else 0)
-			)
+(procedure (Face who theObjOrX theY whoCares &tmp theHeading lookX lookY obj)
+	(= obj 0)
+	(if (IsObject theObjOrX)
+		(= lookX (theObjOrX x?))
+		(= lookY (theObjOrX y?))
+		(if (== argc 3)
+			(= obj theY)
 		)
-		((IsObject i) (i cue:))
+	else
+		(= lookX theObjOrX)
+		(= lookY theY)
+		(if (== argc 4)
+			(= obj whoCares)
+		)
+	)
+	(= theHeading (GetAngle (who x?) (who y?) lookX lookY))
+	(cond 
+		((> (Abs (- theHeading (ego heading?))) 23)
+			(who setHeading: theHeading (if (IsObject obj) obj else 0))
+		)
+		((IsObject obj)
+			(obj cue:)
+		)
 	)
 )
 
@@ -308,7 +314,9 @@
 	(= costG (* ((inventory at: iGold) amount?) 10))
 	(= costS (not (mod costSilvers 10)))
 	(cond 
-		((< (+ costG haveS) costSilvers) (= rc FALSE))
+		((< (+ costG haveS) costSilvers)
+			(= rc FALSE)
+		)
 		((== (+ costG haveS) costSilvers)
 			((inventory at: iSilver) amount: 0)
 			((inventory at: iGold) amount: 0)
@@ -322,7 +330,7 @@
 			((inventory at: iSilver)
 				amount: (- ((inventory at: iSilver) amount?) (* haveG 10))
 			)
-			(= costSilvers (- costSilvers (* haveG 10)))
+			(-= costSilvers (* haveG 10))
 			((inventory at: iGold)
 				amount:
 					(-
@@ -363,7 +371,7 @@
 			(= Clock (+ Clock (/ (* GAMEHOUR newMinutes) 60)))
 		)
 	)
-	(= Clock (^ Clock 1))
+	(^= Clock 1)
 	(= oldTime timeODay)
 	(cond 
 		((< Clock 300)
@@ -429,8 +437,7 @@
 	(= success (<= difficulty skVal))
 	(= skDiv
 		(cond 
-			(
-			(<= (= skDiv (Abs (- difficulty skVal))) 10) 2)
+			((<= (= skDiv (Abs (- difficulty skVal))) 10) 2)
 			((<= skDiv 30) 4)
 			((<= skDiv 50) 6)
 			(else (return success))
@@ -464,24 +471,19 @@
 	(if (not [egoStats skillNum])
 		(return FALSE)
 	)
-	(if
-	(> (= learnValue (Abs learnValue)) [egoStats skillNum])
+	(if (> (= learnValue (Abs learnValue)) [egoStats skillNum])
 		(= learnValue [egoStats skillNum])
 	)
 	(= [egoStats EXPER] (+ [egoStats EXPER] (/ learnValue 4)))
 	(if
 		(>=
 			[skillTicks skillNum]
-			[egoStats (= [skillTicks skillNum]
-				(+ [skillTicks skillNum] learnValue)
-			)]
+			[egoStats (+= [skillTicks skillNum] learnValue)]
 		)
-		(= [skillTicks skillNum]
-			(- [skillTicks skillNum] [egoStats skillNum])
-		)
+		(-= [skillTicks skillNum] [egoStats skillNum])
 		(if
 			(>
-				(= [egoStats skillNum] (+ [egoStats skillNum] (Random 1 3)))
+				(+= [egoStats skillNum] (Random 1 3))
 				100
 			)
 			(= [egoStats skillNum] 100)	;stats max out at 100
@@ -497,7 +499,7 @@
 	)
 	(cond 
 		((<
-			(= foo (= [egoStats STAMINA] (- [egoStats STAMINA] pointsUsed))) 0)
+			(= foo (-= [egoStats STAMINA] pointsUsed)) 0)
 			(TakeDamage (/ (- -3 [egoStats STAMINA]) 4))
 			(= [egoStats STAMINA] 0)
 			(if (not fastCast)
@@ -505,7 +507,7 @@
 					((not (Btst fWornOut))
 						(Bset fWornOut)
 						(Wait 10)
-						(messager say: N_DIALOG NULL NULL 10 0 PROCS)
+						(messager say: N_PROCS NULL NULL 10 0 PROCS)
 					)
 					((<= [egoStats HEALTH] 0)
 						(EgoDead C_DIE_EXHAUSTION C_DIE_EXHAUSTION_TITLE)
@@ -525,7 +527,7 @@
 (procedure (UseMana pointsUsed)
 	(if [egoStats MAGIC]
 		(if
-		(< (= [egoStats MANA] (- [egoStats MANA] pointsUsed)) 0)
+		(< (-= [egoStats MANA] pointsUsed) 0)
 			(= [egoStats MANA] 0)
 		)
 		(if (> [egoStats MANA] (MaxMana))
@@ -540,7 +542,7 @@
 
 (procedure (TakeDamage damage)
 	(if (> damage 0) (SkillUsed VIT (/ (+ damage 1) 2)))
-	(if (< (= [egoStats HEALTH] (- [egoStats HEALTH] damage)) 0)
+	(if (< (-= [egoStats HEALTH] damage) 0)
 		(= [egoStats HEALTH] 0)
 	)
 	(if (> [egoStats HEALTH] (MaxHealth))
@@ -580,7 +582,7 @@
 
 (procedure (CastSpell spellNum &tmp retVal)
 	(if (< [egoStats MANA] [spellCost (+ (- spellNum OPEN) 1)])
-		(messager say: N_DIALOG NULL NULL 11 0 PROCS)
+		(messager say: N_PROCS NULL NULL 11 0 PROCS)
 		(Wait 30)
 		(= retVal FALSE)
 	else
@@ -619,17 +621,17 @@
 						amount: (- ((inventory at: iRations) amount?) 1)
 					)
 				)
-				(messager say: N_DIALOG NULL NULL 12 0 PROCS)
+				(messager say: N_PROCS NULL NULL 12 0 PROCS)
 			)
 		)
 		((Btst fHungry)
 			(Bset fStarving)
-			(messager say: N_DIALOG NULL NULL 13 0 PROCS)
+			(messager say: N_PROCS NULL NULL 13 0 PROCS)
 			(TakeDamage 1)
 		)
 		(else
 			(Bset fHungry)
-			(messager say: N_DIALOG NULL NULL 14 0 PROCS)
+			(messager say: N_PROCS NULL NULL 14 0 PROCS)
 		)
 	)
 )
@@ -638,13 +640,10 @@
 	(= index 0)
 	(= tot 0)
 	(while (< index iLastInvItem)
-		(= tot
-			(+
-				tot
-				(*
-					(((ScriptID GLORYINV 0) at: index) amount?)
-					(((ScriptID GLORYINV 0) at: index) weight?)
-				)
+		(+= tot
+			(*
+				(((ScriptID GLORYINV 0) at: index) amount?)
+				(((ScriptID GLORYINV 0) at: index) weight?)
 			)
 		)
 		(++ index)
@@ -660,17 +659,17 @@
 	)
 )
 
-(procedure (SaveTheCursor)
-	(if (not oldIcon)
-		(= oldIcon (theIconBar curIcon?))
+(procedure (SaveCurIcon)
+	(if (not theCurIcon)
+		(= theCurIcon (theIconBar curIcon?))
 	)
 )
 
-(procedure (RestoreTheCursor)
-	(if oldIcon
-		(theIconBar curIcon: oldIcon)
+(procedure (LoadCurIcon)
+	(if theCurIcon
+		(theIconBar curIcon: theCurIcon)
 		(theGame setCursor: ((theIconBar curIcon?) cursor?))
-		(= oldIcon 0)
+		(= theCurIcon 0)
 		(if
 			(and
 				(== (theIconBar curIcon?) (theIconBar at: ICON_USEIT))
@@ -681,12 +680,12 @@
 	)
 )
 
-(procedure (ChangeTheCursor curItem &tmp newCur)
+(procedure (SetCurIcon theIcon &tmp newCur)
 	(if (>= argc 2)
-		(= newCur (Inventory at: curItem))
+		(= newCur (Inventory at: theIcon))
 		(theIconBar select: (theIconBar at: ICON_USEIT) curInvIcon: newCur)
 	else
-		(= newCur (theIconBar at: curItem))
+		(= newCur (theIconBar at: theIcon))
 		(theIconBar select: newCur)
 	)
 	(theGame setCursor: (newCur cursor?) TRUE)
@@ -702,10 +701,10 @@
 				(CastOpen)
 			)
 			(V_DETECT
-				(messager say: N_DIALOG NULL NULL 15 0 PROCS)
+				(messager say: N_PROCS NULL NULL 15 0 PROCS)
 			)
 			(V_TRIGGER
-				(messager say: N_DIALOG NULL NULL 16 0 PROCS)
+				(messager say: N_PROCS NULL NULL 16 0 PROCS)
 			)
 			(V_DAZZLE
 				(CastDazz)
@@ -714,18 +713,18 @@
 				(CastCalm)
 			)
 			(V_FETCH
-				(messager say: N_DIALOG NULL NULL 17 0 PROCS)
+				(messager say: N_PROCS NULL NULL 17 0 PROCS)
 			)
 			(V_ZAP
 				(if (or (ego has: iSword) (ego has: iDagger))
 					(= zapPower (+ 5 (/ [egoStats ZAP] 10)))
-					(messager say: N_DIALOG NULL NULL 18 0 PROCS)
+					(messager say: N_PROCS NULL NULL 18 0 PROCS)
 				else
-					(messager say: N_DIALOG NULL NULL 19 0 PROCS)
+					(messager say: N_PROCS NULL NULL 19 0 PROCS)
 				)
 			)
 			(else 
-				(messager say: N_DIALOG NULL NULL 20 0 PROCS)
+				(messager say: N_PROCS NULL NULL 20 0 PROCS)
 			)
 		)
 	)

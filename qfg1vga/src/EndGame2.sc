@@ -70,7 +70,7 @@
 	(if modelessDialog
 		(modelessDialog dispose:)
 	)
-	(cast eachElementDo: #dispose 81)
+	(cast eachElementDo: #dispose #delete)
 	(switch (curRoom script?)
 		(awardScript
 			(curRoom setScript: heroScript)
@@ -262,7 +262,9 @@
 (instance awardScript of Script
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (NextScript))
+			(0
+				(NextScript)
+			)
 		)
 	)
 )
@@ -270,7 +272,9 @@
 (instance post1 of Script
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 1))
+			(0
+				(= seconds 1)
+			)
 			(1
 				(if (and (Btst fBabaFrog) (Btst fSavedBarnard))
 					(messager say: N_ROOM NULL C_BESTENDING)
@@ -292,7 +296,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 2))
+			(0
+				(= seconds 2)
+			)
 			(1
 				(if (Btst fBabaFrog)
 					(= saveBits (messager say: N_ROOM NULL C_BABAFROG))
@@ -309,7 +315,9 @@
 				)
 				(= seconds 8)
 			)
-			(3 (self dispose:))
+			(3
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -332,7 +340,10 @@
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
-			(0 (= local0 0) (= ticks 5))
+			(0
+				(= local0 0)
+				(= ticks 5)
+			)
 			(1
 				(if heroScriptTimer
 					(-- heroScriptTimer)
@@ -346,24 +357,25 @@
 )
 
 (instance bigScript of Script
-	(method (init &tmp temp0 temp1)
+	(method (init &tmp stepX stepY)
 		(bck init:)
 		(mid init:)
 		(frt init:)
-		(= temp0
+		(= stepX
 			(switch howFast
 				(slow 4)
 				(medium 3)
 				(else  2)
 			))
-		(= temp1
+		(= stepY
 			(switch howFast
 				(slow 2)
 				(else  1)
-			))
-		(bck setStep: temp0 temp1)
-		(mid setStep: temp0 temp1)
-		(frt setStep: temp0 temp1)
+			)
+		)
+		(bck setStep: stepX stepY)
+		(mid setStep: stepX stepY)
+		(frt setStep: stepX stepY)
 		(super init: &rest)
 		(curRoom style: IRISOUT drawPic: 750)
 		(self setScript: post2)
@@ -386,7 +398,9 @@
 			(0
 				(mid setMotion: MoveTo 373 22 self)
 			)
-			(1 (NextScript))
+			(1
+				(NextScript)
+			)
 		)
 	)
 )
@@ -408,7 +422,9 @@
 					setMotion: upPath self
 				)
 			)
-			(1 (self changeState: 29))
+			(1
+				(self changeState: 29)
+			)
 			(2
 				(carpet cel: 1 setPri: 8 setMotion: MoveTo 312 72 self)
 			)
@@ -496,7 +512,9 @@
 					setMotion: awayPath self
 				)
 			)
-			(29 (NextScript))
+			(29
+				(NextScript)
+			)
 		)
 	)
 )

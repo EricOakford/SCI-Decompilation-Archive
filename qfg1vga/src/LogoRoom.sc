@@ -13,7 +13,7 @@
 )
 
 (local
-	local0
+	timeToCycle
 )
 (instance LogoRoom of Room
 	(properties
@@ -22,7 +22,7 @@
 	)
 	
 	(method (init)
-		(SetPort 0 0 200 320 0 0)
+		(SetPort 0 0 SCRNHIGH SCRNWIDE 0 0)
 		(theIconBar disable:)
 		(theGame setCursor: ARROW_CURSOR FALSE)
 		(Bset fHideCursor)
@@ -35,7 +35,7 @@
 	)
 	
 	(method (doit)
-		(if (== (mod (++ local0) 3) 0)
+		(if (== (mod (++ timeToCycle) 3) 0)
 			(Palette PALCycle 95 218 -1)
 		)
 		(super doit:)
@@ -88,19 +88,36 @@
 (instance logoScript of Script
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 2))
+			(0
+				(= cycles 2)
+			)
 			(1
-				(logoSound number: 100 loop: 1 flags: 0 play: self)
+				(logoSound
+					number: 100
+					loop: 1
+					flags: 0
+					play: self
+				)
 			)
 			(2)
-			(3 (glint setCycle: EndLoop self))
-			(4 (glint dispose:))
-			(5 (glint2 setCycle: EndLoop self))
-			(6 (glint2 dispose:))
-			(7 (= ticks 60))
+			(3
+				(glint setCycle: EndLoop self)
+			)
+			(4
+				(glint dispose:)
+			)
+			(5
+				(glint2 setCycle: EndLoop self)
+			)
+			(6
+				(glint2 dispose:)
+			)
+			(7
+				(= ticks 60)
+			)
 			(8
 				(logoSound stop:)
-				(SetPort 0 0 190 320 10 0)
+				(SetPort 0 0 190 SCRNWIDE 10 0)
 				(curRoom newRoom: NOTICE2)
 				(self dispose:)
 			)

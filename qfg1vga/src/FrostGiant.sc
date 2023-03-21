@@ -951,7 +951,7 @@
 					(EgoDead C_DIE_FALL C_DIE_FALL_TITLE 0 1 3)
 				)
 				(HandsOn)
-				(ChangeTheCursor 1)
+				(SetCurIcon 1)
 				(NormalEgo)
 				(ego setPri: pYELLOW)
 				(self dispose:)

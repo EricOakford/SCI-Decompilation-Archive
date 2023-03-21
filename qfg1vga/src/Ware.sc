@@ -32,13 +32,13 @@
 			((= theBuyDialog (DText new:))
 				text: {You may buy:}
 				setSize:
-				moveTo: 4 v
+				moveTo: MARGIN v
 			)
 		else
 			((= theBuyDialog (DText new:))
 				text: {You may give:}
 				setSize:
-				moveTo: 4 v
+				moveTo: MARGIN v
 			)
 		)
 		(self add: theBuyDialog setSize:)

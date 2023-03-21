@@ -92,7 +92,7 @@
 		(return
 			(if (super select: &rest)
 				(actionBar hide:)
-				(ChangeTheCursor ICON_WALK)
+				(SetCurIcon ICON_WALK)
 				(ChangeGait MOVE_WALK TRUE)
 				(return TRUE)
 			else
@@ -123,7 +123,7 @@
 		(return
 			(if (super select: &rest)
 				(actionBar hide:)
-				(ChangeTheCursor ICON_WALK)
+				(SetCurIcon ICON_WALK)
 				(ChangeGait MOVE_RUN TRUE)
 				(return TRUE)
 			else
@@ -154,7 +154,7 @@
 		(return
 			(if (super select: &rest)
 				(actionBar hide:)
-				(ChangeTheCursor ICON_WALK)
+				(SetCurIcon ICON_WALK)
 				(if (!= egoGait MOVE_SNEAK)
 					(if (TrySkill STEALTH 5 0)
 						(ChangeGait MOVE_SNEAK TRUE)

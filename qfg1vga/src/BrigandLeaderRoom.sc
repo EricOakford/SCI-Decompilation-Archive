@@ -1209,7 +1209,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ChangeTheCursor 3)
+				(SetCurIcon 3)
 				(= ticks 120)
 			)
 			(1
@@ -1275,7 +1275,7 @@
 			(16
 				(yorick setLoop: 7 cel: 0 setCycle: EndLoop self)
 				(HandsOn)
-				(ChangeTheCursor 3)
+				(SetCurIcon 3)
 				(tromp number: (SoundFX 66) loop: 4 play:)
 				(= yorickOnScreen FALSE)
 			)

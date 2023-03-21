@@ -1,7 +1,7 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# MAIN) ;0
 (include game.sh)
-(include "999.shm") (include "814.shm")
+(include "999.shm") (include "815.shm")
 (include "120.shm")
 (use GameInit)
 (use CastDart)
@@ -458,7 +458,7 @@
 	global419						;unused
 	saveCursorX
 	saveCursorY
-	oldIcon
+	theCurIcon
 	totalInvItems
 	oldScore
 	disabledActions					;which action icons are disabled
@@ -497,8 +497,11 @@
 		(DisposeScript PROCS)
 	)
 	(= isHandsOff TRUE)
-	(SaveTheCursor)
-	(User canControl: FALSE canInput: FALSE)
+	(SaveCurIcon)
+	(User
+		canControl: FALSE
+		canInput: FALSE
+	)
 	(= egoSpeed speed)
 	(= disabledIcons 0)
 	(theIconBar eachElementDo: #perform checkIcon)
@@ -541,7 +544,7 @@
 		ICON_CONTROL
 	)
 	(ego signal: (| (ego signal?) fixedCel))
-	(RestoreTheCursor)
+	(LoadCurIcon)
 	(if (not (theIconBar curInvIcon?))
 		(theIconBar disable: ICON_USEIT)
 	)
@@ -610,7 +613,7 @@
 	; Quest for Glory specific attributes the hero has 
 	; i.e. skill management, magic, etc.
 	(properties
-		view 0
+		view vEgo
 		noun N_EGO
 		modNum EGOSEZ
 		name "ego"
@@ -698,12 +701,12 @@
 			(if
 				(and
 					(not (user canControl:))
-					(== oldIcon (theIconBar at: ICON_USEIT))
+					(== theCurIcon (theIconBar at: ICON_USEIT))
 				)
-				(= oldIcon (theIconBar at: ICON_WALK))
+				(= theCurIcon (theIconBar at: ICON_WALK))
 				(theIconBar curIcon: ICON_WALK)
 			else
-				(ChangeTheCursor ICON_WALK)
+				(SetCurIcon ICON_WALK)
 			)
 		)
 		(return num)
@@ -1156,7 +1159,7 @@
 	)
 	
 	(method (startRoom roomNum &tmp [scriptNum 10] [debugNum 10])
-		(SaveTheCursor)
+		(SaveCurIcon)
 		(theGame setCursor: waitCursor TRUE)
 		(StartARoom roomNum) ;Most of the startRoom method was moved into its own script.
 		(Message MsgGet SYSTEM N_CUE NULL C_SCRIPT_NUM 1 @scriptNum)
@@ -1204,7 +1207,7 @@
 		Cycle
 		(super startRoom: roomNum)
 		(if (not isHandsOff)
-			(RestoreTheCursor)
+			(LoadCurIcon)
 			(theGame setCursor: ((theIconBar curIcon?) cursor?) TRUE)
 		)
 		(statusCode doit: roomNum)
@@ -1827,7 +1830,7 @@
 	)
 	
 	(method (show)
-		(RestoreTheCursor)
+		(LoadCurIcon)
 		(super show: &rest)
 	)
 	
@@ -1969,7 +1972,7 @@
 	(method (select)
 		(return
 			(if (super select: &rest)
-				(SaveTheCursor)
+				(SaveCurIcon)
 				(theIconBar hide:)
 				((ScriptID ACTIONBAR) init: show:)
 				(return TRUE)
@@ -2007,7 +2010,7 @@
 					(return TRUE)
 				else
 					(if (!= ((theIconBar curIcon?) cursor?) 948)
-						(SaveTheCursor)
+						(SaveCurIcon)
 					)
 					(theIconBar hide:)
 					((ScriptID SPELLS) init: showSelf:)

@@ -4,7 +4,7 @@
 
 ;;; NOUNS
 
-(define N_DIALOG 1)
+(define N_PROCS 1)
 
 ;;; CASES
 

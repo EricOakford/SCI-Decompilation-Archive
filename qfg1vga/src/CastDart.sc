@@ -127,7 +127,7 @@
 			signal: savSignal
 			cycleSpeed: savSpeed
 		)
-		(RestoreTheCursor)
+		(LoadCurIcon)
 		(super dispose:)
 		(DisposeScript CASTDART)
 	)

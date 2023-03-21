@@ -61,11 +61,22 @@
 
 (instance startControls of GameControls
 	(method (init &tmp temp0)
-		(self
-			add:
-				(paper1 theObj: introCode selector: #doit yourself:)
-				(paper2 theObj: charCode selector: #doit yourself:)
-				(paper3 theObj: restoreCode selector: #doit yourself:)
+		(self add:
+			(paper1
+				theObj: introCode
+				selector: #doit
+				yourself:
+			)
+			(paper2
+				theObj: charCode
+				selector: #doit
+				yourself:
+			)
+			(paper3
+				theObj: restoreCode
+				selector: #doit
+				yourself:
+			)
 		)
 		(super init: &rest)
 	)

@@ -8,7 +8,6 @@
 
 (class TargActor of Actor
 	(properties
-		code 0
 		status 0
 		targDeltaX 0
 		targDeltaY 0

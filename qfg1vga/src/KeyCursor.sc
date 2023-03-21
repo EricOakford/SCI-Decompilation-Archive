@@ -33,8 +33,7 @@
 				(if (or (!= evX curX) (!= evY curY))
 					(= thisAngle (GetAngle evX evY curX curY))
 					(= thisDistance (GetDistance evX evY curX curY))
-					(if
-					(> (= workingAngle (Abs (- targetAngle thisAngle))) 180)
+					(if (> (= workingAngle (Abs (- targetAngle thisAngle))) 180)
 						(= workingAngle (- 360 workingAngle))
 					)
 					(= t2 (<= workingAngle (+ bestAngle 10)))

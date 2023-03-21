@@ -58,6 +58,15 @@
 (define CASTLE 	 807) ;Locale
 (define STREET 	 811) ;Locale
 
+;Ego views
+(define vEgo	0)
+(define vEgoTrip	3)
+(define vEgoStand	4)
+(define vEgoRun		5)
+(define vEgoSneak	6)
+(define vEgoSneakStand	7)
+
+
 ;All Fighting Characters
 (define vBear 			420)
 (define vBearDefeated 	421)

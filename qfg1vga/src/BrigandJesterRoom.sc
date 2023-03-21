@@ -1082,7 +1082,7 @@
 		(switch (= state newState)
 			(0
 				(= local78 1)
-				(ChangeTheCursor 1)
+				(SetCurIcon 1)
 				(HandsOff)
 				(ego setMotion: MoveTo 243 91 self)
 			)
@@ -1569,7 +1569,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ChangeTheCursor 1)
+				(SetCurIcon 1)
 				(HandsOff)
 				(ego
 					setLoop: 1

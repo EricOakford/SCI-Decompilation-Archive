@@ -39,7 +39,7 @@
 		(HandsOff)
 		(theIconBar enable: ICON_LOOK)
 		(user canInput: TRUE)
-		(ChangeTheCursor ICON_LOOK)
+		(SetCurIcon ICON_LOOK)
 		(arturo init: stopUpd:)
 		(rogerHardy init: stopUpd:)
 		(bobMallory init: stopUpd:)
