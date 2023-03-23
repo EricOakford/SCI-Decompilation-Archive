@@ -15,8 +15,8 @@
 )
 
 (local
-	[local0 45]
-	jokeNum
+	[toldJoke 45]
+	testCount
 	theDrinker
 	egoSittingLoop
 	comedianOnStage
@@ -24,9 +24,9 @@
 	[ethnic1Str 10]
 	[ethnic2Str 10]
 	[ethnic3Str 10]
-	local109
-	local110
-	local111
+	group1
+	group2
+	group3
 )
 (instance rm340 of Room
 	(properties
@@ -214,10 +214,10 @@
 				)
 			)
 			((and debugging (Said 'test/joke'))
-				(= jokeNum
+				(= testCount
 					(GetNumber {First joke (from 1 to LAST JOKE):})
 				)
-				(Printf 340 6 jokeNum)
+				(Printf 340 6 testCount)
 			)
 			((Said 'address/comedian')
 				(if comedianOnStage
@@ -425,9 +425,10 @@
 		)
 	)
 	
-	(method (changeState newState &tmp [str 200] [len 4] temp204 temp205 temp206 temp207 i)
-		;EO: this method has been successfully decompiled!
-		; It should be tested to make sure it works properly.
+	(method (changeState newState &tmp [jokeString 200] [jokeArgs 4] count line i j k)
+		;EO: this method has been successfully decompiled,
+		; but state 11 required referring to the original source to fix
+		; a bug.
 		(switch (= state newState)
 			(0)
 			(1
@@ -475,13 +476,13 @@
 				(= ethnic1Str 0)
 				(= ethnic2Str 0)
 				(= ethnic3Str 0)
-				(if (u> 3 (StrLen @ethnic1Str))
+				(while (u> 3 (StrLen @ethnic1Str))
 					(GetInput @ethnic1Str 15 {Ethnic group #1:})
 				)
-				(if (u> 3 (StrLen @ethnic2Str))
+				(while (u> 3 (StrLen @ethnic2Str))
 					(GetInput @ethnic2Str 15 {Ethnic group #2:})
 				)
-				(if (u> 3 (StrLen @ethnic3Str))
+				(while (u> 3 (StrLen @ethnic3Str))
 					(GetInput @ethnic3Str 15 {Ethnic group #3:})
 				)
 				(Print 340 48)
@@ -492,76 +493,89 @@
 				(= seconds 3)
 			)
 			(11
-				(aComic setCycle: Walk viewer: 0)
-				(= temp204 0)
-				(++ temp204)
-				(= temp206 (Random 0 42))
-				(if jokeNum (= [local0 (= temp206 (++ jokeNum))] 0))
-				(if (== [local0 temp206] 0)
-					(= [local0 temp206] 1)
-					(= local110 (= local109 (Random 49 51)))
-					(= local111 local109)
-					(if (== local109 local110)
-						(= local110 (Random 49 51))
-					)
-					(while (or (== local111 local109) (== local111 local110))
-						(= local111 (Random 49 51))
-					)
-					(= temp207 0)
-					(while (< temp207 5)
-						(= i 0)
-						(Format @str 340 49 341 (+ temp207 (* temp206 5)))
-						(if (!= 32 (StrAt @str 1))
-							(= temp205 0)
-							(if (< temp205 (StrLen @str))
-								(if (== 47 (StrAt @str temp205))
-									(StrAt @str temp205 37)
-									(switch (StrAt @str (++ temp205))
-										(local109
-											(= [len i] @ethnic1Str)
-											(++ i)
-										)
-										(local110
-											(= [len i] @ethnic2Str)
-											(++ i)
-										)
-										(local111
-											(= [len i] @ethnic3Str)
-											(++ i)
-										)
-									)
-									(StrAt @str temp205 115)
-									(++ temp205)
-								)
-								(++ temp205)
-							)
-							(Printf
-								@str
-								[len 0]
-								[len 1]
-								[len 2]
-								[len 3]
-								[len 4]
-							)
-						)
-						(++ temp207)
-					)
-					(if (> jokeNum 42)
-						(if jokeNum
-							(Print 340 50)
-							(= jokeNum 0)
-						else
-							(Print 340 51)
-						)
-					)
-					(aDrummer setCycle: EndLoop)
-					(if (> (DoSound NumVoices) 5)
-						(soundFX number: (Random 21 27) loop: 1 play:)
-					)
-				else
-					(>= temp204 1000)
-					(= state 12)
+				(aComic
+					setCycle:			Walk
+					viewer:			FALSE
 				)
+				(= count 0)
+				(repeat
+					(++ count)
+					(= i (Random 0 42))
+
+					(if testCount				;**	debugging code
+						(= i (++ testCount))
+						(= [toldJoke i] FALSE)
+					)
+
+					(if (== [toldJoke i] FALSE)
+						(= [toldJoke i] TRUE)
+						(= group1 (Random `1 `3))
+						(= group2 group1)
+						(= group3 group1)
+						(while (== group1 group2)
+							(= group2 (Random `1 `3))
+						)
+						(while (or	(== group3 group1)
+										(== group3 group2))
+							(= group3 (Random `1 `3))
+						)
+						(for ((= j 0)) ( < j 5) ((++ j))
+							(= k 0)
+							(Format @jokeString 340 49 341 (+ j (* i 5)))
+							(if (!= SPACEBAR (StrAt @jokeString 1))
+								(for ((= line 0)) (< line (StrLen @jokeString)) ((++ line))
+									(if (== `/ (StrAt @jokeString line))
+										(StrAt @jokeString line `%)
+										(switch (StrAt @jokeString (++ line))
+											(group1
+												(= [jokeArgs k] @ethnic1Str)
+												(++ k)
+											)
+											(group2
+												(= [jokeArgs k] @ethnic2Str)
+												(++ k)
+											)
+											(group3
+												(= [jokeArgs k] @ethnic3Str)
+												(++ k)
+											)
+										)
+										(StrAt @jokeString line `s)
+										(++ line)
+									)
+								)
+								(Printf @jokeString [jokeArgs 0] [jokeArgs 1] 
+									[jokeArgs 2] [jokeArgs 3] [jokeArgs 4] )
+							)
+						)
+
+						(if (> testCount 42)
+							(if testCount
+								(Print 340 50)
+								(= testCount 0)
+							else
+								(Print 340 51)
+							)
+						)
+						(aDrummer
+							setCycle:			EndLoop
+						)
+						(if ( > (DoSound NumVoices) 5)
+							(soundFX
+	 							number:			(Random 21 27)
+								loop:				1
+								play:
+							)
+						)
+						(break)
+					)
+
+					(if (>= count 1000)
+						(= state 12)
+						(break)
+					)
+				)
+
 				(= seconds 2)
 			)
 			(12
