@@ -29,7 +29,7 @@
 	hutY
 	gateOpen
 	crushedByHut
-	local6
+	local6	;unused
 	skullTellMainBranch = [
 		STARTTELL
 		-7		;C_BABA
@@ -1094,7 +1094,9 @@
 					(messager say: N_ROOM NULL 34 1 self)
 				)
 			)
-			(1 (= seconds 10))
+			(1
+				(= seconds 10)
+			)
 			(2
 				(if (== hutState hutNODEAL)
 					(self cue:)
@@ -1420,7 +1422,6 @@
 )
 
 (instance egoActions of Actions
-	
 	(method (doVerb theVerb)
 		(return
 			(if (== theVerb V_MUSHROOM)
@@ -1434,8 +1435,6 @@
 )
 
 (instance sBlink of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (client setCycle: EndLoop self))

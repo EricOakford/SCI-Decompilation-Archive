@@ -106,7 +106,7 @@
 
 (define pBlueSkyForCarpet 750)
 
-(define vIcons		800)
+(define vDeathIcons		800)
 (define vCharSheet	802)
 (define vStatusBar	803)
 (define vMonoStatusBar 804)	;unused in VGA
@@ -123,4 +123,5 @@
 (define vTrialByFire 925)
 (define vEndCreditsCarpet 925)
 
-(define vControlIcons	995)
+(define vIcons		990)
+(define vGameControls	995)

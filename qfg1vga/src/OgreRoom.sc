@@ -143,9 +143,18 @@
 		(super init:)
 		(features add: cave rocks trees)
 		;UPGRADE
-;;;		(cave init:)
-;;;		(rocks init:)
-;;;		(trees init:)
+;;;		(cave
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
+;;;		(rocks
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(trees
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
 		
 		(Bclr fBearFriendly)
 		(NormalEgo)
@@ -154,19 +163,29 @@
 			((== prevRoomNum vOgre)
 				(if (<= monsterHealth 0)
 					(ogre posn: 97 124)
-					(ego view: 4 posn: 66 123 loop: 0 cel: 0 setHeading: 90)
+					(ego
+						view: vEgoStand
+						posn: 66 123
+						loop: facingEast
+						cel: 0
+						setHeading: 90
+					)
 					(self setScript: ogreDies)
 					(= monsterNum 0)
 				else
 					(ego
 						posn: 170 170
-						loop: 1
+						loop: facingWest
 						setMotion: PolyPath 30 160
 						cel: 4
 					)
 					(|= disabledActions ACTION_REST)
 					(ChangeGait MOVE_RUN FALSE)
-					(ogre init: posn: 176 123 setScript: ogreVSego)
+					(ogre
+						init:
+						posn: 176 123
+						setScript: ogreVSego
+					)
 				)
 			)
 			((Btst fBeatOgre)
@@ -757,7 +776,10 @@
 			)
 			(1
 				(if (== (ego view?) 6)
-					(ogre setCycle: Walk setMotion: PChase ego 20 self)
+					(ogre
+						setCycle: Walk
+						setMotion: PChase ego 20 self
+					)
 				else
 					(ogre
 						setCycle: Walk
@@ -848,7 +870,7 @@
 				)
 			)
 			(4
-				(ShakeScreen 1)
+				(ShakeScreen shakeSDown)
 				(ogre setCel: 4)
 				(= ticks 15)
 			)
@@ -858,7 +880,7 @@
 			)
 			(6
 				(crash number: (SoundFX 66) init: play:)
-				(ShakeScreen 1)
+				(ShakeScreen shakeSDown)
 				(= [ogrePts 0] 134)
 				(= [ogrePts 1] 98)
 				(= [ogrePts 2] 158)

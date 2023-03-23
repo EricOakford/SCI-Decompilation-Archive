@@ -43,10 +43,10 @@
 	bearState2
 	dartX
 	dartY
-	bearState5
-	bearState6
-	bearState7 = [253 295 149 226 284 319 93 152 223 29 65]
-	local28 = [101 64 19 164 152 103 91 61 58 130 54]
+	dartCued
+	dartToIndex
+	dartToX = [253 295 149 226 284 319 93 152 223 29 65]
+	dartToY = [101 64 19 164 152 103 91 61 58 130 54]
 	dripX = [28 63 83 102 235 295 195 39 251]
 	dripY = [93 85 79 79 86 99 98 103 90 146 124 319 189]
 )
@@ -138,7 +138,7 @@
 )
 
 (procedure (KilledByBear)
-	(EgoDead C_DIE_BEAR C_DIE_BEAR_TITLE 0 0 800)
+	(EgoDead C_DIE_BEAR C_DIE_BEAR_TITLE 0 0 vDeathIcons)
 )
 
 (procedure (localproc_049f)
@@ -176,7 +176,12 @@
 			(ChangeGait MOVE_WALK FALSE)
 		)
 		(if (or (!= prevRoomNum 15) (== (theMusic prevSignal?) -1))
-			(theMusic priority: 1 number: 20 loop: -1 play:)
+			(theMusic
+				priority: 1
+				number: 20
+				loop: -1
+				play:
+			)
 		)
 		(if (not (Btst fBearGone))
 			(bear init:)
@@ -187,10 +192,22 @@
 				(puff init:)
 			)
 		)
-		(drip init: setScript: dripScript)
-		(stalactites init:)
-		(stalagmites init:)
-		(caveGlow init:)
+		(drip
+			init:
+			setScript: dripScript
+		)
+		(stalactites
+			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+		)
+		(stalagmites
+			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+		)
+		(caveGlow
+			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+		)
 		(NormalEgo)
 		(ego setScript: cmonIn)
 	)
@@ -668,8 +685,8 @@
 
 (instance bouncer of Script
 	(method (doit)
-		(if (and bearState5 (not (dart inRect: 10 35 310 205)))
-			(= bearState5 0)
+		(if (and dartCued (not (dart inRect: 10 35 310 205)))
+			(= dartCued 0)
 			(self cue:)
 		)
 		(super doit:)
@@ -678,8 +695,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= bearState6 (Random 3 5))
-				(= bearState5 1)
+				(= dartToIndex (Random 3 5))
+				(= dartCued 1)
 				(localproc_0cb2)
 				(dart
 					posn: (ego x?) (ego y?)
@@ -701,13 +718,13 @@
 					posn: (dart x?) (dart y?)
 					setCycle: EndLoop
 				)
-				(+= bearState6 (Random 1 3))
+				(+= dartToIndex (Random 1 3))
 				(dart
-					setMotion: MoveTo [bearState7 bearState6] [local28 bearState6] self
+					setMotion: MoveTo [dartToX dartToIndex] [dartToY dartToIndex] self
 				)
 			)
 			(2
-				(if (< bearState6 10)
+				(if (< dartToIndex 10)
 					(-= state 2))
 				(self cue:)
 			)
@@ -755,7 +772,10 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego ignoreActors: 1 setMotion: MoveTo 235 (ego y?) self)
+				(ego
+					ignoreActors: TRUE
+					setMotion: MoveTo 235 (ego y?) self
+				)
 			)
 			(1
 				(bear loop: 2 cel: 0 setCycle: EndLoop self)

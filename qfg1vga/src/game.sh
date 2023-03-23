@@ -202,13 +202,3 @@
 	koboldSTATE3
 	koboldDEAD
 )
-
-;Control panel defines
-(define CONTROL_WIDTH		149)
-(define INDICATOR_X			95)
-(define INDICATOR_Y 		28)
-(define HEADER_X			64)
-(define SLIDER_X			67)
-(define SLIDER_Y			24)
-(define CONTROL_BUTTON_X	8)
-(define CONTROL_BUTTON_Y	6)

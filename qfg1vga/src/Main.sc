@@ -139,7 +139,7 @@
 	egoX
 	egoY
 	debugging
-	theMusic					;music object, current playing music?
+	theMusic				;music object, current playing music
 	daySheriffBreakIn		;this is the game day that you broke into the Sheriff's house.
 							;After this day, the door will be barred, and you can no longer break in.
 	dayLOLBreakIn			;this is the game day that you broke into the Little Old Lady's house.
@@ -212,7 +212,7 @@
 		global171
 		global172
 		global173
-		global174			;end of skillTicks
+	lastSkillTick			;end of skillTicks
 	lockPickBonus			;lock picking bonus (LockPick gives you 10 bonus, Tool Kit gives you 35 bonus)
 	;these 8 are part of an array
 	spellCost 	  		=	2 	;SpellMPUsage (Open)
@@ -375,7 +375,7 @@
 		global336
 		global337
 		global338
-		global339
+	endGameFlags
 	invDropped			;dropped inventory (start of 50 variable array; 40 are used)
 		global341
 		global342
@@ -445,19 +445,19 @@
 		global406
 		global407
 		global408
-		global409
+	endInvDropped
 	ogreX =  160
 	ogreY =  120
 	ogreHealth =  93				;ogre's current HP (CI: looks like his max used to 93, but was upped to 112 later on.)
 	ogreDeathDay =  1000			;day defeated Ogre
 	brutusHealth					;HP for Brutus in target range
 	manaCounter =  MANA_RATE		;MP Countdown
-	theMusic2						;music playing in the arenas during a battle
+	theMusic2						;second sound object, can be used for sound effects
 	magesMazePlayCount				;The number of times the hero has played Mage's Maze
 	iconSettings					;which icons are disabled
 	global419						;unused
-	saveCursorX
-	saveCursorY
+	saveCursorX						; position of cursor when HandsOff is used
+	saveCursorY						;
 	theCurIcon
 	totalInvItems
 	oldScore
@@ -486,7 +486,7 @@
 		global447
 		global448
 		global449
-		global450
+	endUserName
 	nightPalette					;number of room's nighttime palette
 	global452						;unused
 )
@@ -498,13 +498,18 @@
 	)
 	(= isHandsOff TRUE)
 	(SaveCurIcon)
+	
 	(User
 		canControl: FALSE
 		canInput: FALSE
 	)
 	(= egoSpeed speed)
+	
+	; save the state of each icon so we can put the icon bar back the way it was
 	(= iconSettings 0)
 	(theIconBar eachElementDo: #perform checkIcon)
+	
+	; disable some icons so user doesn't screw us up
 	(theIconBar disable:
 		ICON_WALK
 		ICON_LOOK
@@ -515,6 +520,9 @@
 		ICON_USEIT
 		ICON_INVENTORY
 	)
+	
+	; if no mouse, move the cursor out of the way, but save the initial
+	; posn so HandsOn can restore it
 	(if (not (HaveMouse))
 		(= saveCursorX mouseX)
 		(= saveCursorY mouseY)
@@ -530,8 +538,13 @@
 		(= isHandsOff FALSE)
 		(theGame setSpeed: egoSpeed)
 		(= egoSpeed 6)
-		(User canControl: TRUE canInput: TRUE)
+		(User
+			canControl: TRUE
+			canInput: TRUE
+		)
 	)
+	
+	; re-enable iconbar
 	(theIconBar enable:
 		ICON_WALK
 		ICON_LOOK
@@ -548,11 +561,12 @@
 	(if (not (theIconBar curInvIcon?))
 		(theIconBar disable: ICON_USEIT)
 	)
+	
+	; if ego can't cast spells, disable the magic icon
 	(if 
 		(or
-			(not [egoStats MAGIC]) ;no magic, no cast icon
+			(not [egoStats MAGIC])
 			(not
-				;does ego know any spells?
 				(for ((= i OPEN)) (<= i FETCH) ((++ i))
 					(if (ego knows: i)
 						(return TRUE)
@@ -563,6 +577,7 @@
 		)
 		(theIconBar disable: ICON_CAST)
 	)
+	
 	(if
 		(and
 			(not (theIconBar curInvIcon?))
@@ -570,13 +585,17 @@
 		)
 		(theIconBar advanceCurIcon:)
 	)
+
+	; restore cursor xy posn if no mouse	
 	(return
 		(if (not (HaveMouse))
-			(theGame
-				setCursor: ((theIconBar curIcon?) cursor?) TRUE saveCursorX saveCursorY
+			(theGame setCursor:
+				((theIconBar curIcon?) cursor?) TRUE saveCursorX saveCursorY
 			)
 		else
-			(theGame setCursor: ((theIconBar curIcon?) cursor?) TRUE)
+			(theGame setCursor:
+				((theIconBar curIcon?) cursor?) TRUE
+			)
 		)
 	)
 )
@@ -729,7 +748,8 @@
 )
 
 (instance stopGroop of GradualLooper
-	;ego's GradualLooper
+	;ego's GradualLooper, to ensure he's set to his walking view
+	; before turning.
 	(method (doit)
 		(if
 			(and
@@ -746,8 +766,8 @@
 	;draw the status line
 	(method (doit roomNum &tmp [statusBuf 50] [scoreBuf 50])
 		(if
+			;don't draw the status line in these rooms
 			(not
-				;don't draw the status line in these rooms
 				(OneOf roomNum
 					LOGOROOM SPEED INTRO CHARSEL CHALLOC CHARSHEET NOTICE NOTICE2
 					32 340 ARENA 171 172
@@ -1075,15 +1095,17 @@
 			;if ego has used the Undead Unguent, we should decrease its timer.
 			(if (Btst fGhostOil)
 				(switch (-- ghostOilTimer)
-					(24	;getting close, so print a warning
+					;getting close, so print a warning
+					(24
 						(if fastCast
 							(= ghostOilTimer 30)
 						else
 							(messager say: N_CUE NULL NULL 2 0 SYSTEM)
 						)
 					)
+					;oil has worn off
 					(0
-						;oil has worn off
+						; give some more time if there's any talkers on screen
 						(if fastCast
 							(= ghostOilTimer 5)
 						else
@@ -1129,7 +1151,8 @@
 	)
 	
 	(method (replay)
-		(InitGlobals)
+		(InitGlobals)	; re-init numVoices and numColors
+		; ensure that the hand cursor is set in Mage's Maze
 		(if (== curRoomNum 32)
 			(Bclr fHideCursor)
 			(theGame setCursor: 942 TRUE)
@@ -1150,7 +1173,8 @@
 	(method (startRoom roomNum &tmp [scriptNum 10] [debugNum 10])
 		(SaveCurIcon)
 		(theGame setCursor: waitCursor TRUE)
-		(StartARoom roomNum) ;Most of the startRoom method was moved into its own script.
+		(StartARoom roomNum) ; clean up the old room
+
 		(Message MsgGet SYSTEM N_CUE NULL C_SCRIPT_NUM 1 @scriptNum)
 		(Format @debugNum @scriptNum DEBUG)
 		;if debugging and memory is fragmented, bring up a warning and the internal debugger
@@ -1182,8 +1206,9 @@
 				(Bset fInMainGame)
 			)
 		)
+		;all rooms where you can encounter a monster,
+		; so keep the ENCOUNTER region
 		(if
-			;all rooms where you can encounter a monster
 			(OneOf roomNum
 				11 12 17 18 19 23 24 25 26 27 33
 				34 35 36 42 43 44 51 52 56 57 61
@@ -1418,7 +1443,7 @@
 	(method (doit theIcon)
 		(if
 			(and
-				(theIcon isKindOf: IconItem)
+				(theIcon isKindOf: IconItem)		; It's an icon
 				(& (theIcon signal?) DISABLED)
 			)
 			(|= iconSettings (>> $8000 (theIconBar indexOf: theIcon)))
@@ -1426,76 +1451,93 @@
 	)
 )
 
+;Control panel defines
+(define CONTROL_WIDTH		149)
+(define ARROWLEFT			95)
+(define ARROWTOP 		28)
+(define TITLELEFT			64)
+(define SLIDERLEFT			67)
+(define SLIDERTOP			24)
+(define BUTTONLEFT	8)
+(define BUTTONTOP	6)
+
 (instance gcWin of GloryWindow
 	(method (open &tmp t l b r theColor theMaps thePri [str 15] [scoreBuf 15])
 		(= thePri -1)
 		(self
-			top: (/ (- SCRNHIGH (+ (CelHigh vControlIcons 1 1) 6)) 2)
-			left: (/ (- SCRNWIDE (+ CONTROL_WIDTH (CelWide vControlIcons 0 1))) 2)
+			top: (/ (- SCRNHIGH (+ (CelHigh vGameControls 1 1) 6)) 2)
+			left: (/ (- SCRNWIDE (+ CONTROL_WIDTH (CelWide vGameControls 0 1))) 2)
 			bottom:
 				(+
-					(CelHigh vControlIcons 1 1) 6
-					(/ (- SCRNHIGH (+ (CelHigh vControlIcons 1 1) 6)) 2)
+					(CelHigh vGameControls 1 1) 6
+					(/ (- SCRNHIGH (+ (CelHigh vGameControls 1 1) 6)) 2)
 				)
 			right:
 				(+
 					CONTROL_WIDTH
-					(CelWide vControlIcons 0 1)
-					(/ (- SCRNWIDE (+ CONTROL_WIDTH (CelWide vControlIcons 0 1))) 2)
+					(CelWide vGameControls 0 1)
+					(/ (- SCRNWIDE (+ CONTROL_WIDTH (CelWide vGameControls 0 1))) 2)
 				)
 			priority: thePri
 		)
 		(super open:)
+
+		; 1st arrow between sliders		
+		(DrawCel vGameControls 1 0 ARROWLEFT ARROWTOP thePri)
+		; 2nd arrow between sliders
+		(DrawCel vGameControls 1 0 (+ ARROWLEFT 36) ARROWTOP thePri)
+		; 3rd arrow between sliders
+		(DrawCel vGameControls 1 0 (+ ARROWLEFT 72) ARROWTOP thePri)
+		; icon over detail
+		(DrawCel vGameControls 0 4 TITLELEFT (- SLIDERTOP (+ (CelHigh vGameControls 0 4) 3)) thePri)
+		; icon over volume
+		(DrawCel vGameControls 0 3 (+ TITLELEFT 36) (- SLIDERTOP (+ (CelHigh vGameControls 0 4) 3)) thePri)
+		; icon over speed
+		(DrawCel vGameControls 0 2 (+ TITLELEFT 72) (- SLIDERTOP (+ (CelHigh vGameControls 0 4) 3)) thePri)
 		
-		(DrawCel vControlIcons 1 0 INDICATOR_X INDICATOR_Y thePri)
-		(DrawCel vControlIcons 1 0 (+ INDICATOR_X 36) 28 thePri)
-		(DrawCel vControlIcons 1 0 (+ INDICATOR_X 72) 28 thePri)
-		
-		;detail header
-		(DrawCel vControlIcons 0 4 HEADER_X (- 24 (+ (CelHigh vControlIcons 0 4) 3)) thePri)
-		
-		;volume header
-		(DrawCel vControlIcons 0 3 (+ HEADER_X 36) (- 24 (+ (CelHigh vControlIcons 0 4) 3)) thePri)
-		
-		;speed header
-		(DrawCel vControlIcons 0 2 (+ HEADER_X 72) (- 24 (+ (CelHigh vControlIcons 0 4) 3)) thePri)
-		(= r (+ (= t (+ 34 (CelHigh vControlIcons 0 1))) 10))
+		; a window below the sliders for score
+		(= r (+ (= t (+ 34 (CelHigh vGameControls 0 1))) 10))
 		(= b
 			(+
-				(= l (+ 4 (CelWide vControlIcons 1 1)))
+				(= l (+ 4 (CelWide vGameControls 1 1)))
 				(-
-					(+ CONTROL_WIDTH (CelWide vControlIcons 0 1))
-					(+ 4 (CelWide vControlIcons 1 1) 10)
+					(+ CONTROL_WIDTH (CelWide vGameControls 0 1))
+					(+ 4 (CelWide vGameControls 1 1) 10)
 				)
 			)
 		)
 		(= theColor 0)
-		(= theMaps 1)
+		(= theMaps VMAP)
+		
 		(Graph GFillRect t l (+ r 1) (+ b 1) theMaps theColor thePri)
 		(Graph GShowBits t l (+ r 1) (+ b 1) 1)
+		
+		; print score centered in score window		
 		(Message MsgGet SYSTEM N_SCORE NULL NULL 1 @str)
 		(Format @scoreBuf @str score possibleScore)
-		(DrawCel vControlIcons 0 5 (+ 4 (CelWide vControlIcons 1 1) 8) (+ 34 (CelHigh vControlIcons 0 1) 2) thePri)
+		(DrawCel vGameControls 0 5 (+ 4 (CelWide vGameControls 1 1) 8) (+ 34 (CelHigh vGameControls 0 1) 2) thePri)
 		(Display @scoreBuf
 			p_font 999
 			p_color 52
-			p_at (+ (CelWide vControlIcons 0 5) 4 (CelWide vControlIcons 1 1) 13) (+ 34 (CelHigh vControlIcons 0 1) 2 1)
+			p_at
+				(+ (CelWide vGameControls 0 5) 4 (CelWide vGameControls 1 1) 13)
+				(+ 34 (CelHigh vGameControls 0 1) 2 1)
 		)
 	)
 )
 
 (instance detailSlider of Slider
 	(properties
-		view vControlIcons
+		view vGameControls
 		loop 0
 		cel 1
-		nsLeft SLIDER_X
-		nsTop SLIDER_Y
+		nsLeft SLIDERLEFT
+		nsTop SLIDERTOP
 		signal FIXED_POSN
 		noun N_DETAIL
 		modNum SYSTEM
 		helpVerb V_HELP
-		sliderView vControlIcons
+		sliderView vGameControls
 		bottomValue 1
 		topValue 5
 	)
@@ -1510,32 +1552,32 @@
 
 (instance volumeSlider of Slider
 	(properties
-		view vControlIcons
+		view vGameControls
 		loop 0
 		cel 1
-		nsLeft (+ SLIDER_X 36)
-		nsTop SLIDER_Y
+		nsLeft (+ SLIDERLEFT 36)
+		nsTop SLIDERTOP
 		signal FIXED_POSN
 		noun N_VOLUME
 		modNum SYSTEM
 		helpVerb V_HELP
-		sliderView vControlIcons
+		sliderView vGameControls
 		topValue 15
 	)
 )
 
 (instance speedSlider of Slider
 	(properties
-		view vControlIcons
+		view vGameControls
 		loop 0
 		cel 1
-		nsLeft (+ SLIDER_X 72)
-		nsTop SLIDER_Y
+		nsLeft (+ SLIDERLEFT 72)
+		nsTop SLIDERTOP
 		signal FIXED_POSN
 		noun N_SPEED
 		modNum SYSTEM
 		helpVerb V_HELP
-		sliderView vControlIcons
+		sliderView vGameControls
 		bottomValue 15
 		topValue 1
 	)
@@ -1563,11 +1605,11 @@
 
 (instance iconSave of ControlIcon
 	(properties
-		view vControlIcons
+		view vGameControls
 		loop 2
 		cel 0
-		nsLeft CONTROL_BUTTON_X
-		nsTop CONTROL_BUTTON_Y
+		nsLeft BUTTONLEFT
+		nsTop BUTTONTOP
 		message 10
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
 		noun N_SAVE
@@ -1578,11 +1620,11 @@
 
 (instance iconRestore of ControlIcon
 	(properties
-		view vControlIcons
+		view vGameControls
 		loop 3
 		cel 0
-		nsLeft CONTROL_BUTTON_X
-		nsTop (+ CONTROL_BUTTON_Y 17)
+		nsLeft BUTTONLEFT
+		nsTop (+ BUTTONTOP 17)
 		message 10
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
 		noun N_RESTORE
@@ -1593,11 +1635,11 @@
 
 (instance iconRestart of ControlIcon
 	(properties
-		view vControlIcons
+		view vGameControls
 		loop 4
 		cel 0
-		nsLeft CONTROL_BUTTON_X
-		nsTop (+ CONTROL_BUTTON_Y 34)
+		nsLeft BUTTONLEFT
+		nsTop (+ BUTTONTOP 34)
 		message 10
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
 		noun N_RESTART
@@ -1608,11 +1650,11 @@
 
 (instance iconQuit of ControlIcon
 	(properties
-		view vControlIcons
+		view vGameControls
 		loop 5
 		cel 0
-		nsLeft CONTROL_BUTTON_X
-		nsTop (+ CONTROL_BUTTON_Y 51)
+		nsLeft BUTTONLEFT
+		nsTop (+ BUTTONTOP 51)
 		message 10
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
 		noun N_QUIT
@@ -1623,11 +1665,11 @@
 
 (instance iconAbout of ControlIcon
 	(properties
-		view vControlIcons
+		view vGameControls
 		loop 6
 		cel 0
-		nsLeft CONTROL_BUTTON_X
-		nsTop (+ CONTROL_BUTTON_Y 68)
+		nsLeft BUTTONLEFT
+		nsTop (+ BUTTONTOP 68)
 		message 10
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
 		noun N_ABOUT
@@ -1638,11 +1680,11 @@
 
 (instance iconGCHelp of IconItem
 	(properties
-		view vControlIcons
+		view vGameControls
 		loop 7
 		cel 0
-		nsLeft CONTROL_BUTTON_X
-		nsTop (+ CONTROL_BUTTON_Y 85)
+		nsLeft BUTTONLEFT
+		nsTop (+ BUTTONTOP 85)
 		cursor 949
 		message V_HELP
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE)
@@ -1654,11 +1696,11 @@
 
 (instance iconOk of IconItem
 	(properties
-		view vControlIcons
+		view vGameControls
 		loop 8
 		cel 0
-		nsLeft CONTROL_BUTTON_X
-		nsTop (+ CONTROL_BUTTON_Y 102)
+		nsLeft BUTTONLEFT
+		nsTop (+ BUTTONTOP 102)
 		cursor 949
 		message 10
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
@@ -1737,11 +1779,12 @@
 		(if (== (theObj sightAngle?) ftrDefault)
 			(theObj sightAngle: 40)
 		)
-		(if (== (theObj actions?) ftrDefault) (theObj actions: 0))
+		(if (== (theObj actions?) ftrDefault)
+			(theObj actions: 0)
+		)
 		(cond 
 			((or (theObj x?) (theObj y?) (theObj z?)))
-			(
-			(not (IsObject (= temp0 (theObj onMeCheck?))))
+			((not (IsObject (= temp0 (theObj onMeCheck?))))
 				(theObj
 					x: (/ (+ (theObj nsLeft?) (theObj nsRight?)) 2)
 				)
@@ -1760,7 +1803,7 @@
 					(if (<= temp5 temp7) (= temp7 temp5))
 					(if (>= temp4 temp8) (= temp8 temp4))
 					(if (>= temp5 temp9) (= temp9 temp5))
-					(= temp1 (+ temp1 4))
+					(+= temp1 4)
 				)
 				(theObj x: (/ (+ temp6 temp8) 2))
 				(theObj y: temp7)
@@ -1804,7 +1847,10 @@
 			walkIconItem: iconWalk
 			state: (| OPENIFONME NOCLICKHELP)
 		)
-		(iconHelp view: 990 loop: 9)
+		(iconHelp
+			view: vIcons
+			loop: 9
+		)
 	)
 	
 	(method (handleEvent event)
@@ -1844,11 +1890,11 @@
 
 (instance iconLeft of IconItem
 	(properties
-		view 990
+		view vIcons
 		loop 12
 		cel 1
 		cursor INVIS_CURSOR
-		maskView 990
+		maskView vIcons
 		maskLoop 12
 		modNum SYSTEM
 	)
@@ -1864,11 +1910,11 @@
 
 (instance iconRight of IconItem
 	(properties
-		view 990
+		view vIcons
 		loop 13
 		cel 1
 		cursor INVIS_CURSOR
-		maskView 990
+		maskView vIcons
 		maskLoop 13
 		modNum SYSTEM
 	)
@@ -1880,14 +1926,14 @@
 
 (instance iconWalk of IconItem
 	(properties
-		view 990
+		view vIcons
 		loop 0
 		cel 0
 		cursor 940
 		type (| userEvent walkEvent)
 		message V_WALK
 		signal (| HIDEBAR RELVERIFY)
-		maskView 990
+		maskView vIcons
 		maskLoop 14
 		noun N_WALK
 		modNum SYSTEM
@@ -1897,13 +1943,13 @@
 
 (instance iconLook of IconItem
 	(properties
-		view 990
+		view vIcons
 		loop 1
 		cel 0
 		cursor 941
 		message V_LOOK
 		signal (| HIDEBAR RELVERIFY)
-		maskView 990
+		maskView vIcons
 		maskLoop 14
 		noun N_LOOK
 		modNum SYSTEM
@@ -1913,13 +1959,13 @@
 
 (instance iconDo of IconItem
 	(properties
-		view 990
+		view vIcons
 		loop 2
 		cel 0
 		cursor 942
 		message V_DO
 		signal (| HIDEBAR RELVERIFY)
-		maskView 990
+		maskView vIcons
 		maskLoop 14
 		noun N_DO
 		modNum SYSTEM
@@ -1929,13 +1975,13 @@
 
 (instance iconTalk of IconItem
 	(properties
-		view 990
+		view vIcons
 		loop 3
 		cel 0
 		cursor 943
 		message V_TALK
 		signal (| HIDEBAR RELVERIFY)
-		maskView 990
+		maskView vIcons
 		maskLoop 14
 		noun N_TALK
 		modNum SYSTEM
@@ -1945,13 +1991,13 @@
 
 (instance iconActions of IconItem
 	(properties
-		view 990
+		view vIcons
 		loop 10
 		cel 0
 		cursor ARROW_CURSOR
 		message NULL
 		signal (| HIDEBAR RELVERIFY IMMEDIATE)
-		maskView 990
+		maskView vIcons
 		maskLoop 14
 		noun N_ACTION
 		modNum SYSTEM
@@ -1974,12 +2020,12 @@
 
 (instance iconCast of IconItem
 	(properties
-		view 990
+		view vIcons
 		loop 11
 		cel 0
 		message 0
 		signal (| HIDEBAR RELVERIFY IMMEDIATE)
-		maskView 990
+		maskView vIcons
 		maskLoop 14
 		noun N_CAST
 		modNum SYSTEM
@@ -1990,6 +2036,7 @@
 		(return
 			(if (super select: &rest)
 				(if
+					;can't cast spells in town
 					(OneOf curRoomNum
 						300 301 302 310 311 313 314 318 320
 						321 322 330 331 332 333 334 340
@@ -2014,12 +2061,12 @@
 
 (instance iconUseIt of IconItem
 	(properties
-		view 990
+		view vIcons
 		loop 4
 		cel 0
 		cursor ARROW_CURSOR
 		signal (| HIDEBAR RELVERIFY)
-		maskView 990
+		maskView vIcons
 		maskLoop 14
 		maskCel 1
 		noun N_USEIT
@@ -2027,40 +2074,39 @@
 		helpVerb V_HELP
 	)
 	
-	(method (select relVar &tmp event whichCel oldCurIcon temp3 temp4)
+	(method (select relVar &tmp event whichCel cii theX theY)
 		(return
 			(cond 
-				((& signal DISABLED) 0)
+				((& signal DISABLED)
+					FALSE
+				)
 				((and argc relVar (& signal RELVERIFY))
-					(if
-					(= oldCurIcon (theIconBar curInvIcon?))
-						(= temp3
+					(if (= cii (theIconBar curInvIcon?))
+						(= theX
 							(+
+								; add offset
 								(/
+									; half each side
 									(-
+										; difference in widths
 										(- nsRight nsLeft)
-										(CelWide
-											(oldCurIcon view?)
-											(+ (oldCurIcon loop?) 1)
-											(oldCurIcon cel?)
-										)
+										(CelWide (cii view?) (+ (cii loop?) 1) (cii cel?))
 									)
 									2
 								)
 								nsLeft
 							)
 						)
-						(= temp4
+						(= theY
 							(+
 								(theIconBar y?)
+								; add offset
 								(/
+									; half each side
 									(-
+										; difference in heights
 										(- nsBottom nsTop)
-										(CelHigh
-											(oldCurIcon view?)
-											(+ (oldCurIcon loop?) 1)
-											(oldCurIcon cel?)
-										)
+										(CelHigh (cii view?) (+ (cii loop?) 1) (cii cel?))
 									)
 									2
 								)
@@ -2069,52 +2115,28 @@
 						)
 					)
 					(DrawCel view loop (= whichCel 1) nsLeft nsTop -1)
-					(if
-					(= oldCurIcon (theIconBar curInvIcon?))
-						(DrawCel
-							(oldCurIcon view?)
-							(+ 1 (oldCurIcon loop?))
-							(oldCurIcon cel?)
-							temp3
-							temp4
-							-1
-						)
+					(if (= cii (theIconBar curInvIcon?))
+						(DrawCel (cii view?) (+ 1 (cii loop?)) (cii cel?) theX theY -1)
 					)
-					(Graph GShowBits nsTop nsLeft nsBottom nsRight 1)
-					(while (!= ((= event (Event new:)) type?) 2)
+					(Graph GShowBits nsTop nsLeft nsBottom nsRight VMAP)
+					(while (!= ((= event (Event new:)) type?) mouseUp)
 						(event localize:)
 						(cond 
 							((self onMe: event)
 								(if (not whichCel)
 									(DrawCel view loop (= whichCel 1) nsLeft nsTop -1)
-									(if
-									(= oldCurIcon (theIconBar curInvIcon?))
-										(DrawCel
-											(oldCurIcon view?)
-											(+ 1 (oldCurIcon loop?))
-											(oldCurIcon cel?)
-											temp3
-											temp4
-											-1
-										)
+									(if (= cii (theIconBar curInvIcon?))
+										(DrawCel (cii view?) (+ 1 (cii loop?)) (cii cel?) theX theY -1)
 									)
-									(Graph GShowBits nsTop nsLeft nsBottom nsRight 1)
+									(Graph GShowBits nsTop nsLeft nsBottom nsRight VMAP)
 								)
 							)
 							(whichCel
 								(DrawCel view loop (= whichCel 0) nsLeft nsTop -1)
-								(if
-								(= oldCurIcon (theIconBar curInvIcon?))
-									(DrawCel
-										(oldCurIcon view?)
-										(+ 1 (oldCurIcon loop?))
-										(oldCurIcon cel?)
-										temp3
-										temp4
-										-1
-									)
+								(if (= cii (theIconBar curInvIcon?))
+									(DrawCel (cii view?) (+ 1 (cii loop?)) (cii cel?) theX theY -1)
 								)
-								(Graph GShowBits nsTop nsLeft nsBottom nsRight 1)
+								(Graph GShowBits nsTop nsLeft nsBottom nsRight VMAP)
 							)
 						)
 						(event dispose:)
@@ -2122,22 +2144,16 @@
 					(event dispose:)
 					(if (== whichCel 1)
 						(DrawCel view loop 0 nsLeft nsTop -1)
-						(if
-						(= oldCurIcon (theIconBar curInvIcon?))
-							(DrawCel
-								(oldCurIcon view?)
-								(+ 1 (oldCurIcon loop?))
-								(oldCurIcon cel?)
-								temp3
-								temp4
-								-1
-							)
+						(if (= cii (theIconBar curInvIcon?))
+							(DrawCel (cii view?) (+ 1 (cii loop?)) (cii cel?) theX theY -1)
 						)
-						(Graph GShowBits nsTop nsLeft nsBottom nsRight 1)
+						(Graph GShowBits nsTop nsLeft nsBottom nsRight VMAP)
 					)
 					whichCel
 				)
-				(else 1)
+				(else
+					TRUE
+				)
 			)
 		)
 	)
@@ -2145,14 +2161,14 @@
 
 (instance iconInventory of IconItem
 	(properties
-		view 990
+		view vIcons
 		loop 5
 		cel 0
 		cursor ARROW_CURSOR
-		type $0000
+		type 0
 		message 0
 		signal (| HIDEBAR RELVERIFY IMMEDIATE)
-		maskView 990
+		maskView vIcons
 		maskLoop 14
 		noun N_INVENTORY
 		modNum SYSTEM
@@ -2174,13 +2190,13 @@
 
 (instance iconControlPanel of IconItem
 	(properties
-		view 990
+		view vIcons
 		loop 7
 		cel 0
 		cursor ARROW_CURSOR
-		message 9
+		message ICON_CONTROL
 		signal (| HIDEBAR RELVERIFY IMMEDIATE)
-		maskView 990
+		maskView vIcons
 		maskLoop 14
 		noun N_CONTROL
 		modNum SYSTEM
@@ -2197,13 +2213,13 @@
 
 (instance iconHelp of IconItem
 	(properties
-		view 990
+		view vIcons
 		loop 9
 		cel 0
 		cursor 949
 		message V_HELP
 		signal (| RELVERIFY IMMEDIATE)
-		maskView 990
+		maskView vIcons
 		maskLoop 14
 		noun N_ICON_HELP
 		modNum SYSTEM

@@ -90,8 +90,8 @@
 		(DrawCel 100 4 0 166 22 15)
 		(DrawCel 100 4 1 150 75 15)
 		(DrawCel 100 4 2 152 128 15)
-		(theGame
-			setCursor: ARROW_CURSOR TRUE (+ (curIcon nsLeft?) 75) (- (curIcon nsBottom?) 2)
+		(theGame setCursor:
+			ARROW_CURSOR TRUE (+ (curIcon nsLeft?) 75) (- (curIcon nsBottom?) 2)
 		)
 		(self doit: hide:)
 	)

@@ -162,7 +162,6 @@
 )
 
 (class KScript of Script
-	
 	(method (cue)
 		(if client
 			(super cue:)
@@ -341,10 +340,24 @@
 			(toadstools1 init: setPri: 9)
 			(toadstools2 init: setPri: 9)
 		else
-			(table init:)
+			(table
+				init:
+;;;				setOnMeCheck: ftrControl cCYAN
+			)
 		)
-		(stalagmites init:)
-		(sunLight init:)
+		(stalagmites
+			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+		)
+		(sunLight
+			init:
+;;;			setOnMeCheck: ftrControl cRED
+		)
+		;added unused feature
+		(fungus
+			init:
+;;;			setOnMeCheck: ftrControl (| cLGREEN cGREEN)
+		)
 		(if (not (Btst fKoboldChestUnlocked))
 			(chest init: approachVerbs: V_LOCKPICK stopUpd:)
 			(|= koboldIllBits cLMAGENTA)
@@ -798,7 +811,10 @@
 						(toadstools dispose:)
 						(toadstools1 dispose:)
 						(toadstools2 dispose:)
-						(table init:)
+						(table
+							init:
+;;;							setOnMeCheck: ftrControl cCYAN
+						)
 						(= takeItem cueToadstools)
 						(ego setScript: getItCued)
 					)

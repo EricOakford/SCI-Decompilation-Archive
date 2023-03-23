@@ -224,10 +224,19 @@
 			(= local1 1)
 		)
 		(cliff init:)
-		(grass init:)
-		(trees init:)
+		(grass
+			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+		)
+		(trees
+			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+		)
 		(theRoom init:)
-		(yellowRock init:)
+		(yellowRock
+			init:
+;;;			setOnMeCheck: ftrControl cYELLOW
+		)
 	)
 	
 	(method (doit)
@@ -1728,7 +1737,6 @@
 )
 
 (instance openUp of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

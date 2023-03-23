@@ -29,17 +29,21 @@
 
 
 (local
-	local0
+	local0	;unused
 	babaSpeaks
 	seenWindow
-	gEgoCycleSpeed
-	gEgoMoveSpeed
+	savCycleSpeed
+	savMoveSpeed
 )
 (procedure (BabaKillsEgo)
 	(User canInput: FALSE)
 	(switch babaState
-		(babaNAME (rm21 setScript: nameDeath))
-		(babaBRAVE (rm21 setScript: braveDeath))
+		(babaNAME
+			(rm21 setScript: nameDeath)
+		)
+		(babaBRAVE
+			(rm21 setScript: braveDeath)
+		)
 		(babaFETCH
 			(rm21 setScript: noFetchDeath)
 		)
@@ -109,18 +113,38 @@
 		)
 		
 		;UPGRADE
-;;;		(skull init:)
-;;;		(cauldron init:)
-;;;		(broom init:)
-;;;		(note init:)
-;;;		(bucket init:)
-;;;		(table init:)
-;;;		(web init:)
-;;;		(firePlace init:)
-;;;		(telephone init:)
-;;;		(murial init:)
-;;;		(brokenGate init:)
-;;;		(hutWindow init:)
+;;;		(skull
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREY
+;;;		)
+;;;		(cauldron
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLGREY
+;;;		)
+;;;		(broom
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBROWN
+;;;		)
+;;;		(note
+;;;			init:
+;;;			setOnMeCheck: ftrControl cRED
+;;;		)
+;;;		(bucket
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
+;;;		(table
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(web
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(firePlace
+;;;			init:
+;;;			setOnMeCheck: ftrControl cMAGENTA
+;;;		)
 		
 		(if (== prevRoomNum 299)
 			(ego init: posn: 166 187)
@@ -129,8 +153,8 @@
 		)
 		(spider setCycle: Forward init: stopUpd:)
 		(bat init:)
-		(= gEgoCycleSpeed (ego cycleSpeed?))
-		(= gEgoMoveSpeed (ego moveSpeed?))
+		(= savCycleSpeed (ego cycleSpeed?))
+		(= savMoveSpeed (ego moveSpeed?))
 		(fire setCycle: Forward init:)
 		(cond 
 			((not (Btst fBeenIn21))
@@ -154,7 +178,10 @@
 	(method (dispose)
 		(= nightPalette 0)
 		(Bset fBeenIn21)
-		(ego moveSpeed: gEgoMoveSpeed cycleSpeed: gEgoCycleSpeed)
+		(ego
+			moveSpeed: savMoveSpeed
+			cycleSpeed: savCycleSpeed
+		)
 		(DisposeScript REVERSE)
 		(super dispose:)
 	)
@@ -357,7 +384,7 @@
 		y 171
 		noun N_SPIDER
 		view 21
-		priority pWHITE
+		priority 15
 		signal fixPriOn
 		cycleSpeed 12
 	)
@@ -428,7 +455,12 @@
 				(= seconds 2)
 			)
 			(2
-				(TP posn: 195 132 setPri: 15 init: setCycle: CycleTo 4 1 self)
+				(TP
+					posn: 195 132
+					setPri: 15
+					init:
+					setCycle: CycleTo 4 1 self
+				)
 			)
 			(3
 				(teleport play:)
@@ -524,7 +556,9 @@
 				(ego ignoreActors: hide:)
 				(baba view: 20 setLoop: 7 setCycle: CycleTo 3 1 self)
 			)
-			(23 (baba setCycle: EndLoop self))
+			(23
+				(baba setCycle: EndLoop self)
+			)
 			(24
 				(spider setCycle: Forward)
 				(bat setCycle: Forward)
@@ -589,7 +623,9 @@
 			(4
 				(messager say: N_ROOM NULL NULL 9 self)
 			)
-			(5 (self cue:))
+			(5
+				(self cue:)
+			)
 			(6
 				(= babaState babaNAME)
 				(messager say: N_ROOM NULL C_ASK_NAME 0 self)
@@ -624,7 +660,9 @@
 				(= babaSpeaks TRUE)
 				(messager say: N_ROOM NULL NULL 10 self)
 			)
-			(11 (= seconds 2))
+			(11
+				(= seconds 2)
+			)
 			(12
 				(= babaState babaBRAVE)
 				(messager say: N_ROOM NULL NULL 11 self)

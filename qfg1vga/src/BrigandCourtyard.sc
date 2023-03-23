@@ -336,191 +336,57 @@
 	)
 	
 	(method (doit)
-		(asm
-			lal      setATrap
-			not     
-			bnt      code_04fc
-			pushi    #inRect
-			pushi    4
-			pushi    95
-			pushi    101
-			pushi    121
-			pushi    116
-			lag      ego
-			send     12
-			bnt      code_04fc
-			ldi      1
-			sal      setATrap
-			pushi    #setScript
-			pushi    1
-			lofsa    fallBridge
-			push    
-			lag      ego
-			send     6
-			jmp      code_05e3
-code_04fc:
-			lal      setATrap
-			not     
-			bnt      code_0539
-			pushi    238
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			le?     
-			bnt      code_0512
-			pprev   
-			ldi      256
-			le?     
-code_0512:
-			not     
-			bnt      code_0539
-			pushi    105
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			le?     
-			bnt      code_0539
-			pprev   
-			ldi      114
-			le?     
-			bnt      code_0539
-			ldi      1
-			sal      setATrap
-			pushi    #setScript
-			pushi    1
-			lofsa    fallChasm
-			push    
-			lag      ego
-			send     6
-			jmp      code_05e3
-code_0539:
-			pushi    #inRect
-			pushi    4
-			pushi    100
-			pushi    80
-			pushi    180
-			pushi    90
-			lag      ego
-			send     12
-			bnt      code_056a
-			lal      wire2Known
-			not     
-			bnt      code_056a
-			lal      setATrap
-			not     
-			bnt      code_056a
-			ldi      1
-			sal      setATrap
-			pushi    #setScript
-			pushi    1
-			lofsa    egoTripsNorth
-			push    
-			lag      ego
-			send     6
-			jmp      code_05e3
-code_056a:
-			pushi    #inRect
-			pushi    4
-			pushi    252
-			pushi    147
-			pushi    310
-			pushi    163
-			lag      ego
-			send     12
-			bnt      code_05b2
-			lal      wire1Known
-			not     
-			bnt      code_05b2
-			pushi    #script
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			lofsa    egoTripsSouth
-			ne?     
-			bnt      code_05b2
-			pushi    #script
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			lofsa    fallChasm
-			ne?     
-			bnt      code_05b2
-			pushi    #setScript
-			pushi    1
-			lofsa    egoTripsSouth
-			push    
-			lag      ego
-			send     6
-			jmp      code_05e3
-code_05b2:
-			pushi    #inRect
-			pushi    4
-			pushi    139
-			pushi    138
-			pushi    187
-			pushi    152
-			lag      ego
-			send     12
-			bnt      code_05e3
-			lal      setATrap
-			not     
-			bnt      code_05e3
-			ldi      1
-			sal      setATrap
-			pushi    #setPri
-			pushi    1
-			pushi    11
-			pushi    146
-			pushi    1
-			lofsa    fallRug
-			push    
-			lag      ego
-			send     12
-code_05e3:
-			lal      gateIsOpen
-			bnt      code_0602
-			pushi    #onControl
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-			push    
-			ldi      2
-			and     
-			bnt      code_0602
-			pushi    #newRoom
-			pushi    1
-			pushi    95
-			lag      curRoom
-			send     6
-			jmp      code_061f
-code_0602:
-			pushi    #edgeHit
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      3
-			eq?     
-			bnt      code_061f
-			lal      setATrap
-			not     
-			bnt      code_061f
-			pushi    #newRoom
-			pushi    1
-			pushi    93
-			lag      curRoom
-			send     6
-code_061f:
-			pushi    #doit
-			pushi    0
-			super    Room,  4
-			ret     
+		;EO: This has been newly decompiled!
+		(cond 
+			((and (not setATrap) (ego inRect: 95 101 121 116))
+				(= setATrap TRUE)
+				(ego setScript: fallBridge)
+			)
+			;this was the undecompilable part. It seems to work okay now.
+			(
+				(and
+					(not setATrap)
+				  	(not (and (<= 238 (ego x?)) (<= (ego x?) 256)))
+				  	(<= 105 (ego y?)) (<= (ego y?) 114)
+				)
+				(= setATrap TRUE)
+				(ego setScript: fallChasm)
+			)
+			(
+				(and
+					(ego inRect: 100 80 180 90)
+					(not wire2Known)
+					(not setATrap)
+				)
+				(= setATrap TRUE)
+				(ego setScript: egoTripsNorth)
+			)
+			(
+				(and
+					(ego inRect: 252 147 310 163)
+					(not wire1Known)
+					(!= (ego script?) egoTripsSouth)
+					(!= (ego script?) fallChasm)
+				)
+				(ego setScript: egoTripsSouth)
+			)
+			((and (ego inRect: 139 138 187 152) (not setATrap))
+				(= setATrap TRUE)
+				(ego
+					setPri: 11
+					setScript: fallRug
+				)
+			)
 		)
+		(cond 
+			((and gateIsOpen (& (ego onControl: origin) cBLUE))
+				(curRoom newRoom: 95)
+			)
+			((and (== (ego edgeHit?) SOUTH) (not setATrap))
+				(curRoom newRoom: 93)
+			)
+		)
+		(super doit:)
 	)
 	
 	(method (dispose)

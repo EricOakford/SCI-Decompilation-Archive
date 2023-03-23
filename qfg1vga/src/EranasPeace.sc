@@ -20,7 +20,7 @@
 (local
 	oldSpeed
 	theNoun
-	local2 = [
+	rockPts = [		;unused
 		153 164
 		153 176
 		139 181
@@ -32,9 +32,9 @@
 		]
 	timesReadStone
 	stoneOpened
-	local20
+	local20	;unused
 	cycleTimer =  4
-	local22
+	local22	;unused
 	tookAFruit
 )
 (instance rm10 of Room
@@ -94,15 +94,41 @@
 		(|= disabledActions ACTION_RUN)
 		(|= disabledActions ACTION_SNEAK)
 		(Load VIEW 10)
-		(theMusic stop: number: 24 loop: -1 play:)
+		(theMusic
+			stop:
+			number: 24
+			loop: -1
+			play:
+		)
 		(super init:)
-		(magicStone init: approachVerbs: V_DO)
-		(fruit init: approachVerbs: V_DO)
-		(trunk init:)
-		(sky init:)
-		(snow init:)
-		(tree init: approachVerbs: V_DO)
-		(meadow init:)
+		(magicStone
+			init:
+			approachVerbs: V_DO
+		)
+		(fruit
+			init:
+			approachVerbs: V_DO
+		)
+		(trunk
+			init:
+;;;			setOnMeCheck: ftrControl cRED
+		)
+		(sky
+			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+		)
+		(snow
+			init:
+		)
+		(tree
+			init:
+			approachVerbs: V_DO
+;;;			setOnMeCheck: ftrControl cBLUE
+		)
+		(meadow
+			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+		)
 		(self setScript: sEnterFromSouth)
 	)
 	
@@ -200,7 +226,7 @@
 	(properties
 		x 146
 		y 24
-		noun 4
+		noun N_SKY
 		nsLeft 23
 		nsBottom 48
 		nsRight 269
@@ -475,10 +501,10 @@
 						(scroll doVerb: theVerb)
 					)
 					(stoneOpened
-						(messager say: 2 4 C_STONEOPEN)
+						(messager say: N_MAGICSTONE V_DO C_STONEOPEN)
 					)
 					(else
-						(messager say: 2 4 C_STONECLOSED)
+						(messager say: N_MAGICSTONE V_DO C_STONECLOSED)
 					)
 				)
 			)
@@ -518,6 +544,7 @@
 				(rockPoly
 					type: PBarredAccess
 					init:
+						;this is a duplicate of the unused rockPts array
 						153 164
 						153 176
 						139 181
@@ -782,7 +809,7 @@
 				(= freeMeals 4)
 				(Bclr fHungry)
 				(Bclr fStarving)
-				(NormalEgo 7)
+				(NormalEgo facingNW)
 				(HandsOn)
 				(fruit approachVerbs: NULL)
 				(tree approachVerbs: NULL)
