@@ -43,6 +43,6 @@
 	)
 	
 	(method (doVerb)
-		(return 0)
+		(return FALSE)
 	)
 )

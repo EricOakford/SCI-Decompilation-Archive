@@ -51,57 +51,59 @@
 	local225 = [0 0 10 10 10 0 -10 -10 -10]
 	local234 = [6 -6 -6 0 6 6 6 0 -6]
 )
+
+;EO: Neither of these procedures is used.
 (procedure (proc32_3)
-	(asm
-		bnot    
-		pushi    2
-		pushi    500
-		dup     
-		pushi    161
-		pushi    1
-		pushi    0
-		pushi    63
-		pushi    1
-		pushi    15
-		pushi    313
-		pushi    0
-		lofsa    flame
-		send     24
-		jmp      code_0453
-		dup     
-		ldi      24
-		eq?     
-		bnt      code_0453
-		lal      theFetchable
-		bnt      code_0448
-		pushi    #drop
-		pushi    2
-		pushi    #x
-		pushi    0
-		send     4
-		push    
-		pushi    #y
-		pushi    0
-		lal      theFetchable
-		send     4
-		push    
-		lal      theFetchable
-		send     8
-		ldi      0
-		sal      theFetchable
-code_0448:
-		pushi    #setCursor
-		pushi    2
-		lsg      normalCursor
-		pushi    1
-		lag      theGame
-		send     8
-code_0453:
-		toss    
-		ldi      0
-		sal      local4
-		ret     
-	)
+;;;	(asm
+;;;		bnot    
+;;;		pushi    2
+;;;		pushi    500
+;;;		dup     
+;;;		pushi    161
+;;;		pushi    1
+;;;		pushi    0
+;;;		pushi    63
+;;;		pushi    1
+;;;		pushi    15
+;;;		pushi    313
+;;;		pushi    0
+;;;		lofsa    flame
+;;;		send     24
+;;;		jmp      code_0453
+;;;		dup     
+;;;		ldi      24
+;;;		eq?     
+;;;		bnt      code_0453
+;;;		lal      theFetchable
+;;;		bnt      code_0448
+;;;		pushi    #drop
+;;;		pushi    2
+;;;		pushi    #x
+;;;		pushi    0
+;;;		send     4
+;;;		push    
+;;;		pushi    #y
+;;;		pushi    0
+;;;		lal      theFetchable
+;;;		send     4
+;;;		push    
+;;;		lal      theFetchable
+;;;		send     8
+;;;		ldi      0
+;;;		sal      theFetchable
+;;;code_0448:
+;;;		pushi    #setCursor
+;;;		pushi    2
+;;;		lsg      normalCursor
+;;;		pushi    1
+;;;		lag      theGame
+;;;		send     8
+;;;code_0453:
+;;;		toss    
+;;;		ldi      0
+;;;		sal      local4
+;;;		ret     
+;;;	)
 )
 
 (procedure (proc32_4)
@@ -420,7 +422,7 @@ code_0453:
 		view 32
 		loop 8
 		illegalBits $0000
-		doCast 1
+		doCast TRUE
 	)
 	
 	(method (init)
@@ -465,43 +467,6 @@ code_0453:
 
 (class Fetchable of View
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		modNum -1
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		yStep 2
-		view -1
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0101
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		scaleSignal $0000
-		scaleX 128
-		scaleY 128
-		maxScale 128
 		listIndex 0
 		fetchType 0
 		inMotion 0
@@ -620,13 +585,6 @@ code_0453:
 
 (class SpecialBug of MazeBug
 	(properties
-		startX 0
-		startY 0
-		deadTime 0
-		otherBug 0
-		form 0
-		smarts 5
-		path 0
 		onALadder 0
 	)
 	

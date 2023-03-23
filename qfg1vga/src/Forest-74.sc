@@ -61,9 +61,15 @@
 (instance peekABooScript of Script
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 6 25)))
-			(1 (theEyes setCycle: EndLoop self))
-			(2 (self changeState: 0))
+			(0
+				(= seconds (Random 6 25))
+			)
+			(1
+				(theEyes setCycle: EndLoop self)
+			)
+			(2
+				(self changeState: 0)
+			)
 		)
 	)
 )

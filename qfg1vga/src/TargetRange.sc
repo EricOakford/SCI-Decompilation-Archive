@@ -29,250 +29,112 @@
 	local0
 	local1
 	brunoHere
-	brutusHere
-	local4
-	local5
-	local6
+	startCombat
+	brutusDead
+	afterCombat
+	startThrowing
 	newDagger
 	egoSide
 	armorValue
-	local10 =  55
-	local11
-	local12
+	maxDags =  55
+	distFromTarget
+	local12	;unused
 	local13
 	local14
 	local15
 	theKiller
-	local17
+	local17	;unused
 	saveSpeed
 )
 (procedure (SetUpRoom)
-	(asm
-		pushi    1
-		pushi    161
-		callb    Btst,  2
-		bnt      code_0162
-		pushi    1
-		pushi    235
-		callb    Btst,  2
-		not     
-		bnt      code_0162
-		lsg      timeODay
-		ldi      2
-		eq?     
-		bnt      code_0162
-		lsg      prevRoomNum
-		ldi      72
-		eq?     
-		bt       code_0162
-		lsg      prevRoomNum
-		ldi      74
-		eq?     
-code_0162:
-		sal      brunoHere
-		bnt      code_0189
-		ldi      100
-		sag      brutusHealth
-		sag      monsterHealth
-		ldi      vBrigand
-		sag      monsterNum
-		pushi    2
-		pushi    128
-		pushi    65
-		callk    Load,  4
-		pushi    2
-		pushi    128
-		pushi    73
-		callk    Load,  4
-		jmp      code_0245
-code_0189:
-		pushi    1
-		pushi    245
-		callb    Btst,  2
-		not     
-		bnt      code_019a
-		pushi    1
-		pushi    fBeatBrutus
-		callb    Btst,  2
-code_019a:
-		sal      local4
-		bnt      code_01aa
-		pushi    2
-		pushi    128
-		pushi    73
-		callk    Load,  4
-		jmp      code_0245
-code_01aa:
-		pushi    1
-		pushi    235
-		callb    Btst,  2
-		bnt      code_01c9
-		lsg      prevRoomNum
-		ldi      72
-		eq?     
-		bt       code_01c1
-		lsg      prevRoomNum
-		ldi      74
-		eq?     
-		bnt      code_01c9
-code_01c1:
-		pushi    1
-		pushi    fBeatBrutus
-		callb    Btst,  2
-		not     
-code_01c9:
-		sal      local6
-		bnt      code_01e4
-		pushi    2
-		pushi    128
-		pushi    73
-		callk    Load,  4
-		lag      brutusHealth
-		sag      monsterHealth
-		ldi      vBrigand
-		sag      monsterNum
-		jmp      code_0245
-code_01e4:
-		pushi    1
-		pushi    235
-		callb    Btst,  2
-		bnt      code_01fc
-		lsg      prevRoomNum
-		ldi      80
-		eq?     
-		bnt      code_01fc
-		pushi    1
-		pushi    fBeatBrutus
-		callb    Btst,  2
-		not     
-code_01fc:
-		sal      brutusHere
-		bnt      code_022a
-		pushi    2
-		pushi    128
-		pushi    73
-		callk    Load,  4
-		lag      brutusHealth
-		sag      monsterHealth
-		ldi      vBrigand
-		sag      monsterNum
-		ldi      6
-		sag      brigandHead
-		pushi    #posn
-		pushi    2
-		pushi    128
-		pushi    135
-		lofsa    brutus
-		send     8
-		jmp      code_0245
-code_022a:
-		lsg      prevRoomNum
-		ldi      vBrigand
-		eq?     
-		sal      local5
-		bnt      code_0245
-		pushi    1
-		pushi    fBeatBrutus
-		callb    Bset,  2
-		pushi    2
-		pushi    128
-		pushi    466
-		callk    Load,  4
-code_0245:
-		lal      brunoHere
-		bnt      code_025c
-		pushi    #init
-		pushi    0
-		lofsa    bruno
-		send     4
-		pushi    #init
-		pushi    0
-		lofsa    brutus
-		send     4
-		jmp      code_02ef
-code_025c:
-		lal      local6
-		bnt      code_0270
-		pushi    #init
-		pushi    0
-		pushi    155
-		pushi    1
-		pushi    2
-		lofsa    brutus
-		send     10
-		jmp      code_02ef
-code_0270:
-		lal      brutusHere
-		bnt      code_0284
-		pushi    #init
-		pushi    0
-		pushi    155
-		pushi    1
-		pushi    2
-		lofsa    brutus
-		send     10
-		jmp      code_02ef
-code_0284:
-		lal      local4
-		bnt      code_02b2
-		pushi    #view
-		pushi    1
-		pushi    73
-		pushi    155
-		pushi    1
-		pushi    7
-		pushi    156
-		pushi    1
-		pushi    8
-		pushi    110
-		pushi    0
-		pushi    313
-		pushi    0
-		lofsa    brutus
-		send     26
-		ldi      1
-		sal      local1
-		pushi    #add
-		pushi    0
-		lofsa    dags
-		send     4
-		jmp      code_02ef
-code_02b2:
-		lal      local5
-		bnt      code_02cf
-		pushi    1
-		pushi    245
-		callb    Btst,  2
-		not     
-		bnt      code_02ef
-		ldi      0
-		sag      monsterNum
-		pushi    #init
-		pushi    0
-		lofsa    brutus
-		send     4
-		jmp      code_02ef
-code_02cf:
-		pushi    #add
-		pushi    0
-		lofsa    dags
-		send     4
-		lsg      prevRoomNum
-		ldi      72
-		ne?     
-		bnt      code_02eb
-		lsg      prevRoomNum
-		ldi      74
-		ne?     
-		bnt      code_02eb
-		ldi      1
-		sal      local1
-		jmp      code_02ef
-code_02eb:
-		pushi    0
-		callb    HandsOn,  0
-code_02ef:
-		ret     
+	;EO: This procedure has been successfully decompiled! Let's test it.
+	(cond 
+		(
+			(= brunoHere
+				(if (and
+						(Btst fBearGone)
+						(not (Btst fSpiedOnThieves))
+						(== timeODay TIME_MIDDAY)
+						(or (== prevRoomNum 72) (== prevRoomNum 74))
+					)
+				)
+			)
+			(= monsterHealth 100)
+			(= brutusHealth 100)
+			(= monsterNum vBrigand)
+			(Load VIEW 65)
+			(Load VIEW 73)
+		)
+		((= brutusDead (if (not (Btst fGotBrutusKey)) (Btst fBeatBrutus)))
+			(Load VIEW 73)
+		)
+		(
+			(= startThrowing
+				(if
+					(and
+						(Btst fSpiedOnThieves)
+						(or (== prevRoomNum 72) (== prevRoomNum 74))
+					)
+					(not (Btst fBeatBrutus))
+				)
+			)
+			(Load VIEW 73)
+			(= monsterHealth brutusHealth)
+			(= monsterNum vBrigand)
+		)
+		(
+			(= startCombat
+				(if
+					(and (Btst fSpiedOnThieves) (== prevRoomNum 80))
+					(not (Btst fBeatBrutus))
+				)
+			)
+			(Load VIEW 73)
+			(= monsterHealth brutusHealth)
+			(= monsterNum vBrigand)
+			(= brigandHead 6)
+			(brutus posn: 128 135)
+		)
+		((= afterCombat (== prevRoomNum vBrigand))
+			(Bset fBeatBrutus)
+			(Load VIEW 466)
+		)
+	)
+	(cond 
+		(brunoHere
+			(bruno init:)
+			(brutus init:)
+		)
+		(startThrowing
+			(brutus init: setLoop: 2)
+		)
+		(startCombat
+			(brutus init: setLoop: 2)
+		)
+		(brutusDead
+			(brutus
+				view: 73
+				setLoop: 7
+				setCel: 8
+				init:
+				stopUpd:
+			)
+			(= local1 1)
+			(dags add:)
+		)
+		(afterCombat
+			(if (not (Btst fGotBrutusKey))
+				(= monsterNum 0)
+				(brutus init:)
+			)
+		)
+		((or (== prevRoomNum 72) (== prevRoomNum 74))
+			(dags add:)
+			(= local1 1)
+		)
+		(else
+			(HandsOn)
+		)
 	)
 )
 
@@ -297,8 +159,14 @@ code_02ef:
 ;;;		(target init:)
 ;;;		(wall init:)
 ;;;		(buildings init:)
-;;;		(trees init:)
-;;;		(appleTree init:)
+;;;		(trees
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(appleTree
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
 		
 		(= armorValue 0)
 		(cond 
@@ -469,7 +337,9 @@ code_02ef:
 			(V_DAGGER
 				(ThrowKnife 0)
 			)
-			(V_DETECT (messager say: N_ROOM V_DETECT 0))
+			(V_DETECT
+				(messager say: N_ROOM V_DETECT 0)
+			)
 			(V_DAZZLE
 				(if (or (Btst fBeatBrutus) (== egoSide 0))
 					(CastDazz)
@@ -493,7 +363,9 @@ code_02ef:
 					(messager say: N_ROOM V_CALM C_CANTCALM)
 				)
 			)
-			(V_OPEN (messager say: N_ROOM V_OPEN 0))
+			(V_OPEN
+				(messager say: N_ROOM V_OPEN 0)
+			)
 			(V_ZAP
 				;EO: The original programmers mistakenly assigned this to Trigger. Now it's Zap.
 				(cond 
@@ -740,7 +612,7 @@ code_02ef:
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_WALL V_DO V_DAGGER 0 self)
+				(messager say: N_WALL V_DO C_CLIMBSUCCESS 0 self)
 			)
 			(1
 				(curRoom newRoom: 300)
@@ -865,7 +737,7 @@ code_02ef:
 					(brunoHere
 						(curRoom setScript: brigsMeet)
 					)
-					((and (< timeODay TIME_SUNSET) (or local6 (Btst fBrutusWaits)))
+					((and (< timeODay TIME_SUNSET) (or startThrowing (Btst fBrutusWaits)))
 						(curRoom setScript: brutusThrows)
 					)
 				)
@@ -890,7 +762,7 @@ code_02ef:
 					(brunoHere
 						(curRoom setScript: brigsMeet)
 					)
-					((and (< timeODay TIME_SUNSET) (or local6 (Btst fBrutusWaits)))
+					((and (< timeODay TIME_SUNSET) (or startThrowing (Btst fBrutusWaits)))
 						(curRoom setScript: brutusThrows)
 					)
 				)
@@ -911,7 +783,7 @@ code_02ef:
 			(1
 				(HandsOn)
 				(NormalEgo)
-				(if brutusHere
+				(if startCombat
 					(curRoom setScript: brutusLives)
 				)
 				(self dispose:)
@@ -1183,8 +1055,6 @@ code_02ef:
 )
 
 (instance brigsMeet of Script
-	(properties)
-	
 	(method (changeState newState)
 		(if client
 			(switch (= state newState)
@@ -1352,6 +1222,7 @@ code_02ef:
 			(brutus setScript: brutusDies)
 		else
 			(messager say: N_BRUTUS V_DAZZLE)
+			;UPGRADE FROM MAC: Replace with message "Brutus is already dead."
 		)
 		(= brutusHealth monsterHealth)
 	)
@@ -1561,7 +1432,7 @@ code_02ef:
 				(ego illegalBits: 0 ignoreActors: 1)
 				(if (!= (ego x?) 212)
 					(ego
-						setMotion: PolyPath 212 (if (> local11 125) local11 else 151) self
+						setMotion: PolyPath 212 (if (> distFromTarget 125) distFromTarget else 151) self
 					)
 				else
 					(= cycles 2)
@@ -1606,7 +1477,7 @@ code_02ef:
 				(throwSound play: 80)
 			)
 			(4
-				(if (< targetDaggers local10)
+				(if (< targetDaggers maxDags)
 					(hitSound play: 80)
 					(= temp0 (Random 0 3))
 					((= newDagger (Dagger new:))
@@ -1771,7 +1642,7 @@ code_02ef:
 			(7
 				(dags add:)
 				(ego
-					setMotion: PolyPath 212 (if (> local11 125) local11 else 151) self
+					setMotion: PolyPath 212 (if (> distFromTarget 125) distFromTarget else 151) self
 				)
 			)
 			(8

@@ -33,8 +33,8 @@
 	openSpellFail
 	foxGone
 	talkedToFox
-	local15
-	local16
+	flameMsg
+	dinoShake
 )
 (instance rm67 of Room
 	(properties
@@ -248,11 +248,11 @@
 			)
 			(70
 				(if foxInRoom
-					(if local15
+					(if flameMsg
 						(dart init: setScript: flameDartFox)
 					else
 						(messager say: N_FOX 70 0)
-						(= local15 1)
+						(= flameMsg TRUE)
 					)
 				else
 					(messager say: N_ROOM 51 1)
@@ -361,12 +361,12 @@
 	
 	(method (doit)
 		(cond 
-			((and (not local16) (== (sinclair cel?) 0))
-				(= local16 1)
-				(ShakeScreen 1)
+			((and (not dinoShake) (== (sinclair cel?) 0))
+				(= dinoShake TRUE)
+				(ShakeScreen shakeSDown)
 			)
-			((and local16 (== (sinclair cel?) 1))
-				(= local16 0)
+			((and dinoShake (== (sinclair cel?) 1))
+				(= dinoShake FALSE)
 			)
 		)
 		(super doit:)
@@ -381,7 +381,9 @@
 					(messager say: N_SINCLAIR V_LOOK C_CUE)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )

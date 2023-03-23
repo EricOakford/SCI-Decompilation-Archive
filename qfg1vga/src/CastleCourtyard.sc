@@ -26,8 +26,8 @@
 
 (local
 	saveSortedFeatures
-	local1
-	local2
+	masterAttention
+	local2	;unused
 	askedFight
 	canFightMaster
 	sleepCued
@@ -246,13 +246,34 @@
 				court
 		)
 		;UPGRADE
-;;;			(castle init:)
-;;;			(barrels init:)
-;;;			(waggon init:)
-;;;			(curbLeft init:)
-;;;			(curbRite init:)
-;;;			(wall init:)
-;;;			(court init:)
+;;;			(castle
+;;;				init:
+;;;				setOnMeCheck: ftrControl cBLUE
+;;;			)
+;;;			(barrels
+;;;				init:
+;;;				setOnMeCheck: ftrControl cGREEN
+;;;			)
+;;;			(waggon
+;;;				init:
+;;;				setOnMeCheck: ftrControl cLCYAN
+;;;			)
+;;;			(curbLeft
+;;;				init:
+;;;				setOnMeCheck: ftrControl cMAGENTA
+;;;			)
+;;;			(curbRite
+;;;				init:
+;;;				setOnMeCheck: ftrControl cLMAGENTA
+;;;			)
+;;;			(wall
+;;;				init:
+;;;				setOnMeCheck: ftrControl cBROWN
+;;;			)
+;;;			(court
+;;;				init:
+;;;				setOnMeCheck: ftrControl cGREY
+;;;			)
 		
 		(if
 			(and
@@ -607,7 +628,7 @@
 			)
 			(2
 				(Face ego theMaster)
-				(= local1 1)
+				(= masterAttention TRUE)
 				(ego ignoreActors: 0)
 				(client setScript: 0)
 				(HandsOn)

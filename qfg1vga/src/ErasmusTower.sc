@@ -193,15 +193,42 @@
 				walls
 		)
 		;UPGRADE
-;;;		(pillars init:)
-;;;		(curtain init:)
-;;;		(table init:)
-;;;		(stairs init:)
-;;;		(wWindow init:)
-;;;		(fenrusPad init:)
-;;;		(gStone init:)
-;;;		(pStone init:)
-;;;		(walls init:)
+;;;		(pillars
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(curtain
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(table
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
+;;;		(stairs
+;;;			init:
+;;;			setOnMeCheck: ftrControl cRED
+;;;		)
+;;;		(wWindow
+;;;			init:
+;;;			setOnMeCheck: ftrControl cMAGENTA
+;;;		)
+;;;		(fenrusPad
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBROWN
+;;;		)
+;;;		(gStone
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLGREY
+;;;		)
+;;;		(pStone
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREY
+;;;		)
+;;;		(walls
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLBLUE
+;;;		)
 		
 		(wizLegs addToPic:)
 		(wizChair addToPic:)
@@ -1096,7 +1123,10 @@
 (instance gameOver of Script
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 60))
+			(0
+				(HandsOff)
+				(= ticks 60)
+			)
 			(1
 				(doorSound play:)
 				(ego

@@ -42,12 +42,12 @@
 )
 
 (local
-	[local0 2]
+	[local0 2]	;unused
 	healerFacingAway
 	local3
 	kissCued
 	theCycles
-	local6
+	local6	;unused
 	lookedAtBarrel
 	gaveCheetaurClaws
 	healerCue
@@ -259,7 +259,10 @@
 				onThings
 		)
 		;UPGRADE
-;;;		(pots init:)
+;;;		(pots
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
 ;;;		(barrel init:)
 ;;;		(cheeseCloth init:)
 ;;;		(bed init:)
@@ -272,6 +275,7 @@
 		
 		(stoneTable
 			init:
+;;;			setOnMeCheck: ftrControl cBLUE
 			approachVerbs:
 				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
 				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL

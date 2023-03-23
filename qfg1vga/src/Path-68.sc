@@ -22,7 +22,10 @@
 		(StatusLine enable:)
 		(features add: avalanche eachElementDo: #init doit:)
 		;UPGRADE
-;;;		(avalanche init:)
+;;;		(avalanche
+;;;			init:
+;;;			setOnMeCheck: ftrControl clBLUE
+;;;		)
 		
 		(NormalEgo)
 	)

@@ -198,6 +198,39 @@
 		(self
 			setFeatures: theSky mountain castle gateHouse tower bush wall wWindow
 		)
+		;UPGRADE
+;;;		(theSky
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(mountain
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(castle
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
+;;;		(gateHouse
+;;;			init:
+;;;			setOnMeCheck: ftrControl cRED
+;;;		)
+;;;		(tower
+;;;			init:
+;;;			setOnMeCheck: ftrControl cMAGENTA
+;;;		)
+;;;		(bush
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBROWN
+;;;		)
+;;;		(wall
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLGREY
+;;;		)
+;;;		(wWindow
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREY
+;;;		)
 		(NormalEgo)
 		(HandsOn)
 		(karlTeller init: karl @karlTellMainBranch @karlTellTree @karlTellKeys)

@@ -64,11 +64,30 @@
 			setFeatures: water rocks trees deadTree formation falls
 		)
 		;UPGRADE
-;;;		(water init:)
-;;;		(rocks init:)
-;;;		(trees init:)
-;;;		(deadTree init:)
-;;;		(formation init:)
+;;;		(tromp
+;;;			setPri: 1
+;;;			init:
+;;;		)
+;;;		(water
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(rocks
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(trees
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
+;;;		(deadTree
+;;;			init:
+;;;			setOnMeCheck: ftrControl cRED
+;;;		)
+;;;		(formation
+;;;			init:
+;;;			setOnMeCheck: ftrControl cMAGENTA
+;;;		)
 ;;;		(falls init:)
 		
 		(SolvePuzzle f87VisitLake 1)

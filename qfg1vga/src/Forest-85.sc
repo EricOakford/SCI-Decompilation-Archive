@@ -36,7 +36,7 @@
 		(super init:)
 		(Load VIEW 700)
 		(if (Btst fAntwerpInSky)
-			(Load SCRIPT 970)
+			(Load SCRIPT WANDER)
 			(curRoom encChance: 0)
 			(LoadMany VIEW 590 85)
 			(LoadMany SOUND 9 10 11)

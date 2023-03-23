@@ -90,23 +90,67 @@
 				pots
 		)
 		;UPGRADE
-;;;		(doors init:)
-;;;		(barrack init:)
-;;;		(towers init:)
-;;;		(walls init:)
-;;;		(walkWay init:)
-;;;		(theDoor init:)
-;;;		(castle init:)
-;;;		(waggon init:)
-;;;		(chimney init:)
-;;;		(garden init:)
-;;;		(mounts init:)
-;;;		(sky init:)
-;;;		(water init:)
-;;;		(crest init:)
-;;;		(pots init:)
+;;;		(barrack
+;;;			init:
+;;;			setOnMeCheck: ftrControl cYELLOW
+;;;		)
+;;;		(towers
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(walls
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(walkWay
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
+;;;		(theDoor
+;;;			init:
+;;;			setOnMeCheck: ftrControl cRED
+;;;		)
+;;;		(castle
+;;;			init:
+;;;			setOnMeCheck: ftrControl cMAGENTA
+;;;		)
+;;;		(waggon
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBROWN
+;;;		)
+;;;		(chimney
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLGREY
+;;;		)
+;;;		(garden
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREY
+;;;		)
+;;;		(mounts
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLBLUE
+;;;		)
+;;;		(sky
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLGREEN
+;;;		)
+;;;		(water
+;;;			init:
+;;;			setOnMeChecK: ftrControl cLCYAN
+;;;		)
+;;;		(crest
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLRED
+;;;		)
+;;;		(pots
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLMAGENTA
+;;;		)
 		
-		(doors approachVerbs: V_DO)
+		(doors
+;;;			init:
+			approachVerbs: V_DO
+		)
 		(if (not Night)
 			(guard init:)
 		)
@@ -498,7 +542,9 @@
 				)
 				(= ticks 60)
 			)
-			(2 (curRoom newRoom: 37))
+			(2
+				(curRoom newRoom: 37)
+			)
 		)
 	)
 )

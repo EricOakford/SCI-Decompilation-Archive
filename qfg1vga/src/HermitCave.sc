@@ -164,6 +164,56 @@
 				water
 				skull
 		)
+		;UPGRADE
+;;;		(straw init:)
+;;;		(theFire init:)
+;;;		(pot1
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
+;;;		(pot2
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLGREY
+;;;		)
+;;;		(pot3
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREY
+;;;		)
+;;;		(pot4
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLBLUE
+;;;		)
+;;;		(pot5
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLGREEN
+;;;		)
+;;;		(pot6
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLCYAN
+;;;		)
+;;;		(pot7
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLRED
+;;;		)
+;;;		(table init:)
+;;;		(chair
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBROWN
+;;;		)
+;;;		(cot
+;;;			init:
+;;;			setOnMeCheck: ftrControl cRED
+;;;		)
+;;;		(bows
+;;;			init:
+;;;			setOnMeCheck: ftrControl cMAGENTA
+;;;		)
+;;;		(water
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(skull init:)
+
 		(glowCoals init: setPri: 15 setCycle: Forward)
 		(waterFallSplash init: cycleSpeed: 6 setCycle: Forward)
 		(caveDoor init:)

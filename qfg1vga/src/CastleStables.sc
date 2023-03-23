@@ -22,19 +22,19 @@
 )
 
 (local
-	local0
-	local1
+	horseEatCount
+	sandCycles
 	stablemanAtWindow
 	stablemanSpeaks
 	goodMorning
-	local5
+	dustCued
 	local6
 	workBreak
-	local8
+	local8	;unused
 	oldSortedFeatures
 	saveCycleSpeed
 	saveMoveSpeed
-	local12
+	local12	;unused
 	talkCount
 	wasRunning
 	stableTellMainBranch = [
@@ -150,15 +150,42 @@
 				fence
 		)
 		;UPGRADE
-;;;		(walls init:)
-;;;		(towers init:)
-;;;		(waggon init:)
-;;;		(grain init:)
-;;;		(houses init:)
-;;;		(waterBarrel init:)
-;;;		(mounts init:)
-;;;		(sky init:)
-;;;		(fence init:)
+;;;		(walls
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
+;;;		(towers
+;;;			init:
+;;;			setOnMeCreck: ftrControl cRED
+;;;		)
+;;;		(waggon
+;;;			init:
+;;;			setOnMeCheck: ftrControl cMAGENTA
+;;;		)
+;;;		(grain
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBROWN
+;;;		)
+;;;		(houses
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLGREY
+;;;		)
+;;;		(waterBarrel
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREY
+;;;		)
+;;;		(mounts
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLBLUE
+;;;		)
+;;;		(sky
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLGREEN
+;;;		)
+;;;		(fence
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLCYAN
+;;;		)
 		
 		(stableTeller init: stableMan @stableTellMainBranch @stableTellTree @stableTellKeys)
 		(stableMan
@@ -732,7 +759,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local0 0)
+				(= horseEatCount 0)
 				(= seconds (Random 10 30))
 			)
 			(1
@@ -741,7 +768,7 @@
 				(horse setLoop: 7 cel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(++ local0)
+				(++ horseEatCount)
 				(if (> (ego distanceTo: horse) 50)
 					(horse loop: 8 setCycle: Forward)
 					(= ticks (Random 20 36))
@@ -754,7 +781,7 @@
 				(= ticks (Random 72 150))
 			)
 			(4
-				(if (< local0 (Random 3 6))
+				(if (< horseEatCount (Random 3 6))
 					(self changeState: 2)
 				else
 					(self cue:)
@@ -777,17 +804,17 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local1 0)
+				(= sandCycles 0)
 				(theHourGlass setPri: 2 init: stopUpd:)
 				(= ticks 220)
 			)
 			(1
-				(++ local1)
+				(++ sandCycles)
 				(glass setCel: (+ (glass cel?) 1))
 				(= ticks 220)
 			)
 			(2
-				(if (> local1 6)
+				(if (> sandCycles 6)
 					(glass setCel: 8)
 					(sand setCycle: 0)
 					(= ticks 60)
@@ -860,10 +887,10 @@
 					(== (ego cel?) 1)
 					(or (== (self state?) 0) (== (self state?) 4))
 				)
-				(= local5 1)
+				(= dustCued TRUE)
 			)
-			((and local5 (== (ego cel?) 2))
-				(= local5 0)
+			((and dustCued (== (ego cel?) 2))
+				(= dustCued FALSE)
 				(aDustCloud
 					posn:
 						(if local6
@@ -1274,7 +1301,7 @@
 				(if (not (ego script?))
 					(HandsOn)
 				)
-				(= stablemanSpeaks NULL)
+				(= stablemanSpeaks FALSE)
 				(client setScript: 0)
 			)
 		)

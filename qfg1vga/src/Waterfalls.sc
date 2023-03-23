@@ -30,7 +30,7 @@
 	seenByHenry
 	rockKnockCount
 	lookedAtDoor
-	local7
+	local7	;unused
 	savSignal
 	savPriority
 	savIllegalBits
@@ -120,14 +120,33 @@
 				theCliff
 		)
 		;UPGRADE
-;;;		(onWater init:)
-;;;		(cliff init:)
-;;;		(ground init:)
+;;;		(onWater
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(cliff
+;;;			init:
+;;;			setOnMeCheck: ftrControl cRED
+;;;		)
+;;;		(ground
+;;;			init:
+;;;			setOnMeCheck: ftrControl cMAGENTA
+;;;		)
 ;;;		(ledge init:)
-;;;		(onFall init:)
-;;;		(theCliff init:)
+;;;		(onFall
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBROWN
+;;;		)
+;;;		(theCliff
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
 		
-		(rocks init: approachVerbs: V_DO)
+		(rocks
+			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+			approachVerbs: V_DO
+		)
 		(theMusic stop:)
 		(smlSplash1 init: setCycle: Forward)
 		(smlSplash2 init: setCycle: Forward)

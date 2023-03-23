@@ -20,7 +20,7 @@
 		horizon 56
 		encChance 35
 		entrances (| reNORTH reEAST reSOUTH)
-		illBits -16384
+		illBits (| cWHITE cYELLOW)
 	)
 	
 	(method (init)
@@ -73,11 +73,11 @@
 )
 
 (instance hutUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 6))
+			(0
+				(= cycles 6)
+			)
 			(1
 				(tromp number: (SoundFX 66) init: play:)
 				(ShakeScreen 3)
@@ -87,7 +87,9 @@
 				(messager say: N_HUTUP NULL NULL 1)
 				(self cue:)
 			)
-			(3 (= cycles 5))
+			(3
+				(= cycles 5)
+			)
 			(4
 				(tromp play:)
 				(Bclr fBabaHutOpen)

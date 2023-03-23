@@ -42,7 +42,7 @@
 	)
 	
 	(method (dispose)
-		(Bset 26)
+		(Bset fBeenIn36)
 		(super dispose:)
 	)
 )

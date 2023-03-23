@@ -97,17 +97,21 @@
 			(|= illegalBits cLMAGENTA)
 		)
 		(switch form
+			;EO: move speeds changed to fix speed bug
 			(smallBug
 				(|= illegalBits cGREEN)
-				(= moveSpeed (= cycleSpeed 6))
+				(= moveSpeed 128)
+				(= cycleSpeed 6)
 			)
 			(mediumBug
 				(|= illegalBits cLMAGENTA)
-				(= moveSpeed (= cycleSpeed 12))
+				(= moveSpeed 256)
+				(= cycleSpeed 12)
 			)
 			(largeBug
 				(|= illegalBits (| cLMAGENTA cGREEN))
-				(= moveSpeed (= cycleSpeed 18))
+				(= moveSpeed 512)
+				(= cycleSpeed 18)
 			)
 		)
 	)

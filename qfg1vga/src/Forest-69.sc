@@ -19,7 +19,7 @@
 		horizon 68
 		encChance 20
 		entrances (| reNORTH reEAST)
-		illBits -20480
+		illBits (| cWHITE cLRED cLMAGENTA)
 	)
 	
 	(method (init)

@@ -24,9 +24,9 @@
 	centaurStandsStill
 	alerted
 	approached
-	[local4 2]
-	local6
-	[local7 3]
+	[local4 2]	;unused
+	onSouthSide
+	[local7 3]	;unused
 	angCentaurToEgo
 	toX
 	toY
@@ -170,11 +170,12 @@
 ;;;		(frontTree init:)
 ;;;		(aTree init:)
 ;;;		(bush2 init:)
-;;;		(wall init:)
-;;;		(trees1 init:
+;;;		(trees1 init:)
 ;;;		(trees2 init:)
-
-		(wall approachVerbs: V_DO)
+		(wall
+;;;			init:
+			approachVerbs: V_DO
+		)
 		(if (Btst fFarmerIsEast)
 			(Bclr fFarmerIsEast)
 		else
@@ -233,12 +234,12 @@
 			((> (ego x?) 310)
 				(curRoom setScript: sExitRight)
 			)
-			((and (not local6) (< (ego y?) 134))
-				(= local6 1)
+			((and (not onSouthSide) (< (ego y?) 134))
+				(= onSouthSide 1)
 				(ego setPri: 8)
 			)
-			((and local6 (>= (ego y?) 134))
-				(= local6 0)
+			((and onSouthSide (>= (ego y?) 134))
+				(= onSouthSide 0)
 				(ego setPri: -1)
 			)
 		)
@@ -745,7 +746,9 @@
 				(tail cycleSpeed: 18 setCycle: Forward)
 				(= ticks 60)
 			)
-			(5 (= ticks (Random 30 180)))
+			(5
+				(= ticks (Random 30 180))
+			)
 			(6
 				(if (not (centaur cycler?))
 					(= angCentaurToEgo
@@ -829,7 +832,9 @@
 				(HandsOff)
 				(ego setMotion: PolyPath 152 169 self)
 			)
-			(1 (curRoom newRoom: 334))
+			(1
+				(curRoom newRoom: 334)
+			)
 		)
 	)
 )

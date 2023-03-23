@@ -165,11 +165,26 @@
 		)
 		;UPGRADE
 ;;;		(mountain init:)
-;;;		(bigGreenTree init:)
-;;;		(brokenTree init:)
-;;;		(frontRock init:)
-;;;		(backRock init:)
-;;;		(bushes init:)
+;;;		(bigGreenTree
+;;;			init:
+;;;			setOnMeCheck: ftrControl cRED
+;;;		)
+;;;		(brokenTree
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(frontRock
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(backRock
+;;;			init:
+;;;			setOnMeCheck: ftrControl
+;;;		)
+;;;		(bushes
+;;;			init:
+;;;			setOnMeCheck: ftrControl cMAGENTA
+;;;		)
 ;;;		(acorns init:)
 		
 		(NormalEgo)

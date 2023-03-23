@@ -189,11 +189,26 @@
 		)
 		;UPGRADE
 ;;;		(rock init:)
-;;;		(onTheWall init:)
-;;;		(onTownSign init:)
-;;;		(deadSquare init:)
-;;;		(onTheRoad init:)
-;;;		(onTheWhat init:)
+;;;		(onTheWall
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(onTownSign
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
+;;;		(deadSquare
+;;;			init:
+;;;			setOnMeCheck: ftrControl cRED
+;;;		)
+;;;		(onTheRoad
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBROWN
+;;;		)
+;;;		(onTheWhat
+;;;			init:
+;;;			setOnMeCheck: ftrControl cMAGENTA
+;;;		)
 		
 		(= whinerCount 0)
 		(if

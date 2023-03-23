@@ -20,7 +20,7 @@
 	twisterY
 	oldTwisterX
 	oldTwisterY
-	local4
+	local4	;unused
 )
 (instance twister of Actor
 	(method (init)

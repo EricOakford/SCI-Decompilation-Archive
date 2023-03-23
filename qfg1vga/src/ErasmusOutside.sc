@@ -83,9 +83,18 @@
 		(LoadMany RES_VIEW 29 530)
 		(self setFeatures: mySky doorPost theWindow)
 		;UPGRADE
-;;;		(mySky init:)
-;;;		(doorPost init:)
-;;;		(theWindow init:)
+;;;		(mySky
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(doorPost
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(theWindow
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
 		
 		(super init:)
 		(theMusic number: 114 loop: -1 init: play:)

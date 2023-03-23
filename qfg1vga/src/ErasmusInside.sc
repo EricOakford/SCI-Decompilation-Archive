@@ -20,7 +20,7 @@
 	goingUpstairs
 	warned
 	teleportCued
-	local3
+	local3	;unused
 	forbiddenRoom
 	leaveCued
 	saveSortedFeatures

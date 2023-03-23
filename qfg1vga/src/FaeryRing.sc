@@ -21,10 +21,11 @@
 )
 
 (local
-	[local0 4]
+	[local0 4]	;unused
 	pickEmX
 	pickEmY
 	pickEmLoop
+	;this array is unused
 	local7 = [0 0 0 0 0 0 0 0 0 62 119 91 145 134 104 75 40 109 108 108 107 101 98 97 101]
 )
 (procedure (proc70_1 param1 param2)
@@ -175,10 +176,22 @@
 		(mush5 init:)
 		(mush6 init:)
 		(mush7 init:)
-		(ring init:)
-		(rocks init:)
-		(treesRight init:)
-		(treesLeft init:)
+		(ring
+			init:
+;;;			setOnMeCheck: ftrControl cYELLOW
+		)
+		(rocks
+			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+		)
+		(treesRight
+			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+		)
+		(treesLeft
+			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+		)
 		(roomTimer setReal: self 6)
 	)
 	
@@ -274,7 +287,7 @@
 		nsBottom 153
 		nsRight 247
 		sightAngle 40
-		onMeCheck cRED
+		onMeCheck cCYAN
 	)
 )
 

@@ -180,14 +180,42 @@
 			)
 		)
 		(theSign init:)
-		(hut init: approachVerbs: V_DO)
-		(gardenL init: approachVerbs: V_DO)
-		(gardenR init: approachVerbs: V_DO)
-		(castle init:)
-		(tree init: approachVerbs: V_DO)
-		(ground init:)
-		(pathRight init:)
-		(pathLeft init:)
+		(hut
+			init:
+			approachVerbs: V_DO
+;;;			setOnMeCheck: ftrControl cBLUE
+		)
+		(gardenL
+			init:
+			approachVerbs: V_DO
+;;;			setOnMeCheck: ftrControl cYELLOW
+		)
+		(gardenR
+			init:
+			approachVerbs: V_DO
+;;;			setOnMeCheck: ftrControl cYELLOW
+		)
+		(castle
+			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+		)
+		(tree
+			init:
+			approachVerbs: V_DO
+;;;			setOnMeCheck: ftrControl cGREEN
+		)
+		(ground
+			init:
+;;;			setOnMeCheck: ftrControl cMAGENTA
+		)
+		(pathRight
+			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+		)
+		(pathLeft
+			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+		)
 		(theRock init: hide:)
 	)
 	

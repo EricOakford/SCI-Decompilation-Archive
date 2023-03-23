@@ -17,6 +17,9 @@
 	rm41 0
 )
 
+;control for the stairs
+(define cSTAIRS	$007e)	; (| cBLUE cGREEN cCYAN cRED cMAGENTA cBROWN))
+
 (local
 	lGuardTellMainBranch = [
 		STARTTELL
@@ -57,7 +60,7 @@
 	stepControl
 	local51
 	mentionedBaldSpot
-	newSound
+	soundObj
 )
 (instance rm41 of Room
 	(properties
@@ -97,7 +100,10 @@
 					yourself:
 				)
 		)
-		(theGround init:)
+		(theGround
+			init:
+;;;			setOnMeCheck: ftrControl cLGREY
+		)
 		(StatusLine enable:)
 		(= beenInside (== prevRoomNum 141))
 		(if (and (Btst fSavedBarnard) (not beenInside) (not (Btst fBarnardReward)))
@@ -126,7 +132,7 @@
 				(and
 					(= thisControl (ego onControl: origin))
 					(not (== thisControl cBLACK))
-					(& thisControl $007e)
+					(& thisControl cSTAIRS)
 					(not (ego script?))
 					(not (curRoom script?))
 				)
@@ -251,10 +257,12 @@
 				(messager say: N_BADIDEA 59)
 			)
 			(V_ROCK (EgoDead 92 93 0 0 503))
-			;The death icon was originally the "Hero in Jail" duplicated from view 503, but the duplicate was removed from view 39 in the VGA remake,
-			;showing a "tiny guard" instead.
-			;Unfortunately, the correct icon is too large to fit with the message, causing the game to crash with an "Invalid Rectangle" error, 
-			;so the "Hero holding his belly in pain" icon (as used at the barracks) appears in its stead.
+			;The death icon was originally the "Hero in Jail" duplicated from view 503,
+			; but the duplicate was removed from view 39 in the VGA remake,
+			; showing a "tiny guard" instead.
+			; Unfortunately, the correct icon is too large to fit with the message,
+			; causing the game to crash with an "Invalid Rectangle" error, 
+			; so the "Hero holding his belly in pain" icon (as used at the barracks) appears in its stead.
 			(V_DAGGER
 				(EgoDead 92 93 0 0 503)
 			)
@@ -496,7 +504,10 @@
 (instance doTheSteps of Script
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(switch stepControl
 					(cBLUE
@@ -711,7 +722,11 @@
 				(= seconds 2)
 			)
 			(6
-				(ego setMotion: MoveTo 178 174 self)
+				(ego
+					;if ego's sneaking, he won't get stuck now. The Mac version fixed this bug.
+					illegalBits: 0
+					setMotion: MoveTo 178 174 self
+				)
 			)
 			(7
 				(ego setLoop: 7 setMotion: MoveTo 168 153 self)
@@ -719,7 +734,10 @@
 			(8
 				(ego setLoop: -1 setMotion: MoveTo 111 111 self)
 			)
-			(9 (curRoom newRoom: 141))
+			(9
+				(NormalEgo)	;will restore the old illegalBits
+				(curRoom newRoom: 141)
+			)
 		)
 	)
 )
@@ -786,7 +804,10 @@
 (instance rGuardTalks of Script
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(HandsOff)
 				(user canInput: FALSE)
@@ -818,11 +839,16 @@
 (instance doTheOpen of Script
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(ego setMotion: PolyPath 250 172 self)
 			)
-			(2 (= seconds 1))
+			(2
+				(= seconds 1)
+			)
 			(3
 				(theGame setCursor: waitCursor TRUE)
 				(ego setMotion: 0 setHeading: 270 self)
@@ -838,7 +864,7 @@
 				)
 			)
 			(5
-				((= newSound (Sound new:))
+				((= soundObj (Sound new:))
 					number: 28
 					priority: 6
 					init:
@@ -847,7 +873,7 @@
 				(ego setCycle: EndLoop self)
 			)
 			(6
-				(newSound stop: dispose:)
+				(soundObj stop: dispose:)
 				(ego view: 4 loop: 7 setCel: 0)
 				(= ticks 20)
 			)

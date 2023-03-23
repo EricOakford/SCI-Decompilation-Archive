@@ -283,10 +283,19 @@
 				V_VASE V_VEGETABLES
 			setScript: meepScript3
 		)
-		(upperRocks init:)
-		(trees init:)
+		(upperRocks
+			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+		)
+		(trees
+			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+		)
 		(grass init:)
-		(lowerRocks init:)
+		(lowerRocks
+			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+		)
 		(Load RES_SCRIPT JUMP)
 		(Load RES_SCRIPT 160)
 		(Lock RES_VIEW 60 1)

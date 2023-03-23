@@ -124,9 +124,18 @@
 ;;;		(graveStone init:)
 ;;;		(grate init:)
 ;;;		(theWall init:)
-;;;		(theSky init:)
-;;;		(theTrees init:)
-;;;		(theGrass init:)
+;;;		(theSky
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(theTrees
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(theGrass
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
 ;;;		(theMortuary init:)
 		
 		(theMusic fade:)
@@ -392,8 +401,12 @@
 				(= cueGrave 5)
 				(messager say: N_CROSS_STONE V_LOOK 0 2 self)
 			)
-			(5 (messager say: N_CROSS_STONE V_LOOK 0 3))
-			(6 (messager say: N_ROOM 0 9 2))
+			(5
+				(messager say: N_CROSS_STONE V_LOOK 0 3)
+			)
+			(6
+				(messager say: N_ROOM 0 9 2)
+			)
 		)
 	)
 )

@@ -22,9 +22,9 @@
 )
 
 (local
-	local0
+	local0	;unused
 	approachingBush
-	local2
+	local2	;unused
 	[movingBushPtsBlue 8]
 	movingBushPts = [
 		164 22
@@ -288,9 +288,18 @@
 						(= local63 1)
 					)
 				)
-				(1 (= local63 1) (= local62 1))
-				(2 (= local63 1) (= local62 1))
-				(3 (= local63 1) (= local62 1))
+				(1
+					(= local63 1)
+					(= local62 1)
+				)
+				(2
+					(= local63 1)
+					(= local62 1)
+				)
+				(3
+					(= local63 1)
+					(= local62 1)
+				)
 				(else 
 					(= local63 1)
 					(= local62 1)
