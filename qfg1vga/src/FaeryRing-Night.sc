@@ -296,10 +296,22 @@
 		(mush5 init:)
 		(mush6 init:)
 		(mush7 init:)
-		(ring init:)
-		(rocks init:)
-		(treesRight init:)
-		(treesLeft init:)
+		(ring
+			init:
+;;;			setOnMeCheck: ftrControl cYELLOW
+		)
+		(rocks
+			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+		)
+		(treesRight
+			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+		)
+		(treesLeft
+			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+		)
 		(theRoom init:)
 		(firstTime init:)
 	)

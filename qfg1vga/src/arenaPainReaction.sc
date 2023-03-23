@@ -14,7 +14,7 @@
 
 (local
 	theWarrior
-	[local1 3]
+	[local1 3]	;unused
 )
 (instance painReaction of Script
 	(method (init)

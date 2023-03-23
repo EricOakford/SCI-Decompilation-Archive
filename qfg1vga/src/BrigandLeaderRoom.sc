@@ -75,7 +75,10 @@
 		(self setFeatures: desk rug)
 		;UPGRADE
 ;;;		(desk init:)
-;;;		(rug init:)
+;;;		(rug
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
 
 		(SolvePuzzle f97EnterLeaderRoom 12)
 		(door init: ignoreActors: TRUE stopUpd:)
@@ -160,7 +163,7 @@
 	)
 	
 	(method (doit)
-		(if (== (ego onControl: 1) 128)
+		(if (== (ego onControl: origin) cLGREY)
 			(if (ego has: iMagicMirror)
 				(curRoom newRoom: 84)	;if ego has mirror, go to Antwerp area
 			else

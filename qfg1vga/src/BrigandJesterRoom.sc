@@ -258,7 +258,10 @@
 ;;;		((ScriptID 98 2) init:)
 ;;;		((ScriptID 98 3) init:)
 ;;;		((ScriptID 98 5) init:)
-;;;		((ScriptID 98 31) init:)
+;;;		((ScriptID 98 31)
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREY
+;;;		)
 ;;;		(littleSign init:)
 ;;;		((ScriptID 98 33) init:)
 ;;;		((ScriptID 98 34) init:)

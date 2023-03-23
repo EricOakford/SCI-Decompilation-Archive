@@ -79,8 +79,14 @@
 		)
 		(super init:)
 		(water init: setScript: sWater)
-		(rocks init:)
-		(ceiling init:)
+		(rocks
+			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+		)
+		(ceiling
+			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+		)
 		(cave init:)
 		(SolvePuzzle f89EnterCave 2)
 		(= trollState

@@ -141,13 +141,31 @@
 		(theMusic fade:)
 		(NormalEgo)
 		(ego init: ignoreActors: TRUE)
-		(rocksUR init:)
+		(rocksUR
+			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+		)
 		(ground init:)
-		(mountainRocks init:)
-		(bushesLL init:)
-		(tree init:)
-		(bushesUR init:)
-		(bushesU init:)
+		(mountainRocks
+			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+		)
+		(bushesLL
+			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+		)
+		(tree
+			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+		)
+		(bushesUR
+			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+		)
+		(bushesU
+			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+		)
 		(switch prevRoomNum
 			(85
 				(curRoom setScript: sEnterFromEast)
@@ -1185,238 +1203,69 @@
 	)
 	
 	(method (changeState newState)
-		(asm
-			lap      newState
-			aTop     state
-			push    
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_1824
-			pushi    0
-			callb    HandsOff,  0
-			pushi    #setCursor
-			pushi    2
-			lsg      waitCursor
-			pushi    1
-			lag      theGame
-			send     8
-			pushi    #setMotion
-			pushi    1
-			pushi    0
-			lag      ego
-			send     6
-			ldi      1
-			aTop     register
-			lsl      antwerpState
-			dup     
-			eq?     
-			bnt      code_1742
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			lal      local6
-			lt?     
-			bnt      code_1728
-			pushi    #setMotion
-			pushi    4
-			class    PolyPath
-			push    
-			pushi    169
-			pushi    128
-			pushSelf
-			lofsa    antwerp
-			send     12
-			ldi      4
-			sal      antwerpState
-			jmp      code_1820
-code_1728:
-			pushi    #setMotion
-			pushi    4
-			class    PolyPath
-			push    
-			pushi    170
-			pushi    56
-			pushSelf
-			lofsa    antwerp
-			send     12
-			ldi      2
-			sal      antwerpState
-			jmp      code_1820
-code_1742:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_178e
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    #x
-			pushi    0
-			lofsa    antwerp
-			send     4
-			lt?     
-			bnt      code_1775
-			pushi    #setMotion
-			pushi    4
-			class    PolyPath
-			push    
-			pushi    272
-			pushi    82
-			pushSelf
-			lofsa    antwerp
-			send     12
-			ldi      3
-			sal      antwerpState
-			jmp      code_1820
-code_1775:
-			pushi    #setMotion
-			pushi    4
-			class    PolyPath
-			push    
-			pushi    110
-			pushi    81
-			pushSelf
-			lofsa    antwerp
-			send     12
-			ldi      1
-			sal      antwerpState
-			jmp      code_1820
-code_178e:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_17d7
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			lal      local6
-			lt?     
-			bnt      code_17bd
-			pushi    #setMotion
-			pushi    4
-			class    PolyPath
-			push    
-			pushi    169
-			pushi    128
-			pushSelf
-			lofsa    antwerp
-			send     12
-			ldi      4
-			sal      antwerpState
-			jmp      code_1820
-code_17bd:
-			pushi    #setMotion
-			pushi    4
-			class    PolyPath
-			push    
-			pushi    170
-			pushi    56
-			pushSelf
-			lofsa    antwerp
-			send     12
-			ldi      2
-			sal      antwerpState
-			jmp      code_1820
-code_17d7:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_1820
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    #x
-			pushi    0
-			lofsa    antwerp
-			send     4
-			lt?     
-			bnt      code_180a
-			pushi    #setMotion
-			pushi    4
-			class    PolyPath
-			push    
-			pushi    272
-			pushi    82
-			pushSelf
-			lofsa    antwerp
-			send     12
-			ldi      3
-			sal      antwerpState
-			jmp      code_1820
-code_180a:
-			pushi    #setMotion
-			pushi    4
-			class    PolyPath
-			push    
-			pushi    110
-			pushi    81
-			pushSelf
-			lofsa    antwerp
-			send     12
-			ldi      1
-			sal      antwerpState
-code_1820:
-			toss    
-			jmp      code_187b
-code_1824:
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_187b
-			pushi    #setCursor
-			pushi    2
-			lsg      waitCursor
-			pushi    1
-			lag      theGame
-			send     8
-			pushi    #status
-			pushi    1
-			pushi    1
-			pushi    244
-			pushi    1
-			lsl      saveSpeed
-			pushi    146
-			pushi    1
-			lofsa    sRandBounce
-			push    
-			pToa     client
-			send     18
-			pushi    #script
-			pushi    0
-			lag      curRoom
-			send     4
-			push    
-			lofsa    sMagicRock
-			eq?     
-			bnt      code_1877
-			pushi    #state
-			pushi    0
-			lofsa    sMagicRock
-			send     4
-			push    
-			ldi      3
-			lt?     
-			bnt      code_1877
-			pushi    #cue
-			pushi    0
-			lofsa    sMagicRock
-			send     4
-			jmp      code_187b
-code_1877:
-			pushi    0
-			callb    HandsOn,  0
-code_187b:
-			toss    
-			ret     
+		(switch (= state newState)
+			;EO: This script has been successfully decompiled. It seems to work okay.
+			(0
+				(HandsOff)
+				(theGame setCursor: waitCursor TRUE)
+				(ego setMotion: 0)
+				(= register 1)	;this was the undecompilable part, I think
+				(switch antwerpState
+					(1
+						(if (< (ego y?) local6)
+							(antwerp setMotion: PolyPath 169 128 self)
+							(= antwerpState 4)
+						else
+							(antwerp setMotion: PolyPath 170 56 self)
+							(= antwerpState 2)
+						)
+					)
+					(2
+						(if (< (ego x?) (antwerp x?))
+							(antwerp setMotion: PolyPath 272 82 self)
+							(= antwerpState 3)
+						else
+							(antwerp setMotion: PolyPath 110 81 self)
+							(= antwerpState 1)
+						)
+					)
+					(3
+						(if (< (ego y?) local6)
+							(antwerp setMotion: PolyPath 169 128 self)
+							(= antwerpState 4)
+						else
+							(antwerp setMotion: PolyPath 170 56 self)
+							(= antwerpState 2)
+						)
+					)
+					(4
+						(if (< (ego x?) (antwerp x?))
+							(antwerp setMotion: PolyPath 272 82 self)
+							(= antwerpState 3)
+						else
+							(antwerp setMotion: PolyPath 110 81 self)
+							(= antwerpState 1)
+						)
+					)
+				)
+			)
+			(1
+				(theGame setCursor: waitCursor TRUE)
+				(client
+					status: 1
+					cycleSpeed: saveSpeed
+					setScript: sRandBounce
+				)
+				(if
+					(and
+						(== (curRoom script?) sMagicRock)
+						(< (sMagicRock state?) 3)
+					)
+					(sMagicRock cue:)
+				else
+					(HandsOn)
+				)
+			)
 		)
 	)
 )

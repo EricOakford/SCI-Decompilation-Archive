@@ -17,8 +17,6 @@
 )
 
 (instance byebye of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 295)

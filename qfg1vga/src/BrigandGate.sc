@@ -183,15 +183,42 @@
 				ground
 		)
 		;UPGRADE
-;;;		(onRock init:)
-;;;		(onRock2 init:)
-;;;		(onDebris init:)
-;;;		(leftFort init:)
-;;;		(rightFort init:)
-;;;		(eastCliff init:)
-;;;		(westCliff init:)
-;;;		(aFunnyBush init:)
-;;;		(ground init:)
+;;;		(onRock
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(onRock2
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLCYAN
+;;;		)
+;;;		(onDebris
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREY
+;;;		)
+;;;		(leftFort
+;;;			init:
+;;;			setOnMeCheck: ftrControl cMAGENTA
+;;;		)
+;;;		(rightFort
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBROWN
+;;;		)
+;;;		(eastCliff
+;;;			init:
+;;;			setOnMeCheck: ftrControl cRED
+;;;		)
+;;;		(westCliff
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
+;;;		(aFunnyBush
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLBLUE
+;;;		)
+;;;		(ground
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLGREY
+;;;		)
 
 		(gateSign setPri: 5 init: addToPic:)
 		(bell setPri: 6 init: stopUpd:)

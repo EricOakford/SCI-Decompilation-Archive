@@ -234,7 +234,10 @@
 		(LoadMany VIEW 311 312)
 		(= logbookPage 0)
 		(if Night (aWindow init:))
-		(book init:)
+		(book
+			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+		)
 		(desk init: approachVerbs: V_DO)
 		(noteSign init:)
 		(theWindow init:)

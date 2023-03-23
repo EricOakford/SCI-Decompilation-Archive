@@ -151,18 +151,54 @@
 				throne
 		)
 		;UPGRADE
-;;;		(tapestry init:)
-;;;		(alcove init:)
-;;;		(crest init:)
-;;;		(pillars init:)
-;;;		(stainedGlass init:)
-;;;		(couch init:)
-;;;		(vase init:)
-;;;		(brasier init:)
-;;;		(piglet init:)
-;;;		(wine init:)
-;;;		(table init:)
-;;;		(throne init:)
+;;;		(tapestry
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(alcove
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(crest
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
+;;;		(pillars
+;;;			init:
+;;;			setOnMeCheck: ftrControl cRED
+;;;		)
+;;;		(stainedGlass
+;;;			init:
+;;;			setOnMeCheck: ftrControl cMAGENTA
+;;;		)
+;;;		(couch
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBROWN
+;;;		)
+;;;		(vase
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLGREY
+;;;		)
+;;;		(brasier
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREY
+;;;		)
+;;;		(piglet
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLGREEN
+;;;		)
+;;;		(wine
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLCYAN
+;;;		)
+;;;		(table
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLRED
+;;;		)
+;;;		(throne
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLMAGENTA
+;;;		)
 		
 		(guard3 init: setPri: 4 stopUpd:)
 		(baronTeller init: baron @baronTellMainBranch @baronTellTree @baronTellKeys)

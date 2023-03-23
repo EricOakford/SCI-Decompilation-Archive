@@ -100,21 +100,18 @@
 (instance newKH of EventHandler)
 
 (instance hideMe of Code
-	
 	(method (doit param1)
 		(param1 z: (+ (param1 z?) 1000))
 	)
 )
 
-(instance showMe of Code
-	
+(instance showMe of Code	
 	(method (doit param1)
 		(param1 z: (- (param1 z?) 1000))
 	)
 )
 
 (instance theCharSheet of Code
-	
 	(method (doit &tmp [str 8])
 		(= userInput (User input?))
 		(= userControls (User controls?))
