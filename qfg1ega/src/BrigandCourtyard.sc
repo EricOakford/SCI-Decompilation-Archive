@@ -630,11 +630,10 @@
 	(method (doit)
 		(cond 
 			((and (not setATrap)
-				  (ego inRect: 90 106 116 12)
+				  (ego inRect: 90 106 116 112)	;EO: last coord fixed, works now!
 				)
 				(= setATrap TRUE)
 				(ego setScript: (ScriptID 186 0)) ;fallbridge
-				;EO: This doesn't seem to work.
 			)
 			((and (not setATrap)
 				  (not (and (<= 215 (ego x?)) (<= (ego x?) 235)))
