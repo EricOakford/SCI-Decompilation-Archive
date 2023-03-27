@@ -654,7 +654,7 @@
 						(newStr cat: curDir)
 						(= curDirSize (curDir size:))
 						(= temp4 (curDir at: (- curDirSize 1)))
-						(if (OneOf temp4 92 58) 0 else (newStr cat: {\\}}))
+						(if (OneOf temp4 92 58) 0 else (newStr cat: {\\}))
 						(newStr cat: saveFileSelText)
 						(heroinfo name: (newStr data?))
 					)
