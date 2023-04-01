@@ -13,7 +13,7 @@
 	(properties
 		x 10
 		y 10
-		view 1060
+		view vMeepTalker
 		talkWidth 260
 		textX 15
 		textY 110
@@ -46,7 +46,7 @@
 
 (instance meepBust of Prop
 	(properties
-		view 1060
+		view vMeepTalker
 	)
 )
 
@@ -54,7 +54,7 @@
 	(properties
 		nsTop 32
 		nsLeft 39
-		view 1060
+		view vMeepTalker
 		loop 1
 	)
 )
@@ -63,7 +63,7 @@
 	(properties
 		nsTop 49
 		nsLeft 58
-		view 1060
+		view vMeepTalker
 		loop 3
 		priority 14
 		signal fixPriOn
@@ -74,7 +74,7 @@
 	(properties
 		nsTop 17
 		nsLeft 42
-		view 1060
+		view vMeepTalker
 		loop 2
 	)
 )

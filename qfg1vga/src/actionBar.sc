@@ -12,6 +12,13 @@
 	actionBar 0
 )
 
+(define ACTION_TOP		30)
+(define ACTION_LEFT		37)
+(define ACTION_BOTTOM	60)
+(define ACTION_RIGHT	280)
+
+(define ACTION_ICON_LEFT 10)
+
 (instance actionBar of GameControls
 	(method (init)
 		(self
@@ -61,9 +68,9 @@
 	(method (hide)
 		((theIconBar at: ICON_WALK) cursor:
 			(switch egoGait
-				(MOVE_WALK 940)
-				(MOVE_RUN 937)
-				(MOVE_SNEAK 947)
+				(MOVE_WALK vWalkCursor)
+				(MOVE_RUN vRunCursor)
+				(MOVE_SNEAK vSneakCursor)
 			)
 		)
 		(theGame setCursor: (curIcon cursor?) TRUE)
@@ -73,15 +80,15 @@
 
 (instance iconNormal of IconItem
 	(properties
-		view 994
+		view vActionIcons
 		loop 0
 		cel 0
-		nsLeft 10
-		nsTop 4
-		cursor 940
+		nsLeft ACTION_ICON_LEFT
+		nsTop MARGIN
+		cursor vWalkCursor
 		message V_WALK
 		signal (| VICON HIDEBAR FIXED_POSN RELVERIFY IMMEDIATE)
-		maskView 994
+		maskView vActionIcons
 		maskLoop 9
 		noun N_WALK
 		modNum ACTIONBAR
@@ -104,15 +111,15 @@
 
 (instance iconRun of IconItem
 	(properties
-		view 994
+		view vActionIcons
 		loop 1
 		cel 0
-		nsLeft 39
-		nsTop 4
-		cursor 937
+		nsLeft (+ ACTION_ICON_LEFT (* 29 1))
+		nsTop MARGIN
+		cursor vRunCursor
 		message V_WALK
 		signal (| VICON HIDEBAR FIXED_POSN RELVERIFY IMMEDIATE)
-		maskView 994
+		maskView vActionIcons
 		maskLoop 9
 		noun N_RUN
 		modNum ACTIONBAR
@@ -135,15 +142,15 @@
 
 (instance iconSneak of IconItem
 	(properties
-		view 994
+		view vActionIcons
 		loop 2
 		cel 0
-		nsLeft 68
-		nsTop 4
-		cursor 947
+		nsLeft (+ ACTION_ICON_LEFT (* 29 2))
+		nsTop MARGIN
+		cursor vSneakCursor
 		message V_WALK
 		signal (| VICON HIDEBAR FIXED_POSN RELVERIFY IMMEDIATE)
-		maskView 994
+		maskView vActionIcons
 		maskLoop 9
 		noun N_SNEAK
 		modNum ACTIONBAR
@@ -172,15 +179,15 @@
 
 (instance iconRest of IconItem
 	(properties
-		view 994
+		view vActionIcons
 		loop 3
 		cel 0
-		nsLeft 97
-		nsTop 4
-		cursor 943
+		nsLeft (+ ACTION_ICON_LEFT (* 29 3))
+		nsTop MARGIN
+		cursor vTalkCursor	;?
 		message V_SLEEP
 		signal (| VICON HIDEBAR FIXED_POSN RELVERIFY IMMEDIATE)
-		maskView 994
+		maskView vActionIcons
 		maskLoop 9
 		noun N_REST
 		modNum ACTIONBAR
@@ -202,14 +209,14 @@
 
 (instance iconSheet of IconItem
 	(properties
-		view 994
+		view vActionIcons
 		loop 5
 		cel 0
-		nsLeft 126
-		nsTop 4
+		nsLeft (+ ACTION_ICON_LEFT (* 29 4))
+		nsTop MARGIN
 		cursor ARROW_CURSOR
 		signal (| VICON HIDEBAR FIXED_POSN RELVERIFY IMMEDIATE)
-		maskView 994
+		maskView vActionIcons
 		maskLoop 9
 		noun N_SHEET
 		modNum ACTIONBAR
@@ -221,7 +228,7 @@
 			(if (super select: &rest)
 				(actionBar hide:)
 				(cond 
-					((not (HaveMem 2000))
+					((not (HaveMem SheetSize))
 						(messager say: N_CANTDOTHAT NULL NULL 2 0 ACTIONBAR)
 					)
 					((not isHandsOff)
@@ -238,16 +245,16 @@
 
 (instance iconTime of IconItem
 	(properties
-		view 994
+		view vActionIcons
 		loop 6
 		cel 0
-		nsLeft 155
-		nsTop 4
+		nsLeft (+ ACTION_ICON_LEFT (* 29 5))
+		nsTop MARGIN
 		cursor ARROW_CURSOR
 		signal (| VICON HIDEBAR FIXED_POSN RELVERIFY IMMEDIATE)
-		maskView 994
+		maskView vActionIcons
 		maskLoop 9
-		noun 8
+		noun N_TIME
 		modNum ACTIONBAR
 		helpVerb V_HELP
 	)
@@ -267,16 +274,16 @@
 
 (instance iconOk of IconItem
 	(properties
-		view 994
+		view vActionIcons
 		loop 4
 		cel 0
-		nsLeft 184
-		nsTop 4
+		nsLeft (+ ACTION_ICON_LEFT (* 29 6))
+		nsTop MARGIN
 		cursor ARROW_CURSOR
 		signal (| VICON HIDEBAR FIXED_POSN RELVERIFY IMMEDIATE)
-		maskView 994
+		maskView vActionIcons
 		maskLoop 9
-		noun 3
+		noun N_OK
 		modNum ACTIONBAR
 		helpVerb V_HELP
 	)
@@ -295,12 +302,12 @@
 
 (instance iconActionHelp of IconItem
 	(properties
-		view 994
+		view vActionIcons
 		loop 8
 		cel 0
-		nsLeft 213
-		nsTop 4
-		cursor 949
+		nsLeft (+ ACTION_ICON_LEFT (* 29 7))
+		nsTop MARGIN
+		cursor vHelpCursor
 		message V_HELP
 		signal (| VICON HIDEBAR FIXED_POSN RELVERIFY IMMEDIATE)
 		noun N_ACTIONHELP
@@ -311,7 +318,13 @@
 
 (instance actWin of GloryWindow
 	(method (open)
-		(self top: 30 left: 37 bottom: 60 right: 280 priority: -1)
+		(self
+			top: ACTION_TOP
+			left: ACTION_LEFT
+			bottom: ACTION_BOTTOM
+			right: ACTION_RIGHT
+			priority: -1
+		)
 		(super open:)
 	)
 )

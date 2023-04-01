@@ -13,10 +13,10 @@
 )
 
 (local
-	local0
-	local1
-	local2
-	local3
+	fightSoundCued
+	thiefSoundCued
+	titlePlateOnScreen
+	titleCued
 	titleX = [18 202 201 18 212 201]
 	titleY = [146 156 146 153 160 153]
 )
@@ -52,7 +52,7 @@
 	(if
 		(or
 			(theTitle onMe: (= evt (Event new:)))
-			(not local2)
+			(not titlePlateOnScreen)
 		)
 		(Bclr fHideCursor)
 		(theGame setCursor: ARROW_CURSOR TRUE
@@ -60,7 +60,8 @@
 				(FIGHTER 50)
 				(MAGIC_USER 140)
 				(else  235)
-			) 150
+			)
+			150
 		)
 	)
 	(evt dispose:)
@@ -68,7 +69,7 @@
 
 (instance selChar of Room
 	(properties
-		picture 905
+		picture pCharSel
 	)
 	
 	(method (init)
@@ -88,13 +89,17 @@
 		(mageChar init: stopUpd:)
 		(thiefChar init: stopUpd:)
 		(theTitle
-			loop: (if (== prevRoomNum 203) 0 else 3)
+			loop: (if (== prevRoomNum CHALLOC) 0 else 3)
 			init:
 		)
-		(roundRobin start: (if (== prevRoomNum 203) 2 else 0))
+		(roundRobin start: (if (== prevRoomNum CHALLOC) 2 else 0))
 		(self setScript: roundRobin)
-		(if (and (not (theMusic handle?)) (!= (theMusic number?) 61))
-			(theMusic loop: -1 number: 61 play:)
+		(if (and (not (theMusic handle?)) (!= (theMusic number?) sCharSel))
+			(theMusic
+				loop: -1
+				number: sCharSel
+				play:
+			)
 		)
 	)
 	
@@ -105,7 +110,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if (or (event claimed?) local3)
+		(if (or (event claimed?) titleCued)
 			(event claimed: TRUE)
 			(return)
 		)
@@ -161,16 +166,16 @@
 	(properties
 		x 68
 		y 129
-		view 526
+		view vSelFighter
 		signal skipCheck
 	)
 	
 	(method (init)
 		(super init:)
-		(if (< howFast 2)
-			(self view: 206)
+		(if (< howFast fast)
+			(self view: vSelFighterSlow)
 		else
-			(self view: 526)
+			(self view: vSelFighter)
 		)
 	)
 	
@@ -187,7 +192,7 @@
 						(OneOf (event message?) ESC ENTER)
 					)
 				)
-				(not local3)
+				(not titleCued)
 				(!= (roundRobin state?) 2)
 			)
 			(event claimed: TRUE)
@@ -215,16 +220,16 @@
 	(properties
 		x 158
 		y 129
-		view 527
+		view vSelMagicUser
 		signal skipCheck
 	)
 	
 	(method (init)
 		(super init:)
 		(if (< howFast fast)
-			(self view: 207)
+			(self view: vSelMagicUserSlow)
 		else
-			(self view: 527)
+			(self view: vSelMagicUser)
 		)
 	)
 	
@@ -242,7 +247,7 @@
 						(OneOf (event message?) ESC ENTER)
 					)
 				)
-				(not local3)
+				(not titleCued)
 				(!= roundRobinState 4)
 				(!= roundRobinState 5)
 			)
@@ -271,14 +276,14 @@
 	(properties
 		x 162
 		y 73
-		view 527
+		view vSelMagicUser
 		loop 1
 		priority 15
 		signal (| skipCheck fixPriOn)
 	)
 	
 	(method (doVerb)
-		(return 0)
+		(return FALSE)
 	)
 )
 
@@ -286,16 +291,16 @@
 	(properties
 		x 248
 		y 130
-		view 528
+		view vSelThief
 		signal skipCheck
 	)
 	
 	(method (init)
 		(super init:)
 		(if (< howFast fast)
-			(self view: 208)
+			(self view: vSelThiefSlow)
 		else
-			(self view: 528)
+			(self view: vSelThief)
 		)
 	)
 	
@@ -313,7 +318,7 @@
 						(OneOf (event message?) ESC ENTER)
 					)
 				)
-				(not local3)
+				(not titleCued)
 				(!= roundRobinState 7)
 			)
 			(event claimed: 1)
@@ -341,14 +346,14 @@
 	(properties
 		x 10
 		y 138
-		view 506
+		view vCharSel
 		loop 3
 	)
 	
 	(method (handleEvent event)
 		(if
 			(and
-				local2
+				titlePlateOnScreen
 				(or
 					(and
 						(== (event type?) mouseDown)
@@ -374,7 +379,7 @@
 	(method (cue)
 		(super cue:)
 		(= heroType cel)
-		(= local3 1)
+		(= titleCued TRUE)
 		(roundRobin state: 9 cue:)
 		(self
 			setLoop: 2
@@ -388,13 +393,23 @@
 	(method (doit)
 		(cond 
 			((< howFast fast) 0)
-			((and local0 (== (fightChar cel?) 2))
-				(theMusic2 number: 993 setVol: 127 loop: 1 play:)
-				(= local0 0)
+			((and fightSoundCued (== (fightChar cel?) 2))
+				(theMusic2
+					number: sUnsheathe
+					setVol: 127
+					loop: 1
+					play:
+				)
+				(= fightSoundCued FALSE)
 			)
-			((and local1 (== (thiefChar cel?) 2))
-				(theMusic2 number: 109 setVol: 127 loop: 1 play:)
-				(= local1 0)
+			((and thiefSoundCued (== (thiefChar cel?) 2))
+				(theMusic2
+					number: sSwoosh
+					setVol: 127
+					loop: 1
+					play:
+				)
+				(= thiefSoundCued FALSE)
 			)
 		)
 		(super doit: &rest)
@@ -408,7 +423,7 @@
 				(= seconds 6)
 			)
 			(1
-				(Load SOUND 993)
+				(Load SOUND sUnsheathe)
 				(= register 1)
 				(theTitle loop: 0)
 				(= seconds 3)
@@ -421,8 +436,8 @@
 					(theGame setCursor: theCursor TRUE 50 150)
 				)
 				(SelectedCharacter FIGHTER)
-				(= local2 1)
-				(= local0 1)
+				(= titlePlateOnScreen TRUE)
+				(= fightSoundCued TRUE)
 				(if (< howFast fast)
 					(fightChar setCel: 1)
 					(= ticks 20)
@@ -436,7 +451,8 @@
 			)
 			(4
 				(if (> howFast medium)
-					(Load SOUND 992)
+					;Macintosh change
+					(Load SOUND sTeleport);sTwinkle)
 				)
 				(= register 2)
 				(= seconds 0)
@@ -454,7 +470,13 @@
 				(cast eachElementDo: #stopUpd)
 				(if (> howFast medium)
 					(mageArm init: setCycle: EndLoop self)
-					(theMusic2 number: 992 setVol: 127 loop: 1 play:)
+					(theMusic2
+						;Macintosh change
+						number: sTeleport ;sTwinkle
+						setVol: 127
+						loop: 1
+						play:
+					)
 				else
 					(= ticks 20)
 				)
@@ -467,12 +489,12 @@
 				(= seconds 0)
 				(= register 3)
 				(SelectedCharacter THIEF)
-				(= local1 1)
+				(= thiefSoundCued TRUE)
 				(if (< howFast fast)
 					(thiefChar setCel: 1)
 					(= ticks 10)
 				else
-					(Load SOUND 109)
+					(Load SOUND sSwoosh)
 					(thiefChar setCycle: EndLoop self)
 				)
 			)
@@ -512,9 +534,14 @@
 				(= cycles 5)
 			)
 			(12
-				(curRoom drawPic: (curRoom picture?) 9)
+				(curRoom drawPic: (curRoom picture?) PIXELDISSOLVE)
 				(= seconds 5)
-				(theMusic2 number: 28 setVol: 127 loop: 1 play:)
+				(theMusic2
+					number: sTeleport
+					setVol: 127
+					loop: 1
+					play:
+				)
 			)
 			(13
 				(curRoom newRoom: 203)

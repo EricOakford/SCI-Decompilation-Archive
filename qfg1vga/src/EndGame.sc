@@ -22,13 +22,13 @@
 )
 (instance EndGame of Room
 	(properties
-		picture 141
+		picture rCastleAnteroom
 		style VSHUTTER
 	)
 	
 	(method (init)
-		(Load SOUND (SoundFX 99))
-		(LoadMany VIEW 139 138)
+		(Load SOUND (SoundFX sEndGame))
+		(LoadMany VIEW vEndGameCast vEndGameDevs)
 		(super init: &rest)
 		(SolvePuzzle f600EndGame 25)
 		(= oldSortedFeatures useSortedFeatures)
@@ -68,7 +68,13 @@
 			)
 		)
 		(narrator keepWindow: FALSE)
-		(theMusic number: 99 loop: -1 play:)
+		;EO: For the MT-32 and General MIDI drivers, no tracks were given to play.
+		; The Macintosh version fixed this oversight.
+		(theMusic
+			number: sEndGame
+			loop: -1
+			play:
+		)
 		(mouseDownHandler add: self)
 		(keyDownHandler add: self)
 		(self setScript: awardScript)
@@ -119,7 +125,7 @@
 		x 87
 		y 137
 		noun N_OURHERO
-		view 139
+		view vEndGameCast
 		loop 4
 		signal fixedLoop
 	)
@@ -145,7 +151,7 @@
 		x 67
 		y 130
 		noun N_BARON
-		view 139
+		view vEndGameCast
 		loop 6
 	)
 	
@@ -168,7 +174,7 @@
 		x 265
 		y 161
 		noun N_CENTAURS
-		view 139
+		view vEndGameCast
 		loop 2
 	)
 	
@@ -185,7 +191,7 @@
 		x 167
 		y 143
 		noun N_KATTASANDABDULLA
-		view 139
+		view vEndGameCast
 		loop 2
 		cel 4
 	)
@@ -203,7 +209,7 @@
 		x 78
 		y 118
 		noun N_ELSA
-		view 139
+		view vEndGameCast
 		loop 1
 		cel 2
 	)
@@ -221,7 +227,7 @@
 		x 24
 		y 136
 		noun N_BARNARD
-		view 139
+		view vEndGameCast
 		loop 1
 		cel 3
 	)
@@ -239,7 +245,7 @@
 		x 16
 		y 170
 		noun N_SHERIFFANDOTTO
-		view 139
+		view vEndGameCast
 		loop 2
 		cel 2
 	)
@@ -257,7 +263,7 @@
 		x 183
 		y 158
 		noun N_ERASMUSANDFENRUS
-		view 139
+		view vEndGameCast
 		loop 2
 		cel 1
 	)
@@ -275,7 +281,7 @@
 		x 227
 		y 153
 		noun N_HERMITANDHEALER
-		view 139
+		view vEndGameCast
 		loop 2
 		cel 3
 	)
@@ -293,7 +299,7 @@
 		x 294
 		y 134
 		noun N_THIEFANDCRUSHER
-		view 139
+		view vEndGameCast
 		loop 2
 		cel 5
 		priority 14
@@ -313,7 +319,7 @@
 		x 123
 		y 109
 		noun N_MINOTAUR
-		view 139
+		view vEndGameCast
 		loop 1
 		cel 1
 		priority 4
@@ -333,7 +339,7 @@
 		x 193
 		y 163
 		noun N_SHOPKEEPERANDZARA
-		view 139
+		view vEndGameCast
 		loop 2
 		cel 9
 	)
@@ -351,7 +357,7 @@
 		x 197
 		y 184
 		noun N_SWORDMASTER
-		view 139
+		view vEndGameCast
 		loop 2
 		cel 6
 		priority 15
@@ -370,8 +376,8 @@
 	(properties
 		x 167
 		y 135
-		noun 17
-		view 139
+		noun N_GUILDMASTER
+		view vEndGameCast
 		loop 2
 		cel 7
 	)
@@ -389,7 +395,7 @@
 		x 196
 		y 133
 		noun N_GRANNYANDCAT
-		view 139
+		view vEndGameCast
 		loop 2
 		cel 8
 	)
@@ -407,7 +413,7 @@
 		x 60
 		y 91
 		noun N_KARL
-		view 139
+		view vEndGameCast
 		loop 2
 		cel 10
 	)
@@ -425,7 +431,7 @@
 		x 2
 		y 147
 		noun N_YORICK
-		view 139
+		view vEndGameCast
 		loop 5
 		signal ignrAct
 	)
@@ -443,7 +449,7 @@
 		x 142
 		y 139
 		noun N_BARTENDER
-		view 139
+		view vEndGameCast
 		loop 2
 		cel 11
 	)
@@ -461,7 +467,7 @@
 		x 273
 		y 189
 		noun N_CARLOS
-		view 138
+		view vEndGameDevs
 		loop 2
 		cel 1
 		signal ignrAct
@@ -482,7 +488,7 @@
 		x 243
 		y 150
 		noun N_LORICOLE
-		view 138
+		view vEndGameDevs
 		cel 8
 		priority 14
 		signal fixPriOn
@@ -503,7 +509,7 @@
 		x 226
 		y 140
 		noun N_COREYCOLE
-		view 138
+		view vEndGameDevs
 		cel 9
 		priority 12
 		signal fixPriOn
@@ -524,7 +530,7 @@
 		x 216
 		y 189
 		noun N_OLIVER
-		view 138
+		view vEndGameDevs
 		loop 2
 		cel 2
 		priority 15
@@ -546,7 +552,7 @@
 		x 134
 		y 183
 		noun N_TOM
-		view 138
+		view vEndGameDevs
 		cel 13
 		signal ignrAct
 	)
@@ -566,7 +572,7 @@
 		x 109
 		y 181
 		noun N_BOBMALLORY
-		view 138
+		view vEndGameDevs
 		loop 2
 		signal ignrAct
 	)
@@ -585,8 +591,8 @@
 	(properties
 		x 252
 		y 158
-		noun 5
-		view 138
+		noun N_BOBFISCHBACH
+		view vEndGameDevs
 		cel 15
 		priority 10
 		signal fixPriOn
@@ -607,7 +613,7 @@
 		x 270
 		y 139
 		noun N_JONBOCK
-		view 138
+		view vEndGameDevs
 		cel 3
 		signal ignrAct
 	)
@@ -627,7 +633,7 @@
 		x 304
 		y 137
 		noun N_JERRYMOORE
-		view 138
+		view vEndGameDevs
 		cel 2
 		signal ignrAct
 	)
@@ -647,7 +653,7 @@
 		x 284
 		y 123
 		noun N_GLORIA
-		view 138
+		view vEndGameDevs
 		cel 5
 		signal ignrAct
 	)
@@ -667,7 +673,7 @@
 		x 299
 		y 119
 		noun N_VANA
-		view 138
+		view vEndGameDevs
 		cel 14
 		signal ignrAct
 	)
@@ -687,7 +693,7 @@
 		x 269
 		y 46
 		noun N_WILWONG
-		view 138
+		view vEndGameDevs
 		cel 1
 		priority 4
 		signal fixPriOn
@@ -708,7 +714,7 @@
 		x 295
 		y 54
 		noun N_DIANA
-		view 138
+		view vEndGameDevs
 		cel 7
 		signal ignrAct
 	)
@@ -728,7 +734,7 @@
 		x 241
 		y 77
 		noun N_JEFFCROWE
-		view 138
+		view vEndGameDevs
 		cel 4
 		signal ignrAct
 	)
@@ -748,7 +754,7 @@
 		x 190
 		y 39
 		noun N_ERICKASNER
-		view 138
+		view vEndGameDevs
 		cel 6
 		signal ignrAct
 	)
@@ -768,7 +774,7 @@
 		x 102
 		y 104
 		noun N_ARTURO
-		view 138
+		view vEndGameDevs
 		priority 4
 		signal fixPriOn
 	)
@@ -788,7 +794,7 @@
 		x 24
 		y 51
 		noun N_RICHARDP
-		view 138
+		view vEndGameDevs
 		cel 11
 		signal ignrAct
 	)
@@ -808,7 +814,7 @@
 		x 158
 		y 129
 		noun N_ROGERHARDY
-		view 138
+		view vEndGameDevs
 		cel 10
 		priority 4
 		signal fixPriOn
@@ -829,7 +835,7 @@
 		x 288
 		y 157
 		noun N_RICHARDA
-		view 138
+		view vEndGameDevs
 		cel 12
 		signal ignrAct
 	)
@@ -845,10 +851,10 @@
 )
 
 (instance awardScript of Script
-	(properties)
-	
 	(method (init)
-		(if (Btst fSavedBarnard) (baronette addToPic:))
+		(if (Btst fSavedBarnard)
+			(baronette addToPic:)
+		)
 		(elsa addToPic:)
 		(minotaur cel: (if (Btst fMinotaurDead) 0 else 1))
 		(sheriffAndOtto addToPic:)
@@ -873,7 +879,9 @@
 				(yoric hide:)
 				(= seconds 10)
 			)
-			(1 (= seconds 3))
+			(1
+				(= seconds 3)
+			)
 			(2
 				(theGame setCursor: waitCursor TRUE)
 				(User canInput: FALSE)
@@ -921,7 +929,10 @@
 				)
 				(= seconds 10)
 			)
-			((and (== state 0) (== seconds 0)) (HandsOff) (self cue:))
+			((and (== state 0) (== seconds 0))
+				(HandsOff)
+				(self cue:)
+			)
 		)
 	)
 )
@@ -955,7 +966,9 @@
 				(arturo forceUpd: y: 0 cel: 0)
 				(= cycles 1)
 			)
-			(3 4 (self dispose:))
+			(3 4
+				(self dispose:)
+			)
 			(4
 				5
 				(messager say: N_RICHARDA V_LOOK)
@@ -971,7 +984,10 @@
 				(richardA forceUpd: loop: 0 cel: 12)
 				(= cycles 1)
 			)
-			(7 8 (self dispose:))
+			(7
+				8
+				(self dispose:)
+			)
 			(8
 				9
 				(messager say: N_ROGERHARDY V_LOOK)
@@ -986,7 +1002,10 @@
 				(rogerHardy forceUpd: loop: 0 cel: 10)
 				(= cycles 1)
 			)
-			(11 12 (self dispose:))
+			(11
+				12
+				(self dispose:)
+			)
 			(12
 				13
 				(messager say: N_RICHARDP V_LOOK)

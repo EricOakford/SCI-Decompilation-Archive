@@ -72,6 +72,33 @@
 				marksOnWall
 			eachElementDo: #init
 		)
+		
+		;UPGRADE
+;;;		(leMusic
+;;;			setPri: 3
+;;;			setLoop: -1
+;;;			init:
+;;;		)
+;;;		(onTheWalls
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
+;;;		(onBarrels
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(onBarrels2
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(onHotDogStand
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(onBricks init:)
+;;;		(marksOnWall init:)
+;;;		(marksOnWall2 init:)
+		
 		(coin ignoreActors: TRUE setLoop: 6 setPri: 6 init:)
 		(LoadMany VIEW 333 503)
 		(super init:)

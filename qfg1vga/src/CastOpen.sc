@@ -28,7 +28,7 @@
 	(if (not isHandsOff)
 		(= wasHandsOn TRUE)
 	)
-	(LoadMany SOUND 28 35)
+	(LoadMany SOUND sTeleport sOpenLock)
 	(= thisX 0)
 	(= thisY 0)
 	(= obj ego)
@@ -89,13 +89,13 @@
 				(theGame setCursor: waitCursor TRUE)
 				(ego
 					setMotion: 0
-					setHeading: (if (OneOf (ego loop?) loopS loopSE loopE loopNE) 135 else 225) self
+					setHeading: (if (OneOf (ego loop?) facingSouth facingSE facingEast facingNE) 135 else 225) self
 				)
 			)
 			(3
 				(ego
-					view: 521
-					setLoop: (if (== (ego loop?) loopSW) 0 else 1)
+					view: vEgoCastSpell
+					setLoop: (if (== (ego loop?) facingSW) 0 else 1)
 					setCel: 0
 					setPri: (ego priority?)
 					cycleSpeed: 12
@@ -104,7 +104,7 @@
 			)
 			(4
 				((= soundObj (Sound new:))
-					number: 28
+					number: sTeleport
 					priority: 6
 					init:
 					play:
@@ -112,7 +112,11 @@
 				(ego setCycle: EndLoop self)
 			)
 			(5
-				(ego view: 4 loop: 2 setCel: 0)
+				(ego
+					view: vEgoStand
+					loop: facingSouth
+					setCel: 0
+				)
 				(= ticks 20)
 			)
 			(6
@@ -125,7 +129,10 @@
 					)
 					(messager say: N_NO_EFFECT NULL NULL 1 self SPELLS)
 				else
-					(soundObj number: 35 play:)
+					(soundObj
+						number: sOpenLock
+						play:
+					)
 					(= ticks 30)
 				)
 			)

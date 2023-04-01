@@ -43,14 +43,14 @@
 				(theGame setCursor: waitCursor TRUE)
 				(Face ego theKobold)
 				(ego
-					view: 521
+					view: vEgoCastSpell
 					setLoop: (- 3 egoKoboldBattleLoop)
 					cel: 0
 					setCycle: CycleTo 4 1 self
 				)
 			)
 			(2
-				(theKobold setScript: (ScriptID 15 4))
+				(theKobold setScript: (ScriptID rKoboldCave 4))
 				(ego setCycle: EndLoop)
 				(= cycles 6)
 			)
@@ -76,7 +76,7 @@
 					(or
 						(ego has: iBrassKey)
 						[invDropped iBrassKey]
-						(cast contains: (ScriptID 15 3))
+						(cast contains: (ScriptID rKoboldCave 3))
 					)
 					(= register TRUE)
 					(messager say: N_CASTDETECT NULL C_DETECT_KEY 0 self)
@@ -86,10 +86,10 @@
 			)
 			(1
 				(cond 
-					((cast contains: (ScriptID 15 2))
+					((cast contains: (ScriptID rKoboldCave 2))
 						(messager say: N_CASTDETECT NULL C_DETECT_CHEST 1)
 						(= register TRUE)
-						((ScriptID 15 2) setCel: 1)
+						((ScriptID rKoboldCave 2) setCel: 1)
 						(= ticks 120)
 					)
 					((not (Btst fKoboldChestSearched))
@@ -134,10 +134,10 @@
 			(2
 				(Bset fKoboldChestKnown)
 				(if (TrySkill OPEN 50 0)
-					((ScriptID 15 2) setCel: 1)
+					((ScriptID rKoboldCave 2) setCel: 1)
 					(= ticks 60)
 				else
-					((ScriptID 15 2) setScript: (ScriptID 15 5))
+					((ScriptID rKoboldCave 2) setScript: (ScriptID rKoboldCave 5))
 					(self dispose:)
 				)
 			)
@@ -154,7 +154,7 @@
 				(SolvePuzzle f15GetTreasure 5)
 				(messager say: N_TREASURE NULL C_DETECT_CHEST)
 				(KoboldFight 1)
-				(Face ego (ScriptID 15 2))
+				(Face ego (ScriptID rKoboldCave 2))
 				(self dispose:)
 			)
 		)
@@ -174,11 +174,15 @@
 			)
 			(1
 				(theGame setCursor: waitCursor TRUE)
-				(ego view: 521 setLoop: 1 setCycle: EndLoop self)
+				(ego
+					view: vEgoCastSpell
+					setLoop: 1
+					setCycle: EndLoop self
+				)
 			)
 			(2
 				(Bset fKoboldChestKnown)
-				((ScriptID 15 2) setScript: (ScriptID 15 5) 0 1)
+				((ScriptID rKoboldCave 2) setScript: (ScriptID rKoboldCave 5) 0 1)
 				(self dispose:)
 			)
 		)
@@ -232,7 +236,7 @@
 				(= savMoveSpeed (ego moveSpeed?))
 				(theGame setCursor: waitCursor TRUE)
 				(ego
-					view: 520
+					view: vEgoCastFetch
 					cycleSpeed: 12
 					loop: 3
 					cel: 6
@@ -243,7 +247,7 @@
 				(theGame setCursor: waitCursor TRUE)
 				(ego loop: 1 setCel: 6)
 				((= lasso (Actor new:))
-					view: 520
+					view: vEgoCastFetch
 					illegalBits: 0
 					ignoreActors:
 					posn: (+ (ego x?) 11) (- (ego y?) 44)
@@ -270,7 +274,7 @@
 						setPri: 11
 						setMotion: MoveTo (+ (ego x?) 11) (- (ego y?) 44) self
 					)
-					((ScriptID 15 3)
+					((ScriptID rKoboldCave 3)
 						posn: (lasso x?) (lasso y?)
 						show:
 						setLoop: 6
@@ -286,10 +290,10 @@
 			)
 			(5
 				(lasso dispose:)
-				((ScriptID 15 3) dispose:)
+				((ScriptID rKoboldCave 3) dispose:)
 				(ego
 					get: iBrassKey
-					loop: loopN
+					loop: 3
 					cel: 0
 					setCycle: EndLoop self
 				)

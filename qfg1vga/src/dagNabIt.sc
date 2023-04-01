@@ -188,7 +188,10 @@
 		(self setScript: dagnabitScript)
 		(theBoard init:)
 		(angleF init:)
-		(forceF init:)
+		(forceF
+			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+		)
 		(bead init: hide:)
 	)
 	
@@ -484,6 +487,7 @@
 					init:
 					stopUpd:
 					onMeCheck: cWHITE
+;;;					setOnMeCheck: ftrControl cWHITE
 				)
 				(++ i)
 				(= local3

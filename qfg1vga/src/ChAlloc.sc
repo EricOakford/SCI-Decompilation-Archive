@@ -58,7 +58,7 @@
 	(for ((= i 1)) (< i HEALTH) ((++ i))
 		(= [egoStats [statMap i]] [selStat i])
 	)
-	(DrawCel 802 8 1 215 142 15)
+	(DrawCel vCharSheet 8 1 215 142 15)
 	(Format @str {%d} pointsAvailable)
 	(if pointsAvailable
 		(Display @str
@@ -78,19 +78,19 @@
 	else
 		(ShowValue 141 @str)
 	)
-	(DrawCel 802 8 1 215 154 15)
+	(DrawCel vCharSheet 8 1 215 154 15)
 	(ShowValue 153
 		(Format @str {%d}
 			(= [egoStats HEALTH] (/ (+ (MaxHealth) 1) 2))
 		)
 	)
-	(DrawCel 802 8 1 215 166 15)
+	(DrawCel vCharSheet 8 1 215 166 15)
 	(ShowValue 165
 		(Format @str {%d}
 			(= [egoStats STAMINA] (/ (+ (MaxStamina) 3) 4))
 		)
 	)
-	(DrawCel 802 8 1 215 178 15)
+	(DrawCel vCharSheet 8 1 215 178 15)
 	(ShowValue 177
 		(Format @str {%d} (= [egoStats MANA] (MaxMana)))
 	)
@@ -190,7 +190,7 @@
 		((= curIcon (= highlightedIcon (self at: 0)))
 			highlight: TRUE
 		)
-		(DrawCel 802 5 0 1 148 15)
+		(DrawCel vCharSheet 5 0 1 148 15)
 		(UpdatePoints)
 		(Bclr fHideCursor)
 		(theGame
@@ -199,7 +199,7 @@
 		(self doit: hide:)
 	)
 	
-	(method (dispatchEvent event &tmp evtX evtY evtType evtMsg temp4 evtMod obj highlightedIconState)
+	(method (dispatchEvent event &tmp evtX evtY evtType evtMsg retVal evtMod obj highlightedIconState)
 		(if nextRoom
 			(curRoom newRoom: nextRoom)
 			(event dispose:)
@@ -209,7 +209,7 @@
 		(= evtY (event y?))
 		(= evtType (event type?))
 		(= evtMsg (event message?))
-		(= temp4 0)
+		(= retVal FALSE)
 		(= evtMod (event modifiers?))
 		(= obj (self firstTrue: #onMe event))
 		(event dispose:)
@@ -219,7 +219,11 @@
 					(dirE
 						(if (and highlightedIcon (highlightedIcon state?))
 							(self select: obj 1)
-							(theMusic2 number: 63 loop: 1 play:)
+							(theMusic2
+								number: 63
+								loop: 1
+								play:
+							)
 						)
 					)
 					(dirW
@@ -352,15 +356,15 @@
 				)
 			)
 		)
-		(return temp4)
+		(return retVal)
 	)
 )
 
 (instance selectionIcon of IconItem
 	(properties
-		view 802
+		view vCharSheet
 		loop 1
-		maskView 802
+		maskView vCharSheet
 		maskLoop 2
 		highlightColor 9
 		lowlightColor 91
@@ -449,7 +453,7 @@
 		)
 	)
 	
-	(method (highlight param1 &tmp x [str 4] bgColor fgColor)
+	(method (highlight tOrF &tmp x [str 4] bgColor fgColor)
 		(= x
 			(if (< state 7) (+ nsLeft 71) else (+ nsLeft 80))
 		)
@@ -461,7 +465,7 @@
 			(+ nsTop 1)
 			15
 		)
-		(if param1
+		(if tOrF
 			(DrawCel view loop cel nsLeft nsTop 15)
 			(= bgColor 50)
 			(= fgColor 215)
@@ -491,15 +495,15 @@
 
 (instance startIcon of ControlIcon
 	(properties
-		view 802
+		view vCharSheet
 		loop 3
 		cel 0
 		nsLeft 9
 		nsTop 157
 	)
 	
-	(method (highlight param1)
-		(if param1
+	(method (highlight tOrF)
+		(if tOrF
 			(DrawCel view loop 2 nsLeft nsTop 15)
 		else
 			(DrawCel view loop 0 nsLeft nsTop 15)
@@ -509,15 +513,15 @@
 
 (instance cancelIcon of ControlIcon
 	(properties
-		view 802
+		view vCharSheet
 		loop 4
 		cel 0
 		nsLeft 9
 		nsTop 170
 	)
 	
-	(method (highlight param1)
-		(if param1
+	(method (highlight tOrF)
+		(if tOrF
 			(DrawCel view loop 2 nsLeft nsTop 15)
 		else
 			(DrawCel view loop 0 nsLeft nsTop 15)
@@ -527,14 +531,14 @@
 
 (instance namePlate of IconItem
 	(properties
-		view 802
+		view vCharSheet
 		loop 1
 		cel 0
 		nsLeft 100
 		nsTop 22
 		nsRight 300
 		nsBottom 34
-		maskView 802
+		maskView vCharSheet
 		maskLoop 9
 	)
 	
@@ -572,8 +576,8 @@
 		)
 	)
 	
-	(method (highlight param1 &tmp bgColor fgColor theLoop)
-		(if param1
+	(method (highlight tOrF &tmp bgColor fgColor theLoop)
+		(if tOrF
 			(= theLoop loop)
 			(= bgColor 50)
 			(= fgColor 215)
@@ -604,7 +608,7 @@
 	(properties
 		x 48
 		y 145
-		view 802
+		view vCharSheet
 		priority 14
 		signal fixPriOn
 	)
@@ -614,7 +618,7 @@
 	(properties
 		x 102
 		y 140
-		view 802
+		view vCharSheet
 		loop 7
 		priority 15
 		signal fixPriOn
@@ -622,8 +626,6 @@
 )
 
 (instance cancelCode of Code
-	(properties)
-	
 	(method (doit &tmp answer statNum startControlsCurIcon)
 		(if
 			(= answer
@@ -650,7 +652,7 @@
 				(++ statNum)
 			)
 			(= nameLen (= userName 0))
-			(DrawCel 802 9 0 146 22 15)
+			(DrawCel vCharSheet 9 0 146 22 15)
 			(= pointsAvailable 50)
 			(UpdatePoints)
 			(startControls eachElementDo: #highlight 0)
@@ -659,7 +661,7 @@
 					(+ (startControlsCurIcon nsLeft?) 5)
 					(- (startControlsCurIcon nsBottom?) 2)
 			)
-			(startControlsCurIcon highlight: 1)
+			(startControlsCurIcon highlight: TRUE)
 		)
 	)
 )
@@ -680,17 +682,26 @@
 			)
 		)
 		(if answer
-			(= nextRoom 300)
+			(= nextRoom rTownEntryway)
 			(switch heroType
 				;class-specific initial inventory
 				(FIGHTER
-					(ego get: iSword get: iShield)
+					(ego
+						get: iSword
+						get: iShield
+					)
 				)
 				(MAGIC_USER
-					(ego get: iDagger learn: ZAP 10)
+					(ego
+						get: iDagger
+						learn: ZAP 10
+					)
 				)
 				(THIEF
-					(ego get: iDagger get: iLockPick)
+					(ego
+						get: iDagger
+						get: iLockPick
+					)
 					(= lockPickBonus 10)
 				)
 			)

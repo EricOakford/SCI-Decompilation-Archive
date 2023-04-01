@@ -28,7 +28,7 @@
 		(theGame setCursor: ARROW_CURSOR)
 		(= h (= v MARGIN))
 		(= val 0)
-		(if (!= curRoomNum 65)
+		(if (!= curRoomNum rTownOutside)
 			((= theBuyDialog (DText new:))
 				text: {You may buy:}
 				setSize:
@@ -61,7 +61,7 @@
 						yourself:
 					)
 			)
-			(if (!= curRoomNum 65)
+			(if (!= curRoomNum rTownOutside)
 				(self
 					add:
 						((DText new:)

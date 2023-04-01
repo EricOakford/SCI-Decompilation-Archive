@@ -253,7 +253,7 @@
 			)
 			(1
 				((= soundObj (Sound new:))
-					number: 126
+					number: sShroomTrip
 					loop: -1
 					flags: -1
 					play:
@@ -282,9 +282,9 @@
 				)
 				(if (Btst fAteFaeryShrooms)
 					(ego
-						view: 536
+						view: vEgoTrips
 						setLoop: 0
-						setCel: 255
+						setCel: LASTCEL
 						posn: (ego x?) (+ (ego y?) 10)
 						setCycle: EndLoop self	;lets ego complete collapsing animation
 					)
@@ -298,7 +298,7 @@
 				)
 			)
 			(7
-				(EgoDead C_DIE_MUSHROOMS C_DIE_MUSHROOMS_TITLE 0 0 800)
+				(EgoDead C_DIE_MUSHROOMS C_DIE_MUSHROOMS_TITLE 0 0 vDeathIcons)
 			)
 		)
 	)

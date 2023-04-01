@@ -18,11 +18,11 @@
 	)
 	
 	(method (init)
-		(Load VIEW 803)
+		(Load VIEW vStatusBar)
 		(super init: &rest)
 		((= lineObj (View new:))
 			ignoreActors:
-			view: 803
+			view: vStatusBar
 			posn: x y 3
 			stopUpd:
 			init:
@@ -31,13 +31,19 @@
 	)
 	
 	(method (dispose)
-		(if (IsObject lineObj) (lineObj dispose:))
+		(if (IsObject lineObj)
+			(lineObj dispose:)
+		)
 		(super dispose:)
 	)
 	
 	(method (draw &tmp valCel scaledValue)
-		(if (< max 1) (= max 1))
-		(if (> (= scaledValue value) max) (= scaledValue max))
+		(if (< max 1)
+			(= max 1)
+		)
+		(if (> (= scaledValue value) max)
+			(= scaledValue max)
+		)
 		(= valCel
 			(/
 				(+ (= scaledValue (/ (+ (* scaledValue 100) max -1) max)) 9)

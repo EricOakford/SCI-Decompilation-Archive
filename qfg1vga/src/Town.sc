@@ -11,7 +11,12 @@
 
 (instance Town of Region
 	(method (init)
-		(if (not (OneOf curRoomNum 300 310 311 320 330 333 334))
+		(if (not
+				(OneOf curRoomNum
+					rTownEntryway rMainStreet rGuildHall
+					rMarketStreet rTavernStreet rAlley rAlleyNight
+				)
+			)
 			(theMusic stop:)
 		)
 		(mouseDownHandler addToFront: self)

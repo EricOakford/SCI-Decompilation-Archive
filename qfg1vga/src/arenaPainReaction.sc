@@ -16,10 +16,15 @@
 	theWarrior
 	[local1 3]	;unused
 )
+
 (instance painReaction of Script
 	(method (init)
-		(sEgoHurt init:)
-		(thatsIt init:)
+		(hurtSound
+			init:
+		)
+		(thatsIt
+			init:
+		)
 		(= theWarrior (ScriptID WARRIOR 0))
 		(egoBlood
 			init:
@@ -30,7 +35,7 @@
 	)
 	
 	(method (dispose)
-		(sEgoHurt dispose:)
+		(hurtSound dispose:)
 		(thatsIt dispose:)
 		(super dispose:)
 	)
@@ -39,18 +44,28 @@
 		(switch (= state newState)
 			(0
 				(if (not ((theWarrior opponent?) script?))
-					((theWarrior opponent?) setCycle: 0)
-					((theWarrior opponent?) setScript: (ScriptID monsterNum 2))
+					((theWarrior opponent?)
+						setCycle: 0
+					)
+					((theWarrior opponent?)
+						setScript: (ScriptID monsterNum 2)
+					)
 				)
 				(= egoCanFight FALSE)
 				(= ticks 1)
 			)
 			(1
-				(sEgoHurt play:)
+				(hurtSound play:)
 				(if (ego has: iSword)
-					(theWarrior view: 113 forceUpd:)
+					(theWarrior
+						view: vSwGetHit
+						forceUpd:
+					)
 				else
-					(theWarrior view: 106 forceUpd:)
+					(theWarrior
+						view: vKnGetHit
+						forceUpd:
+					)
 				)
 				(theWarrior setPri: -1 setLoop: 0 setCel: 0)
 				(egoBlood setCel: 0)
@@ -81,7 +96,10 @@
 				(= ticks 5)
 			)
 			(3
-				(theWarrior cycleSpeed: 10 setCycle: EndLoop self)
+				(theWarrior
+					cycleSpeed: 10
+					setCycle: EndLoop self
+				)
 			)
 			(4
 				(theWarrior cycleSpeed: 3 setLoop: 0 setCel: 0)
@@ -99,9 +117,9 @@
 				)
 				(egoBlood dispose:)
 				(if (ego has: iSword)
-					(theWarrior view: 109)
+					(theWarrior view: vSwFight)
 				else
-					(theWarrior view: 102)
+					(theWarrior view: vKnFight)
 				)
 				(self dispose:)
 			)
@@ -113,15 +131,16 @@
 	(properties
 		x 500
 		y 500
-		view 535
+		view vFightFX
 		cycleSpeed 0
 	)
 )
 
-(instance sEgoHurt of Sound
+(instance hurtSound of Sound
 	(properties
+		name "sEgoHurt"
 		flags -1
-		number 104
+		number sEgoHurt
 		priority 1
 	)
 )
@@ -129,7 +148,7 @@
 (instance thatsIt of Sound
 	(properties
 		flags -1
-		number 105
+		number sEgoDie
 		priority 1
 	)
 )

@@ -48,7 +48,7 @@
 				(evt dispose:)
 			)
 			(ego use: iRock 1)
-			(Load SOUND (SoundFX 58))
+			(Load SOUND (SoundFX sMeepRock))
 			(if atWhat
 				(Face ego atWhat)
 				(= rockTargX (+ (atWhat x?) (atWhat targDeltaX?)))
@@ -82,7 +82,7 @@
 			)
 			(= rockTarg atWhat)
 			((= projectile (Actor new:))
-				view: 510
+				view: vEgoThrowing
 				setLoop: 4
 				setCel: 0
 				illegalBits: 0
@@ -132,7 +132,7 @@
 		(DisposeScript THROWROCK)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp atWhat)
 		(switch (= state newState)
 			(0
 				(= projObj client)
@@ -152,14 +152,14 @@
 			)
 			(1
 				(ego
-					view: 510
+					view: vEgoThrowing
 					setLoop: (if (== (ego loop?) 0) 3 else 2)
 					cel: 0
 					cycleSpeed: 8
 					setCycle: CycleTo 3 1 self
 				)
 				((= projSound (Sound new:))
-					number: (SoundFX 58)
+					number: (SoundFX sMeepRock)
 					priority: 15
 					init:
 				)
@@ -168,21 +168,21 @@
 				(if hurtEgo
 					(= rockTargX (ego x?)) (= rockTargY (ego y?))
 				)
-				(= temp0
+				(= atWhat
 					(cond 
-						((< (= temp0 (Abs (- rockTargX (ego x?)))) 20) 10)
-						((< temp0 30) 15)
-						((< temp0 50) 20)
-						((< temp0 80) 25)
+						((< (= atWhat (Abs (- rockTargX (ego x?)))) 20) 10)
+						((< atWhat 30) 15)
+						((< atWhat 50) 20)
+						((< atWhat 80) 25)
 						(else 30)
 					)
 				)
 				(client
 					posn:
 						(if (== (ego loop?) 2)
-							(- (ego x?) temp0)
+							(- (ego x?) atWhat)
 						else
-							(+ (ego x?) temp0)
+							(+ (ego x?) atWhat)
 						)
 						(ego y?)
 					setCycle: Forward

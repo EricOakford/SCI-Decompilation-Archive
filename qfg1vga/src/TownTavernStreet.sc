@@ -91,7 +91,33 @@
 				onBakery
 			eachElementDo: #init
 		)
+		;UPGRADE
+;;;		(onPots
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLBLUE
+;;;		)
+;;;		(onAlley init:)
+;;;		(butcherWindow init:)
+;;;		(breadWindow init:)
+;;;		(onWorkShop
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(onTavern
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(onButcherShop
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
+;;;		(onBakery
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREY
+;;;		)
+
 		(onBakeryDoor
+;;;			init:
 			approachVerbs:
 				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
 				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
@@ -100,8 +126,10 @@
 				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
 				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
 				V_VASE V_VEGETABLES
+;;;			setOnMeCheck: ftrControl cRED
 		)
 		(onButcherDoor
+;;;			init:
 			approachVerbs:
 				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
 				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
@@ -110,8 +138,10 @@
 				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
 				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
 				V_VASE V_VEGETABLES
+;;;			setOnMeCheck: ftrControl cMAGENTA
 		)
 		(onWorkDoor
+;;;			init:
 			approachVerbs:
 				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
 				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
@@ -121,8 +151,14 @@
 				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
 				V_VASE V_VEGETABLES
 		)
-		(butcherSign init:)
-		(bakerySign init:)
+		(butcherSign
+			init:
+;;;			setOnMeCheck: ftrControl cBROWN
+		)
+		(bakerySign
+			init:
+;;;			setOnMeCheck: ftrControl cLGREY
+		)
 		(if (and (not (Btst fBarThrownOut)) (not (Btst fBarDrunk)))
 			(NormalEgo)
 			(ego init:)

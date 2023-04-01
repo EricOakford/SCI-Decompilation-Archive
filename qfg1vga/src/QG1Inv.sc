@@ -15,13 +15,15 @@
 	dropInv 2
 )
 
+(define ITEMS_PER_PAGE	23)
+
 (local
 	pageNum
 	pickUpMode
 )
 (class QG1InvItem of InvItem
 	(properties
-		view 950
+		view vInvItems
 		weight 0	;measured in quarks
 		amount 0
 		amtDropped 0
@@ -29,7 +31,11 @@
 	
 	(method (select)
 		(if (super select: &rest)
-			((= cursor invCursor) view: 960 loop: loop cel: cel)
+			((= cursor invCursor)
+				view: vInvCursors
+				loop: loop
+				cel: cel
+			)
 		)
 	)
 	
@@ -85,6 +91,7 @@
 								init:
 							)
 						)
+						;Can't drop essential items
 						(
 							(OneOf
 								self
@@ -104,7 +111,8 @@
 							(Message MsgGet GLORYINV N_ITEM NULL NULL 5 @str)
 							(Print addTextF: @buffer @str @itemBuf init:)
 						)
-						((== curRoomNum 322)
+						;Can't drop items in the shop
+						((== curRoomNum rTownShop)
 							(Print addText: N_ITEM NULL NULL 6 0 0 GLORYINV init:)
 						)
 						((> amount 1)
@@ -119,13 +127,13 @@
 							(if (== (theIconBar curInvIcon?) self)
 								(theIconBar curInvIcon: 0)
 							)
-							(for ((= i 0)) (< i NUM_INVITEMS) ((++ i))
+							(for ((= i 0)) (< i iLastInvItem) ((++ i))
 								(if (== ((inventory at: i) owner?) ego)
-									(= i (+ NUM_INVITEMS 1))
+									(= i (+ iLastInvItem 1))
 								)
 							)
 							(inventory hide:)
-							(if (> i NUM_INVITEMS)
+							(if (> i iLastInvItem)
 								(inventory curIcon: invDrop show:)
 							else
 								(= pageNum 1)
@@ -158,11 +166,8 @@
 	)
 	
 	(method (dumpIt howMany &tmp i)
-		(= amtDropped
-			(+
-				amtDropped
-				(= i (if (> howMany amount) amount else howMany))
-			)
+		(+= amtDropped
+			(= i (if (> howMany amount) amount else howMany))
 		)
 		(ego use: (gloryInv indexOf: self) i)
 		(if (not amount)
@@ -352,7 +357,7 @@
 						vBear vMinotaur vSaurus vMantray vCheetaur vGoblin
 						vOgre vTroll vDragon vBrigand vBrigandLeader
 					)
-					(== curRoomNum 32)
+					(== curRoomNum rWizardGame)
 				)
 				(return)
 			)
@@ -360,7 +365,7 @@
 			(= totalInvItems 0)
 			(invPageUp owner: 0)
 			(invPageDown owner: 0)
-			(for ((= i 0)) (< i NUM_INVITEMS) ((++ i))
+			(for ((= i 0)) (< i iLastInvItem) ((++ i))
 				((inventory at: i) owner: 0)
 				(if
 					(and
@@ -369,12 +374,12 @@
 							(> ((inventory at: i) amount?) 0)
 							(== i 0)
 						)
-						(< (++ totalInvItems) 24)
+						(< (++ totalInvItems) (+ ITEMS_PER_PAGE 1))
 					)
 					((inventory at: i) owner: ego)
 				)
 			)
-			(if (> totalInvItems 23)
+			(if (> totalInvItems ITEMS_PER_PAGE)
 				(invPageDown highlightColor: -1 owner: ego)
 			)
 			(inventory showSelf:)
@@ -384,7 +389,7 @@
 
 (instance invPageDown of InvItem
 	(properties
-		view 991
+		view vInvIcons
 		loop 5
 		message V_PAGETURNER
 		signal (| RELVERIFY IMMEDIATE)
@@ -395,7 +400,7 @@
 	
 	(method (show)
 		(super show:)
-		(DrawCel 991 7 0
+		(DrawCel vInvIcons 7 0
 			(+ nsLeft (CelWide view loop cel))
 			nsTop
 			-1
@@ -405,7 +410,7 @@
 	(method (select &tmp i)
 		(return
 			(if (super select: &rest)
-				(for ((= i 0)) (< i NUM_INVITEMS) ((++ i))
+				(for ((= i 0)) (< i iLastInvItem) ((++ i))
 					(if
 						(and
 							(!= i iGold)
@@ -434,7 +439,7 @@
 
 (instance invPageUp of InvItem
 	(properties
-		view 991
+		view vInvIcons
 		loop 5
 		message V_PAGETURNER
 		signal (| RELVERIFY IMMEDIATE)
@@ -445,7 +450,7 @@
 	
 	(method (show)
 		(super show:)
-		(DrawCel 991 7 0
+		(DrawCel vInvIcons 7 0
 			(+ nsLeft (CelWide view loop cel))
 			nsTop
 			-1
@@ -455,7 +460,7 @@
 	(method (select &tmp i)
 		(return
 			(if (super select: &rest)
-				(for ((= i 0)) (< i NUM_INVITEMS) ((++ i))
+				(for ((= i 0)) (< i iLastInvItem) ((++ i))
 					(if
 						(and
 							(!= i iGold)
@@ -489,10 +494,10 @@
 
 (instance invLook of IconItem
 	(properties
-		view 991
+		view vInvIcons
 		loop 2
 		cel 0
-		cursor 941
+		cursor vLookCursor
 		message V_LOOK
 		signal (| FIXED_POSN RELVERIFY)
 		noun N_LOOK
@@ -503,10 +508,10 @@
 
 (instance invSelect of IconItem
 	(properties
-		view 991
+		view vInvIcons
 		loop 0
 		cel 0
-		cursor 942
+		cursor vDoCursor
 		message V_DO
 		noun N_USE
 		modNum GLORYINV
@@ -516,10 +521,10 @@
 
 (instance invPickup of IconItem
 	(properties
-		view 991
+		view vInvIcons
 		loop 8
 		cel 0
-		cursor 938
+		cursor vPickUpCursor
 		message V_TRIGGER
 		noun N_PICKUP
 		modNum GLORYINV
@@ -554,10 +559,10 @@
 
 (instance invDrop of IconItem
 	(properties
-		view 991
+		view vInvIcons
 		loop 6
 		cel 0
-		cursor 939
+		cursor vDropCursor
 		message V_DROP
 		noun N_DROP
 		modNum GLORYINV
@@ -567,10 +572,10 @@
 
 (instance invWeight of IconItem
 	(properties
-		view 991
+		view vInvIcons
 		loop 4
 		cel 0
-		cursor 949
+		cursor vHelpCursor
 		message V_HELP
 		signal (| HIDEBAR RELVERIFY IMMEDIATE)
 		noun N_STATUS
@@ -599,10 +604,10 @@
 
 (instance invHelp of IconItem
 	(properties
-		view 991
+		view vInvIcons
 		loop 1
 		cel 0
-		cursor 949
+		cursor vHelpCursor
 		message V_HELP
 		noun N_HELP
 		modNum GLORYINV
@@ -611,7 +616,7 @@
 	
 	(method (show)
 		(super show:)
-		(DrawCel 991 7 0
+		(DrawCel vInvIcons 7 0
 			(+ nsLeft (CelWide view loop cel))
 			nsTop
 			-1
@@ -621,10 +626,10 @@
 
 (instance ok of IconItem
 	(properties
-		view 991
+		view vInvIcons
 		loop 3
 		cel 0
-		cursor 949
+		cursor vHelpCursor
 		message V_HELP
 		signal (| HIDEBAR RELVERIFY IMMEDIATE)
 		noun N_CANCEL
@@ -715,7 +720,7 @@
 				)
 				(V_DROP
 					(cond 
-						((== curRoomNum 322)
+						((== curRoomNum rTownShop)
 							(Print addText: N_ITEM NULL NULL 6 0 0 GLORYINV init:)
 						)
 						((> amount 10)

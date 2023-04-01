@@ -46,8 +46,8 @@
 	(if (not isHandsOff)
 		(= wasHandsOn TRUE)
 	)
-	(LoadMany SOUND (SoundFX 33) (SoundFX 45))
-	(Load VIEW 522)
+	(LoadMany SOUND (SoundFX sFireDart) (SoundFX sFireDartHits))
+	(Load VIEW vEgoCastDart)
 	(if atWhat
 		(Face ego atWhat)
 		(= dartTargX (+ (atWhat x?) (atWhat targDeltaX?)))
@@ -83,13 +83,13 @@
 		(= dartTargY thisY)
 	)
 	((= projSound (Sound new:))
-		number: (SoundFX 33)
+		number: (SoundFX sFireDart)
 		priority: 15
 		init:
 	)
 	(= dartTarg atWhat)
 	((= projectile (Actor new:))
-		view: 522
+		view: vEgoCastDart
 		setLoop: 2
 		setCel: 0
 		illegalBits: 0
@@ -105,7 +105,7 @@
 )
 
 (instance dartScript of Script
-	(method (doit &tmp temp0)
+	(method (doit &tmp atWhat)
 		(if (IsObject dartTarg)
 			(= dartTargX (+ (dartTarg x?) (dartTarg targDeltaX?)))
 			(= dartTargY (+ (dartTarg y?) (dartTarg targDeltaY?)))
@@ -121,7 +121,7 @@
 		)
 		(NormalEgo)
 		(ego
-			loop: (if (ego loop?) loopSW else loopSE)
+			loop: (if (ego loop?) 5 else 4)
 			priority: savPriority
 			illegalBits: savIllegalBits
 			signal: savSignal
@@ -153,7 +153,7 @@
 			(1
 				(theGame setCursor: waitCursor TRUE)
 				(ego
-					view: 522
+					view: vEgoCastDart
 					setLoop: (if (== (ego loop?) 4) 0 else 1)
 					cel: 0
 					cycleSpeed: 6
@@ -182,7 +182,11 @@
 					(= dartReflected TRUE)
 					(client setMotion: MoveTo (ego x?) (ego y?) self)
 				else
-					(projSound stop: number: (SoundFX 45) play:)
+					(projSound
+						stop:
+						number: (SoundFX sFireDartHits)
+						play:
+					)
 					(client setLoop: 3 cel: 0 setMotion: 0 setCycle: EndLoop self)
 				)
 			)

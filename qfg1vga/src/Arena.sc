@@ -86,7 +86,7 @@
 		(statusBackEgo dispose:)
 		(statusBackMon dispose:)
 		(super dispose: &rest)
-		(DisposeScript 211)
+		(DisposeScript ARENA)
 	)
 )
 
@@ -94,7 +94,7 @@
 	(properties
 		x 9
 		y 7
-		view 803
+		view vStatusBar
 		cel 1
 	)
 )
@@ -103,6 +103,6 @@
 	(properties
 		x 232
 		y 6
-		view 803
+		view vStatusBar
 	)
 )

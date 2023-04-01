@@ -274,10 +274,32 @@
 			eachElementDo: #init
 		)
 		(onWindow init:)	;added
+		;UPGRADE
+;;;		(onBoard init:)
+;;;		(onLadder init:)
+;;;		(onLightFixture1 init:)
+;;;		(onLightFixture2 init:)
+;;;		(onBoxes init:)
+;;;		(onTrap init:)
+;;;		(onDaggers init:)
+;;;		(onPottery init:)
+;;;		(onOneKnife init:)
+;;;		(onCrock init:)
+;;;		(onTable init:)
+				
 		(onDoor init: approachVerbs: V_DO V_LOOK V_MONEY)
-		(onTrunk init:)
-		(onBarrels init:)
-		(onCeiling init:)
+		(onTrunk
+			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+		)
+		(onBarrels
+			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+		)
+		(onCeiling
+			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+		)
 		(chair init: actions: chiefTeller stopUpd: ignoreActors:)
 		(chairArm
 			init:
@@ -1343,7 +1365,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(NormalEgo loopN 0 4)
+				(NormalEgo facingNorth 0 4)
 				(HandsOff)
 				(ego
 					setMotion: PolyPath (crusher x?) (+ (crusher y?) 30) self
@@ -1557,7 +1579,10 @@
 				(ChiefWontTalk)
 				(self cue:)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )

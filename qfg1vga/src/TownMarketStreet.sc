@@ -224,18 +224,40 @@
 			eachElementDo: #init
 		)
 		;UPGRADE
-;;;		(onBarrels init:)
+;;;		(onBarrels
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
 ;;;		(sky init:)
 ;;;		(leftFence init:)
 ;;;		(rightFence init:)
-;;;		(roundStones init:)
-;;;		(squareStones init:)
+;;;		(roundStones
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLMAGENTA
+;;;		)
+;;;		(squareStones
+;;;			init:
+;;;			setOnMeCheck: ftrControl cYELLOW
+;;;		)
 ;;;		(aWindow init:)
 ;;;		(rtWindow init:)
-;;;		(onSheriffHouse init:)
-;;;		(onStand init:)
-;;;		(onStable init:)
-;;;		(onGoodsStore init:)
+;;;		(onSheriffHouse
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(onStand
+;;;			init:
+;;;			setOnMeCheck: ftrControl cLGREY
+;;;		)
+;;;		(onStable
+;;;			init:
+;;;			setOnMeCheck: ftrControl cRED
+;;;		)
+;;;		(onGoodsStore
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+
 		
 		(storeDoor
 			init:
@@ -588,7 +610,7 @@
 		loop 1
 		priority 9
 		entranceTo 321
-		facingLoop loopN
+		facingLoop facingNorth
 	)
 	
 	(method (doVerb theVerb)
@@ -671,7 +693,9 @@
 			(V_LOOK
 				(messager say: N_CENTAUR NULL NULL 2)
 			)
-			(V_DO (messager say: N_CENTAUR V_DO))
+			(V_DO
+				(messager say: N_CENTAUR V_DO)
+			)
 			(V_TALK
 				(SolvePuzzle f320TalkToHilde 1)
 				(super doVerb: theVerb &rest)

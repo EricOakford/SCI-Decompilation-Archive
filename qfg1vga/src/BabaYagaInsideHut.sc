@@ -145,6 +145,10 @@
 ;;;			init:
 ;;;			setOnMeCheck: ftrControl cMAGENTA
 ;;;		)
+;;;		(telephone init:)
+;;;		(murial init:)
+;;;		(brokenGate init:)
+;;;		(hutWindow init:)
 		
 		(if (== prevRoomNum 299)
 			(ego init: posn: 166 187)

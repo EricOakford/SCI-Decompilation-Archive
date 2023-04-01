@@ -17,21 +17,21 @@
 )
 
 (local
-	local0
+	local0	;unused
 	theWarrior
-	[local2 3]
+	[local2 3]	;unused
 	attackAngle =  2
 	theSpell
-	[local7 2]
+	[local7 2]	;unused
 	hitOpponent
 	magicIcons
-	[local11 3]
+	[local11 3]	;unused
 	local14
 	local15
 	egoDefends
 	local17
 	haveSword
-	local19
+	local19	;unused
 )
 (instance aSpell of Actor)
 
@@ -52,10 +52,10 @@
 		(pointBox init: setLoop: 2 stopUpd:)
 		(= magicIcons FALSE)
 		(if (ego has: iSword)
-			(Load VIEW 109)
+			(Load VIEW vSwFight)
 			(= haveSword TRUE)
 			(= magicIcons FALSE)
-			(blood view: 535)
+			(blood view: vFightFX)
 		else
 			(= haveSword FALSE)
 			(dodgeLIcon init: setPri: 15 hide: stopUpd:)
@@ -63,9 +63,9 @@
 			(if (!= heroType THIEF)
 				(switchLoop doit:)
 			)
-			(Load VIEW 102)
-			(blood view: 535)
-			(aSpell view: 535)
+			(Load VIEW vKnFight)
+			(blood view: vFightFX)
+			(aSpell view: vFightFX)
 		)
 		(= egoCanFight TRUE)
 		(super init: &rest)
@@ -95,7 +95,7 @@
 					((theWarrior noWeapon?)
 						(= state 2)
 						(client
-							view: 117
+							view: vEgoUnarmed
 							setLoop: 0
 							setCel: 0
 							canFight: 0
@@ -112,13 +112,13 @@
 					(((theWarrior opponent?) ateEgo?))
 					(else
 						(if haveSword
-							(client view: 109)
+							(client view: vSwFight)
 						else
-							(client view: 102)
+							(client view: vKnFight)
 						)
 						(client
 							canFight: TRUE
-							action: 0
+							action: ActNone
 							cycleSpeed: 8
 							setLoop: 0
 							setCel: 0
@@ -187,7 +187,7 @@
 											(self setScript: egoThrust self attackAngle)
 										)
 										((ego has: iSword)
-											(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 215)
+											(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 CLOSECOMBAT)
 										)
 										((ego knows: FLAMEDART)
 											(if (CastSpell FLAMEDART)
@@ -197,7 +197,7 @@
 											)
 										)
 										(else
-											(messager say: N_ROOM NULL C_DONTKNOWSPELL 0 0 215)
+											(messager say: N_ROOM NULL C_DONTKNOWSPELL 0 0 CLOSECOMBAT)
 										)
 									)
 								)
@@ -208,7 +208,7 @@
 											(self setScript: egoThrust self attackAngle)
 										)
 										((ego has: iSword)
-											(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 215)
+											(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 CLOSECOMBAT)
 										)
 										((ego knows: ZAP)
 											(if (CastSpell ZAP)
@@ -218,7 +218,7 @@
 											)
 										)
 										(else
-											(messager say: N_ROOM NULL C_DONTKNOWSPELL 0 0 215)
+											(messager say: N_ROOM NULL C_DONTKNOWSPELL 0 0 CLOSECOMBAT)
 										)
 									)
 								)
@@ -233,7 +233,7 @@
 											(self setScript: egoDodge self attackAngle)
 										)
 										((ego has: iSword)
-											(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 215)
+											(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 CLOSECOMBAT)
 										)
 										((ego knows: DAZZLE)
 											(if (CastSpell DAZZLE)
@@ -243,7 +243,7 @@
 											)
 										)
 										(else
-											(messager say: N_ROOM NULL C_DONTKNOWSPELL 0 0 215)
+											(messager say: N_ROOM NULL C_DONTKNOWSPELL 0 0 CLOSECOMBAT)
 										)
 									)
 								)
@@ -255,7 +255,7 @@
 										)
 										(
 											(or
-												(== prevRoomNum 14)
+												(== prevRoomNum rBearCave)
 												(== prevRoomNum 171)
 												(== prevRoomNum 88)
 												(== prevRoomNum 89)
@@ -263,7 +263,7 @@
 												(== prevRoomNum 73)
 												(== prevRoomNum 91)
 											)
-											(messager say: N_ROOM NULL C_CANTESCAPE 0 0 215)
+											(messager say: N_ROOM NULL C_CANTESCAPE 0 0 CLOSECOMBAT)
 										)
 										(else
 											((ScriptID curRoomNum) escaped: TRUE)
@@ -276,7 +276,7 @@
 							(if (ego has: iSword)
 								(if
 									(or
-										(== prevRoomNum 14)
+										(== prevRoomNum rBearCave)
 										(== prevRoomNum 171)
 										(== prevRoomNum 88)
 										(== prevRoomNum 89)
@@ -284,7 +284,7 @@
 										(== prevRoomNum 73)
 										(== prevRoomNum 91)
 									)
-									(messager say: N_ROOM NULL C_CANTESCAPE 0 0 215)
+									(messager say: N_ROOM NULL C_CANTESCAPE 0 0 CLOSECOMBAT)
 								else
 									((ScriptID curRoomNum) escaped: TRUE)
 								)
@@ -310,7 +310,7 @@
 									(self setScript: egoThrust self attackAngle)
 								)
 								((ego has: iSword)
-									(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 215)
+									(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 CLOSECOMBAT)
 								)
 								((ego knows: FLAMEDART)
 									(if (CastSpell FLAMEDART)
@@ -320,7 +320,7 @@
 									)
 								)
 								(else
-									(messager say: N_ROOM NULL C_DONTKNOWSPELL 0 0 215)
+									(messager say: N_ROOM NULL C_DONTKNOWSPELL 0 0 CLOSECOMBAT)
 								)
 							)
 						)
@@ -332,7 +332,7 @@
 									(self setScript: egoDodge self attackAngle)
 								)
 								((ego has: iSword)
-									(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 215)
+									(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 CLOSECOMBAT)
 								)
 								((ego knows: DAZZLE)
 									(if (CastSpell DAZZLE)
@@ -342,7 +342,7 @@
 									)
 								)
 								(else
-									(messager say: N_ROOM NULL C_DONTKNOWSPELL 0 0 215)
+									(messager say: N_ROOM NULL C_DONTKNOWSPELL 0 0 CLOSECOMBAT)
 								)
 							)
 						)
@@ -354,7 +354,7 @@
 									(self setScript: egoThrust self attackAngle)
 								)
 								((ego has: iSword)
-									(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 215)
+									(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 CLOSECOMBAT)
 								)
 								((ego knows: ZAP)
 									(if (CastSpell ZAP)
@@ -364,7 +364,7 @@
 									)
 								)
 								(else
-									(messager say: N_ROOM NULL C_DONTKNOWSPELL 0 0 215)
+									(messager say: N_ROOM NULL C_DONTKNOWSPELL 0 0 CLOSECOMBAT)
 								)
 							)
 						)
@@ -377,7 +377,7 @@
 								)
 								(
 									(or
-										(== prevRoomNum 14)
+										(== prevRoomNum rBearCave)
 										(== prevRoomNum 171)
 										(== prevRoomNum 88)
 										(== prevRoomNum 89)
@@ -385,7 +385,7 @@
 										(== prevRoomNum 73)
 										(== prevRoomNum 91)
 									)
-									(messager say: N_ROOM NULL C_CANTESCAPE 0 0 215)
+									(messager say: N_ROOM NULL C_CANTESCAPE 0 0 CLOSECOMBAT)
 								)
 								(else
 									((ScriptID curRoomNum) escaped: TRUE)
@@ -398,7 +398,7 @@
 								(if (ego has: iSword)
 									(if
 										(or
-											(== prevRoomNum 14)
+											(== prevRoomNum rBearCave)
 											(== prevRoomNum 171)
 											(== prevRoomNum 88)
 											(== prevRoomNum 89)
@@ -406,7 +406,7 @@
 											(== prevRoomNum 73)
 											(== prevRoomNum 91)
 										)
-										(messager say: N_ROOM NULL C_CANTESCAPE 0 0 215)
+										(messager say: N_ROOM NULL C_CANTESCAPE 0 0 CLOSECOMBAT)
 									else
 										((ScriptID curRoomNum) escaped: TRUE)
 									)
@@ -425,8 +425,8 @@
 
 (instance egoFlame of Script
 	(method (init)
-		(= theWarrior (ScriptID 213 0))
-		((= theSpell (ScriptID 215 1))
+		(= theWarrior (ScriptID WARRIOR 0))
+		((= theSpell (ScriptID CLOSECOMBAT 1))
 			init:
 			posn: 500 500
 			stopUpd:
@@ -450,7 +450,7 @@
 				(HandsOff)
 				(theWarrior
 					canFight: FALSE
-					action: 11
+					action: ActCast
 					view: 107
 					setCel: 0
 					setPri: 15
@@ -589,7 +589,7 @@
 					((ScriptID monsterNum 0) inTransit: FALSE)
 					((theWarrior opponent?) setScript: (ScriptID monsterNum 2))
 				)
-				(theWarrior canFight: TRUE view: 102 setCel: 0 setLoop: 0)
+				(theWarrior canFight: TRUE view: vKnFight setCel: 0 setLoop: 0)
 				(self dispose:)
 			)
 		)
@@ -622,7 +622,13 @@
 				(= ticks 1)
 			)
 			(2
-				(theWarrior canFight: TRUE view: 102 cel: 0 forceUpd: setPri: -1)
+				(theWarrior
+					canFight: TRUE
+					view: vKnFight
+					cel: 0
+					forceUpd:
+					setPri: -1
+				)
 				(self dispose:)
 			)
 		)
@@ -700,9 +706,13 @@
 					(theWarrior view: 114)
 				else
 					(if (ego has: iSword)
-						(theWarrior view: (if (== attackAngle AttStraight) 110 else 109))
+						(theWarrior view:
+							(if (== attackAngle AttStraight) 110 else vSwFight)
+						)
 					else
-						(theWarrior view: (if (== attackAngle AttStraight) 103 else 102))
+						(theWarrior view:
+							(if (== attackAngle AttStraight) 103 else vKnFight)
+						)
 					)
 					(if (!= attackAngle AttStraight) (theWarrior setCel: 1))
 				)
@@ -988,7 +998,11 @@
 					(if haveSword
 						(theWarrior view: 109 setCel: 0 stopUpd:)
 					else
-						(theWarrior view: 102 setCel: 0 stopUpd:)
+						(theWarrior
+							view: vKnFight
+							setCel: 0
+							stopUpd:
+						)
 					)
 				)
 			)
@@ -996,7 +1010,11 @@
 				(if haveSword
 					(theWarrior view: 109 setCel: 0 stopUpd:)
 				else
-					(theWarrior view: 102 setCel: 0 stopUpd:)
+					(theWarrior
+						view: vKnFight
+						setCel: 0
+						stopUpd:
+					)
 				)
 				(= ticks 15)
 			)
@@ -1239,7 +1257,7 @@
 	(properties
 		x 246
 		y 175
-		view 945
+		view vCombatIcons
 		cel 4
 	)
 )
@@ -1248,7 +1266,7 @@
 	(properties
 		x 282
 		y 175
-		view 945
+		view vCombatIcons
 		cel 5
 	)
 )
@@ -1357,7 +1375,7 @@
 	(properties
 		x 303
 		y 175
-		view 945
+		view vCombatIcons
 		loop 2
 		value 1000
 	)

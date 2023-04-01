@@ -22,10 +22,10 @@
 				(self onMe: (projObj x?) (- (projObj y?) 34))
 			)
 			(switch (projObj view?)
-				(522
+				(vEgoCastDart
 					(self getHurt: (+ 5 (/ [egoStats FLAMEDART] 3)))
 				)
-				(524
+				(vEgoThrowingDagger
 					(self getHurt: (+ 5 (/ [egoStats STR] 10)))
 				)
 				(else

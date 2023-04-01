@@ -35,8 +35,8 @@
 				(= wasHandsOn (not isHandsOff))
 				(HandsOff)
 				(ego
-					view: 510
-					setLoop: (if (OneOf (ego loop?) loopS loopSE loopE loopNE) loopE else loopW)
+					view: vEgoThrowing
+					setLoop: (if (OneOf (ego loop?) facingSouth facingSE facingEast facingNE) 0 else 1)
 					cel: 0
 					cycleSpeed: 12
 					setCycle: EndLoop self
@@ -77,7 +77,7 @@
 					(HandsOn)
 				)
 				(ego
-					get: 10 10
+					get: iRock 10
 					cycleSpeed: savSpeed
 					priority: savPriority
 					illegalBits: savIllegalBits

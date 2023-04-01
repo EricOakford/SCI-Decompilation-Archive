@@ -79,6 +79,8 @@
 			(curRoom setScript: bigScript)
 		)
 		(bigScript
+			;UPGRADE: Restore valley wide-shot
+			;(curRoom setScript: flyScript)
 			(SaveHero)
 		)
 	)
@@ -96,7 +98,7 @@
 	(properties
 		x 126
 		y 42
-		view 148
+		view pBigEgo
 	)
 )
 
@@ -104,7 +106,7 @@
 	(properties
 		x 124
 		y 99
-		view 148
+		view pBigEgo
 		loop 3
 	)
 )
@@ -113,7 +115,7 @@
 	(properties
 		x 81
 		y 151
-		view 148
+		view pBigEgo
 		loop 1
 		signal (| fixedLoop ignrAct)
 	)
@@ -123,7 +125,7 @@
 	(properties
 		x 223
 		y 160
-		view 148
+		view pBigEgo
 		loop 2
 		signal (| fixedLoop ignrAct)
 	)
@@ -133,7 +135,7 @@
 	(properties
 		x -48
 		y 182
-		view 101
+		view pValleyWideShot
 		loop 8
 		signal (| fixPriOn fixedLoop ignrAct)
 	)
@@ -143,7 +145,7 @@
 	(properties
 		x -24
 		y 182
-		view 101
+		view pValleyWideShot
 		loop 8
 		cel 1
 		signal (| fixedLoop ignrAct)
@@ -154,7 +156,7 @@
 	(properties
 		x -2
 		y 180
-		view 101
+		view pValleyWideShot
 		loop 8
 		cel 2
 		signal (| fixPriOn fixedLoop ignrAct)
@@ -187,7 +189,7 @@
 	(properties
 		x 51
 		y 92
-		view 906
+		view vIntroFlame
 		priority 3
 	)
 )
@@ -196,7 +198,7 @@
 	(properties
 		x 127
 		y 87
-		view 906
+		view vIntroFlame
 		loop 1
 		cel 1
 		priority 3
@@ -207,14 +209,14 @@
 	(properties
 		x 87
 		y 49
-		view 906
+		view vIntroFlame
 		loop 2
 	)
 )
 
 (instance flame of Actor
 	(properties
-		view 907
+		view vIntroFlame2
 	)
 )
 
@@ -226,8 +228,8 @@
 	
 	(method (init)
 		(Load SOUND (SoundFX 99))
-		(LoadMany PICTURE 148 101 750)
-		(LoadMany VIEW 139 101 148 906 907)
+		(LoadMany PICTURE pBigEgo pValleyWideShot pBlueSkyForCarpet)
+		(LoadMany VIEW vEndGameCast pValleyWideShot pBigEgo vIntroFlame vIntroFlame2)
 		(super init: &rest)
 		(SolvePuzzle f600EndGame 25)
 		(DoSound SoundOn TRUE)
@@ -334,7 +336,10 @@
 		(= heroScriptTimer 55)
 		(super init: &rest)
 		(StatusLine disable:)
-		(curRoom style: 0 drawPic: 148)
+		(curRoom
+			style: HSHUTTER
+			drawPic: pBigEgo
+		)
 		(self setScript: post1)
 	)
 	
@@ -377,7 +382,10 @@
 		(mid setStep: stepX stepY)
 		(frt setStep: stepX stepY)
 		(super init: &rest)
-		(curRoom style: IRISOUT drawPic: 750)
+		(curRoom
+			style: IRISOUT
+			drawPic: pBlueSkyForCarpet
+		)
 		(self setScript: post2)
 	)
 	
@@ -409,9 +417,12 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(curRoom style: VSHUTTER drawPic: 101)
+				(curRoom
+					style: VSHUTTER
+					drawPic: pValleyWideShot
+				)
 				(carpet
-					view: 101
+					view: pValleyWideShot
 					setLoop: 0
 					setCel: 0
 					setStep: 1 1

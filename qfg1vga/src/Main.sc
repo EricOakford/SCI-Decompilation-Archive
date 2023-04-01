@@ -309,7 +309,7 @@
 	ghostCount
 	hutState				;0, 1, 2, 3, 4 as possible values.
 	babaState				;0, 1, 2, 3, 4 as possible values.
-	deathMusic =  26
+	deathMusic =  sDeath
 	numApples				;The number of apples given to Frost Giant
 	nestState				;The state of the next outside the Healer's hut (0 = in tree, 1 = on ground, 2 = burnt)
 	numGoblins				;The number of dead goblins in the Goblin Ambush
@@ -1040,7 +1040,7 @@
 						;day is dawning
 						(= Night FALSE)
 						(= timeODay TIME_DAWN)
-						(Bclr fStableClean)
+						(Bclr fStableClean)	;UPGRADE: this isn't needed, since NextDay clears it already
 						(PalVary PALVARYREVERSE 150)
 					)
 					(1050
@@ -1274,7 +1274,7 @@
 					(`^s
 						(if (not (& (theIconBar state?) DISABLED))
 							(cond 
-								((not (HaveMem 2000))
+								((not (HaveMem SheetSize))
 									(messager say: N_CUE NULL NULL 4 0 SYSTEM)
 								)
 								((not isHandsOff)
@@ -1929,7 +1929,7 @@
 		view vIcons
 		loop 0
 		cel 0
-		cursor 940
+		cursor vWalkCursor
 		type (| userEvent walkEvent)
 		message V_WALK
 		signal (| HIDEBAR RELVERIFY)
@@ -1946,7 +1946,7 @@
 		view vIcons
 		loop 1
 		cel 0
-		cursor 941
+		cursor vLookCursor
 		message V_LOOK
 		signal (| HIDEBAR RELVERIFY)
 		maskView vIcons
@@ -1962,7 +1962,7 @@
 		view vIcons
 		loop 2
 		cel 0
-		cursor 942
+		cursor vDoCursor
 		message V_DO
 		signal (| HIDEBAR RELVERIFY)
 		maskView vIcons
@@ -1978,7 +1978,7 @@
 		view vIcons
 		loop 3
 		cel 0
-		cursor 943
+		cursor vTalkCursor
 		message V_TALK
 		signal (| HIDEBAR RELVERIFY)
 		maskView vIcons
@@ -2216,7 +2216,7 @@
 		view vIcons
 		loop 9
 		cel 0
-		cursor 949
+		cursor vHelpCursor
 		message V_HELP
 		signal (| RELVERIFY IMMEDIATE)
 		maskView vIcons
@@ -2229,7 +2229,7 @@
 
 (instance invCursor of Cursor
 	(properties
-		view 950
+		view vInvItems
 	)
 )
 

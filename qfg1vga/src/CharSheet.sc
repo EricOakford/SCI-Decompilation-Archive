@@ -100,16 +100,25 @@
 (instance newKH of EventHandler)
 
 (instance hideMe of Code
-	(method (doit param1)
-		(param1 z: (+ (param1 z?) 1000))
+	(method (doit obj)
+		(obj z: (+ (obj z?) 1000))
 	)
 )
 
 (instance showMe of Code	
-	(method (doit param1)
-		(param1 z: (- (param1 z?) 1000))
+	(method (doit obj)
+		(obj z: (- (obj z?) 1000))
 	)
 )
+
+(define LEFTVAL_X		175)
+(define RIGHTVAL_X		288)
+(define VAL_Y			40)
+(define DERIV_X			200)	;Health, Stamina, Mana, and Experience
+(define EXPER_Y			141)			
+(define HEALTH_Y		153)
+(define STAMINA_Y		167)
+(define MANA_Y			177)
 
 (instance theCharSheet of Code
 	(method (doit &tmp [str 8])
@@ -132,37 +141,37 @@
 			p_mode teJustLeft
 			p_font 123
 		)
-		(ShowSkill 175 40 STR 0)
-		(ShowSkill 175 52 INT 0)
-		(ShowSkill 175 64 AGIL 0)
-		(ShowSkill 175 76 VIT 0)
-		(ShowSkill 175 88 LUCK 0)
-		(ShowSkill 175 100 MAGIC 0)
-		(ShowSkill 288 40 WEAPON 0)
-		(ShowSkill 288 52 PARRY 0)
-		(ShowSkill 288 64 DODGE 0)
-		(ShowSkill 288 76 STEALTH 0)
-		(ShowSkill 288 88 PICK 0)
-		(ShowSkill 288 100 THROW 0)
-		(ShowSkill 288 112 CLIMB 0)
-		(ShowSkill 200 141 EXPER 1
+		(ShowSkill LEFTVAL_X VAL_Y STR 0)
+		(ShowSkill LEFTVAL_X (+ VAL_Y (* 12 1)) INT 0)
+		(ShowSkill LEFTVAL_X (+ VAL_Y (* 12 2)) AGIL 0)
+		(ShowSkill LEFTVAL_X (+ VAL_Y (* 12 3)) VIT 0)
+		(ShowSkill LEFTVAL_X (+ VAL_Y (* 12 4)) LUCK 0)
+		(ShowSkill LEFTVAL_X (+ VAL_Y (* 12 5)) MAGIC 0)
+		(ShowSkill RIGHTVAL_X VAL_Y WEAPON 0)
+		(ShowSkill RIGHTVAL_X (+ VAL_Y (* 12 1)) PARRY 0)
+		(ShowSkill RIGHTVAL_X (+ VAL_Y (* 12 2)) DODGE 0)
+		(ShowSkill RIGHTVAL_X (+ VAL_Y (* 12 3)) STEALTH 0)
+		(ShowSkill RIGHTVAL_X (+ VAL_Y (* 12 4)) PICK 0)
+		(ShowSkill RIGHTVAL_X (+ VAL_Y (* 12 5)) THROW 0)
+		(ShowSkill RIGHTVAL_X (+ VAL_Y (* 12 6)) CLIMB 0)
+		(ShowSkill DERIV_X EXPER_Y EXPER 1
 			(Format @str {%d} [egoStats EXPER])
 		)
-		(ShowSkill 200 153 HEALTH 1
+		(ShowSkill DERIV_X HEALTH_Y HEALTH 1
 			(Format @str
 				{%d / %d}
 				(/ (+ [egoStats HEALTH] 1) 2)
 				(/ (+ (MaxHealth) 1) 2)
 			)
 		)
-		(ShowSkill 200 165 STAMINA 1
+		(ShowSkill DERIV_X STAMINA_Y STAMINA 1
 			(Format @str
 				{%d / %d}
 				(/ (+ [egoStats STAMINA] 3) 4)
 				(/ (+ (MaxStamina) 3) 4)
 			)
 		)
-		(ShowSkill 200 177 MANA 1
+		(ShowSkill DERIV_X MANA_Y MANA 1
 			(Format @str
 				{%d / %d}
 				[egoStats MANA]
@@ -190,7 +199,7 @@
 	(properties
 		x 51
 		y 145
-		view 802
+		view vCharSheet
 	)
 	
 	(method (handleEvent event)

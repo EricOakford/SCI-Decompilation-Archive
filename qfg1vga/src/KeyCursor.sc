@@ -56,8 +56,8 @@
 			)
 			(if inputObj
 				(Bclr fHideCursor)
-				(theGame
-					setCursor: 942 TRUE (inputObj cursorX?) (inputObj cursorY?)
+				(theGame setCursor:
+					vDoCursor TRUE (inputObj cursorX?) (inputObj cursorY?)
 				)
 				(Bset fHideCursor)
 			)

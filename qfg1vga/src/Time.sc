@@ -9,7 +9,7 @@
 )
 
 (procedure (AdvanceTime addHours addMinutes &tmp temp0 newTime)
-	(= temp0 (if (<= Clock 2850) (<= 2850 900) else 0))
+	(= temp0 (if (<= Clock 2850) (<= 2850 900) else FALSE))
 	(switch argc
 		(1
 			(= newTime (+ Clock (* GAMEHOUR addHours)))

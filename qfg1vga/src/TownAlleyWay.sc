@@ -159,6 +159,27 @@
 				marksOnWall
 			eachElementDo: #init
 		)
+		;UPGRADE
+;;;		(onTheWalls
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
+;;;		(theSky init:)
+;;;		(onBarrels
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(onBarrels2
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
+;;;		(onHotDogStand
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
+;;;		(onBricks init:)
+;;;		(marksOnWall init:)
+
 		(= nearBeggar FALSE)
 		;now only shows the message on first entry
 		(if (not (Btst fBeenIn333))

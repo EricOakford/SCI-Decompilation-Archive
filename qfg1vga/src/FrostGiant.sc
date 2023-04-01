@@ -542,7 +542,7 @@
 			)
 			(6
 				(if (not (Btst fBeenIn58))
-					(messager say: N_GIANT V_CONVERSATION C_NORTHLANDS 0 self)
+					(messager say: N_GIANT V_TELL C_NORTHLANDS 0 self)
 				)
 				(HandsOn)
 			)
@@ -652,7 +652,7 @@
 				(self setScript: ShowOff self)
 			)
 			(1
-				(messager say: N_GIANT V_CONVERSATION C_FIGHTING 1 self)
+				(messager say: N_GIANT V_TELL C_FIGHTING 1 self)
 			)
 			(2
 				(HandsOn)

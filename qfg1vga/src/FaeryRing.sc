@@ -21,12 +21,20 @@
 )
 
 (local
-	[local0 4]	;unused
+	;Night version is now its own room
+	eatingShrooms
+	faeriesAreHere
+	theWindow
+	noFaeries
+	;New for VGA
 	pickEmX
 	pickEmY
 	pickEmLoop
-	;this array is unused
-	local7 = [0 0 0 0 0 0 0 0 0 62 119 91 145 134 104 75 40 109 108 108 107 101 98 97 101]
+	;unused EGA remnants
+	askedToDance
+	[mush 8]
+	mushX = [62 119 91 145 134 104 75 40]
+	mushY = [109 108 108 107 101 98 97 101]
 )
 (procedure (proc70_1 param1 param2)
 	;NOTE: This procedure is unused
@@ -147,7 +155,7 @@
 					yourself:
 				)
 		)
-		(LoadMany RES_VIEW 510 72)
+		(LoadMany RES_VIEW vEgoThrowing vEgoGetDust)
 		(= currentPalette 0)
 		(super init:)
 		(StatusLine enable:)
@@ -216,7 +224,7 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_ALTTALK
+			(V_TALK ;ALTTALK
 				(messager say: N_ROOM V_ALTTALK NULL 1)
 			)
 			(V_DETECT
@@ -557,13 +565,13 @@
 				(HandsOff)
 				(ego
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: PolyPath pickEmX pickEmY self
 				)
 			)
 			(1
 				(ego
-					view: 510
+					view: vEgoThrowing
 					setLoop: pickEmLoop
 					setCel: 0
 					setCycle: EndLoop self

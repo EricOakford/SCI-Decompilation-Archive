@@ -36,7 +36,7 @@
 (local
 	local0
 	local1
-	local2
+	faeriesAreHere
 	local3
 	oldEgoX
 	oldEgoY
@@ -46,24 +46,43 @@
 	talkCount
 	[local10 7]
 	askedForDust
-	saidNotSure
+	askedToDance
 	local19 = [0 0 0 0 0 0 0 0 62 119 91 145 134 104 75 40 109 108 108 107 101 98 97 101]
 	[faery 5]
-	faeryStartX = [74 143 52 90 110]
-	faeryStartY = [109 120 122 99 108 1 11 6 5 8 14 2 10 15 12]
+	faeryX = [74 143 52 90 110]
+	faeryY = [109 120 122 99 108 1 11 6 5 8 14 2 10 15 12]
 	[faeryScript 5]
 	[chaseScript 5]
 	[faeryTalker 5]
-	beforeMeetTime
-	faeryX = [35 250 265 140 225]
-	faeryY = [30 35 125 50 45]
-	local94
-	local95
+	hostileTimer
+	hostileX = [35 250 265 140 225]
+	hostileY = [30 35 125 50 45]
+	whichTalk
+	danceCycles
 	egoDanceLoop
 	local97
 	enteredCircle
 	couldntGetDust
-	local100 = [-1 0 13 22 32 38 47 59 69 78 104 113 121 128 135 141 151]
+	;starting points in TEXT.296 for each whichTalk state
+	; (EGA remnant)
+	local100 = -1
+	firstTalkStart	=	0
+	askToDanceStart =  13
+	makeHimDanceStart =  22
+	klutzStart =  32
+	gracefulStart =  38
+	whaddayaWantStart =  47
+	enterRingStart =  59
+	useMagicStart =  69
+	askDustStart =  78
+	getDustStart =  100
+	mushroomsStart =  104
+	faeriesStart =  113
+	woodsStart =  121
+	dryadStart =  128
+	boringStart =  135
+	killerStart =  141
+	backAgainStart =  151
 	local117
 	local118
 	[local119 2]
@@ -76,7 +95,7 @@
 		C_DUST
 		ENDTELL
 		]
-	local128 = [
+	fairyTell1 = [
 		STARTTELL
 		C_DRYAD
 		ENDTELL
@@ -89,8 +108,29 @@
 		]
 )
 
+;whichTalk states
+(enum 1
+	FirstTalk		;1	;; used when fairies first notice ego -- 13 items...whichTalk = FirstTalk
+	AskToDance		;2	;; used when ego agrees to dance -- 9 items...whichTalk = AskToDance
+	MakeHimDance	;3	;; used when fairies force ego to dance if he refuses to -- 10 items...whichTalk = MakeHimDance 
+	Klutz			;4	;; used for klutzy ego dance -- 6 items...whichTalk = Klutz
+	Graceful		;5	;; used when fairies are impressed by ego's dance -- 9 items...whichTalk = Graceful
+	WhaddayaWant	;6	;; used when fairies open discussion with ego -- 12 items...whichTalk = WhaddayaWant
+	EnterRing		;7	;; used when ego busts into fairies' ring or threatens them -- 10 items...whichTalk = EnterRing 
+	UseMagic		;8	;; used when ego tries to use magic -- 9 items...whichTalk = UseMagic
+	GetDust			;9	;; follow-up to 'get/dust' -- 4 items...whichTalk = GetDust
+	Dust			;10	;; answers to 'ask about fairy dust' -- 22 items...whichTalk = Dust 
+	Mushrooms		;11	;; answers to 'ask about mushrooms' -- 9 items...whichTalk = Mushrooms 
+	Faeries			;12	;; answers to 'ask about fairies' -- 8 items...whichTalk = Faeries
+	Woods			;13	;; answers to 'ask about forest' -- 7 items...whichTalk = Woods
+	;Dryad			;14 ;; answers to 'ask about Dryad' -- 7 items...whichTalk = Dryad
+	Boring			;15 ;; answers to 'ask about [*]' -- 6 items...whichTalk = Boring
+	Killer			;16 ;; used when ego tries to fight with or kill fairies -- 10 items...whichTalk = Killer
+	BackAgain		;17 ;; used when ego returns to the room -- 10 items...whichTalk = BackAgain
+)
+
 ;EO: These procedures were really messy when decompiled!
-(procedure (FaeryAttention &tmp i)
+(procedure (AddChaseScript &tmp i)
 	(if (not local1)
 		(= local1 1)
 		(fairyFeat init:)
@@ -108,7 +148,7 @@
 	)
 )
 
-(procedure (FaerysDance &tmp i)
+(procedure (AddFaeryDanceScript &tmp i)
 	(Bclr fFaeryAttention)
 	(for ((= i 0)) (< i 4) ((++ i))
 		(= [faeryScript i] (aFaeryScript new:))
@@ -119,20 +159,20 @@
 	)
 )
 
-(procedure (FaerysAlarmed &tmp i temp1)
+(procedure (AddFaeryHostileScript &tmp i j)
 	(Bclr fFaeryAttention)
-	(= beforeMeetTime 80)
+	(= hostileTimer 80)
 	(for ((= i 0)) (< i 4) ((++ i))
 		(= [faeryScript i] (aFaeryScript new:))
-		(= temp1 (Random 0 4))
-		([faery temp1]
-			posn: [faeryX temp1] [faeryY temp1]
-			setScript: [faeryScript i] 0 temp1
+		(= j (Random 0 4))
+		([faery j]
+			posn: [hostileX j] [hostileY j]
+			setScript: [faeryScript i] 0 j
 		)
 	)
 )
 
-(procedure (AddFaerys &tmp i)
+(procedure (AddFaeries &tmp i)
 	(for ((= i 0)) (< i 4) ((++ i))
 		(= [faeryScript i] (aFaeryScript new:))
 		(= [faeryTalker i] (fairyTeller new:))
@@ -141,7 +181,7 @@
 			view: 70
 			setLoop: i
 			cel: 0
-			posn: [faeryStartX i] [faeryStartY i]
+			posn: [faeryX i] [faeryY i]
 			ignoreActors: TRUE
 			illegalBits: 0
 			ignoreHorizon: TRUE
@@ -153,6 +193,7 @@
 		)
 	)
 )
+
 (class FaeryScript of Script
 	(properties
 		name "Script#"
@@ -172,8 +213,8 @@
 	
 	(method (init &tmp temp0)
 		(= [fairyTellTree 0] @fairyTellMainBranch)
-		(= [fairyTellTree 1] @local128)
-		(= [fairyTellTree 2] 999)
+		(= [fairyTellTree 1] @fairyTell1)
+		(= [fairyTellTree 2] ENDTELL)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -257,14 +298,14 @@
 				)
 		)
 		(= egoDanceLoop 0)
-		(LoadMany VIEW 70 71)
+		(LoadMany VIEW rFaeryRing vEgoDance)
 		(Load SCRIPT DPATH)
 		(LoadMany SOUND 40 64)
-		(LoadMany VIEW 510 72)
-		(= local2 1)
+		(LoadMany VIEW vEgoThrowing vEgoGetDust)
+		(= faeriesAreHere TRUE)
 		(fairyTeller init: aFaery @fairyTellMainBranch @fairyTellTree @fairyTellKeys)
 		(aFaery init:)
-		(AddFaerys)
+		(AddFaeries)
 		(theMusic stop:)
 		(faeryMusic init: play:)
 		(egoBoogie init:)
@@ -331,11 +372,11 @@
 				(HandsOff)
 				(curRoom setScript: sExitSouth)
 			)
-			((== local2 0)
-				(= local2 1)
+			((== faeriesAreHere FALSE)
+				(= faeriesAreHere TRUE)
 				(aFaery init:)
 				(fairyFeat init:)
-				(AddFaerys)
+				(AddFaeries)
 				(theMusic stop:)
 				(faeryMusic init: play:)
 				(egoBoogie init:)
@@ -343,17 +384,17 @@
 			)
 		)
 		(cond 
-			((== beforeMeetTime 70)
-				(-- beforeMeetTime)
+			((== hostileTimer 70)
+				(-- hostileTimer)
 				(= local117 1)
-				(= local94 8)
+				(= whichTalk UseMagic)
 				(curRoom setScript: meetFaery)
 			)
-			((> beforeMeetTime 1)
-				(-- beforeMeetTime)
+			((> hostileTimer 1)
+				(-- hostileTimer)
 			)
-			((== beforeMeetTime 1)
-				(= beforeMeetTime 0)
+			((== hostileTimer 1)
+				(= hostileTimer 0)
 			)
 		)
 		(if
@@ -363,15 +404,15 @@
 				(not enteredCircle)
 			)
 			(= enteredCircle TRUE)
-			(FaeryAttention)
-			(= saidNotSure 0)
+			(AddChaseScript)
+			(= askedToDance 0)
 			(= local117 1)
-			(= local94 7)
+			(= whichTalk EnterRing)
 			(curRoom setScript: meetFaery)
 		)
-		(if (and (== local94 8) (== (curRoom script?) 0))
+		(if (and (== whichTalk UseMagic) (== (curRoom script?) 0))
 			(= local117 1)
-			(= local94 3)
+			(= whichTalk MakeHimDance)
 			(curRoom setScript: meetFaery)
 		)
 		(super doit:)
@@ -401,10 +442,10 @@
 	)
 	
 	(method (cue)
-		(if saidNotSure
-			(= saidNotSure 0)
+		(if askedToDance
+			(= askedToDance 0)
 			(= local117 1)
-			(= local94 2)
+			(= whichTalk AskToDance)
 			(curRoom setScript: meetFaery)
 		)
 	)
@@ -450,7 +491,7 @@
 		x 98
 		y 109
 		z -100
-		noun 1
+		noun N_FAIRIES
 		nsTop 68
 		nsLeft 38
 		nsBottom 151
@@ -479,7 +520,7 @@
 	(properties
 		x 58
 		y 94
-		noun 6
+		noun N_TREESLEFT
 		nsTop -1
 		nsBottom 189
 		nsRight 116
@@ -492,7 +533,7 @@
 	(properties
 		x 224
 		y 94
-		noun 5
+		noun N_TREESRIGHT
 		nsTop -1
 		nsLeft 130
 		nsBottom 189
@@ -506,7 +547,7 @@
 	(properties
 		x 145
 		y 101
-		noun 4
+		noun N_ROCKS
 		nsTop 49
 		nsLeft 43
 		nsBottom 153
@@ -520,7 +561,7 @@
 	(properties
 		x 115
 		y 102
-		noun 2
+		noun N_MUSHROOMS
 		nsTop 84
 		nsLeft 79
 		nsBottom 102
@@ -534,7 +575,7 @@
 				(messager say: N_MUSHROOMS V_LOOK C_NIGHT)
 			)
 			(V_DO
-				(if (and (not saidNotSure) (not (ego script?)))
+				(if (and (not askedToDance) (not (ego script?)))
 					(ego setMotion: PolyPath 123 110)
 				else
 					(messager say: N_MUSHROOMS V_DO)
@@ -551,7 +592,7 @@
 	(properties
 		x 71
 		y 102
-		noun 2
+		noun N_MUSHROOMS
 		nsTop 95
 		nsLeft 64
 		nsBottom 109
@@ -571,7 +612,7 @@
 	(properties
 		x 80
 		y 116
-		noun 2
+		noun N_MUSHROOMS
 		nsTop 111
 		nsLeft 72
 		nsBottom 121
@@ -591,7 +632,7 @@
 	(properties
 		x 113
 		y 123
-		noun 2
+		noun N_MUSHROOMS
 		nsTop 115
 		nsLeft 97
 		nsBottom 131
@@ -611,7 +652,7 @@
 	(properties
 		x 156
 		y 125
-		noun 2
+		noun N_MUSHROOMS
 		nsTop 119
 		nsLeft 144
 		nsBottom 131
@@ -631,7 +672,7 @@
 	(properties
 		x 163
 		y 102
-		noun 2
+		noun N_MUSHROOMS
 		nsTop 96
 		nsLeft 153
 		nsBottom 108
@@ -651,7 +692,7 @@
 	(properties
 		x 177
 		y 116
-		noun 2
+		noun N_MUSHROOMS
 		nsTop 109
 		nsLeft 170
 		nsBottom 121
@@ -698,7 +739,6 @@
 )
 
 (instance fairyTeller of Teller
-	
 	(method (showDialog &tmp ret [temp1 20])
 		(if (== (= ret (super showDialog: C_DUST local0)) 3)
 			(curRoom setScript: getDust)
@@ -718,7 +758,7 @@
 					(return TRUE)
 				)
 				(V_TALK
-					(if saidNotSure
+					(if askedToDance
 						(messager say: N_FAIRIES V_FLASK)
 					else
 						(++ talkCount)
@@ -729,7 +769,7 @@
 							((> talkCount 5)
 								(if (Btst fFaeryAttention)
 									(= local117 1)
-									(= local94 14)
+									(= whichTalk Boring)	;Boring
 									(curRoom setScript: meetFaery)
 								else
 									(messager say: N_ROOM V_TALK C_FAIRIESIGNORE)
@@ -744,7 +784,7 @@
 				)
 				(V_FLASK
 					(cond 
-						(saidNotSure
+						(askedToDance
 							(messager say: N_FAIRIES V_FLASK)
 						)
 						((Btst f70GetDust)
@@ -758,23 +798,23 @@
 						)
 						(else
 							(= local117 1)
-							(= local94 9)
+							(= whichTalk GetDust)
 							(curRoom setScript: meetFaery)
 						)
 					)
 					(return 1)
 				)
 				(V_SWORD
-					(FaeryAttention)
+					(AddChaseScript)
 					(= local117 1)
-					(= local94 15)
+					(= whichTalk Killer)	;Killer
 					(curRoom setScript: meetFaery)
 					(return TRUE)
 				)
 				(V_DAGGER
 					(if (ego has: iDagger)
 						(ThrowKnife 0)
-						(FaerysAlarmed)
+						(AddFaeryHostileScript)
 					else
 						(messager say: N_FAIRIES V_DAGGER)
 					)
@@ -789,24 +829,23 @@
 )
 
 (instance aFaeryScript of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(if
-					(== local94 14)
+					(== whichTalk Boring)
 					(HandsOn)
 				)
-				(if (> beforeMeetTime 0)
+				(if (> hostileTimer 0)
 					(client
 						setMotion: MoveTo
 							(Random
-								(- [faeryX register] 25)
-								(+ [faeryX register] 25)
+								(- [hostileX register] 25)
+								(+ [hostileX register] 25)
 							)
 							(Random
-								(- [faeryY register] 25)
-								(+ [faeryY register] 25)
+								(- [hostileY register] 25)
+								(+ [hostileY register] 25)
 							)
 							self
 					)
@@ -814,12 +853,12 @@
 					(client
 						setMotion: MoveTo
 							(Random
-								(- [faeryStartX register] 15)
-								(+ [faeryStartX register] 15)
+								(- [faeryX register] 15)
+								(+ [faeryX register] 15)
 							)
 							(Random
-								(- [faeryStartY register] 15)
-								(+ [faeryStartY register] 15)
+								(- [faeryY register] 15)
+								(+ [faeryY register] 15)
 							)
 							self
 					)
@@ -831,7 +870,6 @@
 )
 
 (instance aChaseScript of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -863,7 +901,7 @@
 				)
 			)
 			(1
-				(if (or (== local94 14) (== local94 8))
+				(if (or (== whichTalk Boring) (== whichTalk UseMagic))
 					(HandsOn)
 				)
 				(self init:)
@@ -873,12 +911,11 @@
 )
 
 (instance deathDance of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local95 0)
+				(= danceCycles 0)
 				(theGame setCursor: waitCursor TRUE)
 				(ego
 					illegalBits: 0
@@ -895,15 +932,15 @@
 			)
 			(2
 				(ego setLoop: (Random 0 4) cel: 0 setCycle: EndLoop self)
-				(++ local95)
+				(++ danceCycles)
 			)
 			(3
 				(cond 
-					((== (mod local95 3) 0)
+					((== (mod danceCycles 3) 0)
 						(messager say: N_FAIRIES NULL C_DANCEAGAIN)
 						(self changeState: 2)
 					)
-					((>= local95 6)
+					((>= danceCycles 6)
 						(= cycles 2)
 					)
 					(else
@@ -1048,24 +1085,24 @@
 					(if (not askedForDust)
 						(= askedForDust TRUE)
 						(if (Btst fMetFairies)
-							(= local94 16)
+							(= whichTalk BackAgain)
 						else
-							(= local94 1)
+							(= whichTalk FirstTalk)
 						)
-						(FaeryAttention)
+						(AddChaseScript)
 						(curRoom setScript: meetFaery)
 					)
 				)
 				(V_DAZZLE
 					(CastDazz)
-					(FaerysAlarmed)
+					(AddFaeryHostileScript)
 				)
 				(V_CALM
 					(CastCalm)
 				)
 				(V_FLAME
 					(CastDart 0)
-					(FaerysAlarmed)
+					(AddFaeryHostileScript)
 				)
 				(else 
 					(super doVerb: theVerb &rest)
@@ -1076,19 +1113,18 @@
 )
 
 (instance meetFaery of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (or enteredCircle (== local94 3) (== local94 15))
+				(if (or enteredCircle (== whichTalk MakeHimDance) (== whichTalk Killer))
 					(if enteredCircle
 						(messager say: N_FAIRIES NULL C_ENTEREDCIRCLE 0)
 					)
 					(curRoom setScript: deathDance)
 				else
-					(switch local94
-						(1
+					(switch whichTalk
+						(FirstTalk
 							(Bset fMetFairies)
 							(switch
 								(Print
@@ -1099,26 +1135,26 @@
 									init:
 								)
 								(0
-									(= saidNotSure TRUE)
+									(= askedToDance TRUE)
 									(roomTimer setReal: curRoom 6)
 									(HandsOn)
 									(NormalEgo)
 								)
 								(1
-									(= saidNotSure FALSE)
+									(= askedToDance FALSE)
 									(= local117 1)
-									(= local94 2)
+									(= whichTalk AskToDance)
 									(self changeState: 0)
 								)
 								(2
-									(= saidNotSure FALSE)
+									(= askedToDance FALSE)
 									(= local117 1)
-									(= local94 3)
+									(= whichTalk MakeHimDance)
 									(self changeState: 0)
 								)
 							)
 						)
-						(16
+						(BackAgain
 							(switch
 								(Print
 									addText: N_ROOM NULL C_ASKDANCE 1 0 0
@@ -1128,21 +1164,21 @@
 									init:
 								)
 								(0
-									(= saidNotSure TRUE)
+									(= askedToDance TRUE)
 									(roomTimer setReal: curRoom 6)
 									(HandsOn)
 									(NormalEgo)
 								)
 								(1
-									(= saidNotSure FALSE)
+									(= askedToDance FALSE)
 									(= local117 1)
-									(= local94 2)
+									(= whichTalk AskToDance)
 									(self changeState: 0)
 								)
 								(2
-									(= saidNotSure FALSE)
+									(= askedToDance FALSE)
 									(= local117 1)
-									(= local94 3)
+									(= whichTalk MakeHimDance)
 									(self changeState: 0)
 								)
 							)
@@ -1157,14 +1193,14 @@
 							(= local97 1)
 						)
 						(8
-							(= beforeMeetTime 0)
-							(FaeryAttention)
+							(= hostileTimer 0)
+							(AddChaseScript)
 						)
 						(9
 							(curRoom setScript: getDust)
 						)
 						(14
-							(FaerysDance)
+							(AddFaeryDanceScript)
 						)
 						(else 
 							(if (not (ego script?))
@@ -1181,7 +1217,6 @@
 )
 
 (instance sEnterFromSouth of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1327,7 +1362,7 @@
 				(= oldMoveSpeed (ego moveSpeed?))
 				(= local0 1)
 				(SolvePuzzle f70DanceWithFairies 3)
-				(FaerysDance)
+				(AddFaeryDanceScript)
 				(ego ignoreActors: TRUE illegalBits: 0)
 				(self setScript: gotoRing self)
 			)
@@ -1356,7 +1391,7 @@
 				(self cue:)
 			)
 			(3
-				(++ local95)
+				(++ danceCycles)
 				(ego
 					setMotion: DPath
 						129 161
@@ -1370,20 +1405,20 @@
 			)
 			(4
 				(cond 
-					((== local95 1)
-						(FaeryAttention)
+					((== danceCycles 1)
+						(AddChaseScript)
 						(self changeState: 3)
 					)
-					((== local95 2)
+					((== danceCycles 2)
 						(= local117 1)
-						(= local94 5)
+						(= whichTalk Graceful)
 						(messager say: N_FAIRIES NULL C_CUTEDANCE 0 self)
 					)
 					(local97
 						(= local97 0)
 						(= ticks 30)
 					)
-					((>= local95 3)
+					((>= danceCycles 3)
 						(self changeState: 14)
 					)
 					(else
@@ -1392,7 +1427,7 @@
 				)
 			)
 			(5
-				(FaerysDance)
+				(AddFaeryDanceScript)
 				(ego setLoop: 5 setCel: 0 setCycle: CycleTo 3 1 self)
 			)
 			(6
@@ -1422,9 +1457,9 @@
 				(= cycles 5)
 			)
 			(13
-				(FaeryAttention)
+				(AddChaseScript)
 				(= local117 1)
-				(= local94 6)
+				(= whichTalk WhaddayaWant)
 				(curRoom setScript: meetFaery)
 				(HandsOn)
 				(ego
@@ -1437,7 +1472,7 @@
 			)
 			(14
 				(messager say: N_ROOM NULL C_DANCEAGAIN)
-				(= local95 0)
+				(= danceCycles 0)
 				(HandsOn)
 				(NormalEgo)
 				(ego
@@ -1453,7 +1488,6 @@
 )
 
 (instance klutzDance of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1469,14 +1503,14 @@
 					cycleSpeed: (if enteredCircle 0 else 6)
 					setCycle: EndLoop self
 				)
-				(++ local95)
+				(++ danceCycles)
 				(++ egoDanceLoop)
 			)
 			(1
 				(cond 
-					((== local95 6)
+					((== danceCycles 6)
 						(= local117 1)
-						(= local94 4)
+						(= whichTalk Klutz)
 						(messager say: N_FAIRIES NULL C_KLUTZDANCE 0 self)
 					)
 					(local97
@@ -1485,7 +1519,7 @@
 						(egoBoogie stop:)
 						(= ticks 60)
 					)
-					((>= local95 10)
+					((>= danceCycles 10)
 						(self changeState: 4)
 					)
 					(else
@@ -1507,9 +1541,9 @@
 			(3
 				(faeryMusic play:)
 				(egoBoogie stop:)
-				(FaeryAttention)
+				(AddChaseScript)
 				(= local117 1)
-				(= local94 6)
+				(= whichTalk WhaddayaWant)
 				(messager say: N_FAIRIES NULL C_WHATDOYOUWANT)
 				(self dispose:)
 			)
@@ -1517,7 +1551,7 @@
 				(faeryMusic play:)
 				(egoBoogie stop:)
 				(messager say: N_ROOM NULL C_DANCEAGAIN)
-				(= local95 0)
+				(= danceCycles 0)
 				(HandsOn)
 				(NormalEgo)
 				(ego
@@ -1588,11 +1622,11 @@
 				(if (not askedForDust)
 					(= askedForDust TRUE)
 					(if (Btst fMetFairies)
-						(= local94 16)
+						(= whichTalk BackAgain)
 					else
-						(= local94 1)
+						(= whichTalk FirstTalk)
 					)
-					(FaeryAttention)
+					(AddChaseScript)
 					(= ticks 30)
 				else
 					(self dispose:)

@@ -40,9 +40,11 @@
 	(method (dispose)
 		(soundObj stop: dispose:)
 		(NormalEgo)
-		(if wasHandsOn (HandsOn))
+		(if wasHandsOn
+			(HandsOn)
+		)
 		(ego
-			loop: (if (== (ego loop?) loopSE) loopSW else loopSE)
+			loop: (if (== (ego loop?) facingSE) 5 else 4)
 			priority: savPriority
 			illegalBits: savIllegalBits
 			signal: savSignal
@@ -65,20 +67,20 @@
 				(HandsOff)
 				(ego
 					setMotion: 0
-					setHeading: (if (OneOf (ego loop?) loopS loopSE loopE loopNE) 135 else 225) self
+					setHeading: (if (OneOf (ego loop?) facingSouth facingSE facingEast facingNE) 135 else 225) self
 				)
 			)
 			(2
 				(theGame setCursor: waitCursor TRUE)
 				(ego
-					view: 521
-					setLoop: (if (== (ego loop?) loopSW) loopSE else loopSW)
+					view: vEgoCastSpell
+					setLoop: (if (== (ego loop?) facingSW) 4 else 5)
 					cel: 0
 					cycleSpeed: 4
 					setCycle: EndLoop self
 				)
 				((= soundObj (Sound new:))
-					number: (SoundFX 17)
+					number: (SoundFX sDazzle)
 					priority: 6
 					init:
 					play:

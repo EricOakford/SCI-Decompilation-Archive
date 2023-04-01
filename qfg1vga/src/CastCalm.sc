@@ -42,7 +42,7 @@
 		(NormalEgo)
 		(if wasHandsOn (HandsOn))
 		(ego
-			loop: (if (== (ego loop?) loopS) loopSW else loopSE)
+			loop: (if (== (ego loop?) facingSouth) 5 else 4)
 			priority: savPriority
 			illegalBits: savIllegalBits
 			cycleSpeed: savSpeed
@@ -57,7 +57,7 @@
 			(0 (= ticks 10))
 			(1
 				((= soundObj (Sound new:))
-					number: (SoundFX 39)
+					number: (SoundFX sCalm)
 					priority: 6
 					init:
 				)
@@ -70,13 +70,13 @@
 				(theGame setCursor: waitCursor TRUE)
 				(ego
 					setMotion: 0
-					setHeading: (if (OneOf (ego loop?) loopS loopSE loopE loopNE) 135 else 225) self
+					setHeading: (if (OneOf (ego loop?) facingSouth facingSE facingEast facingNE) 135 else 225) self
 				)
 			)
 			(2
 				(theGame setCursor: waitCursor TRUE)
 				(ego
-					view: 521
+					view: vEgoCastSpell
 					setLoop: (if (== (ego loop?) loopSW) loopS else loopN)
 					setCel: 0
 					setPri: (ego priority?)

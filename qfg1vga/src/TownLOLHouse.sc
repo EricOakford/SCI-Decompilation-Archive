@@ -158,13 +158,30 @@
 ;;;		(onTable init:)
 ;;;		(onDoor init:)
 ;;;		(onStorageBox init:)
-		
-		(onDrawer init:)
-		(onStair init:)
-		(onChair init:)
-		(onFirePlace init:)
-		(onRug init:)
-		(onTableFood init:)
+		(onDrawer
+			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+		)
+		(onStair
+			init:
+;;;			setOnMeCheck: ftrControl cLGREY
+		)
+		(onChair
+			init:
+;;;			setOnMeCheck: ftrControl cMAGENTA
+		)
+		(onFirePlace
+			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+		)
+		(onRug
+			init:
+;;;			setOnMeCheck: ftrControl cBROWN
+		)
+		(onTableFood
+			init:
+;;;			setOnMeCheck: ftrControl cRED
+		)
 		(onCouch
 			approachVerbs:
 				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
@@ -175,6 +192,7 @@
 				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
 				V_VASE V_VEGETABLES
 			init:
+;;;			setOnMeCheck: ftrControl cGREEN
 		)
 		(onPlant
 			approachVerbs:
@@ -194,7 +212,7 @@
 			setAvoider: PAvoider
 			setScript: enterRoom
 		)
-		(= deathMusic (SoundFX 52))
+		(= deathMusic (SoundFX sDeathBusted))
 		(cat
 			init:
 			setStep: 2 1
@@ -321,7 +339,7 @@
 	
 	(method (newRoom n)
 		(Bset fBeenIn313)
-		(= deathMusic (SoundFX 26))
+		(= deathMusic (SoundFX sDeath))
 		(super newRoom: n)
 	)
 )

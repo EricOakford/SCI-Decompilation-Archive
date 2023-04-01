@@ -53,7 +53,7 @@
 				(evt dispose:)
 			)
 			((inventory at: iDagger) dumpIt: TRUE)	;so ego can pick it back up
-			(LoadMany SOUND (SoundFX 31) (SoundFX 29))
+			(LoadMany SOUND (SoundFX sKnifeThrow) (SoundFX sKnifeStick1))
 			(if atWhat
 				(Face ego atWhat)
 				(= knTargX (+ (atWhat x?) (atWhat targDeltaX?)))
@@ -86,13 +86,13 @@
 				(= knTargY thisY)
 			)
 			((= projSound (Sound new:))
-				number: (SoundFX 31)
+				number: (SoundFX sKnifeThrow)
 				priority: 15
 				init:
 			)
 			(= knTarg atWhat)
 			((= projectile (Actor new:))
-				view: 524
+				view: vEgoThrowingDagger
 				setLoop: 2
 				setCel: 0
 				illegalBits: 0
@@ -136,10 +136,10 @@
 			(register getHurt: (+ 5 (/ [egoStats STR] 10)))
 		)
 		(super dispose:)
-		(DisposeScript 101)
+		(DisposeScript THROWKNIFE)
 	)
 	
-	(method (changeState newState param2)
+	(method (changeState newState atWhat)
 		(switch (= state newState)
 			(0
 				(= projObj client)
@@ -159,7 +159,7 @@
 			)
 			(1
 				(ego
-					view: 524
+					view: vEgoThrowingDagger
 					setLoop: (if (== (ego loop?) 0) 0 else 1)
 					cel: 0
 					cycleSpeed: 8
@@ -172,21 +172,21 @@
 					(= knTargX (ego x?)) (= knTargY (ego y?))
 				)
 				(projSound play:)
-				(= param2
+				(= atWhat
 					(cond 
-						((< (= param2 (Abs (- knTargX (ego x?)))) 20) 15)
-						((< param2 30) 20)
-						((< param2 50) 25)
-						((< param2 80) 30)
+						((< (= atWhat (Abs (- knTargX (ego x?)))) 20) 15)
+						((< atWhat 30) 20)
+						((< atWhat 50) 25)
+						((< atWhat 80) 30)
 						(else 35)
 					)
 				)
 				(client
 					posn:
 						(if (== (ego loop?) 1)
-							(- (ego x?) param2)
+							(- (ego x?) atWhat)
 						else
-							(+ (ego x?) param2)
+							(+ (ego x?) atWhat)
 						)
 						(ego y?)
 					setLoop: (+ (ego loop?) 2)
@@ -206,7 +206,11 @@
 						(-- missedDaggers)
 						(++ hitDaggers)
 					)
-					(projSound stop: number: (SoundFX 29) play: self)
+					(projSound
+						stop:
+						number: (SoundFX sKnifeStick1)
+						play: self
+					)
 				else
 					(self cue:)
 				)

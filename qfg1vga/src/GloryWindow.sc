@@ -57,7 +57,7 @@
 		(Graph GShowBits lsTop lsLeft lsBottom lsRight VMAP)
 		(+= bottom 4)
 		(+= right 4)
-		(= type $83)
+		(= type (| wCustom wNoSave wNoBorder))
 		(super open:)
 	)
 	
@@ -106,10 +106,10 @@
 	(Graph GDrawLine (+ b 1) l (+ b 1) r 69 thePri -1)
 	(Graph GDrawLine (+ b 2) l (+ b 2) r 66 thePri -1)
 	(Graph GDrawLine (+ b 3) l (+ b 3) r 67 thePri -1)
-	(DrawCel 995 9 0 (- l 20) (- t 3) thePri)
-	(DrawCel 995 9 1 (+ r 1) (- t 3) thePri)
-	(DrawCel 995 9 2 (- l 20) (- b 9) thePri)
-	(DrawCel 995 9 3 (+ r 1) (- b 9) thePri)
+	(DrawCel vGameControls 9 0 (- l 20) (- t 3) thePri)
+	(DrawCel vGameControls 9 1 (+ r 1) (- t 3) thePri)
+	(DrawCel vGameControls 9 2 (- l 20) (- b 9) thePri)
+	(DrawCel vGameControls 9 3 (+ r 1) (- b 9) thePri)
 	(SetPort savePort)
 )
 

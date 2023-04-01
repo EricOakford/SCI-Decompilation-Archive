@@ -9,6 +9,8 @@
 (define STARTTELL 0)
 (define ENDTELL	999)
 
+(define LASTCEL	255)
+
 (define SAME_COLOR 42)
 (define CHANGE_COLOR 54)
 
@@ -26,7 +28,7 @@
 (define	NUM_DERIVS	4)
 (define NUM_SPELLS	8)
 (define NUM_ATTRIBS 25)	;(+ NUM_STATS NUM_SKILLS NUM_DERIVS NUM_SPELLS))
-(define NUM_INVITEMS 40)
+(define NUM_INVITEMS	39) ;(- iLastInvItem 1))
 
 (define GAMEDAY 3600)	;number of ticks per game day
 (define GAMEHOUR 150) 	;number of ticks per game hour
@@ -202,3 +204,6 @@
 	koboldSTATE3
 	koboldDEAD
 )
+
+;Required memory sizes in bytes
+(define SheetSize	2000)

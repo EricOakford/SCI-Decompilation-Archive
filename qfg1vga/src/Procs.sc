@@ -65,7 +65,7 @@
 	)
 	(= deadCel (Random 0 2))
 	(= deadLoop 0)
-	(= deadView 800)
+	(= deadView vDeathIcons)
 	(if (>= argc 3)
 		(= deadCel cel)
 		(if (>= argc 4)
@@ -84,7 +84,8 @@
 		(theMusic
 			number: deathMusic
 			priority: 15
-			loop: 1 110
+			loop: 1
+			init:
 			play:
 		)
 	)
@@ -186,21 +187,38 @@
 	)
 	(switch egoGait
 		(MOVE_RUN
-			(ego view: 5 setStep: 8 4 setCycle: StopWalk 4)
-			((theIconBar at: ICON_WALK) loop: 6 cursor: 937)
+			(ego
+				view: vEgoRun
+				setStep: 8 4
+				setCycle: StopWalk vEgoStand
+			)
+			((theIconBar at: ICON_WALK)
+				loop: 6
+				cursor: vRunCursor
+			)
 		)
 		(MOVE_SNEAK
-			(ego view: 6 setStep: 3 2 setCycle: StopWalk 8)
-			((theIconBar at: ICON_WALK) loop: 8 cursor: 947)
+			(ego
+				view: vEgoSneak
+				setStep: 3 2
+				setCycle: StopWalk vEgoSneakStand
+			)
+			((theIconBar at: ICON_WALK)
+				loop: 8
+				cursor: vSneakCursor
+			)
 		)
 		(else 
 			(ego
-				view: 0
+				view: vEgo
 				setStep: 3 2
 				cycleSpeed: (ego moveSpeed?)
-				setCycle: StopWalk 4
+				setCycle: StopWalk vEgoStand
 			)
-			((theIconBar at: ICON_WALK) loop: 0 cursor: 940)
+			((theIconBar at: ICON_WALK)
+				loop: 0
+				cursor: vWalkCursor
+			)
 		)
 	)
 	(if
@@ -237,14 +255,14 @@
 	)
 	(= dir
 		(switch (ego loop?)
-			(loopN 0)
-			(loopNE 45)
-			(loopE 90)
-			(loopSE 135)
-			(loopS 180)
-			(loopSW 225)
-			(loopW 270)
-			(loopNW 315)
+			(facingNorth 0)
+			(facingNE 45)
+			(facingEast 90)
+			(facingSE 135)
+			(facingSouth 180)
+			(facingSW 225)
+			(facingWest 270)
+			(facingNW 315)
 		)
 	)
 	(ego
@@ -404,7 +422,8 @@
 	)
 	(if (> timeODay TIME_SUNSET)
 		(= Night TRUE)
-		(Bclr fStableClean)
+		;EO: NextDay already clears this flag
+		;(Bclr fStableClean)
 		(PalVary PALVARYSTART (curRoom picture?) 1)
 		(if nightPalette (PalVary PALVARYTARGET nightPalette))
 	else
@@ -424,7 +443,7 @@
 
 (procedure (TrySkill skillNum difficulty bonus &tmp skVal skDiv skRef success)
 	(if (not (= skVal [egoStats skillNum])) (return FALSE))
-	(if (== argc 3) (= skVal (+ skVal bonus)))
+	(if (== argc 3) (+= skVal bonus))
 	(if difficulty
 		(if (>= skillNum WEAPON) (UseStamina (/ difficulty 10)))
 	else
@@ -474,7 +493,7 @@
 	(if (> (= learnValue (Abs learnValue)) [egoStats skillNum])
 		(= learnValue [egoStats skillNum])
 	)
-	(= [egoStats EXPER] (+ [egoStats EXPER] (/ learnValue 4)))
+	(+= [egoStats EXPER] (/ learnValue 4))
 	(if
 		(>=
 			[skillTicks skillNum]
@@ -594,6 +613,7 @@
 )
 
 (procedure (SoundFX soundNum)
+	;EGA remnant
 ;;;	(return
 ;;;		(if (> numVoices 4)
 			(return soundNum)
@@ -603,15 +623,15 @@
 ;;;	)
 )
 
-(procedure (SolvePuzzle flagEnum points charType)
+(procedure (SolvePuzzle pFlag pValue charType)
 	(if (and (>= argc 3) (!= heroType charType))
 		(return)
 	)
-	(if (not (Btst flagEnum))
-		(Bset flagEnum)
-		(+= score points)
+	(if (not (Btst pFlag))
+		(Bset pFlag)
+		(+= score pValue)
 		((ScriptID 0 9) doit: curRoomNum)
-		(SkillUsed INT points)
+		(SkillUsed INT pValue)
 	)
 )
 
@@ -643,16 +663,13 @@
 )
 
 (procedure (WtCarried &tmp tot index)
-	(= index 0)
-	(= tot 0)
-	(while (< index iLastInvItem)
+	(for ((= index 0) (= tot 0)) (< index iLastInvItem) ((++ index))
 		(+= tot
 			(*
 				(((ScriptID GLORYINV 0) at: index) amount?)
 				(((ScriptID GLORYINV 0) at: index) weight?)
 			)
 		)
-		(++ index)
 	)
 	(= tot (/ (+ tot 59) 60))
 )

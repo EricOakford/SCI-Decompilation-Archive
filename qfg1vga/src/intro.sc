@@ -14,15 +14,15 @@
 )
 
 (local
-	local0
+	local0	;unused
 )
 (instance intro of Room
 	(properties
-		picture 902
+		picture pIntro
 	)
 	
 	(method (init)
-		(LoadMany VIEW 910 907 908 909 912 906)
+		(LoadMany VIEW vIntroDragon vIntroFlame2 vQFGCooldown vHeroCooldown vIntroTitle vIntroFlame)
 		(theIconBar disable:)
 		(theGame setCursor: ARROW_CURSOR FALSE)
 		(Bset fHideCursor)
@@ -35,7 +35,7 @@
 	(properties
 		x 260
 		y 101
-		view 910
+		view vIntroDragon
 		priority 6
 		signal fixPriOn
 		cycleSpeed 8
@@ -46,7 +46,7 @@
 	(properties
 		x 147
 		y 74
-		view 907
+		view vIntroFlame2
 		priority 15
 		signal fixPriOn
 	)
@@ -56,7 +56,7 @@
 	(properties
 		x 172
 		y 167
-		view 908
+		view vQFGCooldown
 	)
 )
 
@@ -64,7 +64,7 @@
 	(properties
 		x 56
 		y 154
-		view 909
+		view vHeroCooldown
 	)
 )
 
@@ -85,13 +85,21 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(theMusic number: 999 loop: 1 play:)
+				(theMusic
+					number: sShortIntro
+					loop: 1
+					play:
+				)
 			)
 			(1
 				(= cycles 5)
 			)
 			(2
-				(theMusic loop: -1 number: 61 play:)
+				(theMusic
+					loop: -1
+					number: 61
+					play:
+				)
 			)
 		)
 	)
@@ -109,7 +117,9 @@
 				(dragon setCel: 1)
 				(= seconds 1)
 			)
-			(2 (dragon setCycle: EndLoop self))
+			(2
+				(dragon setCycle: EndLoop self)
+			)
 			(3
 				(dragon stopUpd:)
 				(fireSound play:)
@@ -121,7 +131,11 @@
 				(dragonFire dispose:)
 			)
 			(5
-				(qForGlory view: 912 setLoop: 0 setCel: 0)
+				(qForGlory
+					view: vIntroTitle
+					setLoop: 0
+					setCel: 0
+				)
 				(dragon startUpd: setCel: 6)
 				(= ticks 25)
 			)
@@ -131,7 +145,7 @@
 				(fireSound play:)
 				(dragonFire
 					init:
-					view: 906
+					view: vIntroFlame
 					posn: 170 144
 					setCel: 0
 					setCycle: EndLoop self
@@ -143,12 +157,16 @@
 				(subTitle init: setCel: 0 setCycle: EndLoop self)
 			)
 			(8
-				(subTitle view: 912 setLoop: 1 setCel: 0)
+				(subTitle
+					view: vIntroTitle
+					setLoop: 1
+					setCel: 0
+				)
 				(self cue:)
 			)
 			(9
 				(cast eachElementDo: #dispose)
-				(curRoom drawPic: 903 FADEOUT)
+				(curRoom drawPic: pCredits FADEOUT)
 				(self cue:)
 			)
 			(10
@@ -157,7 +175,9 @@
 				(= seconds 8)
 			)
 			(11
-				(curRoom drawPic: 903 PIXELDISSOLVE)
+				(curRoom
+					drawPic: pCredits PIXELDISSOLVE
+				)
 				(angel dispose:)
 				(dogLookingRight init:)
 				(dogLookingLeft init:)
@@ -166,7 +186,9 @@
 				(= seconds 8)
 			)
 			(12
-				(curRoom drawPic: 903 PIXELDISSOLVE)
+				(curRoom
+					drawPic: pCredits PIXELDISSOLVE
+				)
 				(dogLookingRight dispose:)
 				(dogLookingLeft dispose:)
 				(rowOfDogs init:)
@@ -175,7 +197,9 @@
 				(= seconds 8)
 			)
 			(13
-				(curRoom drawPic: 903 PIXELDISSOLVE)
+				(curRoom
+					drawPic: pCredits PIXELDISSOLVE
+				)
 				(rowOfDogs dispose:)
 				(angel init:)
 				(stuart dispose:)
@@ -183,7 +207,9 @@
 				(= seconds 8)
 			)
 			(14
-				(curRoom drawPic: 903 PIXELDISSOLVE)
+				(curRoom
+					drawPic: pCredits PIXELDISSOLVE
+				)
 				(angel dispose:)
 				(dogLookingRight init:)
 				(dogLookingLeft init:)
@@ -192,7 +218,9 @@
 				(= seconds 8)
 			)
 			(15
-				(curRoom drawPic: 903 PIXELDISSOLVE)
+				(curRoom
+					drawPic: pCredits PIXELDISSOLVE
+				)
 				(dogLookingRight dispose:)
 				(dogLookingLeft dispose:)
 				(rowOfDogs init:)
@@ -201,7 +229,9 @@
 				(= seconds 8)
 			)
 			(16
-				(curRoom drawPic: 903 PIXELDISSOLVE)
+				(curRoom
+					drawPic: pCredits PIXELDISSOLVE
+				)
 				(rowOfDogs dispose:)
 				(angel init:)
 				(artDesigner dispose:)
@@ -209,7 +239,9 @@
 				(= seconds 8)
 			)
 			(17
-				(curRoom drawPic: 903 PIXELDISSOLVE)
+				(curRoom
+					drawPic: pCredits PIXELDISSOLVE
+				)
 				(angel dispose:)
 				(lion init:)
 				(leadProg dispose:)
@@ -217,7 +249,7 @@
 				(= seconds 8)
 			)
 			(18
-				(curRoom newRoom: 202)
+				(curRoom newRoom: CHARSEL)
 			)
 		)
 	)
@@ -227,7 +259,7 @@
 	(properties
 		x 203
 		y 69
-		view 903
+		view pCredits
 		loop 1
 	)
 )
@@ -236,7 +268,7 @@
 	(properties
 		x 161
 		y 109
-		view 903
+		view pCredits
 	)
 )
 
@@ -244,7 +276,7 @@
 	(properties
 		x 161
 		y 109
-		view 903
+		view pCredits
 		loop 2
 	)
 )
@@ -253,7 +285,7 @@
 	(properties
 		x 161
 		y 109
-		view 903
+		view pCredits
 		loop 3
 	)
 )
@@ -262,7 +294,7 @@
 	(properties
 		x 161
 		y 109
-		view 903
+		view pCredits
 		loop 4
 	)
 )
@@ -271,7 +303,7 @@
 	(properties
 		x 172
 		y 172
-		view 903
+		view pCredits
 		loop 5
 	)
 )
@@ -280,7 +312,7 @@
 	(properties
 		x 147
 		y 49
-		view 903
+		view pCredits
 		loop 6
 	)
 )
@@ -289,7 +321,7 @@
 	(properties
 		x 162
 		y 109
-		view 903
+		view pCredits
 		loop 7
 	)
 )
@@ -298,7 +330,7 @@
 	(properties
 		x 162
 		y 109
-		view 903
+		view pCredits
 		loop 8
 	)
 )
@@ -307,7 +339,7 @@
 	(properties
 		x 164
 		y 173
-		view 903
+		view pCredits
 		loop 9
 	)
 )
@@ -316,7 +348,7 @@
 	(properties
 		x 154
 		y 109
-		view 903
+		view pCredits
 		loop 10
 	)
 )
@@ -333,7 +365,7 @@
 	(properties
 		x 161
 		y 76
-		view 903
+		view pCredits
 		loop 11
 	)
 )

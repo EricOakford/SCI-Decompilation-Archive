@@ -13,13 +13,13 @@
 (class Warrior of SkilledActor
 	(properties
 		yStep 10
-		view 109
+		view vSwFight
 		heroTitle 0
 		egoHP 0
 		egoSP 0
 		egoMP 0
-		usingSword 0
-		noWeapon 0
+		usingSword FALSE
+		noWeapon FALSE
 		baseX 0
 		baseY 0
 	)
@@ -65,7 +65,7 @@
 			((ScriptID CLOSECOMBAT 1) dispose:)
 			((ScriptID CLOSECOMBAT 3) dispose:)
 			((ScriptID CLOSECOMBAT 4) dispose:)
-			(script setScript: (ScriptID 155 0))
+			(script setScript: (ScriptID PAINREACTION 0))
 		else
 			(self setEgoHP: health)
 		)
@@ -140,7 +140,10 @@
 		)
 		(cond 
 			((ego has: iSword)
-				(self view: 109 weapValue: SWORD_VALUE)
+				(self
+					view: vSwFight
+					weapValue: SWORD_VALUE
+				)
 			)
 			((ego has: iDagger)
 				(switch monsterNum
@@ -184,11 +187,19 @@
 						(+= baseY 10)
 					)
 				)
-				(self view: 102 weapValue: DAGGER_VALUE)
+				(self
+					view: vKnFight
+					weapValue: DAGGER_VALUE
+				)
 			)
 			(else
 				(= noWeapon TRUE)
-				(self view: 117 loop: 0 cel: 0 forceUpd:)
+				(self
+					view: vEgoUnarmed
+					loop: 0
+					cel: 0
+					forceUpd:
+				)
 			)
 		)
 		(self
@@ -202,17 +213,23 @@
 	
 	(method (setEgoHP newValue)
 		(= [egoStats HEALTH] newValue)
-		(if egoHP (egoHP value: newValue draw:))
+		(if egoHP
+			(egoHP value: newValue draw:)
+		)
 	)
 	
 	(method (setEgoMP newValue)
 		(= mana newValue)
-		(if egoMP (egoMP value: newValue draw:))
+		(if egoMP
+			(egoMP value: newValue draw:)
+		)
 	)
 	
 	(method (setEgoSP newValue)
 		(= [egoStats STAMINA] newValue)
-		(if egoSP (egoSP value: newValue draw:))
+		(if egoSP
+			(egoSP value: newValue draw:)
+		)
 	)
 )
 

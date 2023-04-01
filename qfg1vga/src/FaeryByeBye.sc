@@ -12,7 +12,7 @@
 
 (instance faery of Actor
 	(properties
-		view 70
+		view rFaeryRing
 	)
 )
 

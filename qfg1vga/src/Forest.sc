@@ -39,9 +39,9 @@
 		noun N_FOREST
 	)
 	
-	(method (init &tmp pic sound)
+	(method (init &tmp pic soundNum)
 		(super init: &rest)
-		(Load VIEW 510)
+		(Load VIEW vEgoThrowing)
 		(LoadMany SCRIPT GETROCK)
 		(if
 			(and
@@ -50,13 +50,19 @@
 			)
 			(= atClearing TRUE)
 		)
-		(= sound (if Night 32 else 25))
+		(= soundNum (if Night sForestNight else sForest))
 		(if
 			(or
 				(== (theMusic prevSignal?) -1)
-				(!= (theMusic number?) sound)
+				(!= (theMusic number?) soundNum)
 			)
-			(theMusic stop: number: sound loop: -1 priority: 0 play:)
+			(theMusic
+				stop:
+				number: soundNum
+				loop: -1
+				priority: 0
+				play:
+			)
 		)
 		(= initEgoX 0)
 		(= initEgoY 0)
@@ -90,33 +96,32 @@
 				(= southRoom 12)
 				(= eastRoom 13)
 				(= westRoom 11)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								319 0
-								319 103
-								204 103
-								162 80
-								165 26
-								145 25
-								126 82
-								0 80
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 118
-								123 169
-								210 168
-								319 135
-								319 189
-								0 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							319 0
+							319 103
+							204 103
+							162 80
+							165 26
+							145 25
+							126 82
+							0 80
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 118
+							123 169
+							210 168
+							319 135
+							319 189
+							0 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 17)
@@ -130,35 +135,34 @@
 				(= southRoom 18)
 				(= eastRoom 19)
 				(= westRoom 17)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								319 0
-								319 65
-								221 70
-								170 63
-								144 67
-								141 102
-								106 118
-								0 102
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 144
-								126 176
-								204 176
-								210 132
-								254 119
-								319 119
-								319 189
-								0 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							319 0
+							319 65
+							221 70
+							170 63
+							144 67
+							141 102
+							106 118
+							0 102
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 144
+							126 176
+							204 176
+							210 132
+							254 119
+							319 119
+							319 189
+							0 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 19)
@@ -184,34 +188,33 @@
 				(= southRoom 36)
 				(= eastRoom 25)
 				(= westRoom 24)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								319 0
-								319 189
-								203 189
-								208 128
-								234 83
-								166 66
-								153 39
-								128 39
-								149 89
-								121 117
-								0 109
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 145
-								89 158
-								140 189
-								0 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							319 0
+							319 189
+							203 189
+							208 128
+							234 83
+							166 66
+							153 39
+							128 39
+							149 89
+							121 117
+							0 109
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 145
+							89 158
+							140 189
+							0 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 26)
@@ -219,35 +222,34 @@
 				(= southRoom 42)
 				(= eastRoom 27)
 				(= westRoom 19)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								319 0
-								319 103
-								198 103
-								162 80
-								156 26
-								131 26
-								131 80
-								115 80
-								58 110
-								118 147
-								124 189
-								0 189
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								216 189
-								248 152
-								319 136
-								319 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							319 0
+							319 103
+							198 103
+							162 80
+							156 26
+							131 26
+							131 80
+							115 80
+							58 110
+							118 147
+							124 189
+							0 189
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							216 189
+							248 152
+							319 136
+							319 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 27)
@@ -255,35 +257,34 @@
 				(= southRoom 27)
 				(= eastRoom 28)
 				(= westRoom 26)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								319 0
-								319 65
-								221 70
-								170 63
-								144 67
-								141 102
-								106 118
-								0 102
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 144
-								126 176
-								204 176
-								210 132
-								254 119
-								319 119
-								319 189
-								0 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							319 0
+							319 65
+							221 70
+							170 63
+							144 67
+							141 102
+							106 118
+							0 102
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 144
+							126 176
+							204 176
+							210 132
+							254 119
+							319 119
+							319 189
+							0 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 33)
@@ -291,35 +292,34 @@
 				(= southRoom 45)
 				(= eastRoom 34)
 				(= westRoom 33)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								319 0
-								319 94
-								160 61
-								160 37
-								126 37
-								128 61
-								143 79
-								139 107
-								85 147
-								133 189
-								0 189
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								218 189
-								206 143
-								228 124
-								319 136
-								319 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							319 0
+							319 94
+							160 61
+							160 37
+							126 37
+							128 61
+							143 79
+							139 107
+							85 147
+							133 189
+							0 189
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							218 189
+							206 143
+							228 124
+							319 136
+							319 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 34)
@@ -339,34 +339,33 @@
 				(= southRoom 53)
 				(= eastRoom 36)
 				(= westRoom 35)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								139 27
-								128 99
-								0 103
-								0 0
-								319 0
-								319 189
-								197 189
-								200 140
-								221 114
-								163 71
-								161 27
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 138
-								98 146
-								119 167
-								121 189
-								0 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							139 27
+							128 99
+							0 103
+							0 0
+							319 0
+							319 189
+							197 189
+							200 140
+							221 114
+							163 71
+							161 27
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 138
+							98 146
+							119 167
+							121 189
+							0 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 42)
@@ -374,35 +373,34 @@
 				(= southRoom 56)
 				(= eastRoom 43)
 				(= westRoom 42)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								319 0
-								319 94
-								160 61
-								160 37
-								126 37
-								128 61
-								143 79
-								139 107
-								85 147
-								133 189
-								0 189
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								218 189
-								206 143
-								228 124
-								319 136
-								319 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							319 0
+							319 94
+							160 61
+							160 37
+							126 37
+							128 61
+							143 79
+							139 107
+							85 147
+							133 189
+							0 189
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							218 189
+							206 143
+							228 124
+							319 136
+							319 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 43)
@@ -428,35 +426,34 @@
 				(= southRoom 64)
 				(= eastRoom 53)
 				(= westRoom 51)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								319 0
-								319 67
-								169 67
-								154 36
-								132 36
-								145 95
-								104 120
-								0 101
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 148
-								132 172
-								238 172
-								199 159
-								197 147
-								319 110
-								319 189
-								0 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							319 0
+							319 67
+							169 67
+							154 36
+							132 36
+							145 95
+							104 120
+							0 101
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 148
+							132 172
+							238 172
+							199 159
+							197 147
+							319 110
+							319 189
+							0 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 56)
@@ -464,43 +461,42 @@
 				(= southRoom 66)
 				(= eastRoom 57)
 				(= westRoom 54)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								135 82
-								104 92
-								0 88
-								0 0
-								319 0
-								319 99
-								198 99
-								154 65
-								154 26
-								135 26
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								216 122
-								319 122
-								319 189
-								201 189
-								201 139
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 102
-								106 122
-								121 152
-								121 189
-								0 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							135 82
+							104 92
+							0 88
+							0 0
+							319 0
+							319 99
+							198 99
+							154 65
+							154 26
+							135 26
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							216 122
+							319 122
+							319 189
+							201 189
+							201 139
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 102
+							106 122
+							121 152
+							121 189
+							0 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 57)
@@ -520,41 +516,40 @@
 				(= southRoom 70)
 				(= eastRoom 63)
 				(= westRoom 61)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								319 0
-								319 71
-								178 72
-								146 34
-								127 34
-								145 89
-								123 114
-								45 114
-								0 91
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 141
-								140 173
-								140 189
-								0 189
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								208 137
-								319 111
-								319 189
-								208 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							319 0
+							319 71
+							178 72
+							146 34
+							127 34
+							145 89
+							123 114
+							45 114
+							0 91
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 141
+							140 173
+							140 189
+							0 189
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							208 137
+							319 111
+							319 189
+							208 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 63)
@@ -562,43 +557,42 @@
 				(= southRoom 71)
 				(= eastRoom 64)
 				(= westRoom 62)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								135 82
-								104 92
-								0 88
-								0 0
-								319 0
-								319 99
-								198 99
-								154 65
-								154 26
-								135 26
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								216 122
-								319 122
-								319 189
-								201 189
-								201 139
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 102
-								106 122
-								121 152
-								121 189
-								0 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							135 82
+							104 92
+							0 88
+							0 0
+							319 0
+							319 99
+							198 99
+							154 65
+							154 26
+							135 26
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							216 122
+							319 122
+							319 189
+							201 189
+							201 139
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 102
+							106 122
+							121 152
+							121 189
+							0 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 66)
@@ -627,44 +621,43 @@
 						yourself:
 					)
 				)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								319 0
-								319 86
-								216 86
-								180 64
-								180 27
-								186 16
-								157 16
-								136 76
-								100 85
-								0 85
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 127
-								72 127
-								129 158
-								129 189
-								0 189
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								189 189
-								189 152
-								220 127
-								319 127
-								319 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							319 0
+							319 86
+							216 86
+							180 64
+							180 27
+							186 16
+							157 16
+							136 76
+							100 85
+							0 85
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 127
+							72 127
+							129 158
+							129 189
+							0 189
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							189 189
+							189 152
+							220 127
+							319 127
+							319 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 67)
@@ -698,34 +691,33 @@
 						yourself:
 					)
 				)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								319 0
-								319 74
-								185 79
-								152 69
-								144 23
-								130 23
-								115 68
-								78 82
-								0 82
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 120
-								89 161
-								177 161
-								319 117
-								319 189
-								0 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							319 0
+							319 74
+							185 79
+							152 69
+							144 23
+							130 23
+							115 68
+							78 82
+							0 82
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 120
+							89 161
+							177 161
+							319 117
+							319 189
+							0 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 68)
@@ -754,25 +746,24 @@
 						yourself:
 					)
 				)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								319 0
-								319 189
-								200 189
-								0 189
-								0 124
-								141 124
-								184 167
-								218 148
-								197 122
-								217 81
-								0 81
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							319 0
+							319 189
+							200 189
+							0 189
+							0 124
+							141 124
+							184 167
+							218 148
+							197 122
+							217 81
+							0 81
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 69)
@@ -810,39 +801,38 @@
 				(= southRoom 77)
 				(= eastRoom 78)
 				(= westRoom 76)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								149 104
-								94 116
-								0 100
-								0 0
-								319 0
-								319 67
-								183 67
-								165 59
-								157 29
-								138 29
-								138 59
-								149 76
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 140
-								92 140
-								122 171
-								201 171
-								201 139
-								221 123
-								319 124
-								319 189
-								0 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							149 104
+							94 116
+							0 100
+							0 0
+							319 0
+							319 67
+							183 67
+							165 59
+							157 29
+							138 29
+							138 59
+							149 76
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 140
+							92 140
+							122 171
+							201 171
+							201 139
+							221 123
+							319 124
+							319 189
+							0 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 78)
@@ -856,35 +846,34 @@
 				(= southRoom 85)
 				(= eastRoom 80)
 				(= westRoom 78)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								319 0
-								319 67
-								169 67
-								154 36
-								132 36
-								145 95
-								104 120
-								0 101
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 148
-								132 172
-								238 172
-								199 159
-								197 147
-								319 110
-								319 189
-								0 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							319 0
+							319 67
+							169 67
+							154 36
+							132 36
+							145 95
+							104 120
+							0 101
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 148
+							132 172
+							238 172
+							199 159
+							197 147
+							319 110
+							319 189
+							0 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 80)
@@ -892,37 +881,36 @@
 				(= southRoom 80)
 				(= eastRoom 81)
 				(= westRoom 79)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								128 78
-								109 89
-								0 89
-								0 0
-								319 0
-								319 104
-								203 104
-								167 65
-								157 29
-								138 29
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 109
-								99 133
-								122 171
-								201 171
-								201 139
-								221 123
-								319 124
-								319 189
-								0 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							128 78
+							109 89
+							0 89
+							0 0
+							319 0
+							319 104
+							203 104
+							167 65
+							157 29
+							138 29
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 109
+							99 133
+							122 171
+							201 171
+							201 139
+							221 123
+							319 124
+							319 189
+							0 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 81)
@@ -936,32 +924,31 @@
 				(= southRoom 85)
 				(= eastRoom 86)
 				(= westRoom 84)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								93 101
-								0 85
-								0 0
-								319 0
-								319 99
-								190 101
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 122
-								106 122
-								121 166
-								203 166
-								202 132
-								319 132
-								319 189
-								0 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							93 101
+							0 85
+							0 0
+							319 0
+							319 99
+							190 101
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 122
+							106 122
+							121 166
+							203 166
+							202 132
+							319 132
+							319 189
+							0 189
+						yourself:
+					)
 				)
 			)
 			((== curRoomNum 86)
@@ -998,39 +985,38 @@
 					)
 				)
 				(if (and (!= curRoomNum 12) (!= curRoomNum 26))
-					(curRoom
-						addObstacle:
-							((Polygon new:)
-								type: PBarredAccess
-								init:
-									0 0
-									319 0
-									319 105
-									208 105
-									156 69
-									160 27
-									137 27
-									123 88
-									0 92
-								yourself:
-							)
-							((Polygon new:)
-								type: PBarredAccess
-								init:
-									0 115
-									109 150
-									130 189
-									0 189
-								yourself:
-							)
-							((Polygon new:)
-								type: PBarredAccess
-								init:
-									213 189
-									319 136
-									319 189
-								yourself:
-							)
+					(curRoom addObstacle:
+						((Polygon new:)
+							type: PBarredAccess
+							init:
+								0 0
+								319 0
+								319 105
+								208 105
+								156 69
+								160 27
+								137 27
+								123 88
+								0 92
+							yourself:
+						)
+						((Polygon new:)
+							type: PBarredAccess
+							init:
+								0 115
+								109 150
+								130 189
+								0 189
+							yourself:
+						)
+						((Polygon new:)
+							type: PBarredAccess
+							init:
+								213 189
+								319 136
+								319 189
+							yourself:
+						)
 					)
 				)
 			)
@@ -1075,39 +1061,38 @@
 				)
 			)
 			((OneOf curRoomNum 17 35 51 57 71 81)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								319 0
-								319 96
-								178 68
-								152 42
-								125 42
-								148 89
-								123 116
-								0 83
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 140
-								114 168
-								133 189
-								0 189
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								221 189
-								319 145
-								319 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							319 0
+							319 96
+							178 68
+							152 42
+							125 42
+							148 89
+							123 116
+							0 83
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 140
+							114 168
+							133 189
+							0 189
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							221 189
+							319 145
+							319 189
+						yourself:
+					)
 				)
 				(= floorPoly
 					((Polygon new:)
@@ -1127,23 +1112,22 @@
 				)
 			)
 			((OneOf curRoomNum 11 23 44)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								177 95
-								131 113
-								127 128
-								35 154
-								19 189
-								0 189
-								0 0
-								319 0
-								319 75
-								248 81
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							177 95
+							131 113
+							127 128
+							35 154
+							19 189
+							0 189
+							0 0
+							319 0
+							319 75
+							248 81
+						yourself:
+					)
 				)
 				(= floorPoly
 					((Polygon new:)
@@ -1166,29 +1150,28 @@
 				)
 			)
 			((OneOf curRoomNum 19 43 86)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								319 0
-								319 189
-								196 189
-								223 147
-								176 109
-								82 82
-								0 75
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 118
-								128 189
-								0 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							319 0
+							319 189
+							196 189
+							223 147
+							176 109
+							82 82
+							0 75
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 118
+							128 189
+							0 189
+						yourself:
+					)
 				)
 				(= floorPoly
 					((Polygon new:)
@@ -1207,31 +1190,30 @@
 				)
 			)
 			((== curRoomNum 69)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								108 6
-								103 60
-								86 82
-								85 97
-								70 117
-								129 132
-								207 147
-								319 147
-								319 189
-								0 189
-								0 95
-								0 0
-								319 0
-								319 67
-								271 67
-								178 51
-								176 23
-								164 6
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							108 6
+							103 60
+							86 82
+							85 97
+							70 117
+							129 132
+							207 147
+							319 147
+							319 189
+							0 189
+							0 95
+							0 0
+							319 0
+							319 67
+							271 67
+							178 51
+							176 23
+							164 6
+						yourself:
+					)
 				)
 				(= floorPoly
 					((Polygon new:)
@@ -1252,31 +1234,30 @@
 				)
 			)
 			((OneOf curRoomNum 75 92)
-				(curRoom
-					addObstacle:
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 0
-								165 0
-								140 52
-								0 79
-							yourself:
-						)
-						((Polygon new:)
-							type: PBarredAccess
-							init:
-								0 114
-								83 114
-								131 137
-								244 116
-								211 52
-								211 0
-								319 0
-								319 189
-								0 189
-							yourself:
-						)
+				(curRoom addObstacle:
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 0
+							165 0
+							140 52
+							0 79
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							0 114
+							83 114
+							131 137
+							244 116
+							211 52
+							211 0
+							319 0
+							319 189
+							0 189
+						yourself:
+					)
 				)
 				(= floorPoly
 					((Polygon new:)
@@ -1302,8 +1283,14 @@
 			)
 		)
 		(forestFloor init:)
-		(forestTrees init:)
-		(forestRocks init:)
+		(forestTrees
+			init:
+;;;			setOnMeCheck: ftrControl cBROWN
+		)
+		(forestRocks
+			init:
+;;;			setOnMeCheck: ftrControl cLGREY
+		)
 		(ego setScript: walkIn)
 	)
 	
@@ -1313,7 +1300,7 @@
 			(cond 
 				(
 					(and
-						(== walkInDone 0)
+						(== walkInDone FALSE)
 						(or
 							(and
 								(== curRoomNum 77)
@@ -1738,6 +1725,8 @@
 		(mouseDownHandler add: self)
 		(keyDownHandler add: self)
 		(super init: ftrInitializer)
+		;UPGRADE
+		;(curRoom setOnMeCheck: ftrPolygon floorPoly)
 		(= onMeCheck floorPoly)
 	)
 	
@@ -1876,7 +1865,7 @@
 				)
 ;				Commented out functionally identical case value
 ;				(V_ALTTALK
-;					(messager say: 3 2 0 1 0 FOREST)
+;					(messager say: N_ROCKS V_TALK NULL 1 0 FOREST)
 ;					(return TRUE)
 ;				)
 				(V_SWORD
@@ -2178,7 +2167,9 @@
 			(4
 				(ego setMotion: PolyPath 160 150 self)
 			)
-			(5 (self dispose:))
+			(5
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -2199,8 +2190,8 @@
 				(= initEgoY 0)
 				(= toX 0)
 				(= toY 0)
-				(if (and Night (== nextRoom 70))
-					(= nextRoom 170)
+				(if (and Night (== nextRoom rFaeryRing))
+					(= nextRoom rFaeryRingNight)
 				)
 				(curRoom newRoom: nextRoom)
 				(self dispose:)

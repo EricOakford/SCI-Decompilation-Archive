@@ -43,7 +43,7 @@
 		)
 		(= hitDaggers 0)
 	)
-	(for ((= index 0)) (< index NUM_INVITEMS) ((++ index))
+	(for ((= index 0)) (< index iLastInvItem) ((++ index))
 		((inventory at: index) amtDropped: 0)
 	)
 	((ScriptID GLORYINV 2) release: init:)

@@ -21,11 +21,16 @@
 			(and
 				(not Night)
 				(or
-					(!= (theMusic number?) 93)
+					(!= (theMusic number?) sTown)
 					(== (theMusic prevSignal?) -1)
 				)
 			)
-			(theMusic priority: 0 number: 93 loop: -1 play:)
+			(theMusic
+				priority: 0
+				number: sTown
+				loop: -1
+				play:
+			)
 		)
 		(super init: &rest)
 	)
@@ -40,7 +45,7 @@
 					((!= (ego onControl: origin) cBLACK)
 						(messager say: N_STREET V_SLEEP C_CANT_SLEEP_THERE 1 0 STREET)
 					)
-					((== curRoomNum 334)
+					((== curRoomNum rAlleyNight)
 						(ego setScript: (ScriptID SLEEPALLNIGHT 0) self)
 					)
 					(else
@@ -90,13 +95,15 @@
 			(1
 				(theGame setCursor: waitCursor TRUE)
 				(switch curRoomNum
-					(320
+					(rMarketStreet
 						(ego setMotion: PolyPath 159 168 self)
 					)
-					(330
+					(rTavernStreet
 						(ego setMotion: PolyPath 159 168 self)
 					)
-					(else  (= ticks 20))
+					(else
+						(= ticks 20)
+					)
 				)
 			)
 			(2

@@ -112,7 +112,10 @@
 		)
 		;UPGRADE
 ;;;		(onDesk init:)
-;;;		(onSafe init:)
+;;;		(onSafe
+;;;			init:
+;;;			setOnMeCheck: ftrControl cCYAN
+;;;		)
 ;;;		(onPlant init:)
 ;;;		(onChair init:)
 ;;;		(gryphonHead init:)
@@ -123,7 +126,7 @@
 		(sneakMusic init:)
 		(tumbleMusic init:)
 		(miscMusic init:)
-		(= deathMusic (SoundFX 52))
+		(= deathMusic (SoundFX sDeathBusted))
 		(if (Btst fCrackedSafe)
 			(= safeOpen TRUE)
 		)
@@ -214,7 +217,7 @@
 		(Bset fBeenIn321)
 		(DisposeScript DPATH)
 		(DisposeScript MOVECYC)
-		(= deathMusic (SoundFX 26))
+		(= deathMusic (SoundFX sDeath))
 		(super dispose:)
 	)
 	

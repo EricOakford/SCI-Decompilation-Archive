@@ -9,7 +9,7 @@
 (define V_WALK 3)
 (define V_DO 4)
 (define V_MONEY 10)
-(define V_CONVERSATION 5)
+(define V_TELL 5)
 (define V_DUMMY6 6)
 (define V_DUMMY7 7)
 (define V_DUMMY8 8)

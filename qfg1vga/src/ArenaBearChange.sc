@@ -18,21 +18,21 @@
 )
 
 (local
-	local0
+	local0	;unused
 	dripX = [28 63 83 102 235 295 195 39 251]
 	dripY = [93 85 79 79 86 99 98 103 90]
 )
 (instance rmBear of Room
 	(properties
 		noun N_ROOM
-		picture 425
+		picture pBearToBarnard
 	)
 	
 	(method (init)
 		(theGame setCursor: INVIS_CURSOR)
 		(theIconBar disable:)
-		(Load PICTURE 400)
-		(LoadMany VIEW 422 421)
+		(Load PICTURE pBlack)
+		(LoadMany VIEW vBearFight vBearDefeated)
 		(StatusLine enable:)
 		(super init:)
 		(HandsOff)
@@ -122,7 +122,7 @@
 	(properties
 		x 97
 		y 136
-		view 117
+		view vEgoUnarmed
 		cycleSpeed 12
 	)
 )
@@ -168,11 +168,11 @@
 				(self cue:)
 			)
 			(1
-				(curRoom drawPic: 14 WIPERIGHT)
+				(curRoom drawPic: rBearCave WIPERIGHT)
 				(NormalEgo)
 				(ego init: posn: 107 150)
 				(baronet
-					view: 421
+					view: vBearDefeated
 					x: 173
 					y: 135
 					setPri: 5
@@ -223,11 +223,11 @@
 				(self cue:)
 			)
 			(1
-				(curRoom drawPic: 14 WIPERIGHT)
+				(curRoom drawPic: rBearCave WIPERIGHT)
 				(NormalEgo)
 				(ego init: posn: 107 150)
 				(baronet
-					view: 421
+					view: vBearDefeated
 					setPri: 5
 					setLoop: 1
 					cel: 0
@@ -284,7 +284,7 @@
 	(properties
 		x 10
 		y 10
-		view 1317
+		view vBarnard14Talker
 		talkWidth 260
 		textX 15
 		textY 110
@@ -298,7 +298,7 @@
 
 (instance bernieBust of Prop
 	(properties
-		view 1317
+		view vBarnard14Talker
 	)
 )
 
@@ -306,7 +306,7 @@
 	(properties
 		nsTop 33
 		nsLeft 47
-		view 1317
+		view vBarnard14Talker
 		loop 2
 	)
 )
@@ -315,7 +315,7 @@
 	(properties
 		nsTop 53
 		nsLeft 46
-		view 1317
+		view vBarnard14Talker
 		loop 1
 	)
 )

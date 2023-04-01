@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 141)
+(script# rCastleAnteroom)
 (include game.sh) (include "141.shm")
 (use Main)
 (use Teller)
@@ -82,7 +82,7 @@
 (instance rm141 of Room
 	(properties
 		noun N_ROOM
-		picture 141
+		picture rCastleAnteroom
 		style DISSOLVE
 	)
 	
@@ -94,37 +94,36 @@
 		(= [baronTellTree 4] @baronTell4)
 		(= [baronTellTree 5] ENDTELL)
 		(= [barnardTellTree 0] @barnardTellMainBranch)
-		(Load VIEW 141)
-		(curRoom
-			addObstacle:
-				((Polygon new:)
-					type: PBarredAccess
-					init:
-						272 189
-						0 189
-						0 0
-						319 0
-						319 166
-						312 166
-						303 159
-						300 147
-						290 140
-						280 139
-						265 141
-						259 150
-						253 156
-						242 158
-						232 156
-						226 149
-						225 142
-						222 145
-						214 146
-						93 125
-						10 154
-						137 188
-						272 188
-					yourself:
-				)
+		(Load VIEW rCastleAnteroom)
+		(curRoom addObstacle:
+			((Polygon new:)
+				type: PBarredAccess
+				init:
+					272 189
+					0 189
+					0 0
+					319 0
+					319 166
+					312 166
+					303 159
+					300 147
+					290 140
+					280 139
+					265 141
+					259 150
+					253 156
+					242 158
+					232 156
+					226 149
+					225 142
+					222 145
+					214 146
+					93 125
+					10 154
+					137 188
+					272 188
+				yourself:
+			)
 		)
 		(super init:)
 		(= savSortedFeatures useSortedFeatures)
@@ -135,20 +134,19 @@
 		(StatusLine enable:)
 		(guard1 addToPic:)
 		(guard2 addToPic:)
-		(self
-			setFeatures:
-				tapestry
-				alcove
-				crest
-				pillars
-				stainedGlass
-				couch
-				vase
-				brasier
-				piglet
-				wine
-				table
-				throne
+		(self setFeatures:
+			tapestry
+			alcove
+			crest
+			pillars
+			stainedGlass
+			couch
+			vase
+			brasier
+			piglet
+			wine
+			table
+			throne
 		)
 		;UPGRADE
 ;;;		(tapestry
@@ -298,7 +296,7 @@
 		x 51
 		y 130
 		noun N_BARON
-		view 141
+		view rCastleAnteroom
 		loop 2
 		illegalBits $0000
 	)
@@ -342,7 +340,7 @@
 		x 91
 		y 122
 		noun N_BARNARD
-		view 141
+		view rCastleAnteroom
 		loop 4
 		illegalBits $0000
 	)
@@ -642,7 +640,7 @@
 		x 296
 		y 151
 		noun N_GUARD
-		view 141
+		view rCastleAnteroom
 		loop 6
 		cel 1
 	)
@@ -657,7 +655,7 @@
 		x 20
 		y 141
 		noun N_GUARD
-		view 141
+		view rCastleAnteroom
 		loop 1
 		priority 3
 	)
@@ -685,7 +683,7 @@
 		x 136
 		y 118
 		noun N_GUARD
-		view 141
+		view rCastleAnteroom
 		loop 1
 		cel 1
 		priority 3
@@ -700,7 +698,11 @@
 				(= ticks 10)
 			)
 			(1
-				(ego init: posn: 299 184 setMotion: MoveTo 155 162 self)
+				(ego
+					init:
+					posn: 299 184
+					setMotion: MoveTo 155 162 self
+				)
 			)
 			(2
 				(Face ego baron)
@@ -709,7 +711,7 @@
 			)
 			(3
 				(ego
-					view: 508
+					view: vBowToBaron
 					loop: 0
 					cel: 0
 					cycleSpeed: 12
@@ -718,7 +720,7 @@
 				)
 			)
 			(4
-				(NormalEgo 7 4)
+				(NormalEgo facingNW vEgoStand)
 				(theGame setCursor: waitCursor)
 				(ego cycleSpeed: savCycleSpeed)
 				(= seconds 2)
@@ -734,7 +736,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Load VIEW 1141)
+				(Load VIEW vBaronTalker)
 				(baron setCycle: CycleTo 7 1 self)
 			)
 			(1
@@ -745,7 +747,7 @@
 				(messager say: N_BARON NULL C_MEETBARON 0 self)
 			)
 			(3
-				(Load VIEW 1317)
+				(Load VIEW vBarnard14Talker)
 				(son setCycle: EndLoop self)
 			)
 			(4
@@ -756,7 +758,7 @@
 				(messager say: N_BARNARD NULL C_MEETBARON 0 self)
 			)
 			(6
-				(Load VIEW 1141)
+				(Load VIEW vBaronTalker)
 				(= seconds 2)
 			)
 			(7
@@ -780,7 +782,7 @@
 				(messager say: N_BARON NULL C_MEETBARON 4 self)
 			)
 			(11
-				(Load VIEW 1317)
+				(Load VIEW vBarnard14Talker)
 				(= ticks 120)
 			)
 			(12
@@ -797,7 +799,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Load VIEW 1141)
+				(Load VIEW vBaronTalker)
 				(= seconds 2)
 			)
 			(1
@@ -810,14 +812,14 @@
 				(messager say: N_BARON NULL C_MEETBARON 4 self)
 			)
 			(4
-				(Load VIEW 1317)
+				(Load VIEW vBarnard14Talker)
 				(= ticks 120)
 			)
 			(5
 				(messager say: N_BARNARD NULL C_KEEPITUP 1 self)
 			)
 			(6
-				(Load VIEW 1141)
+				(Load VIEW vBaronTalker)
 				(= seconds 1)
 			)
 			(7
@@ -876,7 +878,7 @@
 				(= ticks 24)
 			)
 			(1
-				(NormalEgo loopW 4)
+				(NormalEgo facingWest vEgoStand)
 				(= ticks 12)
 			)
 			(2
@@ -913,7 +915,7 @@
 				)
 			)
 			(8
-				(curRoom newRoom: 41)
+				(curRoom newRoom: rCastleDoors)
 			)
 		)
 	)
@@ -954,7 +956,7 @@
 	(properties
 		x 10
 		y 10
-		view 1141
+		view vBaronTalker
 		talkWidth 260
 		textX 15
 		textY 110
@@ -963,7 +965,7 @@
 	(method (init)
 		(= nightPalette 2141)
 		(PalVary PALVARYTARGET 2141)
-		(AssertPalette 1141)
+		(AssertPalette vBaronTalker)
 		(= font userFont)
 		(super init: baronBust baronEye baronMouth &rest)
 	)
@@ -971,7 +973,7 @@
 
 (instance baronBust of Prop
 	(properties
-		view 1141
+		view vBaronTalker
 	)
 )
 
@@ -979,7 +981,7 @@
 	(properties
 		nsTop 44
 		nsLeft 42
-		view 1141
+		view vBaronTalker
 		loop 1
 	)
 )
@@ -988,7 +990,7 @@
 	(properties
 		nsTop 26
 		nsLeft 46
-		view 1141
+		view vBaronTalker
 		loop 3
 	)
 )
@@ -997,7 +999,7 @@
 	(properties
 		x 10
 		y 10
-		view 1014
+		view vBarnardTalker
 		talkWidth 260
 		textX 15
 		textY 110
@@ -1006,7 +1008,7 @@
 	(method (init)
 		(= nightPalette 2014)
 		(PalVary PALVARYTARGET 2014)
-		(AssertPalette 1014)
+		(AssertPalette vBarnardTalker)
 		(= font userFont)
 		(super init: bernieBust bernieEye bernieMouth &rest)
 	)
@@ -1014,7 +1016,7 @@
 
 (instance bernieBust of Prop
 	(properties
-		view 1014
+		view vBarnardTalker
 	)
 )
 
@@ -1022,7 +1024,7 @@
 	(properties
 		nsTop 33
 		nsLeft 45
-		view 1014
+		view vBarnardTalker
 		loop 2
 	)
 )
@@ -1031,7 +1033,7 @@
 	(properties
 		nsTop 53
 		nsLeft 45
-		view 1014
+		view vBarnardTalker
 		loop 1
 	)
 )

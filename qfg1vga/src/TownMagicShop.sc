@@ -304,7 +304,10 @@
 ;;;		(onCrystalBall init:)
 ;;;		(onMagicBall init:)
 ;;;		(onBalanceScale init:)
-;;;		(onFloor init:)
+;;;		(onFloor
+;;;			init:
+;;;			setOnMeCheck: ftrControl cBLUE
+;;;		)
 ;;;		(onPentagon init:)
 ;;;		(onBrownJar init:)
 ;;;		(onGreenJar init:)

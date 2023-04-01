@@ -148,7 +148,7 @@
 		)
 		(if (and Night (or (== timeODay TIME_MIDNIGHT) (== timeODay TIME_NOTYETDAWN)))
 			(Load RES_SCRIPT REVERSE)
-			(= deathMusic 37)
+			(= deathMusic sDeathGhost)
 			(riser init: cycleSpeed: 24 setCycle: Forward)
 			(longOne
 				cycleSpeed: 18
@@ -278,7 +278,7 @@
 			((and Night (== local12 0))
 				(= local12 1)
 				(Load RES_SCRIPT REVERSE)
-				(= deathMusic 37)
+				(= deathMusic sDeathGhost)
 				(longOne
 					cycleSpeed: 18
 					setLoop: 0
@@ -328,10 +328,10 @@
 	
 	(method (dispose)
 		(= nightPalette 0)
-		(= deathMusic (SoundFX 26))	;this fix ensures that the death music always changes back
+		(= deathMusic (SoundFX sDeath))	;this fix ensures that the death music always changes back
 									; when exiting
 		(if Night
-			;(= deathMusic (SoundFX 26))
+			;(= deathMusic (SoundFX sDeath))
 			(riser setMotion: 0 setCycle: 0 setScript: 0)
 			(twister setMotion: 0 setCycle: 0 setScript: 0)
 			(tumbler setMotion: 0 setCycle: 0 setScript: 0)

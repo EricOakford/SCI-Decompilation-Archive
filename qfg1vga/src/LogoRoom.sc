@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 603)
+(script# LOGOROOM)
 (include game.sh)
 (use Main)
 (use Sound)
@@ -17,7 +17,7 @@
 )
 (instance LogoRoom of Room
 	(properties
-		picture 1
+		picture pHalfDome
 		style FADEOUT
 	)
 	
@@ -64,7 +64,7 @@
 	(properties
 		x 134
 		y 34
-		view 988
+		view vHalfSparkle
 		cycleSpeed 2
 	)
 )
@@ -73,7 +73,7 @@
 	(properties
 		x 60
 		y 155
-		view 988
+		view vHalfSparkle
 		loop 1
 		cycleSpeed 2
 	)
@@ -81,7 +81,7 @@
 
 (instance logoSound of Sound
 	(properties
-		number 100
+		number pHalfDome
 	)
 )
 
@@ -93,7 +93,7 @@
 			)
 			(1
 				(logoSound
-					number: 100
+					number: pHalfDome
 					loop: 1
 					flags: 0
 					play: self

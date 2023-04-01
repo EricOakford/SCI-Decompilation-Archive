@@ -15,15 +15,18 @@
 
 (instance rmBrig of Room
 	(properties
-		picture 402
+		picture pLeaderToElsa
 		style IRISOUT
 	)
 	
 	(method (init)
-		(Load VIEW 473)
+		(Load VIEW vBrigandLeaderFight)
 		(Load SOUND 70)
 		(super init:)
-		(leader init: setScript: leaderToElsa)
+		(leader
+			init:
+			setScript: leaderToElsa
+		)
 	)
 	
 	(method (dispose)
@@ -36,7 +39,7 @@
 	(properties
 		x 139
 		y 135
-		view 473
+		view vBrigandLeaderFight
 		cycleSpeed 9
 	)
 	

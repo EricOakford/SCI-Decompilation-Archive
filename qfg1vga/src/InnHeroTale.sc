@@ -671,7 +671,7 @@
 			(switch theVerb
 				(V_TALK
 					(if (not talkedToShameen)
-						(messager say: N_SHAMEEN V_CONVERSATION C_FOOD)
+						(messager say: N_SHAMEEN V_TELL C_FOOD)
 						(++ talkedToShameen)
 					else
 						(SolvePuzzle f301TalkToShameen 1)

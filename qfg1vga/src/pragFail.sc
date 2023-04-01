@@ -19,14 +19,14 @@
 )
 
 (instance pragFail of Code
-	(method (doit &tmp theVerb [temp1 52])
+	(method (doit &tmp theVerb [str 52])
 		(= theVerb ((user curEvent?) message?))
 		(if (User input?)
 			(if modelessDialog
 				(modelessDialog dispose:)
 			)
 			(if (OneOf theVerb V_LOOK V_TALK V_DO V_MONEY V_SWORD V_LOCKPICK V_BRASSKEY V_CANDELABRA)
-				(messager say: N_PRAGFAIL theVerb NULL 0 0 121)
+				(messager say: N_PRAGFAIL theVerb NULL 0 0 PRAGFAIL)
 				(return TRUE)
 			else
 				(switch theVerb
@@ -60,7 +60,7 @@
 						(DumpPotion iFlyingWater)
 					)
 					(else 
-						(messager say: N_PRAGFAIL NULL NULL 2 0 121)
+						(messager say: N_PRAGFAIL NULL NULL 2 0 PRAGFAIL)
 						(return TRUE)
 					)
 				)

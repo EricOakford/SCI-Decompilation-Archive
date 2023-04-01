@@ -19,7 +19,7 @@
 
 (class QG1SpellItem of InvItem
 	(properties
-		view 992
+		view vSpellIcons
 		signal (| HIDEBAR RELVERIFY IMMEDIATE)
 		modNum SPELLS
 		amount 0
@@ -180,9 +180,12 @@
 							10 13 15 16 29 30 31 41 65 67 73
 							76 82 83 84 91 93 94 96 97 141
 							;EO: additional rooms to restore messages
-							64
+							rGraveyard
 						)
-						((= evt (Event new:)) type: mouseDown message: V_OPEN)
+						((= evt (Event new:))
+							type: mouseDown
+							message: V_OPEN
+						)
 						(if (not (mouseDownHandler handleEvent: evt))
 							(regions handleEvent: evt)
 						)
@@ -222,9 +225,12 @@
 							10 13 14 15 22 29 30 31 55 58 65 67 73
 							76 77 78 82 83 84 91 93 94 96 97 141
 							;EO: additional rooms to restore messages
-							64
+							rGraveyard
 						)
-						((= evt (Event new:)) type: mouseDown message: V_DETECT)
+						((= evt (Event new:))
+							type: mouseDown
+							message: V_DETECT
+						)
 						(if (not (mouseDownHandler handleEvent: evt))
 							(regions handleEvent: evt)
 						)
@@ -264,9 +270,12 @@
 							13 58 15 29 30 31 65 73
 							82 83 91 96 97 141
 							;EO: additional rooms to restore messages
-							64
+							rGraveyard
 						)
-						((= evt (Event new:)) type: mouseDown message: V_TRIGGER)
+						((= evt (Event new:))
+							type: mouseDown
+							message: V_TRIGGER
+						)
 						(if (not (mouseDownHandler handleEvent: evt))
 							(regions handleEvent: evt)
 						)
@@ -310,9 +319,12 @@
 							61 62 63 69 71 72 74 75 79 80 81 85
 							86 92
 							;EO: additional rooms to restore messages
-							64
+							rGraveyard
 						)
-						((= evt (Event new:)) type: mouseDown message: V_DAZZLE)
+						((= evt (Event new:))
+							type: mouseDown
+							message: V_DAZZLE
+						)
 						(if (not (mouseDownHandler handleEvent: evt))
 							(regions handleEvent: evt)
 						)
@@ -352,14 +364,19 @@
 							51 52 56 57 61 62 63 69 71 72 74 75 79 80
 							81 85 86 92
 						)
-						((= evt (Event new:)) type: mouseDown message: V_ZAP)
+						((= evt (Event new:))
+							type: mouseDown
+							message: V_ZAP
+						)
 						(if (not (mouseDownHandler handleEvent: evt))
 							(regions handleEvent: evt)
 						)
 						(evt dispose:)
 						(return TRUE)
 					)
-					(else (VerbSpell V_ZAP))
+					(else
+						(VerbSpell V_ZAP)
+					)
 				)
 			else
 				(super doVerb: theVerb)
@@ -390,9 +407,12 @@
 							26 27 33 34 35 36 42 43 44 51 52 56 57
 							61 62 63 69 71 72 74 75 79 80 81 85 86 92
 							;EO: additional rooms to restore messages
-							64
+							rGraveyard
 						)
-						((= evt (Event new:)) type: mouseDown message: V_CALM)
+						((= evt (Event new:))
+							type: mouseDown
+							message: V_CALM
+						)
 						(if (not (mouseDownHandler handleEvent: evt))
 							(regions handleEvent: evt)
 						)
@@ -413,7 +433,7 @@
 (instance flameDartSpell of QG1SpellItem
 	(properties
 		loop 6
-		cursor 948
+		cursor vCastCursor
 		noun N_FLAMEDART
 	)
 	
@@ -426,7 +446,10 @@
 				)
 				((not (CastSpell FLAMEDART)))
 				(else
-					((theIconBar at: ICON_CAST) message: V_FLAME cursor: 948)
+					((theIconBar at: ICON_CAST)
+						message: V_FLAME
+						cursor: vCastCursor
+					)
 					(theIconBar curIcon: (theIconBar at: ICON_CAST))
 				)
 			)
@@ -455,9 +478,12 @@
 						(OneOf curRoomNum
 							13 15 16 29 30 31 54 65 73 91 96 97 141
 							;EO: additional rooms to restore messages
-							64
+							rGraveyard
 						)
-						((= evt (Event new:)) type: mouseDown message: V_FETCH)
+						((= evt (Event new:))
+							type: mouseDown
+							message: V_FETCH
+						)
 						(if (not (mouseDownHandler handleEvent: evt))
 							(regions handleEvent: evt)
 						)
@@ -477,10 +503,10 @@
 
 (instance invLook of IconItem
 	(properties
-		view 991
+		view vInvIcons
 		loop 2
 		cel 0
-		cursor 941
+		cursor vLookCursor
 		message V_LOOK
 		signal (| FIXED_POSN RELVERIFY)
 		noun N_LOOK
@@ -491,10 +517,10 @@
 
 (instance invSelect of IconItem
 	(properties
-		view 991
+		view vInvIcons
 		loop 0
 		cel 0
-		cursor 942
+		cursor vDoCursor
 		noun N_SELECT
 		modNum SPELLS
 		helpVerb V_HELP
@@ -503,10 +529,10 @@
 
 (instance invHelp of IconItem
 	(properties
-		view 991
+		view vInvIcons
 		loop 1
 		cel 0
-		cursor 949
+		cursor vHelpCursor
 		message V_HELP
 		noun N_HELP
 		modNum SPELLS
@@ -515,13 +541,17 @@
 	
 	(method (show)
 		(super show:)
-		(DrawCel 991 7 0 (+ nsLeft (CelWide view loop cel)) nsTop -1)
+		(DrawCel vInvIcons 7 0
+			(+ nsLeft (CelWide view loop cel))
+			nsTop
+			-1
+		)
 	)
 )
 
 (instance ok of IconItem
 	(properties
-		view 991
+		view vInvIcons
 		loop 3
 		cel 0
 		cursor ARROW_CURSOR

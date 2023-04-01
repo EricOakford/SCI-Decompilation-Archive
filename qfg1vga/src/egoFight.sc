@@ -324,7 +324,7 @@
 	(properties
 		x 303
 		y 185
-		view 945
+		view vCombatIcons
 		loop 2
 		value 1000
 	)

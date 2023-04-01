@@ -859,8 +859,8 @@
 	)
 	
 	(method (init &tmp temp0 temp1 temp2 temp3 temp4)
-		(LoadMany 130 238 205 810)
-		(LoadMany 128 32 33 803)
+		(LoadMany SCRIPT MAZEBUG STATUSBAR KEYCURSOR)
+		(LoadMany VIEW 32 33 vStatusBar)
 		Cat
 		ForwardCounter
 		(super init:)

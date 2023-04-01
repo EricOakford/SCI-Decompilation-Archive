@@ -227,7 +227,10 @@
 		)
 		;UPGRADE
 ;;;		(onWindow init:)
-;;;		(onFloor init:)
+;;;		(onFloor
+;;;			init:
+;;;			setOnMeCheck: ftrControl cGREEN
+;;;		)
 ;;;		(onTableBottom init:)
 ;;;		(onRtTableTop init:)
 ;;;		(onLtTable init:)

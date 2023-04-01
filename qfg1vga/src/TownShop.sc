@@ -652,7 +652,7 @@
 				(V_TALK
 					(if (not nearCounter)
 						(messager say: N_SHOPKEEPER V_TALK C_CANTHEARYOU)
-						;Originally mapped to LOOK verb by mistake. Changed to TALK Verb.
+						;Originally mapped to LOOK verb by mistake. Changed to TALK verb.
 					else
 						(= talkRet 1)
 						(SolvePuzzle f322TalkToKaspar 1)

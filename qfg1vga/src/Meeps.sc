@@ -870,7 +870,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(messager say: N_MEEP V_CONVERSATION C_APPLES)
+				(messager say: N_MEEP V_TELL C_APPLES)
 			)
 			(V_DAGGER
 				(messager say: N_ROOM NULL C_NONEEDTO)
@@ -1813,7 +1813,11 @@
 				(bossRock setMotion: MoveTo 183 189 self)
 			)
 			(12
-				(meepSound loop: 1 number: 58 play:)
+				(meepSound
+					loop: 1
+					number: sMeepRock
+					play:
+				)
 				(bossRock setCycle: 0 setCel: 0 posn: 181 200)
 				(bossMeep setLoop: 2 setCel: 1 setCycle: CycleTo 4 1 self)
 			)
