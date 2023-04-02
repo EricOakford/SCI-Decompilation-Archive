@@ -316,9 +316,9 @@
 	)
 	
 	(method (init)
-		(= nightPalette 1450)
-		(PalVary PALVARYTARGET 1450)
-		(AssertPalette 450)
+		(= nightPalette (+ vTroll 1000))
+		(PalVary PALVARYTARGET (+ vTroll 1000))
+		(AssertPalette vTroll)
 		(super init:)
 	)
 	

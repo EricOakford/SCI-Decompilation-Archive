@@ -19,11 +19,11 @@
 (local
 	local0
 	local1
-	[monsterCel 5] = [0 1 5 6 7]
+	monsterCel = [0 1 5 6 7]
 )
 (instance dragonArena of Arena
 	(properties
-		picture 430
+		picture pForestArena
 	)
 	
 	(method (init &tmp [temp0 9])
@@ -31,28 +31,39 @@
 		(= monsterNum vDragon)
 		(super init: &rest)
 		(monster drawStatus:)
-		(Load VIEW 462)
+		(Load VIEW vDragonFight)
 		(dragonTail init:)
-		(if (== howFast 0)
+		(if (== howFast slow)
 			(dragonTail addToPic:)
 		else
 			(dragonTail setScript: drTailScript)
 		)
-		(dragMusic number: (SoundFX 2) loop: -1 play:)
-		(monster init: setScript: dragonScript)
+		(dragMusic
+			number: (SoundFX sHardBattle)
+			loop: -1
+			play:
+		)
+		(monster
+			init:
+			setScript: dragonScript
+		)
 	)
 	
 	(method (dispose)
 		(= nightPalette 0)
 		(dragMusic stop:)
-		(theMusic2 number: (SoundFX 38) loop: 1 play:)
+		(theMusic2
+			number: (SoundFX sHardBattleEnd)
+			loop: 1
+			play:
+		)
 		(super dispose:)
 	)
 )
 
 (instance dragMusic of Sound
 	(properties
-		number 2
+		number sHardBattle
 		priority 2
 		loop -1
 	)
@@ -62,7 +73,7 @@
 	(properties
 		x 168
 		y 141
-		view 462
+		view vDragonFight
 		priority 10
 		strength 80
 		intell 40
@@ -78,13 +89,13 @@
 		warriorY 158
 		flameX 159
 		flameY 88
-		lowBlow 1
+		lowBlow TRUE
 	)
 	
 	(method (init)
-		(= nightPalette 1462)
-		(PalVary PALVARYTARGET 1462)
-		(AssertPalette 462)
+		(= nightPalette (+ vDragonFight 1000))
+		(PalVary PALVARYTARGET (+ vGoblinFight 1000))
+		(AssertPalette vDragonFight)
 		(self ignoreActors:)
 		(super init: &rest)
 	)
@@ -96,11 +107,14 @@
 )
 
 (instance dragonScript of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
-		(client view: 462 setLoop: 0 setPri: 10 setCel: 0)
+		(client
+			view: vDragonFight
+			setLoop: 0
+			setPri: 10
+			setCel: 0
+		)
 	)
 	
 	(method (doit)
@@ -116,8 +130,8 @@
 			(0
 				(Bset fBattleStarted)
 				(client
-					action: 0
-					ateEgo: 0
+					action: ActNone
+					ateEgo: FALSE
 					setCel: [monsterCel (Random 0 4)]
 					cycleSpeed: 16
 					stopUpd:
@@ -141,13 +155,21 @@
 			(2
 				(Bclr fBattleStarted)
 				(= local1 0)
-				(client action: 1 setCel: 0 setCycle: CycleTo 4 1 self)
+				(client
+					action: ActThrust
+					setCel: 0
+					setCycle: CycleTo 4 1 self
+				)
 				(if (client tryAttack: (client opponent?))
-					(client ateEgo: 1)
+					(client ateEgo: TRUE)
 				)
 			)
 			(3
-				(if (client ateEgo?) (= ticks 1) else (= ticks 12))
+				(if (client ateEgo?)
+					(= ticks 1)
+				else
+					(= ticks 12)
+				)
 			)
 			(4
 				(if (client ateEgo?)
@@ -165,10 +187,15 @@
 				(Bset fBattleStarted)
 				(= ticks 20)
 			)
-			(6 (self changeState: 0))
+			(6
+				(self changeState: 0)
+			)
 			(7
-				(client action: 0)
-				(client setCycle: 0 stopUpd:)
+				(client action: ActNone)
+				(client
+					setCycle: 0
+					stopUpd:
+				)
 				(= state -1)
 				(= ticks (* monsterDazzle 3))
 				(= monsterDazzle 0)
@@ -181,15 +208,13 @@
 	(properties
 		x 183
 		y 95
-		view 462
+		view vDragonFight
 		loop 2
 		priority 8
 	)
 )
 
 (instance drTailScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

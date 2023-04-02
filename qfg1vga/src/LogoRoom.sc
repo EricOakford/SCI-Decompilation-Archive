@@ -81,7 +81,7 @@
 
 (instance logoSound of Sound
 	(properties
-		number pHalfDome
+		number sHalfDome
 	)
 )
 
@@ -93,7 +93,7 @@
 			)
 			(1
 				(logoSound
-					number: pHalfDome
+					number: sHalfDome
 					loop: 1
 					flags: 0
 					play: self

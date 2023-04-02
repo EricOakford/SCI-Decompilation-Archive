@@ -12,19 +12,19 @@
 (class Arena of Room
 	(properties
 		monster 0
-		inTransit 0
-		escaped 0
+		inTransit FALSE
+		escaped FALSE
 	)
 	
 	(method (init)
 		(addToPics add:)
-		(Load SCRIPT 213)
-		(Load SCRIPT 425)
+		(Load SCRIPT WARRIOR)
+		(Load SCRIPT vMinotaur)
 		Monster
 		StatusBar
 		SkilledActor
-		(Load SCRIPT 215)
-		(Load SCRIPT 155)
+		(Load SCRIPT CLOSECOMBAT)
+		(Load SCRIPT PAINREACTION)
 		(super init: &rest)
 		(Bclr fMonsterRecoils)
 		(Bclr fSaveAllowed)	;can't save in battle
@@ -32,13 +32,13 @@
 		(statusBackMon init:)
 		(addToPics add: statusBackEgo doit:)
 		(addToPics add: statusBackMon doit:)
-		((ScriptID 213 0)
-			view: 109
+		((ScriptID WARRIOR 0)
+			view: vSwFight
 			init:
 			stopUpd:
 			opponent: monster
 			drawStatus:
-			startCombat: 215
+			startCombat: CLOSECOMBAT
 		)
 	)
 	
@@ -55,9 +55,9 @@
 			(
 				(and
 					(<= (monster health?) 0)
-					(IsObject (ScriptID 213 0))
-					((ScriptID 213 0) script?)
-					(not (((ScriptID 213 0) script?) script?))
+					(IsObject (ScriptID WARRIOR 0))
+					((ScriptID WARRIOR 0) script?)
+					(not (((ScriptID WARRIOR 0) script?) script?))
 					(!= monsterNum vBrigand)
 					(!= monsterNum vGoblin)
 					(!= monsterNum vBear)
@@ -75,12 +75,12 @@
 	
 	(method (dispose)
 		(DisposeScript vMinotaur)
-		(DisposeScript 212)
-		(DisposeScript 155)
-		(DisposeScript 213)
-		(DisposeScript 214)
-		(DisposeScript 205)
-		(DisposeScript 215)
+		(DisposeScript SKILLED)
+		(DisposeScript PAINREACTION)
+		(DisposeScript WARRIOR)
+		(DisposeScript MONSTER)
+		(DisposeScript STATUSBAR)
+		(DisposeScript CLOSECOMBAT)
 		(Bset fSaveAllowed)
 		(user canInput: TRUE)
 		(statusBackEgo dispose:)

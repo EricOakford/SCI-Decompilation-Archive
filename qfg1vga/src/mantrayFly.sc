@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 436)
+(script# MANTRAY_ACTIONS)
 (include game.sh)
 (use Main)
 (use Procs)
@@ -15,7 +15,7 @@
 )
 
 (local
-	local0
+	facingRight
 	oldCycleSpeed
 	oldMoveSpeed
 )
@@ -23,7 +23,7 @@
 	(method (doit)
 		(cond 
 			((<= (client distanceTo: ego) 52)
-				((ScriptID 210 0) cue:)
+				((ScriptID ENCOUNTER 0) cue:)
 			)
 			((and (< (client y?) 30) (Btst fMantrayLeft))
 				(Bclr fMantrayLeft)
@@ -36,14 +36,14 @@
 	)
 	
 	(method (dispose)
-		(= local0 0)
+		(= facingRight FALSE)
 		(super dispose:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local0 1)
+				(= facingRight TRUE)
 				(client
 					x: (+ (client x?) 90)
 					cycleSpeed: 9
@@ -52,8 +52,7 @@
 					targDeltaX: -40
 					setStep: 5 2
 					setCycle: EndLoop
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						280
 						(if (Btst fMantrayLeft)
 							(- (client y?) 5)
@@ -63,16 +62,17 @@
 						self
 				)
 			)
-			(1 (self cue:))
+			(1
+				(self cue:)
+			)
 			(2
-				(= local0 0)
+				(= facingRight FALSE)
 				(client
 					cycleSpeed: 6
 					setLoop: 2
 					cel: 0
 					setStep: 4 1
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						(- (client x?) 2)
 						(if (Btst fMantrayLeft)
 							(- (client y?) 5)
@@ -82,8 +82,12 @@
 					setCycle: EndLoop self
 				)
 			)
-			(3 (= cycles 2))
-			(4 (client setScript: flyLeft))
+			(3
+				(= cycles 2)
+			)
+			(4
+				(client setScript: flyLeft)
+			)
 		)
 	)
 )
@@ -105,14 +109,14 @@
 	)
 	
 	(method (dispose)
-		(= local0 0)
+		(= facingRight FALSE)
 		(super dispose:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local0 0)
+				(= facingRight FALSE)
 				(client
 					x: (- (client x?) 90)
 					cycleSpeed: 9
@@ -121,7 +125,8 @@
 					targDeltaX: 40
 					setStep: 5 2
 					setCycle: EndLoop
-					setMotion: MoveTo 20
+					setMotion: MoveTo
+						20
 						(if (Btst fMantrayLeft)
 							(- (client y?) 5)
 						else
@@ -130,9 +135,11 @@
 						self
 				)
 			)
-			(1 (self cue:))
+			(1
+				(self cue:)
+			)
 			(2
-				(= local0 1)
+				(= facingRight TRUE)
 				(client
 					setLoop: 3
 					cycleSpeed: 6
@@ -168,7 +175,7 @@
 	)
 	
 	(method (dispose)
-		(= local0 0)
+		(= facingRight FALSE)
 		(super dispose:)
 	)
 	
@@ -190,18 +197,29 @@
 				(= cycles 5)
 			)
 			(1
-				(client setCel: 1 posn: 145 110)
+				(client
+					setCel: 1
+					posn: 145 110
+				)
 				(= cycles 2)
 			)
 			(2
-				(client setCel: 0 posn: 144 111)
+				(client
+					setCel: 0
+					posn: 144 111
+				)
 				(= cycles 2)
 			)
 			(3
-				(client setCel: 1 posn: 145 110)
+				(client
+					setCel: 1
+					posn: 145 110
+				)
 				(= cycles 2)
 			)
-			(4 (client setCycle: EndLoop self))
+			(4
+				(client setCycle: EndLoop self)
+			)
 			(5
 				(client
 					posn: 209 103
@@ -211,7 +229,9 @@
 					setMotion: MoveTo 279 90 self
 				)
 			)
-			(6 (self cue:))
+			(6
+				(self cue:)
+			)
 			(7
 				(client
 					setLoop: 2
@@ -222,11 +242,17 @@
 					setCycle: EndLoop self
 				)
 			)
-			(8 (= cycles 2))
+			(8
+				(= cycles 2)
+			)
 			(9
+				;Both flags, since it's in the center
 				(Bset fMantrayLeft)
 				(Bset fMantrayRight)
-				(client setPri: 9 setScript: flyLeft)
+				(client
+					setPri: 9
+					setScript: flyLeft
+				)
 			)
 		)
 	)
@@ -249,7 +275,11 @@
 						(< (register nsLeft?) (ego x?))
 						(< (ego x?) (register nsRight?))
 					)
-					(ego moveSpeed: 0 cycleSpeed: 0 ignoreActors:)
+					(ego
+						moveSpeed: 0
+						cycleSpeed: 0
+						ignoreActors:
+					)
 					(if (< (ego x?) (+ (register nsLeft?) 35))
 						(ego setMotion: PolyPath (- (ego x?) 30) (ego y?) self)
 					else
@@ -259,8 +289,8 @@
 					(= ticks 1)
 				)
 				(register
-					view: 435
-					setLoop: (if local0 6 else 7)
+					view: vMantray
+					setLoop: (if facingRight 6 else 7)
 					setCel: -1
 					cycleSpeed: 6
 					setCycle: EndLoop self

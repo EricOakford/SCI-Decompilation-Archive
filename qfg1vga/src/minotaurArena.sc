@@ -4,7 +4,7 @@
 (use Main)
 (use Arena)
 (use Monster)
-(use TCyc)
+(use TimeCyc)
 (use Procs)
 (use ForCount)
 (use Sound)
@@ -22,7 +22,7 @@
 (local
 	local0
 	local1
-	local2
+	local2	;unused
 	monsterCycle1 = [
 		0 0
 		0 1
@@ -43,7 +43,7 @@
 
 (instance minotaurArena of Arena
 	(properties
-		picture 430
+		picture pForestArena
 	)
 	
 	(method (init)
@@ -51,23 +51,38 @@
 		ForwardCounter
 		TimedCycle
 		(= monster minotaur)
-		(monster ignoreActors: ignoreControl: cWHITE drawStatus:)
+		(monster
+			ignoreActors:
+			ignoreControl: cWHITE
+			drawStatus:
+		)
 		(super init: &rest)
 		(if Night
 			(Animate (cast elements?) FALSE)
 		)
 		(ball init:)
 		(addToPics add: legs doit:)
-		(minoMusic number: (SoundFX 2) loop: -1 play:)
-		(minotaur init: setScript: minotaurScript)
+		(minoMusic
+			number: (SoundFX sHardBattle)
+			loop: -1
+			play:
+		)
+		(minotaur
+			init:
+			setScript: minotaurScript
+		)
 	)
 	
 	(method (dispose)
 		(= nightPalette 0)
 		(minoMusic dispose:)
-		(theMusic2 number: (SoundFX 38) loop: 1 play:)
+		(theMusic2
+			number: (SoundFX sHardBattleEnd)
+			loop: 1
+			play:
+		)
 		(DisposeScript FORCOUNT)
-		(DisposeScript 419)
+		(DisposeScript TIMECYC)
 		(super dispose:)
 	)
 )
@@ -76,7 +91,7 @@
 	(properties
 		x 190
 		y 100
-		view 427
+		view vMinotaurFight
 		strength 80
 		intell 40
 		agil 60
@@ -94,15 +109,15 @@
 	)
 	
 	(method (init)
-		(= nightPalette 1427)
-		(PalVary PALVARYTARGET 1427)
-		(AssertPalette 427)
+		(= nightPalette (+ vMinotaurFight 1000))
+		(PalVary PALVARYTARGET (+ vMinotaurFight 1000))
+		(AssertPalette vMinotaurFight)
 		(super init:)
 	)
 	
 	(method (die)
 		(SolvePuzzle f425BeatMinotaur 5 FIGHTER)
-		(self canFight: 0)
+		(self canFight: FALSE)
 	)
 )
 
@@ -111,7 +126,7 @@
 		(super init: &rest)
 		(= monsterNum vMinotaur)
 		(client
-			view: 427
+			view: vMinotaurFight
 			setLoop: 0
 			cel: 0
 			setPri: 4
@@ -134,17 +149,21 @@
 		(super doit:)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp ballSwings)
 		(switch (= state newState)
 			(0
 				(Bset fBattleStarted)
-				(ball posn: 500 500 forceUpd: show:)
+				(ball
+					posn: 500 500
+					forceUpd:
+					show:
+				)
 				(client
-					action: 0
+					action: ActNone
 					setLoop: 0
 					setCel: 0
 					cycleSpeed: 20
-					ateEgo: 0
+					ateEgo: FALSE
 				)
 				(cond 
 					((Btst fMonsterRecoils)
@@ -164,27 +183,42 @@
 				(= ticks 10)
 			)
 			(2
-				(client action: 3 setLoop: 4 setCel: 0)
-				(if (< (= temp0 (Random 1 3)) 2) (= state -1))
+				(client
+					action: ActParryUp
+					setLoop: 4
+					setCel: 0
+				)
+				(if (< (= ballSwings (Random 1 3)) 2)
+					(= state -1)
+				)
 				(ball
 					cel: 0
 					posn: 141 59
-					setCycle: ForwardCounter temp0 self
+					setCycle: ForwardCounter ballSwings self
 				)
 			)
 			(3
 				(Bclr fBattleStarted)
 				(ball posn: 500 500)
-				(client action: 1)
-				(client setCel: 0 setLoop: 0 setCycle: CycleTo 3 1 self)
+				(client action: ActThrust)
+				(client
+					setCel: 0
+					setLoop: 0
+					setCycle: CycleTo 3 1 self
+				)
 				(if (client tryAttack: (client opponent?))
-					(client ateEgo: 1)
-					(if (ego has: 2) (client setPri: 14))
+					(client ateEgo: TRUE)
+					(if (ego has: iSword)
+						(client setPri: 14)
+					)
 				)
 			)
 			(4
 				(if (client ateEgo?)
-					(client ateEgo: 0 doDamage: (client opponent?))
+					(client
+						ateEgo: FALSE
+						doDamage: (client opponent?)
+					)
 					(ShakeScreen 2 shakeSDown)
 				)
 				(= ticks 8)
@@ -194,12 +228,15 @@
 				(= ticks 30)
 			)
 			(6
-				(client setPri: -1 ateEgo: 0)
+				(client
+					setPri: -1
+					ateEgo: FALSE
+				)
 				(= state -1)
 				(= ticks 12)
 			)
 			(7
-				(client action: 0)
+				(client action: ActNone)
 				(client setCycle: 0)
 				(= state -1)
 				(= ticks (* monsterDazzle 3))
@@ -213,7 +250,7 @@
 	(properties
 		x 190
 		y 100
-		view 427
+		view vMinotaurFight
 		loop 2
 		priority 2
 	)
@@ -223,14 +260,14 @@
 	(properties
 		x 500
 		y 500
-		view 427
+		view vMinotaurFight
 		loop 3
 	)
 )
 
 (instance minoMusic of Sound
 	(properties
-		number 2
+		number sHardBattle
 		priority 2
 		loop -1
 	)

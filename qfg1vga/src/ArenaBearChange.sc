@@ -105,9 +105,9 @@
 	)
 	
 	(method (init)
-		(= nightPalette 1422)
-		(PalVary PALVARYTARGET 1422)
-		(AssertPalette 422)
+		(= nightPalette (+ vBearFight 1000))
+		(PalVary PALVARYTARGET (+ vBearFight 1000))
+		(AssertPalette vBearFight)
 		(super init:)
 	)
 )

@@ -44,9 +44,9 @@
 	)
 	
 	(method (init)
-		(= nightPalette 1473)
-		(PalVary PALVARYTARGET 1473)
-		(AssertPalette 473)
+		(= nightPalette (+ vBrigandLeaderFight 1000))
+		(PalVary PALVARYTARGET (+ vBrigandLeaderFight 1000))
+		(AssertPalette vBrigandLeaderFight)
 		(super init:)
 	)
 )

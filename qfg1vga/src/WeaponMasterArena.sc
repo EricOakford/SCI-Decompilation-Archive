@@ -21,13 +21,13 @@
 		(switch (= state newState)
 			(0
 				(Bset fStopFightingMaster)
-				((ScriptID 39 1) stop:)
+				((ScriptID rCastleCourtyard 1) stop:)
 				(= cycles 2)
 			)
 			(1
 				(messager say: N_ROOM NULL C_ENOUGH)
-				((ScriptID 39 2)
-					view: 639
+				((ScriptID rCastleCourtyard 2)
+					view: vWeaponsMaster
 					setLoop: (if (client fightLeft?) 5 else 4)
 					setCel: 0
 				)
@@ -39,14 +39,14 @@
 					(SolvePuzzle f39BeatMaster 10 FIGHTER)
 				)
 				(messager say: N_ROOM NULL C_BEATHIM)
-				((ScriptID 39 2)
-					setLoop: (if (== ((ScriptID 39 2) loop?) 5) 1 else 0)
+				((ScriptID rCastleCourtyard 2)
+					setLoop: (if (== ((ScriptID rCastleCourtyard 2) loop?) 5) 1 else 0)
 					cycleSpeed: 0
 					moveSpeed: 0
 					setCycle: Walk
 					setMotion: MoveTo
-						(if ((ScriptID 39 2) fightLeft?) 340 else -20)
-						((ScriptID 39 2) y?)
+						(if ((ScriptID rCastleCourtyard 2) fightLeft?) 340 else -20)
+						((ScriptID rCastleCourtyard 2) y?)
 						self
 				)
 				(Bclr fMasterIsHere)
@@ -57,13 +57,13 @@
 				((client opponent?) dispose:)
 				(ego
 					posn: ((client opponent?) x?) ((client opponent?) y?)
-					loop: (if ((ScriptID 39 2) fightLeft?) 0 else 1)
+					loop: (if ((ScriptID rCastleCourtyard 2) fightLeft?) 0 else 1)
 					cel: 0
 					show:
 				)
 				(NormalEgo)
 				(HandsOn)
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(client dispose:)
 			)
 		)
@@ -80,13 +80,13 @@
 			(0
 				(HandsOff)
 				(Bset fStopFightingMaster)
-				((ScriptID 39 1) stop:)
+				((ScriptID rCastleCourtyard 1) stop:)
 				(= cycles 2)
 			)
 			(1
 				(theGame setCursor: waitCursor TRUE)
 				(client
-					view: 514
+					view: vEgoTiredSword
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 6
@@ -101,13 +101,21 @@
 				)
 			)
 			(3
-				(client setLoop: 1 cel: 0 setCycle: EndLoop self)
+				(client
+					setLoop: 1
+					cel: 0
+					setCycle: EndLoop self
+				)
 			)
 			(4
 				(= ticks 120)
 			)
 			(5
-				(client setLoop: 2 cel: 0 setCycle: EndLoop self)
+				(client
+					setLoop: 2
+					cel: 0
+					setCycle: EndLoop self
+				)
 			)
 			(6
 				(client hide: forceUpd:)

@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 419)
+(script# TIMECYC)
 (include game.sh)
 (use Main)
 (use Motion)
@@ -14,7 +14,7 @@
 		size 0
 	)
 	
-	(method (init theObj thePoints whoCares dir &tmp [temp0 2])
+	(method (init theObj thePoints whoCares dir &tmp i node)
 		(= client theObj)
 		(= points thePoints)
 		(if (>= argc 3)
@@ -24,10 +24,7 @@
 				(else (= cycleDir whoCares))
 			)
 		)
-		(= size 0)
-		(while (!= (WordAt points size) -32768)
-			(++ size)
-		)
+		(for ((= size 0)) (!= (WordAt points size) PATHEND) ((++ size)))
 		(if (== cycleDir 1)
 			(= value 0)
 		else

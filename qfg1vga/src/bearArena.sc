@@ -4,7 +4,7 @@
 (use Main)
 (use Arena)
 (use Monster)
-(use TCyc)
+(use TimeCyc)
 (use Procs)
 (use Sound)
 (use Motion)
@@ -18,9 +18,10 @@
 )
 
 (local
-	local0
+	deathCued
+	;unused array
 	local1 = [0 0 0 0 0 0 0 0 0 0 5]
-	bearCycle1 = [
+	monsterCycle1 = [
 		0 0
 		0 1
 		0 2
@@ -28,7 +29,7 @@
 		0 0
 		PATHEND
 		]
-	bearCycle2 = [
+	monsterCycle2 = [
 		1 0
 		1 1
 		1 0
@@ -40,14 +41,14 @@
 	(properties
 		x 149
 		y 91
-		view 422
+		view vBearFight
 		loop 3
 	)
 )
 
 (instance bearMusic of Sound
 	(properties
-		number 2
+		number sHardBattle
 		priority 2
 		loop -1
 	)
@@ -55,7 +56,7 @@
 
 (instance bear of Monster
 	(properties
-		view 422
+		view vBearFight
 		strength 70
 		intell 25
 		agil 40
@@ -73,9 +74,9 @@
 	)
 	
 	(method (init)
-		(= nightPalette 1422)
-		(PalVary PALVARYTARGET 1422)
-		(AssertPalette 422)
+		(= nightPalette (+ vBearFight 1000))
+		(PalVary PALVARYTARGET (+ vBearFight 1000))
+		(AssertPalette vBearFight)
 		(super init:)
 	)
 	
@@ -83,8 +84,8 @@
 		(opponent canFight: FALSE)
 		(self setScript: 0)
 		(= canFight FALSE)
-		(= action 10)
-		(= local0 1)
+		(= action ActDie)
+		(= deathCued TRUE)
 		(Bset fBearDying)
 		(SolvePuzzle f420BeatBear -25)
 		(curRoom newRoom: 171)
@@ -93,7 +94,7 @@
 
 (instance bearArena of Arena
 	(properties
-		picture 425
+		picture pBearToBarnard
 	)
 	
 	(method (init)
@@ -122,8 +123,12 @@
 	(method (dispose)
 		(= nightPalette 0)
 		(bearMusic dispose:)
-		(DisposeScript 419)
-		(theMusic2 number: (SoundFX 38) loop: 1 play:)
+		(DisposeScript TIMECYC)
+		(theMusic2
+			number: (SoundFX sHardBattleEnd)
+			loop: 1
+			play:
+		)
 		(super dispose:)
 	)
 )
@@ -131,8 +136,8 @@
 (instance aFightScript of Script
 	(method (doit)
 		(cond 
-			(local0
-				(= local0
+			(deathCued
+				(= deathCued
 					(= cycles 0)
 				)
 			)
@@ -155,19 +160,21 @@
 					ateEgo: 0
 					setPri: 5
 					stopUpd:
-					action: 0
+					action: ActNone
 				)
 				(if (Btst fMonsterRecoils)
 					(Bclr fMonsterRecoils)
 					(self cue:)
 				)
-				(if (not (Random 0 2)) (= state -1))
+				(if (not (Random 0 2))
+					(= state -1)
+				)
 				(switch (Random 0 1)
 					(0
-						(client setCycle: TimedCycle @bearCycle1 self)
+						(client setCycle: TimedCycle @monsterCycle1 self)
 					)
 					(1
-						(client setCycle: TimedCycle @bearCycle2 self)
+						(client setCycle: TimedCycle @monsterCycle2 self)
 					)
 				)
 			)
@@ -175,15 +182,18 @@
 				(bear setLoop: 1 setCel: 0)
 				(= ticks 25)
 				(if (bear tryAttack: (bear opponent?))
-					(bear ateEgo: 1)
+					(bear ateEgo: TRUE)
 				)
 			)
 			(2
 				(Bclr fBattleStarted)
 				(if (bear ateEgo?)
-					(bear setPri: 14 action: 3)
+					(bear
+						setPri: 14
+						action: ActParryUp
+					)
 				else
-					(bear action: 1)
+					(bear action: ActThrust)
 				)
 				(if (Random 0 1)
 					(client setLoop: 2)
@@ -196,15 +206,21 @@
 			(3
 				(if (bear ateEgo?)
 					(bear setPri: 5)
-					(bear doDamage: (bear opponent?) ateEgo: 0)
+					(bear doDamage: (bear opponent?) ateEgo: FALSE)
 				)
 				(= ticks 15)
 			)
-			(4 (bear setCycle: EndLoop self))
-			(5 (= ticks 15))
-			(6 (self changeState: 0))
+			(4
+				(bear setCycle: EndLoop self)
+			)
+			(5
+				(= ticks 15)
+			)
+			(6
+				(self changeState: 0)
+			)
 			(7
-				(client action: 0)
+				(client action: ActNone)
 				(client setCycle: 0)
 				(= state -1)
 				(= ticks (* monsterDazzle 3))

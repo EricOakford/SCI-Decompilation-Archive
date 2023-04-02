@@ -4,7 +4,7 @@
 (use Main)
 (use Arena)
 (use Monster)
-(use TCyc)
+(use TimeCyc)
 (use Procs)
 (use Sound)
 (use Motion)
@@ -18,8 +18,8 @@
 )
 
 (local
-	local0
-	local1 = [
+	deathCued
+	monsterCycle1 = [
 		0 0
 		0 0
 		0 0
@@ -34,6 +34,8 @@
 		0 0
 		0
 		PATHEND
+		]
+	monsterCycle2 =	[
 		0 0
 		2 0
 		0 0
@@ -41,7 +43,7 @@
 		0 0
 		PATHEND
 		]
-	monsterCycle = [
+	monsterCycle3 = [
 		0 0
 		0 1
 		0 2
@@ -53,7 +55,7 @@
 
 (instance cheetMusic of Sound
 	(properties
-		number 2
+		number sHardBattle
 		priority 2
 		loop -1
 	)
@@ -62,7 +64,7 @@
 (instance cheetRoar of Sound
 	(properties
 		flags $ffff
-		number 107
+		number sCheetaurRoar
 		priority 1
 	)
 )
@@ -71,7 +73,7 @@
 	(properties
 		x 164
 		y 105
-		view 442
+		view vCheetaurFight
 		loop 4
 		priority 5
 	)
@@ -81,7 +83,7 @@
 	(properties
 		x 165
 		y 105
-		view 442
+		view vCheetaurFight
 		strength 70
 		intell 65
 		agil 70
@@ -99,15 +101,15 @@
 	)
 	
 	(method (init)
-		(= nightPalette 1442)
-		(PalVary PALVARYTARGET 1442)
-		(AssertPalette 442)
+		(= nightPalette (+ vCheetaurFight 1000))
+		(PalVary PALVARYTARGET (+ vCheetaurFight 1000))
+		(AssertPalette vCheetaurFight)
 		(super init:)
 	)
 	
 	(method (die)
 		(SolvePuzzle f440BeatCheetaur 4 FIGHTER)
-		(= local0 1)
+		(= deathCued TRUE)
 	)
 )
 
@@ -123,7 +125,7 @@
 		(= monsterNum vCheetaur)
 		(super init: &rest)
 		(legs init: stopUpd:)
-		(Load VIEW 442)
+		(Load VIEW vCheetaurFight)
 		(cheetaur
 			init:
 			ignoreControl: cWHITE
@@ -131,16 +133,27 @@
 			stopUpd:
 			setScript: aFightScript
 		)
-		(cheetMusic number: (SoundFX 2) init: play:)
-		(cheetRoar init: play:)
+		(cheetMusic
+			number: (SoundFX sHardBattle)
+			init:
+			play:
+		)
+		(cheetRoar
+			init:
+			play:
+		)
 	)
 	
 	(method (dispose)
 		(= nightPalette 0)
 		(cheetMusic stop:)
 		(cheetRoar dispose:)
-		(theMusic2 number: (SoundFX 38) loop: 1 play:)
-		(DisposeScript 419)
+		(theMusic2
+			number: (SoundFX sHardBattleEnd)
+			loop: 1
+			play:
+		)
+		(DisposeScript TIMECYC)
 		(super dispose:)
 	)
 )
@@ -148,10 +161,9 @@
 (instance aFightScript of Script
 	(method (doit)
 		(cond 
-			(local0
-				(= local0
-					(= cycles 0)
-				)
+			(deathCued
+				(= deathCued FALSE)
+				(= cycles 0)
 			)
 			((and monsterDazzle (== state 0) (not script))
 				(self changeState: 7)
@@ -166,10 +178,10 @@
 			(0
 				(Bset fBattleStarted)
 				(cheetaur
-					view: 442
-					action: 0
+					view: vCheetaurFight
+					action: ActNone
 					cycleSpeed: 25
-					ateEgo: 0
+					ateEgo: FALSE
 					setLoop: 0
 					setCel: 0
 					setPri: -1
@@ -181,7 +193,7 @@
 				)
 				(switch (Random 0 1)
 					(0
-						(client setCycle: TimedCycle @monsterCycle self)
+						(client setCycle: TimedCycle @monsterCycle3 self)
 					)
 					(1
 						(cheetRoar play:)
@@ -191,25 +203,40 @@
 			)
 			(1
 				(client stopUpd:)
-				(if (not (Random 0 3)) (= state -1))
+				(if (not (Random 0 3))
+					(= state -1)
+				)
 				(= ticks 25)
 			)
 			(2
 				(Bclr fBattleStarted)
 				(if (cheetaur tryAttack: (cheetaur opponent?))
-					(cheetaur ateEgo: 1 setPri: 14)
+					(cheetaur
+						ateEgo: TRUE
+						setPri: 14
+					)
 				)
-				(client action: 1 setCel: 0 cycleSpeed: 25)
+				(client
+					action: ActThrust
+					setCel: 0
+					cycleSpeed: 25
+				)
 				(switch (Random 0 1)
 					(0
 						(= register 2)
-						(client view: 443 setLoop: 0)
+						(client
+							view: vCheetaurBite
+							setLoop: 0
+						)
 						(client setCycle: CycleTo 1 1 self)
 					)
 					(1
 						(cheetRoar play:)
 						(= register 3)
-						(client view: 444 setLoop: 0)
+						(client
+							view: vCheetaurSlash
+							setLoop: 0
+						)
 						(client setCycle: CycleTo 2 1 self)
 					)
 				)
@@ -219,7 +246,7 @@
 					(cheetaur
 						ateEgo: FALSE
 						doDamage: (cheetaur opponent?)
-						action: 3
+						action: ActParryUp
 					)
 				)
 				(= ticks 18)
@@ -233,14 +260,18 @@
 			)
 			(5
 				(cheetaur stopUpd:)
-				(if (== register 3) (= ticks 18) else (= ticks 1))
+				(if (== register 3)
+					(= ticks 18)
+				else
+					(= ticks 1)
+				)
 			)
 			(6
 				(cheetaur ateEgo: FALSE)
 				(self changeState: 0)
 			)
 			(7
-				(client action: 0)
+				(client action: ActNone)
 				(client setCycle: 0)
 				(= state -1)
 				(= ticks (* monsterDazzle 3))

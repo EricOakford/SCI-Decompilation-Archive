@@ -4,7 +4,7 @@
 (use Main)
 (use Arena)
 (use Monster)
-(use TCyc)
+(use TimeCyc)
 (use Procs)
 (use RandCyc)
 (use Sound)
@@ -19,8 +19,8 @@
 )
 
 (local
-	local0
-	saurusDead
+	local0	;unused
+	deathCued
 	monsterCycle1 = [
 		0 0
 		0 1
@@ -50,7 +50,7 @@
 
 (instance saurusArena of Arena
 	(properties
-		picture 430
+		picture pForestArena
 	)
 	
 	(method (init)
@@ -59,24 +59,36 @@
 		(= monsterNum vSaurus)
 		(monster drawStatus:)
 		(super init: &rest)
-		(saurusTail init: ignoreActors: setCycle: RandCycle)
-		(saurMusic number: (SoundFX 3) init: play:)
-		(Load VIEW 432)
+		(saurusTail
+			init:
+			ignoreActors:
+			setCycle: RandCycle
+		)
+		(saurMusic
+			number: (SoundFX sEasyBattle)
+			init:
+			play:
+		)
+		(Load VIEW vSaurusFight)
 		(monster init: ignoreActors: setScript: saurusScript)
 	)
 	
 	(method (dispose)
 		(= nightPalette 0)
 		(saurMusic dispose:)
-		(theMusic2 number: (SoundFX 7) loop: 1 play:)
-		(DisposeScript 419)
+		(theMusic2
+			number: (SoundFX sEasyBattleEnd)
+			loop: 1
+			play:
+		)
+		(DisposeScript TIMECYC)
 		(super dispose:)
 	)
 )
 
 (instance saurMusic of Sound
 	(properties
-		number 3
+		number sEasyBattle
 		priority 2
 		loop -1
 	)
@@ -86,7 +98,7 @@
 	(properties
 		x 186
 		y 135
-		view 432
+		view vSaurusFight
 		strength 30
 		intell 5
 		agil 20
@@ -101,19 +113,19 @@
 		warriorY 142
 		flameX 176
 		flameY 91
-		lowBlow 1
+		lowBlow TRUE
 	)
 	
 	(method (init)
-		(= nightPalette 1432)
-		(PalVary PALVARYTARGET 1432)
-		(AssertPalette 432)
+		(= nightPalette (+ vSaurusFight 1000))
+		(PalVary PALVARYTARGET (+ vSaurusFight 1000))
+		(AssertPalette vSaurusFight)
 		(super init:)
 	)
 	
 	(method (die)
 		(SolvePuzzle f430BeatSaurus 1 FIGHTER)
-		(= saurusDead TRUE)
+		(= deathCued TRUE)
 	)
 )
 
@@ -125,8 +137,8 @@
 	
 	(method (doit)
 		(cond 
-			(saurusDead
-				(= saurusDead
+			(deathCued
+				(= deathCued
 					(= ticks 0)
 				)
 			)
@@ -146,7 +158,11 @@
 		(switch (= state newState)
 			(0
 				(Bset fBattleStarted)
-				(client action: 0 ateEgo: 0 setLoop: 0)
+				(client
+					action: ActNone
+					ateEgo: FALSE
+					setLoop: 0
+				)
 				(if (Btst fMonsterRecoils)
 					(Bclr fMonsterRecoils)
 					(= state 2)
@@ -196,7 +212,7 @@
 					(client ateEgo: TRUE)
 				)
 				(client
-					action: 1
+					action: ActThrust
 					setLoop: 0
 					setCel: 0
 					cycleSpeed: 12
@@ -206,13 +222,18 @@
 			)
 			(4
 				(if (client ateEgo?)
-					(client ateEgo: 0 doDamage: (client opponent?))
+					(client
+						ateEgo: FALSE
+						doDamage: (client opponent?)
+					)
 				)
 				(client setCycle: EndLoop self)
 			)
-			(5 (self changeState: 0))
+			(5
+				(self changeState: 0)
+			)
 			(6
-				(client action: 0)
+				(client action: ActNone)
 				(client setCycle: 0)
 				(= state -1)
 				(= ticks (* monsterDazzle 3))
@@ -226,7 +247,7 @@
 	(properties
 		x 189
 		y 102
-		view 432
+		view vSaurusFight
 		loop 2
 		cycleSpeed 26
 	)

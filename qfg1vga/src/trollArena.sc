@@ -4,7 +4,7 @@
 (use Main)
 (use Arena)
 (use Monster)
-(use TCyc)
+(use TimeCyc)
 (use Procs)
 (use Sound)
 (use Motion)
@@ -20,14 +20,28 @@
 
 (local
 	local0
-	local1
+	trollInited
 	[local2 6]
-	[monsterCycle1 11] = [0 0 0 1 0 0 0 1 0 0 -32768]
-	[monsterCycle2 15] = [0 0 0 1 0 0 0 4 0 3 0 4 0 0 -32768]
+	monsterCycle1 = [
+		0 0
+		0 1
+		0 0
+		0 1
+		0 0
+		PATHEND
+		]
+	monsterCycle2 = [
+		0 0
+		0 1
+		0 0
+		0 4
+		0 3
+		0 4
+		0 0
+		PATHEND
+		]
 )
 (instance trollArena of Arena
-	(properties)
-	
 	(method (init)
 		(if
 			(OneOf prevRoomNum
@@ -35,32 +49,48 @@
 				35 36 42 43 44 51 52 56 57 61 62 63
 				69 71 72 74 75 79 80 81 85 86 92
 			)
-			(self picture: 430)
+			(self picture: pForestArena)
 		else
-			(self picture: 465)
+			(self picture: pTrollCaveArena)
 		)
 		(= monster troll)
 		(= monsterNum vTroll)
 		TimedCycle
 		(super init: &rest)
-		(Load VIEW 452)
-		(troll drawStatus: init: setScript: trollScript)
-		(trollLegs init: stopUpd: ignoreActors:)
-		(trollMusic number: (SoundFX 2) loop: -1 play:)
+		(Load VIEW vTrollFight)
+		(troll
+			drawStatus:
+			init:
+			setScript: trollScript
+		)
+		(trollLegs
+			init:
+			stopUpd:
+			ignoreActors:
+		)
+		(trollMusic
+			number: (SoundFX sHardBattle)
+			loop: -1
+			play:
+		)
 	)
 	
 	(method (dispose)
 		(= nightPalette 0)
 		(trollMusic stop:)
-		(theMusic2 number: (SoundFX 38) loop: 1 play:)
-		(DisposeScript 419)
+		(theMusic2
+			number: (SoundFX sHardBattleEnd)
+			loop: 1
+			play:
+		)
+		(DisposeScript TIMECYC)
 		(super dispose:)
 	)
 )
 
 (instance trollMusic of Sound
 	(properties
-		number 2
+		number sHardBattle
 		priority 2
 		loop -1
 	)
@@ -70,7 +100,7 @@
 	(properties
 		x 182
 		y 91
-		view 452
+		view vTrollFight
 		priority 10
 		strength 80
 		intell 30
@@ -89,14 +119,20 @@
 	)
 	
 	(method (init)
-		(= nightPalette 1452)
-		(PalVary PALVARYTARGET 1452)
-		(AssertPalette 452)
-		(self ignoreActors: ignoreControl: cWHITE)
-		(if (or (== prevRoomNum 88) (== prevRoomNum 89))
-			(= strength
-				(= agil (= vit (= luck (= weap (= dodge 80)))))
-			)
+		(= nightPalette (+ vTrollFight 1000))
+		(PalVary PALVARYTARGET (+ vTrollFight 1000))
+		(AssertPalette vTrollFight)
+		(self
+			ignoreActors:
+			ignoreControl: cWHITE
+		)
+		(if (or (== prevRoomNum rTrollDen) (== prevRoomNum rSecretPassage))
+			(= strength 80)
+			(= agil 80)
+			(= vit 80)
+			(= luck 80)
+			(= weap 80)
+			(= dodge 80)
 			(= intell 60)
 			(= weapValue 9)
 			(= armorValue 6)
@@ -111,13 +147,16 @@
 )
 
 (instance trollScript of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
-		(= local1 1)
+		(= trollInited TRUE)
 		(= register 0)
-		(client view: 452 setPri: 10 ateEgo: 0 cycleSpeed: 18)
+		(client
+			view: vTrollFight
+			setPri: 10
+			ateEgo: FALSE
+			cycleSpeed: 18
+		)
 	)
 	
 	(method (doit)
@@ -133,7 +172,7 @@
 			(0
 				(Bclr fBattleStarted)
 				(client
-					action: 0
+					action: ActNone
 					cel: 0
 					loop: 0
 					x: 182
@@ -141,41 +180,74 @@
 					ateEgo: FALSE
 					setPri: -1
 				)
-				(trollLegs cel: 0 x: 182 y: 91 show: forceUpd:)
+				(trollLegs
+					cel: 0
+					x: 182
+					y: 91
+					show:
+					forceUpd:
+				)
 				(if (Btst fMonsterRecoils)
 					(Bclr fMonsterRecoils)
 					(self cue:)
 				else
 					(switch (Random 0 2)
 						(0
-							(client action: 3 setCycle: TimedCycle @monsterCycle2 self)
+							(client
+								action: ActParryUp
+								setCycle: TimedCycle @monsterCycle2 self
+							)
 						)
 						(1
-							(client action: 0 setCycle: TimedCycle @monsterCycle1 self)
+							(client
+								action: ActNone
+								setCycle: TimedCycle @monsterCycle1 self
+							)
 						)
 						(2
-							(client action: 3 setCycle: EndLoop self)
+							(client
+								action: ActParryUp
+								setCycle: EndLoop self
+							)
 						)
 					)
 				)
 			)
 			(1
-				(if (not (Random 0 4)) (= state -1))
+				(if (not (Random 0 4))
+					(= state -1)
+				)
 				(= ticks 18)
 			)
 			(2
 				(Bclr fBattleStarted)
-				(client action: 3 loop: 3 cel: 0 x: 180 y: 93 forceUpd:)
-				(trollLegs hide: forceUpd:)
+				(client
+					action: ActParryUp
+					loop: 3
+					cel: 0
+					x: 180
+					y: 93
+					forceUpd:
+				)
+				(trollLegs
+					hide:
+					forceUpd:
+				)
 				(= ticks (Random 12 18))
 			)
 			(3
 				(if (client tryAttack: (client opponent?))
-					(client ateEgo: 1)
+					(client ateEgo: TRUE)
 				)
-				(trollLegs cel: 1 x: 157 y: 155 show: forceUpd:)
+				(trollLegs
+					cel: 1
+					x: 157
+					y: 155
+					show:
+					forceUpd:
+				)
 				(client
-					action: 1
+					action: ActThrust
 					loop: 4
 					cel: 0
 					x: 181
@@ -186,7 +258,10 @@
 			)
 			(4
 				(if (client ateEgo?)
-					(client ateEgo: FALSE doDamage: (client opponent?))
+					(client
+						ateEgo: FALSE
+						doDamage: (client opponent?)
+					)
 					(ShakeScreen 2 shakeSDown)
 					(= ticks 40)
 				else
@@ -194,16 +269,26 @@
 				)
 			)
 			(5
-				(client action: 0)
-				(client loop: 3 cel: 0 x: 180 y: 93 forceUpd:)
+				(client action: ActNone)
+				(client
+					loop: 3
+					cel: 0
+					x: 180
+					y: 93
+					forceUpd:
+				)
 				(trollLegs hide: forceUpd:)
 				(= ticks (Random 18 30))
 				(client ateEgo: FALSE)
 			)
-			(6 (= ticks 1))
-			(7 (self changeState: 0))
+			(6
+				(= ticks 1)
+			)
+			(7
+				(self changeState: 0)
+			)
 			(8
-				(client action: 0)
+				(client action: ActNone)
 				(client setCycle: 0)
 				(= state -1)
 				(= ticks (* monsterDazzle 3))
@@ -217,7 +302,7 @@
 	(properties
 		x 182
 		y 91
-		view 452
+		view vTrollFight
 		loop 2
 		priority 4
 	)

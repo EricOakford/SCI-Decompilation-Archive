@@ -18,7 +18,8 @@
 )
 
 (local
-	local0 = [0 150 123]
+	;unused array
+	[local0 5] = [0 150 123]
 	local5
 	local6
 )
@@ -26,7 +27,7 @@
 	(properties
 		x 197
 		y 51
-		view 437
+		view vMantrayFight
 		loop 2
 	)
 	
@@ -44,7 +45,7 @@
 
 (instance mantrayArena of Arena
 	(properties
-		picture 430
+		picture pForestArena
 	)
 	
 	(method (init)
@@ -55,18 +56,39 @@
 		(monster drawStatus:)
 		(= monsterNum vMantray)
 		(super init: &rest)
-		(if Night (Animate (cast elements?) 0))
-		(stingerMusic number: (SoundFX 2) loop: -1 play:)
-		(Load VIEW 437)
-		(mantray init: setScript: mantrayScript)
-		(tail init: setPri: 3 ignoreActors:)
-		(stinger init: ignoreActors: setPri: 8 setLoop: 3)
+		(if Night
+			(Animate (cast elements?) FALSE)
+		)
+		(stingerMusic
+			number: (SoundFX sHardBattle)
+			loop: -1
+			play:
+		)
+		(Load VIEW vMantrayFight)
+		(mantray
+			init:
+			setScript: mantrayScript
+		)
+		(tail
+			init:
+			setPri: 3
+			ignoreActors:
+		)
+		(stinger
+			init:
+			ignoreActors:
+			setPri: 8
+			setLoop: 3
+		)
 	)
 	
 	(method (dispose)
 		(= nightPalette 0)
 		(stingerMusic dispose:)
-		(theMusic2 number: (SoundFX 38) play:)
+		(theMusic2
+			number: (SoundFX sHardBattleEnd)
+			play:
+		)
 		(DisposeScript DPATH)
 		(super dispose:)
 	)
@@ -74,7 +96,7 @@
 
 (instance stingerMusic of Sound
 	(properties
-		number 2
+		number sHardBattle
 		priority 2
 		loop -1
 	)
@@ -84,7 +106,7 @@
 	(properties
 		x 194
 		y 48
-		view 437
+		view vMantrayFight
 		loop 3
 		strength 50
 		intell 20
@@ -103,22 +125,26 @@
 	)
 	
 	(method (init)
-		(= nightPalette 1437)
-		(PalVary PALVARYTARGET 1437)
-		(AssertPalette 437)
+		(= nightPalette (+ vMantrayFight 1000))
+		(PalVary PALVARYTARGET (+ vMantrayFight 1000))
+		(AssertPalette vMantrayFight)
 		(super init:)
 	)
 	
 	(method (die)
 		(SolvePuzzle f435BeatMantray 2 FIGHTER)
-		(self canFight: 0)
+		(self canFight: FALSE)
 	)
 )
 
 (instance mantrayScript of Script
 	(method (init)
 		(super init: &rest)
-		(client view: 437 setPri: 5 ignoreActors:)
+		(client
+			view: vMantrayFight
+			setPri: 5
+			ignoreActors:
+		)
 	)
 	
 	(method (doit)
@@ -128,7 +154,7 @@
 			(Bclr fMonsterDazzled)
 		)
 		(if (and (< (client x?) 194) (not register))
-			(= register 1)
+			(= register TRUE)
 			(tail setScript: attackScript)
 		)
 		(super doit:)
@@ -137,7 +163,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= register 0)
+				(= register FALSE)
 				(if (not (tail script?))
 					(tail
 						setLoop: 4
@@ -151,7 +177,7 @@
 					setLoop: 0
 					moveSpeed: 5
 					cycleSpeed: 10
-					ateEgo: 0
+					ateEgo: FALSE
 					setCel: 0
 					setCycle: Forward
 					action: 3
@@ -163,16 +189,16 @@
 			)
 			(2
 				(if (== (client x?) 169)
-					(client action: 1)
+					(client action: ActThrust)
 				)
 				(if (not (tail script?))
-					(= register 1)
+					(= register TRUE)
 					(tail setScript: attackScript)
 				)
 				(client
 					setMotion: MoveTo (+ (client x?) 10) (client y?)
 				)
-				(if (== (client action?) 1)
+				(if (== (client action?) ActThrust)
 					(= ticks 200)
 				else
 					(= ticks 45)
@@ -180,7 +206,10 @@
 			)
 			(3
 				(= state -1)
-				(client action: 3 setMotion: MoveTo 194 48 self)
+				(client
+					action: ActParryUp
+					setMotion: MoveTo 194 48 self
+				)
 			)
 		)
 	)
@@ -213,7 +242,12 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(tail setCycle: 0 setLoop: 2 setCel: 0 setCycle: EndLoop self)
+				(tail
+					setCycle: 0
+					setLoop: 2
+					setCel: 0
+					setCycle: EndLoop self
+				)
 			)
 			(1
 				(stinger
@@ -237,7 +271,11 @@
 				(if (mantray ateEgo?)
 					(mantray doDamage: (mantray opponent?) ateEgo: FALSE)
 				)
-				(tail setLoop: 4 setCel: 0 setCycle: Forward)
+				(tail
+					setLoop: 4
+					setCel: 0
+					setCycle: Forward
+				)
 				(self dispose:)
 			)
 		)
@@ -249,7 +287,7 @@
 		x 500
 		y 500
 		yStep 40
-		view 437
+		view vMantrayFight
 		loop 3
 		cycleSpeed 12
 		illegalBits $0000

@@ -399,9 +399,9 @@
 	)
 	
 	(method (init)
-		(= nightPalette 110)
-		(PalVary PALVARYTARGET 110)
-		(AssertPalette 10)
+		(= nightPalette (+ rEranasPeace 100))
+		(PalVary PALVARYTARGET (+ rEranasPeace 100))
+		(AssertPalette rEranasPeace)
 		(super init: &rest)
 	)
 	

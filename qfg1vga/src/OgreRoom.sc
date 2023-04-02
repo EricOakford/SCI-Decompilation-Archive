@@ -870,7 +870,7 @@
 				)
 			)
 			(4
-				(ShakeScreen shakeSDown)
+				(ShakeScreen 1)
 				(ogre setCel: 4)
 				(= ticks 15)
 			)
@@ -880,7 +880,7 @@
 			)
 			(6
 				(crash number: (SoundFX 66) init: play:)
-				(ShakeScreen shakeSDown)
+				(ShakeScreen 1)
 				(= [ogrePts 0] 134)
 				(= [ogrePts 1] 98)
 				(= [ogrePts 2] 158)

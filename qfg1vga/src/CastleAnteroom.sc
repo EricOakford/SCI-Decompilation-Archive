@@ -963,8 +963,8 @@
 	)
 	
 	(method (init)
-		(= nightPalette 2141)
-		(PalVary PALVARYTARGET 2141)
+		(= nightPalette (+ vBaronTalker 1000))
+		(PalVary PALVARYTARGET (+ vBaronTalker 1000))
 		(AssertPalette vBaronTalker)
 		(= font userFont)
 		(super init: baronBust baronEye baronMouth &rest)
@@ -1006,8 +1006,8 @@
 	)
 	
 	(method (init)
-		(= nightPalette 2014)
-		(PalVary PALVARYTARGET 2014)
+		(= nightPalette (+ vBarnardTalker 1000))
+		(PalVary PALVARYTARGET (+ vBarnardTalker 1000))
 		(AssertPalette vBarnardTalker)
 		(= font userFont)
 		(super init: bernieBust bernieEye bernieMouth &rest)

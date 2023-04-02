@@ -487,9 +487,9 @@
 	)
 	
 	(method (init)
-		(= nightPalette 1445)
-		(PalVary PALVARYTARGET 1445)
-		(AssertPalette 445)
+		(= nightPalette (+ vGoblin 1000))
+		(PalVary PALVARYTARGET (+ vGoblin 1000))
+		(AssertPalette vGoblin)
 		(super init:)
 		(if local61
 			;EO: this did not decompile correctly

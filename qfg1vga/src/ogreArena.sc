@@ -4,7 +4,7 @@
 (use Main)
 (use Arena)
 (use Monster)
-(use TCyc)
+(use TimeCyc)
 (use Procs)
 (use Sound)
 (use Motion)
@@ -20,11 +20,16 @@
 
 (local
 	[local0 3]
-	[monsterCycle 7] = [4 0 4 5 4 0 -32768]
+	monsterCycle = [
+		4 0
+		4 5
+		4 0
+		PATHEND
+		]
 )
 (instance ogreArena of Arena
 	(properties
-		picture 430
+		picture pForestArena
 	)
 	
 	(method (init)
@@ -33,24 +38,39 @@
 		(monster drawStatus:)
 		TimedCycle
 		(super init: &rest)
-		(Load VIEW 457)
-		(ogreLegs init: setPri: 2 stopUpd:)
-		(ogreMusic number: (SoundFX 2) loop: -1 play:)
-		(monster init: setScript: ogreScript)
+		(Load VIEW vOgreFight)
+		(ogreLegs
+			init:
+			setPri: 2
+			stopUpd:
+		)
+		(ogreMusic
+			number: (SoundFX sHardBattle)
+			loop: -1
+			play:
+		)
+		(monster
+			init:
+			setScript: ogreScript
+		)
 	)
 	
 	(method (dispose)
 		(= nightPalette 0)
 		(ogreMusic dispose:)
-		(DisposeScript 419)
-		(theMusic2 number: (SoundFX 38) loop: 1 play:)
+		(DisposeScript TIMECYC)
+		(theMusic2
+			number: (SoundFX sHardBattleEnd)
+			loop: 1
+			play:
+		)
 		(super dispose:)
 	)
 )
 
 (instance ogreMusic of Sound
 	(properties
-		number 2
+		number sHardBattle
 		priority 2
 		loop -1
 	)
@@ -60,7 +80,7 @@
 	(properties
 		x 165
 		y 80
-		view 457
+		view vOgreFight
 		priority 10
 		illegalBits $0000
 		strength 70
@@ -80,9 +100,9 @@
 	)
 	
 	(method (init)
-		(= nightPalette 1457)
-		(PalVary PALVARYTARGET 1457)
-		(AssertPalette 457)
+		(= nightPalette (+ vOgreFight 1000))
+		(PalVary PALVARYTARGET (+ vOgreFight 1000))
+		(AssertPalette vOgreFight)
 		(super init:)
 	)
 	
@@ -93,8 +113,6 @@
 )
 
 (instance ogreScript of Script
-	(properties)
-	
 	(method (doit)
 		(if (and monsterDazzle (== state 0))
 			(self changeState: 9)
@@ -113,29 +131,63 @@
 					setPri: 10
 					x: 165
 					y: 80
-					ateEgo: 0
-					action: 3
+					ateEgo: FALSE
+					action: ActParryUp
 					cycleSpeed: 20
 				)
-				(ogreLegs cel: 0 x: 166 y: 88 show: forceUpd:)
+				(ogreLegs
+					cel: 0
+					x: 166
+					y: 88
+					show:
+					forceUpd:
+				)
 				(cond 
-					((Btst fMonsterRecoils) (Bclr fMonsterRecoils) (self cue:))
-					((Random 0 1) (client setCycle: EndLoop self))
-					(else (client cel: 3 setCycle: BegLoop self))
+					((Btst fMonsterRecoils)
+						(Bclr fMonsterRecoils)
+						(self cue:)
+					)
+					((Random 0 1)
+						(client setCycle: EndLoop self)
+					)
+					(else
+						(client
+							cel: 3
+							setCycle: BegLoop self
+						)
+					)
 				)
 			)
-			(1 (= ticks 20))
+			(1
+				(= ticks 20)
+			)
 			(2
 				(Bclr fBattleStarted)
-				(client action: 1 loop: 3 cel: 0 x: 123 y: 25 forceUpd:)
+				(client
+					action: ActThrust
+					loop: 3
+					cel: 0
+					x: 123
+					y: 25
+					forceUpd:
+				)
 				(ogreLegs hide: forceUpd:)
 				(= ticks (Random 12 18))
 			)
 			(3
 				(if (client tryAttack: (client opponent?))
-					(client ateEgo: TRUE setPri: 14)
+					(client
+						ateEgo: TRUE
+						setPri: 14
+					)
 				)
-				(ogreLegs cel: 1 x: 156 y: 94 show: forceUpd:)
+				(ogreLegs
+					cel: 1
+					x: 156
+					y: 94
+					show:
+					forceUpd:
+				)
 				(client
 					loop: 4
 					cel: 0
@@ -148,34 +200,54 @@
 			)
 			(4
 				(if (client ateEgo?)
-					(client ateEgo: FALSE doDamage: (client opponent?))
+					(client
+						ateEgo: FALSE
+						doDamage: (client opponent?)
+					)
 				)
 				(= ticks 18)
 			)
 			(5
 				(cond 
-					((client ateEgo?) (ShakeScreen 2 shakeSDown))
-					((Random 0 2) (client ateEgo: FALSE) (= state 2))
+					((client ateEgo?)
+						(ShakeScreen 2 shakeSDown)
+					)
+					((Random 0 2)
+						(client ateEgo: FALSE)
+						(= state 2)
+					)
 				)
 				(client setCel: 5)
 				(= ticks 20)
 			)
 			(6
 				(client
-					action: 0
+					action: ActNone
 					cycleSpeed: 24
 					setCycle: TimedCycle @monsterCycle self
 				)
 			)
 			(7
-				(client action: 3 loop: 3 cel: 0 x: 123 y: 25 forceUpd:)
-				(ogreLegs hide: forceUpd:)
+				(client
+					action: ActParryUp
+					loop: 3
+					cel: 0
+					x: 123
+					y: 25
+					forceUpd:
+				)
+				(ogreLegs
+					hide:
+					forceUpd:
+				)
 				(client ateEgo: FALSE)
 				(= ticks (Random 12 18))
 			)
-			(8 (self changeState: 0))
+			(8
+				(self changeState: 0)
+			)
 			(9
-				(client action: 0)
+				(client action: ActNone)
 				(client setCycle: 0)
 				(= state -1)
 				(= ticks (* monsterDazzle 3))
@@ -189,7 +261,7 @@
 	(properties
 		x 166
 		y 88
-		view 457
+		view vOgreFight
 		loop 2
 	)
 )

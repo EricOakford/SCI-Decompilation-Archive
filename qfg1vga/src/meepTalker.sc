@@ -20,9 +20,9 @@
 	)
 	
 	(method (init)
-		(= nightPalette 2060)
-		(PalVary PALVARYTARGET 2060)
-		(AssertPalette 1060)
+		(= nightPalette (+ vMeepTalker 1000))
+		(PalVary PALVARYTARGET (+ vMeepTalker 1000))
+		(AssertPalette vMeepTalker)
 		(= font userFont)
 		(super init: meepBust meepEye meepMouth &rest)
 		(meepLeg setCycle: Blink 100)

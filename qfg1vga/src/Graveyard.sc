@@ -688,9 +688,9 @@
 	)
 	
 	(method (init)
-		(= nightPalette 164)
-		(PalVary PALVARYTARGET 164)
-		(AssertPalette 64)
+		(= nightPalette (+ rGraveyard 100))
+		(PalVary PALVARYTARGET (+ rGraveyard 100))
+		(AssertPalette rGraveyard)
 		(super init:)
 	)
 	

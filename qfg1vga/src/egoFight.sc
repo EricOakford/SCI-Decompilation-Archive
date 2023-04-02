@@ -14,7 +14,11 @@
 (instance egoFight of Script
 	(method (init)
 		(mouseDownHandler add: self)
-		(pointBox init: setLoop: 2 stopUpd:)
+		(pointBox
+			init:
+			setLoop: 2
+			stopUpd:
+		)
 		(theIconBar disable:)
 		(super init: &rest)
 	)
@@ -34,8 +38,13 @@
 			(if ((ScriptID 220 0) script?)
 				(((ScriptID 220 0) script?) dispose:)
 			)
-			(if script (script dispose:))
-			(client endFight: TRUE canFight: FALSE)
+			(if script
+				(script dispose:)
+			)
+			(client
+				endFight: TRUE
+				canFight: FALSE
+			)
 			(client gotBeat: (ScriptID 223 1))
 		else
 			(super doit:)

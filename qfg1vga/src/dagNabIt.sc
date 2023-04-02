@@ -790,9 +790,9 @@
 	)
 	
 	(method (init)
-		(= nightPalette 1340)
-		(PalVary PALVARYTARGET 1340)
-		(AssertPalette 340)
+		(= nightPalette (+ rDagNabIt 1000))
+		(PalVary PALVARYTARGET (+ rDagNabIt 1000))
+		(AssertPalette rDagNabIt)
 		(super init:)
 	)
 	

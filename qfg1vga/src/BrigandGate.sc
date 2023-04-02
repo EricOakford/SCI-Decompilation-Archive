@@ -851,8 +851,8 @@
 	)
 	
 	(method (init)
-		(= nightPalette 1425)
-		(PalVary PALVARYTARGET 1425)
+		(= nightPalette (+ vMinotaur 1000))
+		(PalVary PALVARYTARGET (+ vMinotaur 1000))
 		(AssertPalette vMinotaur)
 		(super init:)
 	)

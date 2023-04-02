@@ -363,7 +363,7 @@
 		(cond 
 			((and (not dinoShake) (== (sinclair cel?) 0))
 				(= dinoShake TRUE)
-				(ShakeScreen shakeSDown)
+				(ShakeScreen 1)
 			)
 			((and dinoShake (== (sinclair cel?) 1))
 				(= dinoShake FALSE)

@@ -4,7 +4,7 @@
 (use Main)
 (use Arena)
 (use Monster)
-(use TCyc)
+(use TimeCyc)
 (use Procs)
 (use Sound)
 (use Motion)
@@ -23,7 +23,15 @@
 	local0
 	goblinsInArena
 	local2
-	[monsterCycle 13] = [0 1 0 3 0 1 0 0 0 1 0 3 -32768]
+	monsterCycle = [
+		0 1
+		0 3
+		0 1
+		0 0
+		0 1
+		0 3
+		PATHEND
+		]
 )
 (instance gobMusic of Sound
 	(properties
@@ -37,7 +45,7 @@
 	(properties
 		x 166
 		y 106
-		view 447
+		view vGoblinFight
 		priority 10
 		cycleSpeed 15
 		illegalBits $0000
@@ -60,9 +68,9 @@
 	)
 	
 	(method (init)
-		(= nightPalette 1447)
-		(PalVary PALVARYTARGET 1447)
-		(AssertPalette 447)
+		(= nightPalette (+ vGoblinFight 1000))
+		(PalVary PALVARYTARGET (+ vGoblinFight 1000))
+		(AssertPalette vGoblinFight)
 		(super init:)
 	)
 	
@@ -74,7 +82,7 @@
 
 (instance goblinArena of Arena
 	(properties
-		picture 430
+		picture pForestArena
 	)
 	
 	(method (init)
@@ -83,19 +91,25 @@
 		(= monsterNum vGoblin)
 		(monster drawStatus:)
 		(super init: &rest)
-		(if (== prevRoomNum 45)
+		(if (== prevRoomNum rGoblinHideout)
 			(= goblinsInArena (+ numGoblins 1))
 		else
 			(= goblinsInArena 1)
 		)
-		(Load VIEW 447)
+		(Load VIEW vGoblinFight)
 		(if (> goblinsInArena 1)
 			(goblin2 init: stopUpd:)
-			(if (> goblinsInArena 2) (goblin3 init: stopUpd:))
+			(if (> goblinsInArena 2)
+				(goblin3 init: stopUpd:)
+			)
 		)
-		(gobMusic number: (SoundFX 3) init: play:)
+		(gobMusic
+			number: (SoundFX sEasyBattle)
+			init:
+			play:
+		)
 		(goblin
-			view: 447
+			view: vGoblinFight
 			setLoop: 0
 			cel: 0
 			setPri: 7
@@ -114,15 +128,17 @@
 	(method (dispose)
 		(= nightPalette 0)
 		(gobMusic stop:)
-		(DisposeScript 419)
-		(theMusic2 number: (SoundFX 7) loop: 1 play:)
+		(DisposeScript TIMECYC)
+		(theMusic2
+			number: (SoundFX sEasyBattleEnd)
+			loop: 1
+			play:
+		)
 		(super dispose:)
 	)
 )
 
 (instance fightScript of Script
-	(properties)
-	
 	(method (doit)
 		(if (and monsterDazzle (== state 0))
 			(self changeState: 6)
@@ -136,7 +152,7 @@
 			(0
 				(client
 					setCel: 0
-					ateEgo: 0
+					ateEgo: FALSE
 					setCycle: 0
 					cycleSpeed: (Random 15 18)
 				)
@@ -146,16 +162,31 @@
 				else
 					(switch (Random 0 3)
 						(0
-							(client action: 0 setLoop: 3 setCycle: EndLoop self)
+							(client
+								action: ActNone
+								setLoop: 3
+								setCycle: EndLoop self
+							)
 						)
 						(1
-							(client setLoop: 2 action: 3 setCycle: EndLoop self)
+							(client
+								setLoop: 2
+								action: ActParryUp
+								setCycle: EndLoop self
+							)
 						)
 						(2
-							(client action: 0 setCycle: TimedCycle @monsterCycle self)
+							(client
+								action: ActNone
+								setCycle: TimedCycle @monsterCycle self
+							)
 						)
 						(3
-							(client setLoop: 2 action: 3 setCycle: EndLoop self)
+							(client
+								setLoop: 2
+								action: ActParryUp
+								setCycle: EndLoop self
+							)
 						)
 					)
 				)
@@ -168,7 +199,12 @@
 				(if (client tryAttack: (client opponent?))
 					(client ateEgo: TRUE)
 				)
-				(client setLoop: 0 setCel: 0 action: 1 setCycle: CycleTo 2 1)
+				(client
+					setLoop: 0
+					setCel: 0
+					action: ActThrust
+					setCycle: CycleTo 2 1
+				)
 				(= ticks 60)
 			)
 			(3
@@ -182,9 +218,11 @@
 				(client stopUpd:)
 				(= ticks 15)
 			)
-			(5 (self changeState: 0))
+			(5
+				(self changeState: 0)
+			)
 			(6
-				(client action: 0)
+				(client action: ActNone)
 				(client setCycle: 0)
 				(= state -1)
 				(= ticks (* monsterDazzle 3))
@@ -195,8 +233,6 @@
 )
 
 (instance killGoblin of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -216,9 +252,11 @@
 				(= local2 (not local2))
 				(switch (-- goblinsInArena)
 					(0
-						(if (== prevRoomNum 45) (++ numGoblins))
+						(if (== prevRoomNum rGoblinHideout)
+							(++ numGoblins)
+						)
 						(= monsterHealth 0)
-						(goblinArena inTransit: 0)
+						(goblinArena inTransit: FALSE)
 						(curRoom newRoom: prevRoomNum)
 					)
 					(1
@@ -251,7 +289,7 @@
 					(HandsOn)
 				)
 				(Bclr fNextMonster)
-				(goblinArena inTransit: 0)
+				(goblinArena inTransit: FALSE)
 				(self dispose:)
 			)
 		)
@@ -262,7 +300,7 @@
 	(properties
 		x 216
 		y 88
-		view 447
+		view vGoblinFight
 	)
 )
 
@@ -270,6 +308,6 @@
 	(properties
 		x 246
 		y 88
-		view 447
+		view vGoblinFight
 	)
 )

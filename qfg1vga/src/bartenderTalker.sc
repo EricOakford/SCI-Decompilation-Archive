@@ -13,16 +13,16 @@
 	(properties
 		x 10
 		y 10
-		view 1331
+		view vBartenderTalker
 		talkWidth 260
 		textX 15
 		textY 110
 	)
 	
 	(method (init)
-		(= nightPalette 2331)
-		(PalVary PALVARYTARGET 2331)
-		(AssertPalette 1331)
+		(= nightPalette (+ vBartenderTalker 1000))
+		(PalVary PALVARYTARGET (+ vBartenderTalker 1000))
+		(AssertPalette vBartenderTalker)
 		(= font userFont)
 		(super
 			init: bartenderBust bartenderEye bartenderMouth &rest
@@ -37,7 +37,7 @@
 
 (instance bartenderBust of Prop
 	(properties
-		view 1331
+		view vBartenderTalker
 	)
 )
 
@@ -45,7 +45,7 @@
 	(properties
 		nsTop 49
 		nsLeft 31
-		view 1331
+		view vBartenderTalker
 		loop 1
 	)
 )
@@ -54,7 +54,7 @@
 	(properties
 		nsTop 24
 		nsLeft 16
-		view 1331
+		view vBartenderTalker
 		loop 2
 	)
 )
