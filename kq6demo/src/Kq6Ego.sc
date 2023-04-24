@@ -14,39 +14,7 @@
 
 (class Body of Ego
 	(properties
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		scaleSignal $0000
-		scaleX 128
-		scaleY 128
-		maxScale 128
-		cycleSpeed 6
-		script 0
-		cycler 0
-		timer 0
-		detailLevel 0
-		scaler 0
-		illegalBits $8000
-		xLast 0
-		yLast 0
-		xStep 3
-		origStep 770
-		moveSpeed 6
-		blocks 0
-		baseSetter 0
-		mover 0
-		looper 0
-		viewer 0
-		avoider 0
-		code 0
-		edgeHit 0
-		normal 1
+		normal TRUE
 		currentSpeed 0
 		setHeadingCode 0
 		oldScaleSignal 0

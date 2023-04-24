@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 912)
+(script# KQ6WINDOW)
 (include game.sh)
 (use Window)
 
@@ -18,42 +18,34 @@
 		brColorFour 16
 	)
 	
-	(method (open &tmp temp0 temp1)
-		(= temp0 1)
-		(if (!= priority -1) (= temp0 (| temp0 $0002)))
+	(method (open &tmp wMap savePort)
+		(= wMap VMAP)
+		(if (!= priority -1)
+			(|= wMap PMAP)
+		)
 		(= lsTop (- top 5))
 		(= lsLeft (- left 5))
 		(= lsRight (+ right 6))
 		(= lsBottom (+ bottom 6))
-		(= type 128)
+		(= type wCustom)
 		(= priority 15)
 		(super open:)
-		(= temp1 (GetPort))
+		(= savePort (GetPort))
 		(SetPort 0)
-		(self drawEdgedWindow: temp0)
-		(DrawCel 930 0 0 (- left 5) (- top 5) -1)
-		(DrawCel 930 0 1 (- left 5) (- bottom 1) -1)
-		(DrawCel 930 0 2 (- right 1) (- top 5) -1)
-		(DrawCel 930 0 3 (- right 1) (- bottom 1) -1)
-		(Graph GShowBits lsTop lsLeft lsBottom lsRight 1)
-		(SetPort temp1)
+		(self drawEdgedWindow: wMap)
+		(DrawCel vKQ6Window 0 0 (- left 5) (- top 5) -1)
+		(DrawCel vKQ6Window 0 1 (- left 5) (- bottom 1) -1)
+		(DrawCel vKQ6Window 0 2 (- right 1) (- top 5) -1)
+		(DrawCel vKQ6Window 0 3 (- right 1) (- bottom 1) -1)
+		(Graph GShowBits lsTop lsLeft lsBottom lsRight VMAP)
+		(SetPort savePort)
 	)
 	
-	(method (drawEdgedWindow param1 &tmp [temp0 2] temp2 temp3)
-		(Graph
-			GFillRect
-			top
-			left
-			(+ bottom 1)
-			(+ right 1)
-			param1
-			back
-			priority
-		)
-		(= temp2 1)
-		(while (< temp2 6)
-			(= temp3
-				(switch temp2
+	(method (drawEdgedWindow wMap &tmp [temp0 2] i theColor)
+		(Graph GFillRect top left (+ bottom 1) (+ right 1) wMap back priority)
+		(for ((= i 1)) (< i 6) ((++ i))
+			(= theColor
+				(switch i
 					(1 colorOne)
 					(2 tlColorTwo)
 					(3 tlColorThree)
@@ -61,32 +53,12 @@
 					(5 colorFive)
 				)
 			)
-			(Graph
-				GDrawLine
-				(- top temp2)
-				(- left temp2)
-				(- top temp2)
-				(+ right temp2)
-				temp3
-				priority
-				-1
-			)
-			(Graph
-				GDrawLine
-				(- top temp2)
-				(- left temp2)
-				(+ bottom temp2)
-				(- left temp2)
-				temp3
-				priority
-				-1
-			)
-			(++ temp2)
+			(Graph GDrawLine (- top i) (- left i) (- top i) (+ right i) theColor priority -1)
+			(Graph GDrawLine (- top i) (- left i) (+ bottom i) (- left i) theColor priority -1)
 		)
-		(= temp2 1)
-		(while (< temp2 6)
-			(= temp3
-				(switch temp2
+		(for ((= i 1)) (< i 6) ((++ i))
+			(= theColor
+				(switch i
 					(1 colorOne)
 					(2 brColorTwo)
 					(3 brColorThree)
@@ -94,27 +66,8 @@
 					(5 colorFive)
 				)
 			)
-			(Graph
-				GDrawLine
-				(+ bottom temp2)
-				(- left temp2)
-				(+ bottom temp2)
-				(+ right temp2)
-				temp3
-				priority
-				-1
-			)
-			(Graph
-				GDrawLine
-				(- top temp2)
-				(+ right temp2)
-				(+ bottom temp2)
-				(+ right temp2)
-				temp3
-				priority
-				-1
-			)
-			(++ temp2)
+			(Graph GDrawLine (+ bottom i) (- left i) (+ bottom i) (+ right i) theColor priority -1)
+			(Graph GDrawLine (- top i) (+ right i) (+ bottom i) (+ right i) theColor priority -1)
 		)
 	)
 )

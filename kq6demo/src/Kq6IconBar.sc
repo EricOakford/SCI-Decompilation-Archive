@@ -5,8 +5,7 @@
 (use IconBar)
 
 
-(class Kq6IconBar of IconBar
-	
+(class Kq6IconBar of IconBar	
 	(method (show &tmp theIcon pnv i theX theY node nextNode obj)
 		(sounds pause:)
 		(|= state IB_ACTIVE)
@@ -161,7 +160,6 @@
 )
 
 (class Kq6IconItem of IconItem
-	
 	(method (highlight tOrF &tmp t l b r sColor [temp5 2])
 		(if (or (not (& signal IB_ACTIVE)) (== highlightColor -1))
 			(return)

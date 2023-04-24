@@ -30,24 +30,30 @@
 	)
 	(if (mageChar cel?)
 		(if (< howFast fast)
-			(mageChar setCel: 0 cue:)
+			(mageChar
+				setCel: 0
+				cue:
+			)
 		else
-			(mageArm cel: 5 stopUpd:)
+			(mageArm
+				cel: 0	;5
+				stopUpd:
+			)
 			(mageChar setCycle: BegLoop mageChar)
+		)
+	)
+	(if (thiefChar cel?)
+		(if (< howFast fast)
+			(thiefChar setCel: 0 cue:)
+		else
+			(thiefChar setCycle: BegLoop thiefChar)
 		)
 	)
 	(theTitle
 		setLoop: 1
 		cel: charType
 		x: [titleX charType]
-		y:
-			[titleY (if (thiefChar cel?)
-				(if (< howFast fast)
-					(thiefChar setCel: 0 cue:)
-				else
-					(thiefChar setCycle: BegLoop thiefChar)
-				)
-			)]
+		y: [titleY charType]
 	)
 	(if
 		(or

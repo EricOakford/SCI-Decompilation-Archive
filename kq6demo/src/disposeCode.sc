@@ -9,8 +9,6 @@
 )
 
 (instance disposeCode of Code
-	(properties)
-	
 	(method (doit)
 		(LoadMany FALSE
 			STOPWALK PRINT INSET GCONTROL 905 913 917 920 904 910

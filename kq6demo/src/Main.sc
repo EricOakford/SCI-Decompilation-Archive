@@ -30,7 +30,7 @@
 (public
 	Kq6 0
 	EgoDead 1
-	EGAOrVGA 2
+	FindColor 2
 	emberTimer 4
 	beastTimer 5
 	CharonTimer 6
@@ -38,106 +38,95 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	unused_1
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	textCode
-	cuees
-	theCursor
-	normalCursor =  ARROW_CURSOR
-	waitCursor =  HAND_CURSOR
-	userFont =  USERFONT
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  USERFONT
-	version
+	ego								  	;pointer to ego
+	theGame							  	;ID of the Game instance
+	curRoom							  	;ID of current room
+	unused_1		
+	quit							  	;when TRUE, quit game
+	cast							  	;collection of actors
+	regions							  	;set of current regions
+	timers							  	;list of timers in the game
+	sounds							  	;set of sounds being played
+	inventory						  	;set of inventory items in game
+	addToPics						  	;list of views added to the picture
+	curRoomNum						  	;current room number
+	prevRoomNum						  	;previous room number
+	newRoomNum						  	;number of room to change to
+	debugOn							  	;generic debug flag -- set from debug menu
+	score							  	;the player's current score
+	possibleScore					  	;highest possible score
+	textCode							;code that handles interactive text
+	cuees							  	;list of who-to-cues for next cycle
+	theCursor						  	;the number of the current cursor
+	normalCursor	=	ARROW_CURSOR	;number of normal cursor form
+	waitCursor		=	HAND_CURSOR 	;cursor number of "wait" cursor
+	userFont		=	USERFONT	  	;font to use for Print
+	smallFont		=	4 			  	;small font for save/restore, etc.
+	lastEvent						  	;the last event (used by save/restore game)
+	modelessDialog					  	;the modeless Dialog known to User and Intrface
+	bigFont			=	USERFONT	  	;large font
+	version			=	0			  	;pointer to 'incver' version string
+										;	WARNING!  Must be set in room 0
+										;	(usually to {x.yyy    } or {x.yyy.zzz})
 	unused_3
-	curSaveDir
+	curSaveDir							;address of current save drive/directory string
 	unused_4
-	perspective
-	features
+	perspective							;player's viewing angle: degrees away
+										;	from vertical along y axis
+	features							;locations that may respond to events
 	unused_5
-	useSortedFeatures
+	useSortedFeatures	=	FALSE		;enable cast & feature sorting?
 	unused_6
-	overlays =  -1
-	doMotionCue
-	systemWindow
+	overlays			=	-1
+	doMotionCue							;a motion cue has occurred - process it
+	systemWindow						;ID of standard system window
 	unused_7
 	unused_8
 	modelessPort
-	sysLogPath
-		global43
-		global44
-		global45
-		global46
-		global47
-		global48
-		global49
-		global50
-		global51
-		global52
-		global53
-		global54
-		global55
-		global56
-		global57
-		global58
-		global59
-		global60
-		global61
-	endSysLogPath
-	gameControls
-	ftrInitializer
-	doVerbCode
-	approachCode
-	useObstacles =  TRUE
+	[sysLogPath	20]						;-used for system standard logfile path	
+	endSysLogPath						;/		(uses 20 globals)
+	gameControls						;pointer to instance of game controls
+	ftrInitializer						;pointer to code that gets called from
+										;	a feature's init
+	doVerbCode							;pointer to code that gets invoked if
+										;	no feature claims a user event
+	approachCode						;pointer to code that translates verbs
+										;	into bits
+	useObstacles	=	TRUE			;will Ego use PolyPath or not?
 	unused_9
-	theIconBar
-	mouseX
-	mouseY
-	keyDownHandler
-	mouseDownHandler
-	directionHandler
-	speechHandler
+	theIconBar							;points to TheIconBar or Null	
+	mouseX								;-last known mouse position
+	mouseY								;/
+	keyDownHandler						;-our EventHandlers, get called by game
+	mouseDownHandler					;/
+	directionHandler					;/
+	speechHandler						;a special handler for speech events
 	lastVolume
-	pMouse
-	theDoits
-	eatMice =  60
-	user
-	syncBias
-	theSync
+	pMouse			=	NULL			;pointer to a Pseudo-Mouse, or NULL
+	theDoits		=	NULL			;list of objects to get doits each cycle
+	eatMice			=	60				;how many ticks before we can mouse
+	user			=	NULL			;pointer to specific applications User
+	syncBias							;-globals used by sync.sc
+	theSync								;/		(will be removed shortly)
 	cDAudio
-	fastCast
-	inputFont
-	tickOffset
-	howFast
-	gameTime
-	narrator
-	msgType =  1
-	messager
-	prints
-	walkHandler
-	textSpeed =  2
-	altPolyList
+	fastCast							;list of talkers on screen
+	inputFont		=	SYSFONT			;font used for user type-in
+	tickOffset							;used to adjust gameTime after restore
+	howFast								;measurment of how fast a machine is
+	gameTime							;ticks since game start
+	narrator							;pointer to narrator (normally Narrator)
+	msgType			=	TEXT_MSG		;type of messages used
+	messager							;pointer to messager (normally Messager)
+	prints								;list of Print's on screen
+	walkHandler							;list of objects to get walkEvents
+	textSpeed		=	2				;time text remains on screen
+	altPolyList							;list of alternate obstacles
+	;globals 96-99 are unused
 		global96
 		global97
 		global98
 	lastSysGlobal
+	;globals 100 and above are for game use
 	debugging
 	gameCode =  1234
 	theMusic1
@@ -151,31 +140,31 @@
 	global110
 	
 	;color globals
-	global111
-	global112
-	global113
-	global114
-	global115
-	global116
-	global117
-	global118
-	global119
-	global120
-	global121
-	global122
-	global123
-	global124
-	global125
-	global126
-	global127
-	global128
-	global129
-	global130
-	global131
-	global132
+	colBlack
+	colGray1
+	colGray2
+	colGray3
+	colGray4
+	colGray5
+	colWhite
+	colDRed
+	colLRed
+	colVLRed
+	colDYellow
+	colYellow
+	colLYellow
+	colDGreen
+	colLGreen
+	colVLGreen
+	colDBlue
+	colBlue
+	colLBlue
+	colVLBlue
+	colMagenta
+	colCyan
+	colLCyan
+	colLMagenta
 	;end color globals
-	global133
-	global134
 	global135
 	startingRoom
 	gameFlags
@@ -215,16 +204,23 @@
 	(curRoom newRoom: 640)
 )
 
-(procedure (EGAOrVGA vga ega)
-	(if (< vga 0) (= vga 0))
-	(if (> vga 255) (= vga 255))
-	(if (< ega 0) (= ega 0))
-	(if (> ega 15) (= ega 15))
-	(return (if (>= numColors 32) vga else ega))
+(procedure (FindColor col256 col16)
+	(if (< col256 0)
+		(= col256 0)
+	)
+	(if (> col256 255)
+		(= col256 255)
+	)
+	(if (< col16 0)
+		(= col16 0)
+	)
+	(if (> col16 15)
+		(= col16 15)
+	)
+	(return (if (>= numColors 32) col256 else col16))
 )
 
 (class Kq6Points of Kq6Sound
-	
 	(method (check)
 		(super check: &rest)
 		(if (== prevSignal -1)
@@ -314,19 +310,19 @@
 			)
 			(V_PEPPERMINT
 				(ego put: iPeppermint 0)
-				(messager say: noun theVerb 0 1 0 0)
+				(messager say: noun theVerb NULL 1 0 0)
 			)
 			(V_SACRED_WATER
 				(ego put: iSacredWater 0)
-				(messager say: noun theVerb 0 1 0 0)
+				(messager say: noun theVerb NULL 1 0 0)
 			)
 			(V_MILK
 				(ego put: iMilk 470)
-				(messager say: noun theVerb 0 1 0 0)
+				(messager say: noun theVerb NULL 1 0 0)
 			)
 			(V_MINT
 				(ego put: iMint 280)
-				(messager say: noun theVerb 0 1 0 0)
+				(messager say: noun theVerb NULL 1 0 0)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -428,8 +424,8 @@
 		(self setCursor: (waitCursor posn: 300 180 yourself:))
 		(= narrator Kq6Narrator)
 		(= messager Kq6Messager)
-		((ScriptID 902) init:)
-		(DisposeScript 902)
+		((ScriptID COLOR_INIT) init:)
+		(DisposeScript COLOR_INIT)
 		(= theEgoGroop EgoGroop)
 		(= useSortedFeatures TRUE)
 		(StrCpy @sysLogPath {})
@@ -476,12 +472,12 @@
 			disable:
 		)
 		(icon5 message: (if (HaveMouse) SHIFTTAB else TAB))
-		((ScriptID 907) init:)
+		((ScriptID KQ6INV) init:)
 		(= startingRoom (if (GameIsRestarting) 200 else 100))
 		(= eatMice 2)
 		(Load RES_VIEW 998)
 		(Lock RES_VIEW 998 1)
-		(self newRoom: 99)
+		(self newRoom: SPEED)
 	)
 	
 	(method (play)
@@ -816,7 +812,11 @@
 	
 	(method (givePoints delta)
 		(+= score delta)
-		((Kq6Points new:) flags: mNOPAUSE number: 900 play:)
+		((Kq6Points new:)
+			flags: mNOPAUSE
+			number: 900
+			play:
+		)
 	)
 	
 	(method (killSound theSound)
@@ -836,7 +836,6 @@
 (instance globalSounds of Sounds)
 
 (class Kq6Messager of Messager
-	
 	(method (findTalker who &tmp theTalker)
 		(if
 			(= theTalker
@@ -941,7 +940,6 @@
 	)
 )
 (instance kq6DoVerbCode of Code
-	
 	(method (doit theVerb theNoun)
 		(cond 
 			(
@@ -959,7 +957,6 @@
 )
 
 (instance kq6FtrInit of Code
-
 	(method (doit theObj)
 		(if (== (theObj sightAngle?) ftrDefault)
 			(theObj sightAngle: 90)
@@ -971,7 +968,6 @@
 )
 
 (instance kq6ApproachCode of Code
-	
 	(method (doit theVerb)
 		(switch theVerb
 			(V_LOOK $0001)
@@ -984,7 +980,6 @@
 )
 
 (instance kq6PseudoMouse of PseudoMouse
-	
 	(method (handleEvent event &tmp oldIcon)
 		(if (& (event type?) direction)
 			(= oldIcon (theIconBar curIcon?))
@@ -1167,7 +1162,6 @@
 )
 
 (instance emberTimer of Timer
-
 	(method (doit)
 		(if (!= client self)
 			(super doit: &rest)
@@ -1188,7 +1182,6 @@
 )
 
 (instance beastTimer of Timer
-
 	(method (doit)
 		(if (!= client self)
 			(super doit: &rest)
@@ -1202,7 +1195,6 @@
 )
 
 (instance CharonTimer of Timer
-
 	(method (doit)
 		(if (!= client self)
 			(super doit: &rest)
@@ -1216,7 +1208,6 @@
 )
 
 (instance lettuceTimer of Timer
-
 	(method (doit)
 		(if (!= client self)
 			(super doit: &rest)

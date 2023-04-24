@@ -8,9 +8,12 @@
 
 ; Global scripts
 (define KQ6ICON 98)
+(define COLOR_INIT	902)
 (define KQ6CONTROLS	903)
 (define KQ6INV	907)
 (define DEBUG	911)
+(define KQ6WINDOW	912)
+(define PROCS	913)
 (define DISPOSE 919)
 
 ;Inventory items
@@ -94,6 +97,8 @@
 (define regionBASEMENT 81)
 (define SPEED 99)
 
+;Views
+(define vKQ6Window 930)
 
 ;Event flags
 (define fBefriendedClown 10)

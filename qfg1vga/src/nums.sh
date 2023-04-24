@@ -120,7 +120,7 @@
 (define vEgoStand	4)
 (define vEgoRun		5)
 (define vEgoSneak	6)
-(define vEgoSneakStand		7)
+(define vEgoSneakStand		8)
 (define vBowToBaron			508)
 (define vEgoThrowing		510)
 (define vEgoCastFetch		520)

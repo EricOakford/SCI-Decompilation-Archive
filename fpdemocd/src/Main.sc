@@ -511,11 +511,12 @@
 		else
 			(= debugging FALSE)
 		)
+		(= debugging TRUE)	;added to always enable debug features
 		(cond 
 			((GameIsRestarting)
 				(MemorySegment MS_RESTORE_TO @transferRoom)
 			)
-			((FileIO fileExists {29.scr})
+			((FileIO fileExists {29.scr})	;no such script resource
 				(= transferRoom 29)
 			)
 			(else
@@ -581,6 +582,10 @@
 				(Bset 59)
 				(Bset 71)
 			)
+		)
+		;EO: Added for debug support
+		(if (and debugging (not (OneOf roomNum 100)))
+			((ScriptID DEBUG 0) init:)
 		)
 		(theIconBar enable:)
 		(super startRoom: roomNum)
