@@ -138,148 +138,51 @@
 		)
 	)
 	
-	(method (select param1 &tmp temp0 temp1 temp2)
-		(asm
-			lap      argc
-			bnt      code_028a
-			lap      param1
-			bnt      code_028a
-			pTos     signal
-			ldi      1
-			and     
-			bnt      code_028a
-			ldi      1
-			sat      temp1
-			aTop     cel
-			pushi    1
-			pushSelf
-			callk    UpdateScreenItem,  2
-			pushi    0
-			callk    FrameOut,  0
-code_020b:
-			pushi    #type
-			pushi    0
-			pushi    #new
-			pushi    0
-			pushi    #curEvent
-			pushi    0
-			lag      user
-			send     4
-			send     4
-			sat      temp0
-			send     4
-			push    
-			ldi      2
-			ne?     
-			bnt      code_0270
-			pushi    #localize
-			pushi    1
-			lofsa    tellerPlane
-			push    
-			lat      temp0
-			send     6
-			pushi    #onMe
-			pushi    1
-			lst      temp0
-			self     6
-			bnt      code_0259
-			lat      temp1
-			not     
-			bnt      code_020b
-			ldi      1
-			sat      temp1
-			aTop     cel
-			pushi    1
-			pushSelf
-			callk    UpdateScreenItem,  2
-			pushi    0
-			callk    FrameOut,  0
-			jmp      code_020b
-code_0259:
-			lat      temp1
-			bnt      code_020b
-			ldi      0
-			sat      temp1
-			aTop     cel
-			pushi    1
-			pushSelf
-			callk    UpdateScreenItem,  2
-			pushi    0
-			callk    FrameOut,  0
-			jmp      code_020b
-code_0270:
-			lst      temp1
-			ldi      1
-			eq?     
-			bnt      code_0286
-			ldi      0
-			aTop     cel
-			pushi    1
-			pushSelf
-			callk    UpdateScreenItem,  2
-			pushi    0
-			callk    FrameOut,  0
-code_0286:
-			lat      temp1
-			jmp      code_028c
-code_028a:
-			ldi      1
-code_028c:
-			bnt      code_02f0
-			pushi    #copy
-			pushi    1
-			lofsa    {Say Goodbye}
-			push    
-			class    String
-			send     6
-			sat      temp2
-			pushi    #compare
-			pushi    1
-			push    
-			pToa     myHandle
-			send     6
-			bnt      code_02b4
-			ldi      1
-			sal      local0
-			pushi    1
-			pushi    51
-			callb    Bclr,  2
-code_02b4:
-			pushi    #dispose
-			pushi    0
-			lat      temp2
-			send     4
-			pushi    #iconValue
-			pushi    1
-			pTos     value
-			pToa     myTeller
-			send     6
-			pushi    41
-			pushi    #x
-			pushi    #state
-			pushi    0
-			pushi    #theControls
-			pushi    0
-			pToa     myTeller
-			send     4
-			send     4
-			push    
-			ldi      65503
-			and     
-			push    
-			pushi    #theControls
-			pushi    0
-			pToa     myTeller
-			send     4
-			send     6
-			ldi      1
-			ret     
-			jmp      code_02f3
-code_02f0:
-			ldi      0
-			ret     
-code_02f3:
-			ret     
+	(method (select relVer &tmp evt temp1 temp2)
+		(if
+			(if (and argc relVer (& signal RELVERIFY))
+				(= cel (= temp1 1))
+				(UpdateScreenItem self)
+				(FrameOut)
+				(while (!= ((= evt ((user curEvent:) new:)) type:) mouseUp)
+					(evt localize: tellerPlane)
+					(cond
+						((self onMe: evt)
+							(if (not temp1)
+								(= cel (= temp1 1))
+								(UpdateScreenItem self)
+								(FrameOut)
+							)
+						)
+						(temp1
+							(= cel (= temp1 0))
+							(UpdateScreenItem self)
+							(FrameOut)
+						)
+					)
+				)
+				(if (== temp1 1)
+					(= cel 0)
+					(UpdateScreenItem self)
+					(FrameOut)
+				)
+				temp1
+			else
+				1
+			)
+			(= temp2 (String copy: {Say Goodbye}))
+			(if (myHandle compare: temp2)
+				(= local0 1)
+				(Bclr fHideCursor)
+			)
+			(temp2 dispose:)
+			(myTeller iconValue: value)
+			((myTeller theControls:)
+				state: (& ((myTeller theControls:) state:) $ffdf)
+			)
+			(return TRUE)
+		else
+			(return FALSE)
 		)
 	)
 	
