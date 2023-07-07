@@ -410,87 +410,26 @@
 	(return (if (Btst fIsVGA) col256 else col16))
 )
 
-(procedure (manageFlags what flagEnum &tmp temp0 temp1 temp2 temp3)
-	(asm
-		ldi      0
-		sat      temp0
-code_0a76:
-		lst      temp0
-		lsp      argc
-		ldi      1
-		sub     
-		lt?     
-		bnt      code_0aeb
-		lat      temp0
-		lapi     flagEnum
-		sat      temp1
-		push    
-		ldi      16
-		div     
-		sat      temp2
-		pushi    1
-		lst      temp1
-		ldi      16
-		mod     
-		shl     
-		sat      temp3
-		lsp      what
-		dup     
-		ldi      1
-		eq?     
-		bnt      code_0aa5
-		jmp      code_0aeb
-		jmp      code_0ae5
-code_0aa5:
-		dup     
-		ldi      2
-		eq?     
-		bnt      code_0abc
-		lat      temp2
-		lsgi     gameFlags
-		lat      temp3
-		bnot    
-		and     
-		push    
-		lat      temp2
-		sagi     gameFlags
-		jmp      code_0ae5
-code_0abc:
-		dup     
-		ldi      0
-		eq?     
-		bnt      code_0ad2
-		lat      temp2
-		lsgi     gameFlags
-		lat      temp3
-		or      
-		push    
-		lat      temp2
-		sagi     gameFlags
-		jmp      code_0ae5
-code_0ad2:
-		dup     
-		ldi      3
-		eq?     
-		bnt      code_0ae5
-		lat      temp2
-		lsgi     gameFlags
-		lat      temp3
-		xor     
-		push    
-		lat      temp2
-		sagi     gameFlags
-code_0ae5:
-		toss    
-		+at      temp0
-		jmp      code_0a76
-code_0aeb:
-		lat      temp2
-		lsgi     gameFlags
-		lat      temp3
-		and     
-		ret     
+(procedure (manageFlags what flagEnum &tmp i temp1 temp2 temp3)
+	(for ((= i 0)) (< i (- argc 1)) ((++ i))
+		(= temp2 (/ (= temp1 [flagEnum i]) 16))
+		(= temp3 (<< $0001 (mod temp1 16)))
+		(switch what
+			(1
+				(break)
+			)
+			(2
+				(&= [gameFlags temp2] (~ temp3))
+			)
+			(0
+				(|= [gameFlags temp2] temp3)
+			)
+			(3
+				(^= [gameFlags temp2] temp3)
+			)
+		)
 	)
+	(return (& [gameFlags temp2] temp3))
 )
 
 (instance egoObj of Body
