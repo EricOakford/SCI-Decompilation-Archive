@@ -19,11 +19,11 @@
 )
 
 (local
-	[upperPts 14] = [319 189 0 189 0 0 314 0 171 51 177 56 319 8]
-	[lowerPts 16] = [0 189 0 0 319 0 319 189 43 189 163 146 155 142 26 181]
-	[midPts 14] = [319 106 319 189 161 189 161 111 236 145 247 140 176 106]
-	[ventPic 5] = [56 55 55 56 56]
-	local49
+	upperPts = [319 189 0 189 0 0 314 0 171 51 177 56 319 8]
+	lowerPts = [0 189 0 0 319 0 319 189 43 189 163 146 155 142 26 181]
+	midPts = [319 106 319 189 161 189 161 111 236 145 247 140 176 106]
+	ventPic = [56 55 55 56 56]
+	ventNum
 )
 (instance rm55 of Room
 	(properties
@@ -36,7 +36,7 @@
 		(upperPoly points: @upperPts size: 7)
 		(lowerPoly points: @lowerPts size: 8)
 		(midPoly points: @midPts size: 7)
-		(= local49 (if (== prevRoomNum 57) 2 else 1))
+		(= ventNum (if (== prevRoomNum 57) 2 else 1))
 		(features add: ladder eachElementDo: #init doit:)
 		(ladder approachVerbs: 3)
 		(self addObstacle: midPoly)
@@ -47,12 +47,12 @@
 			moveSpeed: (theGame egoMoveSpeed?)
 			cycleSpeed: (theGame egoMoveSpeed?)
 		)
-		(if (OneOf local49 1 2)
+		(if (OneOf ventNum 1 2)
 			(vent init:)
 			(if
 				(or
-					(and (== local49 1) (Btst fOpenedVent1))
-					(and (== local49 2) (Btst fOpenedVent2))
+					(and (== ventNum 1) (Btst fOpenedVent1))
+					(and (== ventNum 2) (Btst fOpenedVent2))
 				)
 				(vent cel: 4 ignoreActors: TRUE stopUpd:)
 			else
@@ -72,7 +72,10 @@
 		(super doit: &rest)
 		(cond 
 			(script 0)
-			((ego isBlocked:) (Print 55 2) (ego setMotion: 0))
+			((ego isBlocked:)
+				(Print 55 2)
+				(ego setMotion: 0)
+			)
 		)
 	)
 	
@@ -82,8 +85,12 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 2)
-			(if (OneOf local49 1 2) (Print 55 0) else (Print 55 1))
+		(if (== theVerb verbLook)
+			(if (OneOf ventNum 1 2)
+				(Print 55 0)
+			else
+				(Print 55 1)
+			)
 		else
 			(super doVerb: &rest)
 		)
@@ -91,150 +98,51 @@
 )
 
 (instance fromGrate of Script
-	(properties)
-	
-	(method (doit &tmp theControl)
-		(asm
-			pushi    #canControl
-			pushi    0
-			class    User
-			send     4
-			not     
-			bnt      code_0227
-			ldi      0
-			jmp      code_030f
-code_0227:
-			pushi    #onControl
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-			sat      theControl
-			push    
-			ldi      8
-			and     
-			bnt      code_025b
-			pushi    #cel
-			pushi    0
-			lofsa    vent
-			send     4
-			bnt      code_025b
-			pTos     state
-			ldi      2
-			eq?     
-			bnt      code_025b
-			pushi    #setScript
-			pushi    1
-			lofsa    toGrate2
-			push    
-			pToa     client
-			send     6
-			jmp      code_030f
-code_025b:
-			lst      theControl
-			ldi      16
-			and     
-			bnt      code_0272
-			pushi    #setScript
-			pushi    1
-			lofsa    ontoLadderFromMid
-			push    
-			pToa     client
-			send     6
-			jmp      code_030f
-code_0272:
-			pushi    #isStopped
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_0289
-			pushi    #setCycle
-			pushi    1
-			pushi    0
-			lag      ego
-			send     6
-			jmp      code_030f
-code_0289:
-			pushi    30
-			pushi    #heading
-			pushi    0
-			lag      ego
-			send     4
-			lt?     
-			bnt      code_02cd
-			pprev   
-			ldi      130
-			lt?     
-			bnt      code_02cd
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_02bb
-			pushi    #cycleDir
-			pushi    0
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			send     4
-			push    
-			ldi      65535
-			eq?     
-code_02bb:
-			not     
-			bnt      code_02cd
-			pushi    #setCycle
-			pushi    1
-			class    Reverse
-			push    
-			lag      ego
-			send     6
-			jmp      code_030f
-code_02cd:
-			pushi    30
-			pushi    #heading
-			pushi    0
-			lag      ego
-			send     4
-			lt?     
-			bnt      code_02df
-			pprev   
-			ldi      130
-			lt?     
-code_02df:
-			not     
-			bnt      code_030f
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_0300
-			pushi    #cycleDir
-			pushi    0
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			send     4
-			push    
-			ldi      1
-			eq?     
-code_0300:
-			not     
-			bnt      code_030f
-			pushi    #setCycle
-			pushi    1
-			class    Forward
-			push    
-			lag      ego
-			send     6
-code_030f:
-			pushi    #doit
-			pushi    0
-			super    Script,  4
-			ret     
+	(method (doit &tmp thisControl)
+		(cond
+			((not (User canControl:))
+				FALSE
+			)
+			(
+				(and
+					(& (= thisControl (ego onControl: origin)) cCYAN)
+					(vent cel:)
+					(== state 2)
+				)
+				(client setScript: toGrate2)
+			)
+			((& thisControl cRED)
+				(client setScript: ontoLadderFromMid)
+			)
+			((ego isStopped:)
+				(ego setCycle: 0)
+			)
+			(
+				(and
+					(< 30 (ego heading:) 130)
+					(not
+						(and
+							(ego cycler:)
+							(== ((ego cycler:) cycleDir:) -1)
+						)
+					)
+				)
+				(ego setCycle: Reverse)
+			)
+			(
+				(and
+					(not (< 30 (ego heading:) 130))
+					(not
+						(and
+							(ego cycler:)
+							(== ((ego cycler:) cycleDir:) 1)
+						)
+					)
+				)
+				(ego setCycle: Forward)
+			)
 		)
+		(super doit:)
 	)
 	
 	(method (changeState newState)
@@ -261,8 +169,6 @@ code_030f:
 )
 
 (instance scurryRats1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -328,8 +234,6 @@ code_030f:
 )
 
 (instance scurryRats2 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -383,8 +287,6 @@ code_030f:
 )
 
 (instance scurryRats3 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -417,8 +319,6 @@ code_030f:
 )
 
 (instance randomRatLow of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -458,8 +358,6 @@ code_030f:
 )
 
 (instance randomRatHi of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -499,8 +397,6 @@ code_030f:
 )
 
 (instance toGrate of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -516,7 +412,7 @@ code_030f:
 				(vent startUpd: setCycle: EndLoop self)
 			)
 			(2
-				(if (== local49 1)
+				(if (== ventNum 1)
 					(Bset fOpenedVent1)
 					(curRoom newRoom: 54)
 				else
@@ -529,111 +425,40 @@ code_030f:
 )
 
 (instance toGrate2 of Script
-	(properties)
-	
-	(method (doit &tmp theControl)
-		(asm
-			pushi    #canControl
-			pushi    0
-			class    User
-			send     4
-			not     
-			bnt      code_0b21
-			ldi      0
-			jmp      code_0bbe
-code_0b21:
-			pushi    #isStopped
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_0b38
-			pushi    #setCycle
-			pushi    1
-			pushi    0
-			lag      ego
-			send     6
-			jmp      code_0bbe
-code_0b38:
-			pushi    30
-			pushi    #heading
-			pushi    0
-			lag      ego
-			send     4
-			lt?     
-			bnt      code_0b7c
-			pprev   
-			ldi      130
-			lt?     
-			bnt      code_0b7c
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_0b6a
-			pushi    #cycleDir
-			pushi    0
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			send     4
-			push    
-			ldi      65535
-			eq?     
-code_0b6a:
-			not     
-			bnt      code_0b7c
-			pushi    #setCycle
-			pushi    1
-			class    Reverse
-			push    
-			lag      ego
-			send     6
-			jmp      code_0bbe
-code_0b7c:
-			pushi    30
-			pushi    #heading
-			pushi    0
-			lag      ego
-			send     4
-			lt?     
-			bnt      code_0b8e
-			pprev   
-			ldi      130
-			lt?     
-code_0b8e:
-			not     
-			bnt      code_0bbe
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_0baf
-			pushi    #cycleDir
-			pushi    0
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			send     4
-			push    
-			ldi      1
-			eq?     
-code_0baf:
-			not     
-			bnt      code_0bbe
-			pushi    #setCycle
-			pushi    1
-			class    Forward
-			push    
-			lag      ego
-			send     6
-code_0bbe:
-			pushi    #doit
-			pushi    0
-			super    Script,  4
-			ret     
+	(method (doit &tmp thisControl)
+		(cond
+			((not (User canControl:))
+				FALSE
+			)
+			((ego isStopped:)
+				(ego setCycle: 0)
+			)
+			(
+				(and
+					(< 30 (ego heading:) 130)
+					(not
+						(and
+							(ego cycler:)
+							(== ((ego cycler:) cycleDir:) -1)
+						)
+					)
+				)
+				(ego setCycle: Reverse)
+			)
+			(
+				(and
+					(not (< 30 (ego heading:) 130))
+					(not
+						(and
+							(ego cycler:)
+							(== ((ego cycler:) cycleDir:) 1)
+						)
+					)
+				)
+				(ego setCycle: Forward)
+			)
 		)
+		(super doit:)
 	)
 	
 	(method (changeState newState)
@@ -644,7 +469,7 @@ code_0bbe:
 				(ego setPri: 14 setMotion: MoveTo 255 151 self)
 			)
 			(1
-				(if (== local49 1)
+				(if (== ventNum 1)
 					(curRoom newRoom: 54)
 				else
 					(curRoom newRoom: 57)
@@ -655,125 +480,54 @@ code_0bbe:
 )
 
 (instance toLowVent of Script
-	(properties)
-	
-	(method (doit &tmp theControl)
-		(asm
-			pushi    #canControl
-			pushi    0
-			class    User
-			send     4
-			not     
-			bnt      code_0c77
-			ldi      0
-			jmp      code_0d16
-code_0c77:
-			pushi    #isStopped
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_0c8e
-			pushi    #setCycle
-			pushi    1
-			pushi    0
-			lag      ego
-			send     6
-			jmp      code_0d16
-code_0c8e:
-			pushi    190
-			pushi    #heading
-			pushi    0
-			lag      ego
-			send     4
-			lt?     
-			bnt      code_0cd3
-			pprev   
-			ldi      290
-			lt?     
-			bnt      code_0cd3
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_0cc1
-			pushi    #cycleDir
-			pushi    0
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			send     4
-			push    
-			ldi      65535
-			eq?     
-code_0cc1:
-			not     
-			bnt      code_0cd3
-			pushi    #setCycle
-			pushi    1
-			class    Reverse
-			push    
-			lag      ego
-			send     6
-			jmp      code_0d16
-code_0cd3:
-			pushi    190
-			pushi    #heading
-			pushi    0
-			lag      ego
-			send     4
-			lt?     
-			bnt      code_0ce6
-			pprev   
-			ldi      290
-			lt?     
-code_0ce6:
-			not     
-			bnt      code_0d16
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_0d07
-			pushi    #cycleDir
-			pushi    0
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			send     4
-			push    
-			ldi      1
-			eq?     
-code_0d07:
-			not     
-			bnt      code_0d16
-			pushi    #setCycle
-			pushi    1
-			class    Forward
-			push    
-			lag      ego
-			send     6
-code_0d16:
-			pushi    #doit
-			pushi    0
-			super    Script,  4
-			ret     
+	(method (doit &tmp thisControl)
+		(cond
+			((not (User canControl:))
+				FALSE
+			)
+			((ego isStopped:)
+				(ego setCycle: 0)
+			)
+			(
+				(and
+					(< 190 (ego heading:) 290)
+					(not
+						(and
+							(ego cycler:)
+							(== ((ego cycler:) cycleDir:) -1)
+						)
+					)
+				)
+				(ego setCycle: Reverse)
+			)
+			(
+				(and
+					(not (< 190 (ego heading:) 290))
+					(not
+						(and
+							(ego cycler:)
+							(== ((ego cycler:) cycleDir:) 1)
+						)
+					)
+				)
+				(ego setCycle: Forward)
+			)
 		)
+		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local49 (mod (++ local49) 4))
+				(= ventNum (mod (++ ventNum) 4))
 				(HandsOff)
-				(curRoom drawPic: [ventPic local49])
-				(if (OneOf local49 1 2)
+				(curRoom drawPic: [ventPic ventNum])
+				(if (OneOf ventNum 1 2)
 					(vent init:)
 					(if
 						(or
-							(and (== local49 1) (Btst fOpenedVent1))
-							(and (== local49 2) (Btst fOpenedVent2))
+							(and (== ventNum 1) (Btst fOpenedVent1))
+							(and (== ventNum 2) (Btst fOpenedVent2))
 						)
 						(vent cel: 4 ignoreActors: 1 stopUpd:)
 					else
@@ -805,125 +559,54 @@ code_0d16:
 )
 
 (instance toHiVent of Script
-	(properties)
-	
-	(method (doit &tmp theControl)
-		(asm
-			pushi    #canControl
-			pushi    0
-			class    User
-			send     4
-			not     
-			bnt      code_0ea1
-			ldi      0
-			jmp      code_0f3e
-code_0ea1:
-			pushi    #isStopped
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_0eb8
-			pushi    #setCycle
-			pushi    1
-			pushi    0
-			lag      ego
-			send     6
-			jmp      code_0f3e
-code_0eb8:
-			pushi    30
-			pushi    #heading
-			pushi    0
-			lag      ego
-			send     4
-			lt?     
-			bnt      code_0efc
-			pprev   
-			ldi      130
-			lt?     
-			bnt      code_0efc
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_0eea
-			pushi    #cycleDir
-			pushi    0
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			send     4
-			push    
-			ldi      65535
-			eq?     
-code_0eea:
-			not     
-			bnt      code_0efc
-			pushi    #setCycle
-			pushi    1
-			class    Reverse
-			push    
-			lag      ego
-			send     6
-			jmp      code_0f3e
-code_0efc:
-			pushi    30
-			pushi    #heading
-			pushi    0
-			lag      ego
-			send     4
-			lt?     
-			bnt      code_0f0e
-			pprev   
-			ldi      130
-			lt?     
-code_0f0e:
-			not     
-			bnt      code_0f3e
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_0f2f
-			pushi    #cycleDir
-			pushi    0
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			send     4
-			push    
-			ldi      1
-			eq?     
-code_0f2f:
-			not     
-			bnt      code_0f3e
-			pushi    #setCycle
-			pushi    1
-			class    Forward
-			push    
-			lag      ego
-			send     6
-code_0f3e:
-			pushi    #doit
-			pushi    0
-			super    Script,  4
-			ret     
+	(method (doit &tmp thisControl)
+		(cond
+			((not (User canControl:))
+				FALSE
+			)
+			((ego isStopped:)
+				(ego setCycle: 0)
+			)
+			(
+				(and
+					(< 30 (ego heading:) 130)
+					(not
+						(and
+							(ego cycler:)
+							(== ((ego cycler:) cycleDir:) -1)
+						)
+					)
+				)
+				(ego setCycle: Reverse)
+			)
+			(
+				(and
+					(not (< 30 (ego heading:) 130))
+					(not
+						(and
+							(ego cycler:)
+							(== ((ego cycler:) cycleDir:) 1)
+						)
+					)
+				)
+				(ego setCycle: Forward)
+			)
 		)
+		(super doit:)
 	)
-	
+		
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if local49 (-- local49) else (= local49 4))
-				(curRoom drawPic: [ventPic local49])
-				(if (OneOf local49 1 2)
+				(if ventNum (-- ventNum) else (= ventNum 4))
+				(curRoom drawPic: [ventPic ventNum])
+				(if (OneOf ventNum 1 2)
 					(vent init:)
 					(if
 						(or
-							(and (== local49 1) (Btst fOpenedVent1))
-							(and (== local49 2) (Btst fOpenedVent2))
+							(and (== ventNum 1) (Btst fOpenedVent1))
+							(and (== ventNum 2) (Btst fOpenedVent2))
 						)
 						(vent cel: 4 ignoreActors: TRUE stopUpd:)
 					else
@@ -957,8 +640,6 @@ code_0f3e:
 )
 
 (instance onLadder of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
 			((not (User canControl:)) 0)
@@ -978,8 +659,6 @@ code_0f3e:
 )
 
 (instance ontoLadderFromMid of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1009,8 +688,6 @@ code_0f3e:
 )
 
 (instance ontoLadderFromBottom of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1043,8 +720,6 @@ code_0f3e:
 )
 
 (instance ontoLadderFromTopBackwards of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1079,8 +754,6 @@ code_0f3e:
 )
 
 (instance ontoLadderFromTopForwards of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1113,8 +786,6 @@ code_0f3e:
 )
 
 (instance crawlHigh of Script
-	(properties)
-	
 	(method (doit &tmp theControl)
 		(cond 
 			((not (User canControl:)) 0)
@@ -1213,8 +884,6 @@ code_0f3e:
 )
 
 (instance crawlLow of Script
-	(properties)
-	
 	(method (doit &tmp theControl)
 		(cond 
 			((not (User canControl:)) 0)
@@ -1305,186 +974,54 @@ code_0f3e:
 )
 
 (instance crawlMid of Script
-	(properties)
-	
-	(method (doit &tmp theControl)
-		(asm
-			pushi    #canControl
-			pushi    0
-			class    User
-			send     4
-			not     
-			bnt      code_1ba5
-			ldi      0
-			jmp      code_1cd1
-code_1ba5:
-			pushi    #onControl
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-			sat      theControl
-			push    
-			ldi      8
-			and     
-			bnt      code_1bf7
-			pushi    #cel
-			pushi    0
-			lofsa    vent
-			send     4
-			bnt      code_1bf7
-			pushi    #setScript
-			pushi    1
-			pushi    0
-			lofsa    rat1
-			send     6
-			pushi    #dispose
-			pushi    1
-			pushi    0
-			lofsa    rat1
-			send     6
-			pushi    #setScript
-			pushi    1
-			pushi    0
-			lofsa    rat2
-			send     6
-			pushi    #dispose
-			pushi    1
-			pushi    0
-			lofsa    rat2
-			send     6
-			pushi    #setScript
-			pushi    1
-			lofsa    toGrate2
-			push    
-			pToa     client
-			send     6
-			jmp      code_1cd1
-code_1bf7:
-			lst      theControl
-			ldi      16
-			and     
-			bnt      code_1c34
-			pushi    #setScript
-			pushi    1
-			pushi    0
-			lofsa    rat1
-			send     6
-			pushi    #setScript
-			pushi    1
-			pushi    0
-			lofsa    rat2
-			send     6
-			pushi    #dispose
-			pushi    1
-			pushi    0
-			lofsa    rat1
-			send     6
-			pushi    #dispose
-			pushi    1
-			pushi    0
-			lofsa    rat2
-			send     6
-			pushi    #setScript
-			pushi    1
-			lofsa    ontoLadderFromMid
-			push    
-			pToa     client
-			send     6
-			jmp      code_1cd1
-code_1c34:
-			pushi    #isStopped
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_1c4b
-			pushi    #setCycle
-			pushi    1
-			pushi    0
-			lag      ego
-			send     6
-			jmp      code_1cd1
-code_1c4b:
-			pushi    30
-			pushi    #heading
-			pushi    0
-			lag      ego
-			send     4
-			lt?     
-			bnt      code_1c8f
-			pprev   
-			ldi      130
-			lt?     
-			bnt      code_1c8f
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_1c7d
-			pushi    #cycleDir
-			pushi    0
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			send     4
-			push    
-			ldi      1
-			eq?     
-code_1c7d:
-			not     
-			bnt      code_1c8f
-			pushi    #setCycle
-			pushi    1
-			class    Forward
-			push    
-			lag      ego
-			send     6
-			jmp      code_1cd1
-code_1c8f:
-			pushi    30
-			pushi    #heading
-			pushi    0
-			lag      ego
-			send     4
-			lt?     
-			bnt      code_1ca1
-			pprev   
-			ldi      130
-			lt?     
-code_1ca1:
-			not     
-			bnt      code_1cd1
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			bnt      code_1cc2
-			pushi    #cycleDir
-			pushi    0
-			pushi    #cycler
-			pushi    0
-			lag      ego
-			send     4
-			send     4
-			push    
-			ldi      65535
-			eq?     
-code_1cc2:
-			not     
-			bnt      code_1cd1
-			pushi    #setCycle
-			pushi    1
-			class    Reverse
-			push    
-			lag      ego
-			send     6
-code_1cd1:
-			pushi    #doit
-			pushi    0
-			super    Script,  4
-			ret     
+	(method (doit &tmp thisControl)
+		(cond
+			((not (User canControl:))
+				FALSE
+			)
+			((and (& (= thisControl (ego onControl: origin)) cCYAN) (vent cel:))
+				(rat1 setScript: 0)
+				(rat1 dispose: 0)
+				(rat2 setScript: 0)
+				(rat2 dispose: 0)
+				(client setScript: toGrate2)
+			)
+			((& thisControl cRED)
+				(rat1 setScript: 0)
+				(rat2 setScript: 0)
+				(rat1 dispose: 0)
+				(rat2 dispose: 0)
+				(client setScript: ontoLadderFromMid)
+			)
+			((ego isStopped:)
+				(ego setCycle: 0)
+			)
+			(
+				(and
+					(< 30 (ego heading:) 130)
+					(not
+						(and
+							(ego cycler:)
+							(== ((ego cycler:) cycleDir:) 1)
+						)
+					)
+				)
+				(ego setCycle: Forward)
+			)
+			(
+				(and
+					(not (< 30 (ego heading:) 130))
+					(not
+						(and
+							(ego cycler:)
+							(== ((ego cycler:) cycleDir:) -1)
+						)
+					)
+				)
+				(ego setCycle: Reverse)
+			)
 		)
+		(super doit:)
 	)
 	
 	(method (changeState newState)
