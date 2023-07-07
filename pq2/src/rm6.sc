@@ -1,6 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 6)
-(include system.sh)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -22,485 +21,168 @@
 	numPeopleInRoom
 )
 (instance James of Feature
-	(properties)
-	
 	(method (handleEvent event)
-		(asm
-			pushi    #claimed
-			pushi    0
-			lap      event
-			send     4
-			bt       code_0025
-			pushi    #type
-			pushi    0
-			lap      event
-			send     4
-			push    
-			ldi      128
-			ne?     
-			bnt      code_0029
-code_0025:
-			ret     
-			jmp      code_01e9
-code_0029:
-			pushi    #inRect
-			pushi    4
-			pushi    124
-			pushi    128
-			pushi    192
-			pushi    165
-			lag      ego
-			send     12
-			bt       code_0063
-			pushi    #inRect
-			pushi    4
-			pushi    193
-			pushi    145
-			pushi    240
-			pushi    154
-			lag      ego
-			send     12
-			bnt      code_0063
-			pushi    #loop
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      1
-			eq?     
-code_0063:
-			not     
-			bnt      code_007e
-			pushi    1
-			lofsa    '/james'
-			push    
-			callk    Said,  2
-			not     
-			bnt      code_0077
-			ret     
-			jmp      code_01e9
-code_0077:
-			pushi    0
-			callb    NotClose,  0
-			jmp      code_01e9
-code_007e:
-			pushi    1
-			lofsa    'look/desk'
-			push    
-			callk    Said,  2
-			bnt      code_0094
-			pushi    2
-			pushi    6
-			pushi    0
-			calle    Print,  4
-			jmp      code_01e9
-code_0094:
-			pushi    1
-			lofsa    'look/james,simpson,dude,cop'
-			push    
-			callk    Said,  2
-			bnt      code_00aa
-			pushi    2
-			pushi    6
-			pushi    1
-			calle    Print,  4
-			jmp      code_01e9
-code_00aa:
-			pushi    1
-			lofsa    'chat/james,simpson,dude,cop'
-			push    
-			callk    Said,  2
-			bt       code_00c0
-			pushi    1
-			lofsa    'hello'
-			push    
-			callk    Said,  2
-			bnt      code_011c
-code_00c0:
-			lsg      global172
-			ldi      1
-			eq?     
-			bnt      code_00d3
-			pushi    2
-			pushi    6
-			pushi    2
-			calle    Print,  4
-			jmp      code_01e9
-code_00d3:
-			pushi    2
-			pushi    0
-			pushi    2
-			callk    Random,  4
-			push    
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_00ed
-			pushi    2
-			pushi    6
-			pushi    3
-			calle    Print,  4
-			jmp      code_0118
-code_00ed:
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_0100
-			pushi    2
-			pushi    6
-			pushi    4
-			calle    Print,  4
-			jmp      code_0118
-code_0100:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_0118
-			pushi    2
-			pushi    6
-			pushi    5
-			calle    Print,  4
-			pushi    2
-			pushi    6
-			dup     
-			calle    Print,  4
-code_0118:
-			toss    
-			jmp      code_01e9
-code_011c:
-			pushi    1
-			lofsa    'chat,ask>'
-			push    
-			callk    Said,  2
-			bnt      code_01e9
-			lag      global172
-			not     
-			bnt      code_0141
-			pushi    #claimed
-			pushi    1
-			pushi    1
-			lap      event
-			send     6
-			pushi    2
-			pushi    6
-			pushi    7
-			calle    Print,  4
-			jmp      code_01e9
-code_0141:
-			pushi    1
-			lofsa    '/browning,burglary'
-			push    
-			callk    Said,  2
-			bt       code_0157
-			pushi    1
-			lofsa    '//browning,burglary'
-			push    
-			callk    Said,  2
-			bnt      code_0175
-code_0157:
-			pushi    2
-			pushi    6
-			pushi    8
-			calle    Print,  4
-			pushi    2
-			pushi    6
-			pushi    9
-			calle    Print,  4
-			pushi    2
-			pushi    2
-			pushi    92
-			callb    SolvePuzzle,  4
-			+al      local0
-			jmp      code_01e9
-code_0175:
-			pushi    1
-			lofsa    '/print,finger,fingerprint,thumb'
-			push    
-			callk    Said,  2
-			bt       code_018b
-			pushi    1
-			lofsa    '//print,finger,fingerprint,thumb'
-			push    
-			callk    Said,  2
-			bnt      code_01a0
-code_018b:
-			pushi    2
-			pushi    6
-			pushi    10
-			calle    Print,  4
-			pushi    2
-			pushi    2
-			pushi    93
-			callb    SolvePuzzle,  4
-			+al      local0
-			jmp      code_01e9
-code_01a0:
-			pushi    1
-			lofsa    '/number<serial'
-			push    
-			callk    Said,  2
-			bt       code_01b6
-			pushi    1
-			lofsa    '//number<serial'
-			push    
-			callk    Said,  2
-			bnt      code_01c2
-code_01b6:
-			pushi    2
-			pushi    6
-			pushi    11
-			calle    Print,  4
-			jmp      code_01e9
-code_01c2:
-			pushi    1
-			lofsa    '/*'
-			push    
-			callk    Said,  2
-			bnt      code_01e9
-			lsl      local0
-			ldi      6
-			ge?     
-			bnt      code_01e1
-			pushi    2
-			pushi    6
-			pushi    12
-			calle    Print,  4
-			jmp      code_01e9
-code_01e1:
-			pushi    2
-			pushi    6
-			pushi    2
-			calle    Print,  4
-code_01e9:
-			ret     
+		(cond
+			((or (event claimed:) (!= (event type:) saidEvent))
+				(return)
+			)
+			(
+				(not
+					(or
+						(ego inRect: 124 128 192 165)
+						(and
+							(ego inRect: 193 145 240 154)
+							(== (ego loop:) 1)
+						)
+					)
+				)
+				(if (not (Said '/james'))
+					(return)
+				else
+					(NotClose) ; "You're not close enough."
+				)
+			)
+			((Said 'look/desk')
+				(Print 6 0) ; "This is the desk where detective James Simpson does his creative report writing."
+			)
+			((Said 'look/james,simpson,man,cop')
+				(Print 6 1) ; "James is one cool dude."
+			)
+			((or (Said 'talk/james,simpson,man,cop') (Said 'hello'))
+				(if (== global172 1)
+					(Print 6 2) ; ""What can I do for you ?" says Detective Simpson."
+				else
+					(switch (Random 0 2)
+						(0
+							(Print 6 3) ; "Detective James Simpson says, "What a rat race burglary division is becoming. Someday, maybe, I'll be working homicide.""
+						)
+						(1
+							(Print 6 4) ; "Bonds," says Simpson, "this ain't the homicide office."
+						)
+						(2
+							(Print 6 5) ; "Chuckling, Detective Simpson says to you, "Hey Bonds, you should have been with us on the big caper last night.""
+							(Print 6 6) ; "Simpson continues, "We made a pinch on this squirrelly pecker wood who was raiding clothes lines over at the college dorm. He had in his possession, 15 jockstraps, 23 pair of panties and one paper bag over his head !""
+						)
+					)
+				)
+			)
+			((Said 'talk,ask>')
+				(cond
+					((not global172)
+						(event claimed: TRUE)
+						(Print 6 7) ; "I don't know what you are talking about. Go ask somebody else."
+					)
+					(
+						(or
+							(Said '/browning,burglary')
+							(Said '//browning,burglary')
+						)
+						(Print 6 8) ; "Oh yes," says Detective Simpson, "we just worked a recent pawn shop burglary."
+						(Print 6 9) ; "Simpson continues, "Taken in that burglary were two shotguns, a 32 automatic with silencer, and ammunition.""
+						(SolvePuzzle 2 92)
+						(++ local0)
+					)
+					(
+						(or
+							(Said '/print,finger,fingerprint,thumb')
+							(Said '//print,finger,fingerprint,thumb')
+						)
+						(Print 6 10) ; "Affirmative on the prints," says Jim, "we dusted everything. Bains' prints were all over that shotgun."
+						(SolvePuzzle 2 93)
+						(++ local0)
+					)
+					((or (Said '/number<serial') (Said '//number<serial'))
+						(Print 6 11) ; "Checking his notes he says, "The number of the 32 auto is BHG5556947. The numbers on the two shotguns are BSG12P3170 and WSGA122372.""
+					)
+					((Said '/*')
+						(if (>= local0 6)
+							(Print 6 12) ; "James says, "I have a lot of work to do Bonds.""
+						else
+							(Print 6 2) ; ""What can I do for you ?" says Detective Simpson."
+						)
+					)
+				)
+			)
 		)
 	)
 )
 
 (instance William of Feature
-	(properties)
-	
 	(method (handleEvent event)
-		(asm
-			pushi    #claimed
-			pushi    0
-			lap      event
-			send     4
-			bt       code_022b
-			pushi    #type
-			pushi    0
-			lap      event
-			send     4
-			push    
-			ldi      128
-			ne?     
-			bnt      code_022f
-code_022b:
-			ret     
-			jmp      code_03aa
-code_022f:
-			pushi    #inRect
-			pushi    4
-			pushi    190
-			pushi    128
-			pushi    239
-			pushi    146
-			lag      ego
-			send     12
-			bt       code_026a
-			pushi    #inRect
-			pushi    4
-			pushi    193
-			pushi    145
-			pushi    240
-			pushi    154
-			lag      ego
-			send     12
-			bnt      code_026a
-			pushi    #loop
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      3
-			eq?     
-code_026a:
-			not     
-			bnt      code_0299
-			pushi    1
-			lofsa    '/cole,willie,jerome'
-			push    
-			callk    Said,  2
-			not     
-			bnt      code_027e
-			ret     
-			jmp      code_03aa
-code_027e:
-			lsl      numPeopleInRoom
-			ldi      0
-			eq?     
-			bnt      code_0292
-			pushi    2
-			pushi    6
-			pushi    13
-			calle    Print,  4
-			jmp      code_03aa
-code_0292:
-			pushi    0
-			callb    NotClose,  0
-			jmp      code_03aa
-code_0299:
-			pushi    1
-			lofsa    'look/desk'
-			push    
-			callk    Said,  2
-			bnt      code_02b0
-			pushi    2
-			pushi    6
-			pushi    14
-			calle    Print,  4
-			jmp      code_03aa
-code_02b0:
-			pushi    1
-			lofsa    'ask'
-			push    
-			callk    Said,  2
-			bnt      code_02db
-			lsl      numPeopleInRoom
-			ldi      0
-			eq?     
-			bnt      code_02cf
-			pushi    2
-			pushi    6
-			pushi    13
-			calle    Print,  4
-			jmp      code_03aa
-code_02cf:
-			pushi    2
-			pushi    6
-			pushi    15
-			calle    Print,  4
-			jmp      code_03aa
-code_02db:
-			pushi    1
-			lofsa    '/cole,willie,jerome,dude,cop>'
-			push    
-			callk    Said,  2
-			bt       code_02f1
-			pushi    1
-			lofsa    'hello>'
-			push    
-			callk    Said,  2
-			bnt      code_03aa
-code_02f1:
-			lsl      numPeopleInRoom
-			ldi      0
-			eq?     
-			bnt      code_030d
-			pushi    #claimed
-			pushi    1
-			pushi    1
-			lap      event
-			send     6
-			pushi    2
-			pushi    6
-			pushi    13
-			calle    Print,  4
-			jmp      code_03aa
-code_030d:
-			pushi    1
-			lofsa    'look'
-			push    
-			callk    Said,  2
-			bnt      code_0324
-			pushi    2
-			pushi    6
-			pushi    16
-			calle    Print,  4
-			jmp      code_03aa
-code_0324:
-			pushi    1
-			lofsa    'chat'
-			push    
-			callk    Said,  2
-			bt       code_033a
-			pushi    1
-			lofsa    'hello'
-			push    
-			callk    Said,  2
-			bnt      code_03a2
-code_033a:
-			pushi    2
-			pushi    0
-			pushi    4
-			callk    Random,  4
-			push    
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_0355
-			pushi    2
-			pushi    6
-			pushi    17
-			calle    Print,  4
-			jmp      code_039e
-code_0355:
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_0368
-			pushi    2
-			pushi    6
-			pushi    18
-			calle    Print,  4
-			jmp      code_039e
-code_0368:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_037b
-			pushi    2
-			pushi    6
-			pushi    19
-			calle    Print,  4
-			jmp      code_039e
-code_037b:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_038e
-			pushi    2
-			pushi    6
-			pushi    20
-			calle    Print,  4
-			jmp      code_039e
-code_038e:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_039e
-			pushi    2
-			pushi    6
-			pushi    21
-			calle    Print,  4
-code_039e:
-			toss    
-			jmp      code_03aa
-code_03a2:
-			pushi    #claimed
-			pushi    1
-			pushi    0
-			lap      event
-			send     6
-code_03aa:
-			ret     
+		(cond
+			((or (event claimed:) (!= (event type:) saidEvent))
+				(return)
+			)
+			(
+				(not
+					(or
+						(ego inRect: 190 128 239 146)
+						(and
+							(ego inRect: 193 145 240 154)
+							(== (ego loop:) 3)
+						)
+					)
+				)
+				(cond
+					((not (Said '/cole,willie,jerome'))
+						(return)
+					)
+					((== numPeopleInRoom 0)
+						(Print 6 13) ; "Detective Jerome is not here right now."
+					)
+					(else
+						(NotClose) ; "You're not close enough."
+					)
+				)
+			)
+			((Said 'look/desk')
+				(Print 6 14) ; "This is the desk of detective William Jerome."
+			)
+			((Said 'ask')
+				(if (== numPeopleInRoom 0)
+					(Print 6 13) ; "Detective Jerome is not here right now."
+				else
+					(Print 6 15) ; "I'm sorry Sonny, but I can't help you with that."
+				)
+			)
+			((or (Said '/cole,willie,jerome,man,cop>') (Said 'hello>'))
+				(cond
+					((== numPeopleInRoom 0)
+						(event claimed: TRUE)
+						(Print 6 13) ; "Detective Jerome is not here right now."
+					)
+					((Said 'look')
+						(Print 6 16) ; "Willie is working industriously."
+					)
+					((or (Said 'talk') (Said 'hello'))
+						(switch (Random 0 4)
+							(0
+								(Print 6 17) ; ""Sonny my man," says Detective William 'Willie' Jerome."
+							)
+							(1
+								(Print 6 18) ; ""Ain't no murder suspects in here!" says Willie."
+							)
+							(2
+								(Print 6 19) ; "Detective Jerome says, "What are you looking for?""
+							)
+							(3
+								(Print 6 20) ; ""Homicide's down the hall son !" Jerome says."
+							)
+							(4
+								(Print 6 21) ; "Well!" says Willie, "if it ain't the #1 homicide dick of Lytton."
+							)
+						)
+					)
+					(else
+						(event claimed: FALSE)
+					)
+				)
+			)
 		)
 	)
 )
 
 (instance Robert of Feature
-	(properties)
-	
 	(method (handleEvent event)
 		(cond 
 			(
@@ -540,7 +222,7 @@ code_03aa:
 				)
 				(cond 
 					((<= numPeopleInRoom 1)
-						(event claimed: 1)
+						(event claimed: TRUE)
 						(Print 6 22)
 					)
 					((Said 'look')
@@ -564,7 +246,7 @@ code_03aa:
 						)
 					)
 					(else
-						(event claimed: 0)
+						(event claimed: FALSE)
 					)
 				)
 			)
@@ -576,245 +258,85 @@ code_03aa:
 )
 
 (instance Laura of Feature
-	(properties)
-	
 	(method (handleEvent event)
-		(asm
-			pushi    #claimed
-			pushi    0
-			lap      event
-			send     4
-			bt       code_0575
-			pushi    #type
-			pushi    0
-			lap      event
-			send     4
-			push    
-			ldi      128
-			ne?     
-			bnt      code_0579
-code_0575:
-			ret     
-			jmp      code_0710
-code_0579:
-			pushi    #inRect
-			pushi    4
-			pushi    137
-			pushi    116
-			pushi    300
-			pushi    129
-			lag      ego
-			send     12
-			bt       code_05b2
-			pushi    #inRect
-			pushi    4
-			pushi    137
-			pushi    116
-			pushi    300
-			pushi    135
-			lag      ego
-			send     12
-			bnt      code_05b2
-			pushi    #loop
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      3
-			eq?     
-code_05b2:
-			not     
-			bnt      code_05e1
-			pushi    1
-			lofsa    '/holt,broad'
-			push    
-			callk    Said,  2
-			not     
-			bnt      code_05c6
-			ret     
-			jmp      code_0710
-code_05c6:
-			lsl      numPeopleInRoom
-			ldi      2
-			gt?     
-			bnt      code_05da
-			pushi    2
-			pushi    6
-			pushi    30
-			calle    Print,  4
-			jmp      code_0710
-code_05da:
-			pushi    0
-			callb    NotClose,  0
-			jmp      code_0710
-code_05e1:
-			pushi    1
-			lofsa    'look/desk'
-			push    
-			callk    Said,  2
-			bnt      code_05f8
-			pushi    2
-			pushi    6
-			pushi    31
-			calle    Print,  4
-			jmp      code_0710
-code_05f8:
-			pushi    1
-			lofsa    'kiss'
-			push    
-			callk    Said,  2
-			bnt      code_060f
-			pushi    2
-			pushi    6
-			pushi    32
-			calle    Print,  4
-			jmp      code_0710
-code_060f:
-			pushi    1
-			lofsa    'ask'
-			push    
-			callk    Said,  2
-			bnt      code_063a
-			lsl      numPeopleInRoom
-			ldi      2
-			gt?     
-			bnt      code_062e
-			pushi    2
-			pushi    6
-			pushi    30
-			calle    Print,  4
-			jmp      code_0710
-code_062e:
-			pushi    2
-			pushi    6
-			pushi    33
-			calle    Print,  4
-			jmp      code_0710
-code_063a:
-			pushi    1
-			lofsa    '/holt,broad,cop>'
-			push    
-			callk    Said,  2
-			bt       code_0650
-			pushi    1
-			lofsa    'hello>'
-			push    
-			callk    Said,  2
-			bnt      code_0710
-code_0650:
-			lsl      numPeopleInRoom
-			ldi      2
-			gt?     
-			bnt      code_066c
-			pushi    #claimed
-			pushi    1
-			pushi    1
-			lap      event
-			send     6
-			pushi    2
-			pushi    6
-			pushi    30
-			calle    Print,  4
-			jmp      code_0710
-code_066c:
-			pushi    1
-			lofsa    'look'
-			push    
-			callk    Said,  2
-			bnt      code_0683
-			pushi    2
-			pushi    6
-			pushi    34
-			calle    Print,  4
-			jmp      code_0710
-code_0683:
-			pushi    1
-			lofsa    'chat'
-			push    
-			callk    Said,  2
-			bt       code_0699
-			pushi    1
-			lofsa    'hello'
-			push    
-			callk    Said,  2
-			bnt      code_06da
-code_0699:
-			pushi    2
-			pushi    0
-			pushi    2
-			callk    Random,  4
-			push    
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_06b3
-			pushi    2
-			pushi    6
-			pushi    35
-			calle    Print,  4
-			jmp      code_06d6
-code_06b3:
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_06c6
-			pushi    2
-			pushi    6
-			pushi    36
-			calle    Print,  4
-			jmp      code_06d6
-code_06c6:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_06d6
-			pushi    2
-			pushi    6
-			pushi    37
-			calle    Print,  4
-code_06d6:
-			toss    
-			jmp      code_0710
-code_06da:
-			pushi    1
-			lofsa    'kiss,pinch,fuck'
-			push    
-			callk    Said,  2
-			bnt      code_0710
-			pushi    2
-			pushi    0
-			pushi    1
-			callk    Random,  4
-			push    
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_06ff
-			pushi    2
-			pushi    6
-			pushi    38
-			calle    Print,  4
-			jmp      code_070f
-code_06ff:
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_070f
-			pushi    2
-			pushi    6
-			pushi    39
-			calle    Print,  4
-code_070f:
-			toss    
-code_0710:
-			ret     
+		(cond
+			((or (event claimed:) (!= (event type:) saidEvent))
+				(return)
+			)
+			(
+				(not
+					(or
+						(ego inRect: 137 116 300 129)
+						(and
+							(ego inRect: 137 116 300 135)
+							(== (ego loop:) 3)
+						)
+					)
+				)
+				(cond
+					((not (Said '/holt,woman'))
+						(return)
+					)
+					((> numPeopleInRoom 2)
+						(Print 6 30) ; "Detective Gomez is not here right now."
+					)
+					(else
+						(NotClose) ; "You're not close enough."
+					)
+				)
+			)
+			((Said 'look/desk')
+				(Print 6 31) ; "When she's here, Burglary Detective Laura Gomez claims this desk."
+			)
+			((Said 'kiss')
+				(Print 6 32) ; "No thanks, my husband may not like it."
+			)
+			((Said 'ask')
+				(if (> numPeopleInRoom 2)
+					(Print 6 30) ; "Detective Gomez is not here right now."
+				else
+					(Print 6 33) ; "I'm sorry, but I can't help you with that."
+				)
+			)
+			((or (Said '/holt,woman,cop>') (Said 'hello>'))
+				(cond
+					((> numPeopleInRoom 2)
+						(event claimed: TRUE)
+						(Print 6 30) ; "Detective Gomez is not here right now."
+					)
+					((Said 'look')
+						(Print 6 34) ; "Laura works eagerly away on her current case."
+					)
+					((or (Said 'talk') (Said 'hello'))
+						(switch (Random 0 2)
+							(0
+								(Print 6 35) ; "Hi, Sonny," says Laura, "long time no see."
+							)
+							(1
+								(Print 6 36) ; "Detective Laura Gomez comments, "Sure is nice to be out of Traffic Division and into Burglary for a change.""
+							)
+							(2
+								(Print 6 37) ; "Laura says, "Have you seen Marie lately? What a sweet girl she turned out to be.""
+							)
+						)
+					)
+					((Said 'kiss,pinch,fuck')
+						(switch (Random 0 1)
+							(0
+								(Print 6 38) ; "In an angry tone of voice, Laura says, "Why, you crap house RAT! I oughta slap your eye balls out!""
+							)
+							(1
+								(Print 6 39) ; "Detective Gomez verbally assaults you, "Listen gutter mouth!" she says, "the only reason I don't drop kick-you over this desk right now is because, no doubt, the obvious lack of oxygen to your brain has apparently rendered you a mental defect!""
+							)
+						)
+					)
+				)
+			)
 		)
 	)
 )
 
 (instance Computer of Feature
-	(properties)
-	
 	(method (handleEvent event)
 		(cond 
 			(

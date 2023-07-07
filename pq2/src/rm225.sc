@@ -233,638 +233,211 @@
 	)
 	
 	(method (changeState newState)
-		(asm
-			lap      newState
-			aTop     state
-			push    
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_07ba
-			pushi    5
-			pushi    1
-			pushi    54
-			pushi    205
-			pushi    1
-			pushi    1
-			pushi    162
-			pushi    1
-			lsg      currentCar
-			ldi      13
-			eq?     
-			bnt      code_0453
-			ldi      1
-			jmp      code_0455
-code_0453:
-			ldi      5
-code_0455:
-			push    
-			pushi    225
-			pushi    2
-			pushi    3
-			dup     
-			pushi    126
-			pushi    1
-			pushi    0
-			pushi    216
-			pushi    1
-			pushi    0
-			pushi    202
-			pushi    2
-			lsg      prevRoomNum
-			ldi      13
-			eq?     
-			bt       code_047a
-			lsg      prevRoomNum
-			ldi      33
-			eq?     
-			bnt      code_0485
-code_047a:
-			lal      local3
-			not     
-			bnt      code_0485
-			lal      local4
-			jmp      code_0487
-code_0485:
-			lal      local5
-code_0487:
-			push    
-			lsl      local12
-			pushi    87
-			pushi    0
-			pushi    18
-			pushi    1
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    Actor
-			send     4
-			sal      local0
-			send     56
-			pushi    #view
-			pushi    1
-			pushi    251
-			pushi    6
-			pushi    1
-			pushi    6
-			pushi    7
-			pushi    1
-			pushi    0
-			pushi    66
-			pushi    1
-			pushi    3
-			pushi    202
-			pushi    2
-			pushi    104
-			pushi    111
-			pushi    87
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    203
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     44
-			pushi    #view
-			pushi    1
-			pushi    251
-			pushi    205
-			pushi    1
-			pushi    9
-			pushi    162
-			pushi    1
-			pushi    5
-			pushi    66
-			pushi    1
-			pushi    9
-			pushi    202
-			pushi    2
-			pushi    261
-			pushi    156
-			pushi    87
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     40
-			pushi    #view
-			pushi    1
-			pushi    251
-			pushi    205
-			pushi    1
-			pushi    2
-			pushi    162
-			pushi    1
-			pushi    0
-			pushi    66
-			pushi    1
-			pushi    7
-			pushi    202
-			pushi    2
-			pushi    104
-			pushi    73
-			pushi    87
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     40
-			pushi    #view
-			pushi    1
-			pushi    251
-			pushi    205
-			pushi    1
-			pushi    0
-			pushi    162
-			pushi    1
-			pushi    2
-			pushi    66
-			pushi    1
-			pushi    10
-			pushi    202
-			pushi    2
-			pushi    167
-			pushi    139
-			pushi    206
-			pushi    0
-			pushi    87
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     44
-			pushi    #view
-			pushi    1
-			pushi    251
-			pushi    205
-			pushi    1
-			pushi    0
-			pushi    162
-			pushi    1
-			pushi    0
-			pushi    66
-			pushi    1
-			pushi    0
-			pushi    202
-			pushi    2
-			pushi    67
-			pushi    8
-			pushi    87
-			pushi    0
-			pushi    206
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     44
-			pushi    1
-			pushi    14
-			callb    Btst,  2
-			bnt      code_05ca
-			pushi    #view
-			pushi    1
-			pushi    251
-			pushi    205
-			pushi    1
-			pushi    9
-			pushi    162
-			pushi    1
-			pushi    0
-			pushi    202
-			pushi    2
-			pushi    228
-			pushi    128
-			pushi    66
-			pushi    1
-			pushi    9
-			pushi    87
-			pushi    0
-			pushi    206
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     44
-code_05ca:
-			pushi    #view
-			pushi    1
-			pushi    251
-			pushi    205
-			pushi    1
-			pushi    9
-			pushi    162
-			pushi    1
-			pushi    2
-			pushi    202
-			pushi    2
-			pushi    270
-			pushi    164
-			pushi    66
-			pushi    1
-			pushi    12
-			pushi    87
-			pushi    0
-			pushi    206
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     44
-			pushi    #view
-			pushi    1
-			pushi    251
-			pushi    205
-			pushi    1
-			pushi    9
-			pushi    162
-			pushi    1
-			pushi    2
-			pushi    202
-			pushi    2
-			pushi    205
-			pushi    166
-			pushi    66
-			pushi    1
-			pushi    11
-			pushi    87
-			pushi    0
-			pushi    206
-			pushi    1
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     46
-			pushi    #view
-			pushi    1
-			pushi    251
-			pushi    205
-			pushi    1
-			pushi    9
-			pushi    162
-			pushi    1
-			pushi    2
-			pushi    202
-			pushi    2
-			pushi    189
-			pushi    137
-			pushi    66
-			pushi    1
-			pushi    9
-			pushi    87
-			pushi    0
-			pushi    206
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     44
-			pushi    #view
-			pushi    1
-			pushi    251
-			pushi    205
-			pushi    1
-			pushi    9
-			pushi    162
-			pushi    1
-			pushi    3
-			pushi    202
-			pushi    2
-			pushi    238
-			pushi    159
-			pushi    66
-			pushi    1
-			pushi    12
-			pushi    87
-			pushi    0
-			pushi    206
-			pushi    1
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     46
-			pushi    #view
-			pushi    1
-			pushi    251
-			pushi    205
-			pushi    1
-			pushi    9
-			pushi    162
-			pushi    1
-			pushi    4
-			pushi    202
-			pushi    2
-			pushi    196
-			pushi    149
-			pushi    66
-			pushi    1
-			pushi    10
-			pushi    87
-			pushi    0
-			pushi    206
-			pushi    1
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     46
-			pushi    #view
-			pushi    1
-			pushi    50
-			pushi    205
-			pushi    1
-			pushi    2
-			pushi    162
-			pushi    1
-			pushi    0
-			pushi    202
-			pushi    2
-			pushi    227
-			pushi    155
-			pushi    66
-			pushi    1
-			pushi    10
-			pushi    87
-			pushi    0
-			pushi    206
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     44
-			pushi    5
-			pushi    1
-			pushi    0
-			pushi    202
-			pushi    2
-			lsg      prevRoomNum
-			lal      local7
-			eq?     
-			bnt      code_071b
-			ldi      240
-			jmp      code_071e
-code_071b:
-			ldi      340
-code_071e:
-			push    
-			lsg      prevRoomNum
-			lal      local7
-			eq?     
-			bnt      code_072d
-			ldi      190
-			jmp      code_0730
-code_072d:
-			ldi      300
-code_0730:
-			push    
-			pushi    87
-			pushi    0
-			pushi    216
-			pushi    1
-			pushi    0
-			lag      ego
-			send     24
-			lsg      currentCar
-			ldi      13
-			eq?     
-			bnt      code_0777
-			pushi    #view
-			pushi    1
-			pushi    20
-			pushi    202
-			pushi    2
-			pushi    190
-			pushi    195
-			pushi    126
-			pushi    1
-			class    Walk
-			push    
-			pushi    217
-			pushi    1
-			pushi    #new
-			pushi    0
-			class    Avoider
-			send     4
-			push    
-			pushi    18
-			pushi    1
-			pushi    32768
-			pushi    #new
-			pushi    0
-			class    Actor
-			send     4
-			sag      keith
-			send     32
-code_0777:
-			lsg      roomCarParked
-			lag      curRoomNum
-			ne?     
-			bnt      code_078a
-			lag      curRoomNum
-			sag      roomCarParked
-			ldi      1
-			sag      global132
-			jmp      code_0796
-code_078a:
-			lsl      local2
-			ldi      1
-			eq?     
-			bnt      code_0796
-			ldi      1
-			sag      global132
-code_0796:
-			lsg      prevRoomNum
-			lal      local7
-			ne?     
-			bnt      code_07b2
-			pushi    #setMotion
-			pushi    4
-			class    MoveTo
-			push    
-			lsl      local5
-			lsl      local12
-			pushSelf
-			lal      local0
-			send     12
-			jmp      code_08ad
-code_07b2:
-			pushi    #cue
-			pushi    0
-			self     4
-			jmp      code_08ad
-code_07ba:
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_07d5
-			pushi    #addToPic
-			pushi    0
-			pushi    206
-			pushi    1
-			pushi    0
-			pushi    203
-			pushi    0
-			lal      local0
-			send     14
-			jmp      code_08ad
-code_07d5:
-			dup     
-			ldi      2
-			bnt      code_07de
-			lal      local2
-			not     
-code_07de:
-			eq?     
-			bnt      code_0865
-			pushi    2
-			pushi    225
-			pushi    4
-			calle    Print,  4
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      0
-			le?     
-			bnt      code_0813
-			pushi    #setMotion
-			pushi    3
-			class    MoveTo
-			push    
-			pushi    10
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			lag      ego
-			send     10
-			jmp      code_08ad
-code_0813:
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      320
-			ge?     
-			bnt      code_083c
-			pushi    #setMotion
-			pushi    3
-			class    MoveTo
-			push    
-			pushi    300
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			lag      ego
-			send     10
-			jmp      code_08ad
-code_083c:
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      230
-			ge?     
-			bnt      code_08ad
-			pushi    #setMotion
-			pushi    3
-			class    MoveTo
-			push    
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    200
-			lag      ego
-			send     10
-			jmp      code_08ad
-code_0865:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_08ad
-			pushi    2
-			pushi    0
-			pushi    2
-			callk    Random,  4
-			push    
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_0887
-			pushi    2
-			pushi    225
-			pushi    5
-			calle    Print,  4
-			jmp      code_08ac
-code_0887:
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_089b
-			pushi    2
-			pushi    225
-			pushi    6
-			calle    Print,  4
-			jmp      code_08ac
-code_089b:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_08ac
-			pushi    2
-			pushi    225
-			pushi    7
-			calle    Print,  4
-code_08ac:
-			toss    
-code_08ad:
-			toss    
-			ret     
+		(switch (= state newState)
+			(0
+				((= local0 (Actor new:))
+					view: 54
+					setLoop: 1
+					setCel: (if (== currentCar 13) 1 else 5)
+					setStep: 3 3
+					setCycle: 0
+					setMotion: 0
+					posn:
+						(if
+							(and
+								(or (== prevRoomNum 13) (== prevRoomNum 33))
+								(not local3)
+							)
+							local4
+						else
+							local5
+						)
+						local12
+					init:
+					illegalBits: 0
+				)
+				((View new:)
+					view: 251
+					loop: 6
+					cel: 0
+					setPri: 3
+					posn: 104 111
+					init:
+					addToPic:
+					stopUpd:
+				)
+				((View new:)
+					view: 251
+					setLoop: 9
+					setCel: 5
+					setPri: 9
+					posn: 261 156
+					init:
+					addToPic:
+				)
+				((View new:)
+					view: 251
+					setLoop: 2
+					setCel: 0
+					setPri: 7
+					posn: 104 73
+					init:
+					addToPic:
+				)
+				((View new:)
+					view: 251
+					setLoop: 0
+					setCel: 2
+					setPri: 10
+					posn: 167 139
+					ignoreActors:
+					init:
+					addToPic:
+				)
+				((View new:)
+					view: 251
+					setLoop: 0
+					setCel: 0
+					setPri: 0
+					posn: 67 8
+					init:
+					ignoreActors:
+					addToPic:
+				)
+				(if (Btst 14)
+					((View new:)
+						view: 251
+						setLoop: 9
+						setCel: 0
+						posn: 228 128
+						setPri: 9
+						init:
+						ignoreActors:
+						addToPic:
+					)
+				)
+				((View new:)
+					view: 251
+					setLoop: 9
+					setCel: 2
+					posn: 270 164
+					setPri: 12
+					init:
+					ignoreActors:
+					addToPic:
+				)
+				((View new:)
+					view: 251
+					setLoop: 9
+					setCel: 2
+					posn: 205 166
+					setPri: 11
+					init:
+					ignoreActors: 0
+					addToPic:
+				)
+				((View new:)
+					view: 251
+					setLoop: 9
+					setCel: 2
+					posn: 189 137
+					setPri: 9
+					init:
+					ignoreActors:
+					addToPic:
+				)
+				((View new:)
+					view: 251
+					setLoop: 9
+					setCel: 3
+					posn: 238 159
+					setPri: 12
+					init:
+					ignoreActors: 0
+					addToPic:
+				)
+				((View new:)
+					view: 251
+					setLoop: 9
+					setCel: 4
+					posn: 196 149
+					setPri: 10
+					init:
+					ignoreActors: 0
+					addToPic:
+				)
+				((View new:)
+					view: 50
+					setLoop: 2
+					setCel: 0
+					posn: 227 155
+					setPri: 10
+					init:
+					ignoreActors:
+					addToPic:
+				)
+				(ego
+					view: 0
+					posn:
+						(if (== prevRoomNum local7) 240 else 340)
+						(if (== prevRoomNum local7) 190 else 300)
+					init:
+					setMotion: 0
+				)
+				(if (== currentCar 13)
+					((= keith (Actor new:))
+						view: 20
+						posn: 190 195
+						setCycle: Walk
+						setAvoider: (Avoider new:)
+						illegalBits: cWHITE
+					)
+				)
+				(cond
+					((!= roomCarParked curRoomNum)
+						(= roomCarParked curRoomNum)
+						(= global132 1)
+					)
+					((== local2 1)
+						(= global132 1)
+					)
+				)
+				(if (!= prevRoomNum local7)
+					(local0 setMotion: MoveTo local5 local12 self)
+				else
+					(self cue:)
+				)
+			)
+			(1
+				(local0 addToPic: ignoreActors: 0 stopUpd:)
+			)
+			((and 2 (not local2))
+				(Print 225 4) ; "You will need your car in order to leave the area."
+				(cond
+					((<= (ego x:) 0)
+						(ego setMotion: MoveTo 10 (ego y:))
+					)
+					((>= (ego x:) 320)
+						(ego setMotion: MoveTo 300 (ego y:))
+					)
+					((>= (ego y:) 230)
+						(ego setMotion: MoveTo (ego x:) 200)
+					)
+				)
+			)
+			(3
+				(switch (Random 0 2)
+					(0
+						(Print 225 5) ; "The motel manager is fuming when he says... "You dudes aren't gonna get away with this! You're gonna pay for that damage!!""
+					)
+					(1
+						(Print 225 6) ; "I'm telling you!" says the manager, "This just hasn't been my year."
+					)
+					(2
+						(Print 225 7) ; "You guys did a bang-up job of ruining my day!" the manager says. "Now how about getting lost?"
+					)
+				)
+			)
 		)
 	)
 	

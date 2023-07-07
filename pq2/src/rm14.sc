@@ -183,550 +183,185 @@
 		style VSHUTTER
 	)
 	
-;;;	(method (init)
-;;;		(Load VIEW 0) ;needed? 
-;;;		(Load VIEW 20)
-;;;		(Load VIEW 74)
-;;;		(Load VIEW 75)
-;;;		(Load VIEW 54)
-;;;		(Load VIEW 51)	
-;;;		(= gunNotNeeded 1)
-;;;		(= gunFireState 3)
-;;;		(self setLocales: 153)
-;;;		(cond
-;;;			(and (== prevRoomNum 33) (== prevRoomNum 13))
-;;;				(self 6) 
-;;;			)
-;;;			((== prevRoomNum 13)
-;;;				(++ local0) ;maybe?	
-;;;			)
-;;;				(and
-;;;					(> global169 0)
-;;;					(!= prevRoomNum 13)				
-;;;				)
-;;;				(Bclr fKeithFollows)
-;;;			)
-;;;			...
-;;;			(if (!= global69 0)
-;;;				((View new:)
-;;;					view: 94
-;;;							
-;;;				)
-;;;
-;;;			
-;;;		)
-;;;	)
-	
-	
 	(method (init)
-		(asm
-			pushi    #init
-			pushi    0
-			super    Room,  4
-			ldi      70
-			sag      perspective
-			pushi    2
-			pushi    128
-			pushi    0
-			callk    Load,  4
-			pushi    2
-			pushi    128
-			pushi    20
-			callk    Load,  4
-			pushi    2
-			pushi    128
-			pushi    74
-			callk    Load,  4
-			pushi    2
-			pushi    128
-			pushi    75
-			callk    Load,  4
-			pushi    2
-			pushi    128
-			pushi    54
-			callk    Load,  4
-			pushi    2
-			pushi    128
-			pushi    51
-			callk    Load,  4
-			ldi      1
-			sag      gunNotNeeded
-			ldi      3
-			sag      gunFireState
-			pushi    #setLocales
-			pushi    1
-			pushi    153
-			self     6
-			lsg      prevRoomNum
-			ldi      33
-			eq?     
-			bt       code_0644
-			lsg      prevRoomNum
-			ldi      13
-			eq?     
-code_0644:
-			sal      local0
-			lsg      prevRoomNum
-			ldi      33
-			eq?     
-			bnt      code_0654
-			pushi    1
-			pushi    40
-			callb    Bclr,  2
-code_0654:
-			lsg      global169
-			ldi      0
-			gt?     
-			bnt      code_067a
-			lsg      prevRoomNum
-			ldi      13
-			ne?     
-			bnt      code_067a
-			lsg      prevRoomNum
-			ldi      104
-			ne?     
-			bnt      code_067a
-			lsg      currentCar
-			ldi      13
-			eq?     
-			bnt      code_067a
-			pushi    1
-			pushi    118
-			callb    Btst,  2
-code_067a:
-			sal      local10
-			lag      global169
-			sal      local13
-			lsg      gamePhase
-			ldi      8
-			ge?     
-			bt       code_068d
-			lal      local10
-			bnt      code_0691
-code_068d:
-			ldi      0
-			sag      global169
-code_0691:
-			lal      local0
-			bnt      code_069d
-			pushi    0
-			callb    HandsOff,  0
-			jmp      code_06a1
-code_069d:
-			pushi    0
-			callb    HandsOn,  0
-code_06a1:
-			lsg      global169
-			ldi      0
-			ne?     
-			bnt      code_06d4
-			pushi    #view
-			pushi    1
-			pushi    94
-			pushi    6
-			pushi    1
-			pushi    1
-			pushi    7
-			pushi    1
-			pushi    0
-			pushi    202
-			pushi    2
-			pushi    248
-			pushi    186
-			pushi    87
-			pushi    0
-			pushi    203
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     38
-code_06d4:
-			lal      local0
-			bnt      code_06e0
-			ldi      0
-			sag      workCarTrunkOpened
-			jmp      code_071e
-code_06e0:
-			pushi    #observeBlocks
-			pushi    1
-			lofsa    ourCarBlock
-			push    
-			lag      ego
-			send     6
-			lag      workCarTrunkOpened
-			bnt      code_071e
-			lsg      currentCar
-			ldi      13
-			eq?     
-			bnt      code_071e
-			pushi    #view
-			pushi    1
-			pushi    51
-			pushi    6
-			pushi    1
-			pushi    5
-			pushi    7
-			pushi    1
-			pushi    2
-			pushi    66
-			pushi    1
-			pushi    10
-			pushi    202
-			pushi    2
-			pushi    178
-			pushi    144
-			pushi    87
-			pushi    0
-			lofsa    unTrunk
-			send     36
-code_071e:
-			pushi    #view
-			pushi    1
-			pushi    74
-			pushi    205
-			pushi    1
-			pushi    7
-			pushi    202
-			pushi    2
-			pushi    174
-			pushi    43
-			pushi    164
-			pushi    1
-			pushi    3
-			pushi    126
-			pushi    1
-			class    Forward
-			push    
-			pushi    66
-			pushi    1
-			pushi    6
-			pushi    87
-			pushi    0
-			pushi    122
-			pushi    1
-			lofsa    backScript
-			push    
-			lofsa    windSock
-			send     48
-			lsg      gamePhase
-			ldi      6
-			eq?     
-			bt       code_0762
-			lsg      gamePhase
-			ldi      7
-			eq?     
-			bnt      code_0777
-code_0762:
-			lsg      prevRoomNum
-			ldi      15
-			ne?     
-			bnt      code_0777
-			pushi    1
-			pushi    40
-			callb    Bclr,  2
-			ldi      1
-			sag      global111
-			jmp      code_077b
-code_0777:
-			ldi      0
-			sag      global111
-code_077b:
-			pushi    128
-			ldi      1
-			sali     local4
-			pushi    136
-			ldi      3
-			sali     local4
-			lsg      currentCar
-			dup     
-			ldi      33
-			eq?     
-			bnt      code_07af
-			pushi    #left
-			pushi    1
-			pushi    180
-			lofsa    ourCarBlock
-			send     6
-			pushi    176
-			ldi      0
-			sali     local4
-			pushi    213
-			ldi      2
-			sali     local4
-			jmp      code_07c4
-code_07af:
-			dup     
-			ldi      13
-			eq?     
-			bnt      code_07c4
-			pushi    200
-			ldi      0
-			sali     local4
-			pushi    215
-			ldi      2
-			sali     local4
-code_07c4:
-			toss    
-			ldi      340
-			sal      local8
-			ldi      198
-			sal      local2
-			ldi      216
-			sal      local3
-			ldi      15
-			sal      nextRoom
-			pushi    #view
-			pushi    1
-			pushi    75
-			pushi    6
-			pushi    1
-			pushi    1
-			pushi    7
-			pushi    1
-			pushi    2
-			pushi    202
-			pushi    2
-			pushi    32
-			pushi    141
-			pushi    87
-			pushi    0
-			pushi    203
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     38
-			pushi    #view
-			pushi    1
-			pushi    54
-			pushi    6
-			pushi    1
-			pushi    0
-			pushi    7
-			pushi    1
-			pushi    4
-			pushi    202
-			pushi    2
-			pushi    14
-			pushi    186
-			pushi    87
-			pushi    0
-			pushi    203
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     38
-			pushi    #view
-			pushi    1
-			pushi    75
-			pushi    6
-			pushi    1
-			pushi    2
-			pushi    7
-			pushi    1
-			pushi    0
-			pushi    202
-			pushi    2
-			pushi    233
-			pushi    162
-			pushi    87
-			pushi    0
-			pushi    203
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     38
-			pushi    #view
-			pushi    1
-			pushi    54
-			pushi    6
-			pushi    1
-			pushi    1
-			pushi    7
-			pushi    1
-			pushi    2
-			pushi    202
-			pushi    2
-			pushi    308
-			pushi    126
-			pushi    87
-			pushi    0
-			pushi    203
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     38
-			pushi    #view
-			pushi    1
-			pushi    75
-			pushi    6
-			pushi    1
-			pushi    2
-			pushi    7
-			pushi    1
-			pushi    1
-			pushi    202
-			pushi    2
-			pushi    323
-			pushi    141
-			pushi    87
-			pushi    0
-			pushi    203
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     38
-			pushi    #view
-			pushi    1
-			pushi    75
-			pushi    6
-			pushi    1
-			pushi    2
-			pushi    7
-			pushi    1
-			pushi    2
-			pushi    202
-			pushi    2
-			pushi    341
-			pushi    162
-			pushi    87
-			pushi    0
-			pushi    203
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     38
-			pushi    #view
-			pushi    1
-			pushi    54
-			pushi    6
-			pushi    1
-			pushi    0
-			pushi    7
-			pushi    1
-			pushi    0
-			pushi    202
-			pushi    2
-			pushi    357
-			pushi    184
-			pushi    87
-			pushi    0
-			pushi    203
-			pushi    0
-			pushi    208
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     38
-			lsg      roomCarParked
-			lag      curRoomNum
-			eq?     
-			bnt      code_0918
-			lsg      prevRoomNum
-			ldi      33
-			eq?     
-			bt       code_0918
-			lsg      prevRoomNum
-			ldi      13
-			eq?     
-code_0918:
-			sal      local1
-			lal      local0
-			bnt      code_0923
-			ldi      1
-			sag      global132
-code_0923:
-			pushi    5
-			pushi    1
-			pushi    54
-			pushi    225
-			pushi    1
-			pushi    2
-			pushi    205
-			pushi    1
-			pushi    1
-			pushi    162
-			pushi    1
-			lsg      currentCar
-			ldi      13
-			eq?     
-			bnt      code_0943
-			ldi      1
-			jmp      code_0945
-code_0943:
-			ldi      5
-code_0945:
-			push    
-			pushi    126
-			pushi    1
-			pushi    0
-			pushi    202
-			pushi    2
-			lsg      prevRoomNum
-			ldi      13
-			eq?     
-			bt       code_095e
-			lsg      prevRoomNum
-			ldi      33
-			eq?     
-			bnt      code_0969
-code_095e:
-			lal      local1
-			not     
-			bnt      code_0969
-			lal      local2
-			jmp      code_096b
-code_0969:
-			lal      local3
-code_096b:
-			push    
-			pushi    140
-			pushi    18
-			pushi    1
-			pushi    0
-			pushi    206
-			pushi    0
-			pushi    87
-			pushi    0
-			lofsa    ourCar
-			send     52
-			pushi    #setScript
-			pushi    1
-			lofsa    rm14Script
-			push    
-			self     6
-			ret     
+		(super init:)
+		(= perspective 70)
+		(Load VIEW 0)
+		(Load VIEW 20)
+		(Load VIEW 74)
+		(Load VIEW 75)
+		(Load VIEW 54)
+		(Load VIEW 51)
+		(= gunNotNeeded TRUE)
+		(= gunFireState gunPROHIBITED)
+		(self setLocales: 153)
+		(= local0 (or (== prevRoomNum 33) (== prevRoomNum 13)))
+		(if (== prevRoomNum 33)
+			(Bclr 40)
 		)
+		(= local10
+			(if
+				(and
+					(> global169 0)
+					(!= prevRoomNum 13)
+					(!= prevRoomNum 104)
+					(== currentCar 13)
+				)
+				(Btst 118)
+			)
+		)
+		(= local13 global169)
+		(if (or (>= gamePhase 8) local10)
+			(= global169 0)
+		)
+		(if local0
+			(HandsOff)
+		else
+			(HandsOn)
+		)
+		(if (!= global169 0)
+			((View new:)
+				view: 94
+				loop: 1
+				cel: 0
+				posn: 248 186
+				init:
+				stopUpd:
+				addToPic:
+			)
+		)
+		(if local0
+			(= workCarTrunkOpened 0)
+		else
+			(ego observeBlocks: ourCarBlock)
+			(if (and workCarTrunkOpened (== currentCar 13))
+				(unTrunk view: 51 loop: 5 cel: 2 setPri: 10 posn: 178 144 init:)
+			)
+		)
+		(windSock
+			view: 74
+			setLoop: 7
+			posn: 174 43
+			cycleSpeed: 3
+			setCycle: Forward
+			setPri: 6
+			init:
+			setScript: backScript
+		)
+		(if (and (or (== gamePhase 6) (== gamePhase 7)) (!= prevRoomNum 15))
+			(Bclr 40)
+			(= global111 1)
+		else
+			(= global111 0)
+		)
+		(= [local4 1] 128)
+		(= [local4 3] 136)
+		(switch currentCar
+			(33
+				(ourCarBlock left: 180)
+				(= [local4 0] 176)
+				(= [local4 2] 213)
+			)
+			(13
+				(= [local4 0] 200)
+				(= [local4 2] 215)
+			)
+		)
+		(= local8 340)
+		(= local2 198)
+		(= local3 216)
+		(= nextRoom 15)
+		((View new:)
+			view: 75
+			loop: 1
+			cel: 2
+			posn: 32 141
+			init:
+			stopUpd:
+			addToPic:
+		)
+		((View new:)
+			view: 54
+			loop: 0
+			cel: 4
+			posn: 14 186
+			init:
+			stopUpd:
+			addToPic:
+		)
+		((View new:)
+			view: 75
+			loop: 2
+			cel: 0
+			posn: 233 162
+			init:
+			stopUpd:
+			addToPic:
+		)
+		((View new:)
+			view: 54
+			loop: 1
+			cel: 2
+			posn: 308 126
+			init:
+			stopUpd:
+			addToPic:
+		)
+		((View new:)
+			view: 75
+			loop: 2
+			cel: 1
+			posn: 323 141
+			init:
+			stopUpd:
+			addToPic:
+		)
+		((View new:)
+			view: 75
+			loop: 2
+			cel: 2
+			posn: 341 162
+			init:
+			stopUpd:
+			addToPic:
+		)
+		((View new:)
+			view: 54
+			loop: 0
+			cel: 0
+			posn: 357 184
+			init:
+			stopUpd:
+			addToPic:
+		)
+		(= local1
+			(if (== roomCarParked curRoomNum)
+				(or (== prevRoomNum 33) (== prevRoomNum 13))
+			)
+		)
+		(if local0
+			(= global132 1)
+		)
+		(ourCar
+			view: 54
+			setStep: 2
+			setLoop: 1
+			setCel: (if (== currentCar 13) 1 else 5)
+			setCycle: 0
+			posn:
+				(if (and (or (== prevRoomNum 13) (== prevRoomNum 33)) (not local1))
+					local2
+				else
+					local3
+				)
+				140
+			illegalBits: 0
+			ignoreActors:
+			init:
+		)
+		(self setScript: rm14Script)
 	)
+
 	
 	(method (dispose)
 		(ourCarBlock dispose:)

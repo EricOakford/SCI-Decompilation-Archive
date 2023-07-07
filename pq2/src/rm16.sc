@@ -378,2132 +378,703 @@
 	)
 	
 	(method (handleEvent event)
-		(asm
-			pushi    #type
-			pushi    0
-			lap      event
-			send     4
-			push    
-			dup     
-			ldi      128
-			eq?     
-			bnt      code_17b9
-			pushi    1
-			lofsa    'display/shot,mugshot,painting'
-			push    
-			callk    Said,  2
-			bnt      code_0960
-			pushi    0
-			call     localproc_000c,  0
-			pushi    #has
-			pushi    1
-			pushi    12
-			lag      ego
-			send     6
-			not     
-			bnt      code_07a2
-			pushi    #has
-			pushi    1
-			pushi    23
-			lag      ego
-			send     6
-			not     
-			bnt      code_07a2
-			pushi    2
-			pushi    16
-			pushi    3
-			call     LocPrint,  4
-			jmp      code_17b9
-code_07a2:
-			lsl      local4
-			ldi      5
-			eq?     
-			bt       code_07de
-			lsl      local4
-			ldi      4
-			eq?     
-			bt       code_07de
-			lsl      local4
-			ldi      3
-			eq?     
-			bt       code_07c2
-			lsl      local4
-			ldi      2
-			eq?     
-			bnt      code_07cc
-code_07c2:
-			pushi    1
-			pushi    39
-			callb    Btst,  2
-			not     
-			bt       code_07de
-code_07cc:
-			lsl      local4
-			ldi      1
-			eq?     
-			bnt      code_08bd
-			pushi    1
-			pushi    38
-			callb    Btst,  2
-			not     
-			bnt      code_08bd
-code_07de:
-			pushi    #has
-			pushi    1
-			pushi    12
-			lag      ego
-			send     6
-			bnt      code_0854
-			pushi    2
-			pushi    1
-			pushi    4
-			callk    Random,  4
-			push    
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_080b
-			pushi    4
-			pushi    16
-			pushi    4
-			pushi    82
-			pushi    112
-			call     LocPrint,  8
-			jmp      code_0850
-code_080b:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_0823
-			pushi    4
-			pushi    16
-			pushi    5
-			pushi    82
-			pushi    112
-			call     LocPrint,  8
-			jmp      code_0850
-code_0823:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_083b
-			pushi    4
-			pushi    16
-			pushi    6
-			pushi    82
-			pushi    112
-			call     LocPrint,  8
-			jmp      code_0850
-code_083b:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_0850
-			pushi    4
-			pushi    16
-			pushi    7
-			pushi    82
-			pushi    112
-			call     LocPrint,  8
-code_0850:
-			toss    
-			jmp      code_17b9
-code_0854:
-			pushi    2
-			pushi    1
-			pushi    4
-			callk    Random,  4
-			push    
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_0874
-			pushi    4
-			pushi    16
-			pushi    4
-			pushi    82
-			pushi    123
-			call     LocPrint,  8
-			jmp      code_08b9
-code_0874:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_088c
-			pushi    4
-			pushi    16
-			pushi    5
-			pushi    82
-			pushi    123
-			call     LocPrint,  8
-			jmp      code_08b9
-code_088c:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_08a4
-			pushi    4
-			pushi    16
-			pushi    6
-			pushi    82
-			pushi    123
-			call     LocPrint,  8
-			jmp      code_08b9
-code_08a4:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_08b9
-			pushi    4
-			pushi    16
-			pushi    7
-			pushi    82
-			pushi    123
-			call     LocPrint,  8
-code_08b9:
-			toss    
-			jmp      code_17b9
-code_08bd:
-			lsl      local4
-			ldi      1
-			eq?     
-			bnt      code_08fb
-			pushi    #has
-			pushi    1
-			pushi    12
-			lag      ego
-			send     6
-			bnt      code_08fb
-			pushi    1
-			pushi    38
-			callb    Btst,  2
-			bnt      code_08fb
-			lsg      gamePhase
-			ldi      6
-			ge?     
-			bnt      code_08fb
-			pushi    4
-			pushi    16
-			pushi    8
-			pushi    82
-			pushi    112
-			call     LocPrint,  8
-			pushi    2
-			pushi    1
-			pushi    81
-			callb    SolvePuzzle,  4
-			jmp      code_17b9
-code_08fb:
-			lsl      local4
-			ldi      2
-			eq?     
-			bt       code_0913
-			lsl      local4
-			ldi      3
-			eq?     
-			bt       code_0913
-			lsl      local4
-			ldi      1
-			eq?     
-			bnt      code_0954
-code_0913:
-			pushi    1
-			pushi    39
-			callb    Btst,  2
-			bt       code_0925
-			pushi    1
-			pushi    38
-			callb    Btst,  2
-			bnt      code_0954
-code_0925:
-			pushi    #has
-			pushi    1
-			pushi    12
-			lag      ego
-			send     6
-			bnt      code_0943
-			pushi    4
-			pushi    16
-			pushi    9
-			pushi    82
-			pushi    112
-			call     LocPrint,  8
-			jmp      code_17b9
-code_0943:
-			pushi    4
-			pushi    16
-			pushi    9
-			pushi    82
-			pushi    123
-			call     LocPrint,  8
-			jmp      code_17b9
-code_0954:
-			pushi    2
-			pushi    16
-			pushi    10
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0960:
-			pushi    1
-			lofsa    '[look]/computer,computer,display,info[<flight]'
-			push    
-			callk    Said,  2
-			bnt      code_0a20
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      114
-			lt?     
-			bnt      code_0988
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      160
-			gt?     
-			bt       code_09a5
-code_0988:
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      114
-			ge?     
-			bnt      code_09b1
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      210
-			gt?     
-			bnt      code_09b1
-code_09a5:
-			pushi    2
-			pushi    16
-			pushi    11
-			call     LocPrint,  4
-			jmp      code_17b9
-code_09b1:
-			pushi    #loop
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      0
-			eq?     
-			not     
-			bnt      code_09cc
-			pushi    2
-			pushi    16
-			pushi    12
-			call     LocPrint,  4
-			jmp      code_17b9
-code_09cc:
-			pushi    2
-			pushi    1
-			pushi    4
-			callk    Random,  4
-			push    
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_09e7
-			pushi    2
-			pushi    16
-			pushi    13
-			call     LocPrint,  4
-			jmp      code_0a1c
-code_09e7:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_09fa
-			pushi    2
-			pushi    16
-			pushi    14
-			call     LocPrint,  4
-			jmp      code_0a1c
-code_09fa:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_0a0d
-			pushi    2
-			pushi    16
-			pushi    15
-			call     LocPrint,  4
-			jmp      code_0a1c
-code_0a0d:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_0a1c
-			pushi    2
-			pushi    16
-			dup     
-			call     LocPrint,  4
-code_0a1c:
-			toss    
-			jmp      code_17b9
-code_0a20:
-			pushi    1
-			lofsa    'look>'
-			push    
-			callk    Said,  2
-			bnt      code_0db4
-			pushi    1
-			lofsa    '/bathroom,(chamber<rest)'
-			push    
-			callk    Said,  2
-			bnt      code_0a42
-			pushi    2
-			pushi    16
-			pushi    17
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0a42:
-			pushi    1
-			lofsa    '[<at,around][/chamber,airport,terminal,building,lobby]'
-			push    
-			callk    Said,  2
-			bnt      code_0a59
-			pushi    2
-			pushi    16
-			pushi    18
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0a59:
-			pushi    1
-			lofsa    '[<at,up][/ceiling]'
-			push    
-			callk    Said,  2
-			bnt      code_0a70
-			pushi    2
-			pushi    16
-			pushi    19
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0a70:
-			pushi    1
-			lofsa    '[<at,down][/floor,dirt,tile]'
-			push    
-			callk    Said,  2
-			bnt      code_0a87
-			pushi    2
-			pushi    16
-			pushi    20
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0a87:
-			pushi    1
-			lofsa    '/pane'
-			push    
-			callk    Said,  2
-			bnt      code_0ad2
-			pushi    #loop
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      2
-			eq?     
-			bnt      code_0aac
-			pushi    2
-			pushi    16
-			pushi    21
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0aac:
-			pushi    #loop
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      3
-			eq?     
-			bnt      code_0ac6
-			pushi    2
-			pushi    16
-			pushi    22
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0ac6:
-			pushi    2
-			pushi    16
-			pushi    23
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0ad2:
-			pushi    1
-			lofsa    '/flyer,ad'
-			push    
-			callk    Said,  2
-			bnt      code_0b58
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      114
-			lt?     
-			bnt      code_0afa
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      160
-			gt?     
-			bt       code_0b25
-code_0afa:
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      114
-			ge?     
-			bnt      code_0b17
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      210
-			gt?     
-			bt       code_0b25
-code_0b17:
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      110
-			lt?     
-			bnt      code_0b31
-code_0b25:
-			pushi    2
-			pushi    16
-			pushi    24
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0b31:
-			pushi    #loop
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      0
-			eq?     
-			not     
-			bnt      code_0b4c
-			pushi    2
-			pushi    16
-			pushi    25
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0b4c:
-			pushi    2
-			pushi    16
-			pushi    26
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0b58:
-			pushi    1
-			lofsa    '/briefcase,bag,baggage'
-			push    
-			callk    Said,  2
-			bnt      code_0b83
-			lsl      local4
-			ldi      4
-			eq?     
-			bnt      code_0b77
-			pushi    2
-			pushi    16
-			pushi    27
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0b77:
-			pushi    2
-			pushi    16
-			pushi    28
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0b83:
-			pushi    1
-			lofsa    '/counter,iguana'
-			push    
-			callk    Said,  2
-			bnt      code_0b9a
-			pushi    2
-			pushi    16
-			pushi    29
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0b9a:
-			pushi    1
-			lofsa    '/dude,broad,men,women,crowd,passenger'
-			push    
-			callk    Said,  2
-			bnt      code_0c00
-			lsl      local4
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_0bba
-			pushi    2
-			pushi    16
-			pushi    30
-			call     LocPrint,  4
-			jmp      code_0bfc
-code_0bba:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_0bcd
-			pushi    2
-			pushi    16
-			pushi    31
-			call     LocPrint,  4
-			jmp      code_0bfc
-code_0bcd:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_0be0
-			pushi    2
-			pushi    16
-			pushi    31
-			call     LocPrint,  4
-			jmp      code_0bfc
-code_0be0:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_0bf3
-			pushi    2
-			pushi    16
-			pushi    32
-			call     LocPrint,  4
-			jmp      code_0bfc
-code_0bf3:
-			pushi    2
-			pushi    16
-			pushi    33
-			call     LocPrint,  4
-code_0bfc:
-			toss    
-			jmp      code_17b9
-code_0c00:
-			pushi    1
-			lofsa    '/agent'
-			push    
-			callk    Said,  2
-			bnt      code_0c3b
-			lsl      local4
-			ldi      2
-			eq?     
-			bt       code_0c23
-			lsl      local4
-			ldi      3
-			eq?     
-			bt       code_0c23
-			lsl      local4
-			ldi      1
-			eq?     
-			bnt      code_0c2f
-code_0c23:
-			pushi    2
-			pushi    16
-			pushi    31
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0c2f:
-			pushi    2
-			pushi    16
-			pushi    28
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0c3b:
-			pushi    1
-			lofsa    '<below/bench'
-			push    
-			callk    Said,  2
-			bnt      code_0c66
-			lsl      local4
-			ldi      4
-			eq?     
-			bnt      code_0c5a
-			pushi    2
-			pushi    16
-			pushi    34
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0c5a:
-			pushi    2
-			pushi    16
-			pushi    28
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0c66:
-			pushi    1
-			lofsa    '/bench'
-			push    
-			callk    Said,  2
-			bnt      code_0c91
-			lsl      local4
-			ldi      4
-			eq?     
-			bnt      code_0c85
-			pushi    2
-			pushi    16
-			pushi    35
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0c85:
-			pushi    2
-			pushi    16
-			pushi    28
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0c91:
-			pushi    1
-			lofsa    '/wall'
-			push    
-			callk    Said,  2
-			bnt      code_0ca8
-			pushi    2
-			pushi    16
-			pushi    36
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0ca8:
-			pushi    1
-			lofsa    '/counter'
-			push    
-			callk    Said,  2
-			bnt      code_0cbf
-			pushi    2
-			pushi    16
-			pushi    37
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0cbf:
-			pushi    1
-			lofsa    '/painting'
-			push    
-			callk    Said,  2
-			bnt      code_0cd6
-			pushi    2
-			pushi    16
-			pushi    38
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0cd6:
-			pushi    1
-			lofsa    '/ass,cigarette'
-			push    
-			callk    Said,  2
-			bnt      code_0d01
-			lsl      local4
-			ldi      4
-			eq?     
-			bnt      code_0cf5
-			pushi    2
-			pushi    16
-			pushi    39
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0cf5:
-			pushi    2
-			pushi    16
-			pushi    28
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0d01:
-			pushi    1
-			lofsa    '/rope'
-			push    
-			callk    Said,  2
-			bnt      code_0d18
-			pushi    2
-			pushi    16
-			pushi    40
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0d18:
-			pushi    1
-			lofsa    '/ashtray,(tray<ash)'
-			push    
-			callk    Said,  2
-			bnt      code_0d43
-			lsl      local4
-			ldi      4
-			eq?     
-			bnt      code_0d37
-			pushi    2
-			pushi    16
-			pushi    41
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0d37:
-			pushi    2
-			pushi    16
-			pushi    28
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0d43:
-			pushi    1
-			lofsa    '/list,flight'
-			push    
-			callk    Said,  2
-			bnt      code_17b9
-			lsl      local4
-			ldi      0
-			eq?     
-			bt       code_0d66
-			lsl      local4
-			ldi      4
-			eq?     
-			bt       code_0d66
-			lsl      local4
-			ldi      5
-			eq?     
-			bnt      code_0d72
-code_0d66:
-			pushi    2
-			pushi    16
-			pushi    42
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0d72:
-			lsl      local4
-			ldi      1
-			eq?     
-			bnt      code_0d83
-			pushi    1
-			pushi    38
-			callb    Btst,  2
-			bt       code_0d9c
-code_0d83:
-			lsl      local4
-			ldi      2
-			eq?     
-			bt       code_0d93
-			lsl      local4
-			ldi      3
-			eq?     
-			bnt      code_0da8
-code_0d93:
-			pushi    1
-			pushi    39
-			callb    Btst,  2
-			bnt      code_0da8
-code_0d9c:
-			pushi    #changeState
-			pushi    1
-			pushi    1
-			lofsa    agentScript
-			send     6
-			jmp      code_17b9
-code_0da8:
-			pushi    2
-			pushi    16
-			pushi    43
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0db4:
-			pushi    1
-			lofsa    'kiss'
-			push    
-			callk    Said,  2
-			bnt      code_0dcb
-			pushi    2
-			pushi    16
-			pushi    44
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0dcb:
-			pushi    1
-			lofsa    '/hello'
-			push    
-			callk    Said,  2
-			bnt      code_0de2
-			pushi    2
-			pushi    16
-			pushi    45
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0de2:
-			pushi    1
-			lofsa    '/bye'
-			push    
-			callk    Said,  2
-			bnt      code_0df9
-			pushi    2
-			pushi    16
-			pushi    46
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0df9:
-			pushi    1
-			lofsa    'affirmative'
-			push    
-			callk    Said,  2
-			bnt      code_0e10
-			pushi    2
-			pushi    16
-			pushi    47
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0e10:
-			pushi    1
-			lofsa    'n'
-			push    
-			callk    Said,  2
-			bnt      code_0e27
-			pushi    2
-			pushi    16
-			pushi    48
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0e27:
-			pushi    1
-			lofsa    'frisk,kill,beat,fire'
-			push    
-			callk    Said,  2
-			bnt      code_0e3e
-			pushi    2
-			pushi    16
-			pushi    49
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0e3e:
-			pushi    1
-			lofsa    'get,eat,pick[<up]/candy,bar'
-			push    
-			callk    Said,  2
-			bnt      code_0e55
-			pushi    2
-			pushi    16
-			pushi    50
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0e55:
-			pushi    1
-			lofsa    'gave,get/briefcase'
-			push    
-			callk    Said,  2
-			bnt      code_0ea7
-			pushi    #owner
-			pushi    0
-			pushi    #at
-			pushi    1
-			pushi    10
-			lag      inventory
-			send     6
-			send     4
-			push    
-			ldi      16
-			eq?     
-			bnt      code_0e82
-			pushi    2
-			pushi    16
-			pushi    51
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0e82:
-			pushi    #has
-			pushi    1
-			pushi    10
-			lag      ego
-			send     6
-			bnt      code_0e9b
-			pushi    2
-			pushi    16
-			pushi    52
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0e9b:
-			pushi    2
-			pushi    16
-			pushi    53
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0ea7:
-			pushi    1
-			lofsa    'get,pick[<up]/baggage,briefcase,bag'
-			push    
-			callk    Said,  2
-			bnt      code_0edf
-			pushi    #inRect
-			pushi    4
-			pushi    30
-			pushi    114
-			pushi    83
-			pushi    143
-			lag      ego
-			send     12
-			bnt      code_0ed3
-			pushi    2
-			pushi    16
-			pushi    54
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0ed3:
-			pushi    2
-			pushi    16
-			pushi    55
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0edf:
-			pushi    1
-			lofsa    'sat[<down]'
-			push    
-			callk    Said,  2
-			bnt      code_0ef6
-			pushi    2
-			pushi    16
-			pushi    56
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0ef6:
-			pushi    1
-			lofsa    'get/bench'
-			push    
-			callk    Said,  2
-			bnt      code_0f21
-			lsl      local4
-			ldi      4
-			eq?     
-			bnt      code_0f15
-			pushi    2
-			pushi    16
-			pushi    34
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0f15:
-			pushi    2
-			pushi    16
-			pushi    57
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0f21:
-			pushi    1
-			lofsa    'hoist,move/bench'
-			push    
-			callk    Said,  2
-			bnt      code_0f4c
-			lsl      local4
-			ldi      4
-			eq?     
-			bnt      code_0f40
-			pushi    2
-			pushi    16
-			pushi    34
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0f40:
-			pushi    2
-			pushi    16
-			pushi    57
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0f4c:
-			pushi    1
-			lofsa    'get/painting'
-			push    
-			callk    Said,  2
-			bnt      code_0f63
-			pushi    2
-			pushi    16
-			pushi    58
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0f63:
-			pushi    1
-			lofsa    'eat,cigarette,get/ass,cigarette'
-			push    
-			callk    Said,  2
-			bnt      code_0f8e
-			lsl      local4
-			ldi      4
-			eq?     
-			bnt      code_0f82
-			pushi    2
-			pushi    16
-			pushi    59
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0f82:
-			pushi    2
-			pushi    16
-			pushi    60
-			call     LocPrint,  4
-			jmp      code_17b9
-code_0f8e:
-			pushi    1
-			lofsa    'chat>'
-			push    
-			callk    Said,  2
-			bnt      code_121e
-			pushi    1
-			lofsa    '/dude,person'
-			push    
-			callk    Said,  2
-			bnt      code_1044
-			lsl      local4
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_0fbe
-			pushi    0
-			call     localproc_000c,  0
-			pushi    2
-			pushi    16
-			pushi    61
-			call     LocPrint,  4
-			jmp      code_1040
-code_0fbe:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_0fd6
-			pushi    0
-			call     localproc_000c,  0
-			pushi    2
-			pushi    16
-			pushi    62
-			call     LocPrint,  4
-			jmp      code_1040
-code_0fd6:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_0fee
-			pushi    0
-			call     localproc_000c,  0
-			pushi    2
-			pushi    16
-			pushi    62
-			call     LocPrint,  4
-			jmp      code_1040
-code_0fee:
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_1001
-			pushi    2
-			pushi    16
-			pushi    63
-			call     LocPrint,  4
-			jmp      code_1040
-code_1001:
-			pushi    2
-			pushi    1
-			pushi    3
-			callk    Random,  4
-			push    
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_101c
-			pushi    2
-			pushi    16
-			pushi    64
-			call     LocPrint,  4
-			jmp      code_103f
-code_101c:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_102f
-			pushi    2
-			pushi    16
-			pushi    65
-			call     LocPrint,  4
-			jmp      code_103f
-code_102f:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_103f
-			pushi    2
-			pushi    16
-			pushi    66
-			call     LocPrint,  4
-code_103f:
-			toss    
-code_1040:
-			toss    
-			jmp      code_17b9
-code_1044:
-			pushi    1
-			lofsa    '/customer,passenger'
-			push    
-			callk    Said,  2
-			bnt      code_106f
-			lsl      local4
-			ldi      1
-			eq?     
-			bnt      code_1063
-			pushi    2
-			pushi    16
-			pushi    67
-			call     LocPrint,  4
-			jmp      code_17b9
-code_1063:
-			pushi    2
-			pushi    16
-			pushi    68
-			call     LocPrint,  4
-			jmp      code_17b9
-code_106f:
-			pushi    1
-			lofsa    '/men,crowd'
-			push    
-			callk    Said,  2
-			bnt      code_10a8
-			pushi    #inRect
-			pushi    4
-			pushi    63
-			pushi    130
-			pushi    116
-			pushi    184
-			lag      ego
-			send     12
-			bnt      code_109c
-			pushi    2
-			pushi    16
-			pushi    69
-			call     LocPrint,  4
-			jmp      code_17b9
-code_109c:
-			pushi    2
-			pushi    16
-			pushi    70
-			call     LocPrint,  4
-			jmp      code_17b9
-code_10a8:
-			pushi    1
-			lofsa    '/broad'
-			push    
-			callk    Said,  2
-			bnt      code_117a
-			lsl      local4
-			ldi      0
-			eq?     
-			bnt      code_1135
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      225
-			gt?     
-			bnt      code_10d8
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      114
-			lt?     
-			bt       code_10e7
-code_10d8:
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      141
-			lt?     
-			bnt      code_10f3
-code_10e7:
-			pushi    2
-			pushi    16
-			pushi    63
-			call     LocPrint,  4
-			jmp      code_17b9
-code_10f3:
-			pushi    2
-			pushi    1
-			pushi    3
-			callk    Random,  4
-			push    
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_110e
-			pushi    2
-			pushi    16
-			pushi    64
-			call     LocPrint,  4
-			jmp      code_1131
-code_110e:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_1121
-			pushi    2
-			pushi    16
-			pushi    65
-			call     LocPrint,  4
-			jmp      code_1131
-code_1121:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_1131
-			pushi    2
-			pushi    16
-			pushi    66
-			call     LocPrint,  4
-code_1131:
-			toss    
-			jmp      code_17b9
-code_1135:
-			pushi    1
-			pushi    38
-			callb    Btst,  2
-			not     
-			bnt      code_1150
-			pushi    0
-			call     localproc_000c,  0
-			pushi    2
-			pushi    16
-			pushi    71
-			call     LocPrint,  4
-			jmp      code_17b9
-code_1150:
-			lsl      local4
-			ldi      1
-			eq?     
-			bnt      code_1169
-			pushi    0
-			call     localproc_000c,  0
-			pushi    2
-			pushi    16
-			pushi    72
-			call     LocPrint,  4
-			jmp      code_17b9
-code_1169:
-			pushi    0
-			call     localproc_000c,  0
-			pushi    2
-			pushi    16
-			pushi    73
-			call     LocPrint,  4
-			jmp      code_17b9
-code_117a:
-			pushi    1
-			lofsa    '/agent'
-			push    
-			callk    Said,  2
-			bnt      code_17b9
-			lsl      local4
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_11b4
-			pushi    1
-			pushi    38
-			callb    Btst,  2
-			bnt      code_11a3
-			pushi    2
-			pushi    16
-			pushi    72
-			call     LocPrint,  4
-			jmp      code_121a
-code_11a3:
-			pushi    0
-			call     localproc_000c,  0
-			pushi    2
-			pushi    16
-			pushi    74
-			call     LocPrint,  4
-			jmp      code_121a
-code_11b4:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_11cc
-			pushi    0
-			call     localproc_000c,  0
-			pushi    2
-			pushi    16
-			pushi    62
-			call     LocPrint,  4
-			jmp      code_121a
-code_11cc:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_11e4
-			pushi    0
-			call     localproc_000c,  0
-			pushi    2
-			pushi    16
-			pushi    62
-			call     LocPrint,  4
-			jmp      code_121a
-code_11e4:
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_11f7
-			pushi    2
-			pushi    16
-			pushi    75
-			call     LocPrint,  4
-			jmp      code_121a
-code_11f7:
-			dup     
-			ldi      5
-			eq?     
-			bnt      code_120a
-			pushi    2
-			pushi    16
-			pushi    75
-			call     LocPrint,  4
-			jmp      code_121a
-code_120a:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_121a
-			pushi    2
-			pushi    16
-			pushi    75
-			call     LocPrint,  4
-code_121a:
-			toss    
-			jmp      code_17b9
-code_121e:
-			pushi    1
-			lofsa    'flash,display/badge'
-			push    
-			callk    Said,  2
-			bnt      code_12b1
-			pushi    #has
-			pushi    1
-			pushi    7
-			lag      ego
-			send     6
-			not     
-			bnt      code_1243
-			pushi    2
-			pushi    16
-			pushi    76
-			call     LocPrint,  4
-			jmp      code_17b9
-code_1243:
-			lsl      local4
-			ldi      4
-			eq?     
-			bt       code_1253
-			lsl      local4
-			ldi      5
-			eq?     
-			bnt      code_125f
-code_1253:
-			pushi    2
-			pushi    16
-			pushi    77
-			call     LocPrint,  4
-			jmp      code_17b9
-code_125f:
-			lsl      local4
-			ldi      1
-			eq?     
-			bnt      code_127e
-			pushi    0
-			call     localproc_000c,  0
-			pushi    1
-			pushi    38
-			callb    Bset,  2
-			pushi    #changeState
-			pushi    1
-			pushi    0
-			lofsa    agentScript
-			send     6
-			jmp      code_17b9
-code_127e:
-			lsl      local4
-			ldi      2
-			eq?     
-			bt       code_128e
-			lsl      local4
-			ldi      3
-			eq?     
-			bnt      code_12a5
-code_128e:
-			pushi    0
-			call     localproc_000c,  0
-			pushi    1
-			pushi    39
-			callb    Bset,  2
-			pushi    #changeState
-			pushi    1
-			pushi    0
-			lofsa    agentScript
-			send     6
-			jmp      code_17b9
-code_12a5:
-			pushi    2
-			pushi    16
-			pushi    78
-			call     LocPrint,  4
-			jmp      code_17b9
-code_12b1:
-			pushi    1
-			lofsa    '[*]/bains'
-			push    
-			callk    Said,  2
-			bnt      code_12c8
-			pushi    2
-			pushi    16
-			pushi    79
-			call     LocPrint,  4
-			jmp      code_17b9
-code_12c8:
-			pushi    1
-			lofsa    'ask/departure,flight'
-			push    
-			callk    Said,  2
-			bt       code_12f4
-			pushi    1
-			lofsa    'is<when/flight<next/houston'
-			push    
-			callk    Said,  2
-			bt       code_12f4
-			pushi    1
-			lofsa    'fly,go/houston'
-			push    
-			callk    Said,  2
-			bt       code_12f4
-			pushi    1
-			lofsa    '/flight,departure<next'
-			push    
-			callk    Said,  2
-			bnt      code_1376
-code_12f4:
-			pushi    1
-			pushi    34
-			callb    Btst,  2
-			bnt      code_1322
-			lsl      local4
-			ldi      1
-			eq?     
-			bt       code_1315
-			lsl      local4
-			ldi      2
-			eq?     
-			bt       code_1315
-			lsl      local4
-			ldi      3
-			eq?     
-			bnt      code_1322
-code_1315:
-			pushi    #changeState
-			pushi    1
-			pushi    4
-			lofsa    agentScript
-			send     6
-			jmp      code_17b9
-code_1322:
-			pushi    2
-			pushi    1
-			pushi    4
-			callk    Random,  4
-			push    
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_133d
-			pushi    2
-			pushi    16
-			pushi    13
-			call     LocPrint,  4
-			jmp      code_1372
-code_133d:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_1350
-			pushi    2
-			pushi    16
-			pushi    14
-			call     LocPrint,  4
-			jmp      code_1372
-code_1350:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_1363
-			pushi    2
-			pushi    16
-			pushi    15
-			call     LocPrint,  4
-			jmp      code_1372
-code_1363:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_1372
-			pushi    2
-			pushi    16
-			dup     
-			call     LocPrint,  4
-code_1372:
-			toss    
-			jmp      code_17b9
-code_1376:
-			pushi    1
-			lofsa    '[get,buy]/ticket'
-			push    
-			callk    Said,  2
-			bt       code_138c
-			pushi    1
-			lofsa    'gave/i/ticket'
-			push    
-			callk    Said,  2
-			bnt      code_150b
-code_138c:
-			pushi    #claimed
-			pushi    1
-			pushi    0
-			lap      event
-			send     6
-			ldi      100
-			sal      local3
-			lsl      local4
-			ldi      0
-			eq?     
-			bt       code_13b0
-			lsl      local4
-			ldi      4
-			eq?     
-			bt       code_13b0
-			lsl      local4
-			ldi      5
-			eq?     
-			bnt      code_140c
-code_13b0:
-			pushi    #claimed
-			pushi    1
-			pushi    1
-			lap      event
-			send     6
-			pushi    2
-			pushi    1
-			pushi    4
-			callk    Random,  4
-			push    
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_13d3
-			pushi    2
-			pushi    16
-			pushi    13
-			call     LocPrint,  4
-			jmp      code_1408
-code_13d3:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_13e6
-			pushi    2
-			pushi    16
-			pushi    14
-			call     LocPrint,  4
-			jmp      code_1408
-code_13e6:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_13f9
-			pushi    2
-			pushi    16
-			pushi    15
-			call     LocPrint,  4
-			jmp      code_1408
-code_13f9:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_1408
-			pushi    2
-			pushi    16
-			dup     
-			call     LocPrint,  4
-code_1408:
-			toss    
-			jmp      code_17b9
-code_140c:
-			lsl      local4
-			ldi      1
-			eq?     
-			bnt      code_1437
-			pushi    1
-			pushi    38
-			callb    Btst,  2
-			not     
-			bnt      code_1437
-			pushi    0
-			call     localproc_000c,  0
-			pushi    #claimed
-			pushi    1
-			pushi    1
-			lap      event
-			send     6
-			pushi    2
-			pushi    16
-			pushi    74
-			call     LocPrint,  4
-			jmp      code_17b9
-code_1437:
-			pushi    #inRect
-			pushi    4
-			pushi    225
-			pushi    139
-			pushi    265
-			pushi    145
-			lag      ego
-			send     12
-			bnt      code_1468
-			pushi    #claimed
-			pushi    1
-			pushi    1
-			lap      event
-			send     6
-			pushi    0
-			call     localproc_000c,  0
-			pushi    2
-			pushi    16
-			pushi    80
-			call     LocPrint,  4
-			jmp      code_17b9
-code_1468:
-			pushi    1
-			lofsa    '//houston'
-			push    
-			callk    Said,  2
-			bnt      code_1484
-			ldi      1
-			sal      goingToHouston
-			pushi    #changeState
-			pushi    1
-			pushi    5
-			lofsa    agentScript
-			send     6
-			jmp      code_17b9
-code_1484:
-			pushi    1
-			lofsa    '//steelton'
-			push    
-			callk    Said,  2
-			bnt      code_14a0
-			ldi      1
-			sal      goingToSteelton
-			pushi    #changeState
-			pushi    1
-			pushi    6
-			lofsa    agentScript
-			send     6
-			jmp      code_17b9
-code_14a0:
-			pushi    1
-			lofsa    '//beirut'
-			push    
-			callk    Said,  2
-			bnt      code_14bb
-			ldi      1
-			sal      local11
-			pushi    2
-			pushi    16
-			pushi    81
-			call     LocPrint,  4
-			jmp      code_17b9
-code_14bb:
-			pushi    1
-			lofsa    '//coarsegold'
-			push    
-			callk    Said,  2
-			bnt      code_14e0
-			ldi      1
-			sal      local12
-			pushi    2
-			pushi    16
-			pushi    82
-			call     LocPrint,  4
-			pushi    #changeState
-			pushi    1
-			pushi    7
-			lofsa    agentScript
-			send     6
-			jmp      code_17b9
-code_14e0:
-			pushi    1
-			lofsa    '//*'
-			push    
-			callk    Said,  2
-			bnt      code_14f7
-			pushi    2
-			pushi    16
-			pushi    83
-			call     LocPrint,  4
-			jmp      code_17b9
-code_14f7:
-			pushi    #claimed
-			pushi    1
-			pushi    1
-			lap      event
-			send     6
-			pushi    2
-			pushi    16
-			pushi    84
-			call     LocPrint,  4
-			jmp      code_17b9
-code_150b:
-			lsl      local3
-			ldi      0
-			gt?     
-			bnt      code_15ec
-			pushi    #inRect
-			pushi    4
-			pushi    175
-			pushi    112
-			pushi    225
-			pushi    130
-			lag      ego
-			send     12
-			bt       code_155a
-			pushi    #inRect
-			pushi    4
-			pushi    195
-			pushi    130
-			pushi    225
-			pushi    139
-			lag      ego
-			send     12
-			bt       code_155a
-			pushi    #inRect
-			pushi    4
-			pushi    225
-			pushi    139
-			pushi    265
-			pushi    145
-			lag      ego
-			send     12
-			bnt      code_15ec
-code_155a:
-			pushi    1
-			lofsa    '/houston'
-			push    
-			callk    Said,  2
-			bnt      code_1576
-			ldi      1
-			sal      goingToHouston
-			pushi    #changeState
-			pushi    1
-			pushi    5
-			lofsa    agentScript
-			send     6
-			jmp      code_15e6
-code_1576:
-			pushi    1
-			lofsa    '/steelton'
-			push    
-			callk    Said,  2
-			bnt      code_1592
-			ldi      1
-			sal      goingToSteelton
-			pushi    #changeState
-			pushi    1
-			pushi    6
-			lofsa    agentScript
-			send     6
-			jmp      code_15e6
-code_1592:
-			pushi    1
-			lofsa    '/beirut'
-			push    
-			callk    Said,  2
-			bnt      code_15ad
-			ldi      1
-			sal      local11
-			pushi    2
-			pushi    16
-			pushi    81
-			call     LocPrint,  4
-			jmp      code_15e6
-code_15ad:
-			pushi    1
-			lofsa    '/coarsegold'
-			push    
-			callk    Said,  2
-			bnt      code_15d2
-			ldi      1
-			sal      local12
-			pushi    2
-			pushi    16
-			pushi    82
-			call     LocPrint,  4
-			pushi    #changeState
-			pushi    1
-			pushi    7
-			lofsa    agentScript
-			send     6
-			jmp      code_15e6
-code_15d2:
-			pushi    1
-			lofsa    '/america'
-			push    
-			callk    Said,  2
-			bnt      code_15ec
-			pushi    2
-			pushi    16
-			pushi    83
-			call     LocPrint,  4
-code_15e6:
-			bnt      code_15ec
-			jmp      code_17b9
-code_15ec:
-			pushi    1
-			lofsa    'ask/ticket'
-			push    
-			callk    Said,  2
-			bt       code_1602
-			pushi    1
-			lofsa    'ask/[agent,dude,broad]/ticket'
-			push    
-			callk    Said,  2
-			bnt      code_1613
-code_1602:
-			pushi    0
-			call     localproc_000c,  0
-			pushi    2
-			pushi    16
-			pushi    84
-			call     LocPrint,  4
-			jmp      code_17b9
-code_1613:
-			pushi    1
-			lofsa    'pay[/agent,dude,broad,ticket,flight]'
-			push    
-			callk    Said,  2
-			bnt      code_162a
-			pushi    2
-			pushi    16
-			pushi    85
-			call     LocPrint,  4
-			jmp      code_17b9
-code_162a:
-			pushi    1
-			lofsa    'ask,dial,use,get,pick[<up]/phone'
-			push    
-			callk    Said,  2
-			bt       code_1640
-			pushi    1
-			lofsa    'ask,make/call,phone'
-			push    
-			callk    Said,  2
-			bnt      code_1712
-code_1640:
-			pushi    #inRect
-			pushi    4
-			pushi    175
-			pushi    112
-			pushi    225
-			pushi    130
-			lag      ego
-			send     12
-			bnt      code_167d
-			pushi    0
-			call     localproc_000c,  0
-			pushi    1
-			pushi    38
-			callb    Btst,  2
-			bnt      code_1671
-			pushi    2
-			pushi    16
-			pushi    86
-			call     LocPrint,  4
-			jmp      code_17b9
-code_1671:
-			pushi    2
-			pushi    16
-			pushi    87
-			call     LocPrint,  4
-			jmp      code_17b9
-code_167d:
-			pushi    #inRect
-			pushi    4
-			pushi    195
-			pushi    130
-			pushi    225
-			pushi    139
-			lag      ego
-			send     12
-			bnt      code_16bf
-			pushi    0
-			call     localproc_000c,  0
-			pushi    1
-			pushi    39
-			callb    Btst,  2
-			bnt      code_16b3
-			ldi      1
-			sal      local1
-			pushi    2
-			pushi    16
-			pushi    88
-			call     LocPrint,  4
-			jmp      code_17b9
-code_16b3:
-			pushi    2
-			pushi    16
-			pushi    87
-			call     LocPrint,  4
-			jmp      code_17b9
-code_16bf:
-			pushi    #inRect
-			pushi    4
-			pushi    225
-			pushi    139
-			pushi    265
-			pushi    145
-			lag      ego
-			send     12
-			bnt      code_1706
-			pushi    0
-			call     localproc_000c,  0
-			pushi    1
-			pushi    39
-			callb    Btst,  2
-			bnt      code_16fa
-			pushi    2
-			pushi    16
-			pushi    89
-			call     LocPrint,  4
-			pushi    #changeState
-			pushi    1
-			pushi    0
-			lofsa    egoOnThePhoneScript
-			send     6
-			jmp      code_17b9
-code_16fa:
-			pushi    2
-			pushi    16
-			pushi    87
-			call     LocPrint,  4
-			jmp      code_17b9
-code_1706:
-			pushi    2
-			pushi    16
-			pushi    90
-			call     LocPrint,  4
-			jmp      code_17b9
-code_1712:
-			pushi    1
-			lofsa    'ask,get,gave,look,see,display>'
-			push    
-			callk    Said,  2
-			bt       code_1728
-			pushi    1
-			lofsa    'have<do>'
-			push    
-			callk    Said,  2
-			bnt      code_17b9
-code_1728:
-			pushi    1
-			lofsa    '/flight,list,passenger,info'
-			push    
-			callk    Said,  2
-			bt       code_173e
-			pushi    1
-			lofsa    '//flight,list,passenger,info'
-			push    
-			callk    Said,  2
-			bnt      code_17b9
-code_173e:
-			lsl      local4
-			ldi      0
-			eq?     
-			bt       code_1756
-			lsl      local4
-			ldi      4
-			eq?     
-			bt       code_1756
-			lsl      local4
-			ldi      5
-			eq?     
-			bnt      code_176a
-code_1756:
-			pushi    #claimed
-			pushi    1
-			pushi    1
-			lap      event
-			send     6
-			pushi    2
-			pushi    16
-			pushi    42
-			call     LocPrint,  4
-			jmp      code_17b9
-code_176a:
-			lsl      local4
-			ldi      1
-			eq?     
-			bnt      code_177b
-			pushi    1
-			pushi    38
-			callb    Btst,  2
-			bt       code_1794
-code_177b:
-			lsl      local4
-			ldi      2
-			eq?     
-			bt       code_178b
-			lsl      local4
-			ldi      3
-			eq?     
-			bnt      code_17a8
-code_178b:
-			pushi    1
-			pushi    39
-			callb    Btst,  2
-			bnt      code_17a8
-code_1794:
-			pushi    #changeState
-			pushi    1
-			pushi    1
-			lofsa    agentScript
-			send     6
-			pushi    #claimed
-			pushi    1
-			pushi    1
-			lap      event
-			send     6
-			jmp      code_17b9
-code_17a8:
-			pushi    2
-			pushi    16
-			pushi    43
-			call     LocPrint,  4
-			pushi    #claimed
-			pushi    1
-			pushi    1
-			lap      event
-			send     6
-code_17b9:
-			toss    
-			ret     
+		(switch (event type:)
+			(saidEvent
+				(cond
+					((Said 'show/shot,mugshot,painting')
+						(localproc_000c)
+						(cond
+							(
+								(and
+									(not (ego has: 12)) ; new_mug_shot
+									(not (ego has: 23)) ; old_mug_shot
+								)
+								(LocPrint 16 3) ; "You don't have a mug shot of Bains to show."
+							)
+							(
+								(or
+									(== local4 5)
+									(== local4 4)
+									(and
+										(or (== local4 3) (== local4 2))
+										(not (Btst 39))
+									)
+									(and (== local4 1) (not (Btst 38)))
+								)
+								(if (ego has: 12) ; new_mug_shot
+									(switch (Random 1 4)
+										(1
+											(LocPrint 16 4 82 112) ; "Why, that looks just like my Cousin Rufus (minus the corncob pipe, of course). But why are you showing it to me?"
+										)
+										(2
+											(LocPrint 16 5 82 112) ; "Is that your brother? He looks sorta like you. Wait a minute, let me get my glasses....."
+										)
+										(3
+											(LocPrint 16 6 82 112) ; "I'm afraid I don't have the time or the inclination to look at pictures from your family album."
+										)
+										(4
+											(LocPrint 16 7 82 112) ; "Get lost, creep, and take your pictures with you."
+										)
+									)
+								else
+									(switch (Random 1 4)
+										(1
+											(LocPrint 16 4 82 123) ; "Why, that looks just like my Cousin Rufus (minus the corncob pipe, of course). But why are you showing it to me?"
+										)
+										(2
+											(LocPrint 16 5 82 123) ; "Is that your brother? He looks sorta like you. Wait a minute, let me get my glasses....."
+										)
+										(3
+											(LocPrint 16 6 82 123) ; "I'm afraid I don't have the time or the inclination to look at pictures from your family album."
+										)
+										(4
+											(LocPrint 16 7 82 123) ; "Get lost, creep, and take your pictures with you."
+										)
+									)
+								)
+							)
+							(
+								(and
+									(== local4 1)
+									(ego has: 12) ; new_mug_shot
+									(Btst 38)
+									(>= gamePhase 6)
+								)
+								(LocPrint 16 8 82 112) ; "Why, yes..." says the agent. "I remember this guy. He bought a ticket from us recently. He seemed nervous or something."
+								(SolvePuzzle 1 81)
+							)
+							(
+								(and
+									(or
+										(== local4 2)
+										(== local4 3)
+										(== local4 1)
+									)
+									(or (Btst 39) (Btst 38))
+								)
+								(if (ego has: 12) ; new_mug_shot
+									(LocPrint 16 9 82 112) ; "I'm sorry, Officer, but the face doesn't ring a bell at all. I wish I could be of more assistance."
+								else
+									(LocPrint 16 9 82 123) ; "I'm sorry, Officer, but the face doesn't ring a bell at all. I wish I could be of more assistance."
+								)
+							)
+							(else
+								(LocPrint 16 10) ; "Nobody can see the mug shot from where you're standing."
+							)
+						)
+					)
+					((Said '[look]/computer,computer,show,info[<flight]')
+						(cond
+							(
+								(or
+									(and
+										(< (ego y:) 114)
+										(> (ego x:) 160)
+									)
+									(and
+										(>= (ego y:) 114)
+										(> (ego x:) 210)
+									)
+								)
+								(LocPrint 16 11) ; "You can't see the flight info from where you are."
+							)
+							((not (== (ego loop:) 0))
+								(LocPrint 16 12) ; "You're not looking at the monitors."
+							)
+							(else
+								(switch (Random 1 4)
+									(1
+										(LocPrint 16 13) ; "You see from the display that the next flight departs in 2 minutes, headed for Beirut."
+									)
+									(2
+										(LocPrint 16 14) ; "You see from the display that there will be a flight to Houston shortly."
+									)
+									(3
+										(LocPrint 16 15) ; "You see from the display that the vacation special to Coarsegold departs in seven or eight months."
+									)
+									(4
+										(LocPrint 16 16) ; "You see from the display that there are several flights to Steelton today."
+									)
+								)
+							)
+						)
+					)
+					((Said 'look>')
+						(cond
+							((Said '/bathroom,(chamber<rest)')
+								(LocPrint 16 17) ; "Go on in and look around."
+							)
+							(
+								(Said
+									'[<at,around][/chamber,airport,terminal,building,lobby]'
+								)
+								(LocPrint 16 18) ; "You are inside the new Lytton Airport terminal building. People from all walks of life and all parts of the globe walk by. The little town of Lytton has entered the 20th century. You feel proud that your efforts have helped, even in a small way, to make Lytton a busy, prosperous city."
+							)
+							((Said '[<at,up][/ceiling]')
+								(LocPrint 16 19) ; "If you've seen one ceiling, you've seen 'em all."
+							)
+							((Said '[<at,down][/floor,dirt,tile]')
+								(LocPrint 16 20) ; "The floor tile's shine is marred only by the smeared trail of some child's lost chocolate bar."
+							)
+							((Said '/pane')
+								(cond
+									((== (ego loop:) 2)
+										(LocPrint 16 21) ; "You look back out at the sidewalk in front of the airport entrance."
+									)
+									((== (ego loop:) 3)
+										(LocPrint 16 22) ; "The runway's out there."
+									)
+									(else
+										(LocPrint 16 23) ; "You're not looking at the window."
+									)
+								)
+							)
+							((Said '/flyer,ad')
+								(cond
+									(
+										(or
+											(and
+												(< (ego y:) 114)
+												(> (ego x:) 160)
+											)
+											(and
+												(>= (ego y:) 114)
+												(> (ego x:) 210)
+											)
+											(< (ego x:) 110)
+										)
+										(LocPrint 16 24) ; "You can't see it from where you are."
+									)
+									((not (== (ego loop:) 0))
+										(LocPrint 16 25) ; "You're not looking at the posters."
+									)
+									(else
+										(LocPrint 16 26) ; "The posters say: "Visit beautiful COARSEGOLD!""
+									)
+								)
+							)
+							((Said '/briefcase,bag,baggage')
+								(if (== local4 4)
+									(LocPrint 16 27) ; "The briefcase appears to belong to the gentleman sitting down."
+								else
+									(LocPrint 16 28) ; "You're not close enough."
+								)
+							)
+							((Said '/counter,iguana')
+								(LocPrint 16 29) ; "There are two agents behind the Iguana Airlines ticket counter."
+							)
+							((Said '/man,woman,men,women,crowd,passenger')
+								(switch local4
+									(1
+										(LocPrint 16 30) ; "The ticket agent returns your gaze. The lady traveler waits impatiently."
+									)
+									(3
+										(LocPrint 16 31) ; "The agent meets your steady gaze with a smile."
+									)
+									(2
+										(LocPrint 16 31) ; "The agent meets your steady gaze with a smile."
+									)
+									(4
+										(LocPrint 16 32) ; "The man sitting down looks terminally bored."
+									)
+									(else
+										(LocPrint 16 33) ; "Just normal-looking airline passengers...."
+									)
+								)
+							)
+							((Said '/agent')
+								(if
+									(or
+										(== local4 2)
+										(== local4 3)
+										(== local4 1)
+									)
+									(LocPrint 16 31) ; "The agent meets your steady gaze with a smile."
+								else
+									(LocPrint 16 28) ; "You're not close enough."
+								)
+							)
+							((Said '<below/bench')
+								(if (== local4 4)
+									(LocPrint 16 34) ; "The gentleman says "Hey, fella! What're you trying to do?""
+								else
+									(LocPrint 16 28) ; "You're not close enough."
+								)
+							)
+							((Said '/bench')
+								(if (== local4 4)
+									(LocPrint 16 35) ; "There are lounge chairs for the convenience of weary travelers. There is an ashtray next to them."
+								else
+									(LocPrint 16 28) ; "You're not close enough."
+								)
+							)
+							((Said '/wall')
+								(LocPrint 16 36) ; "On the wall hangs an abstract painting."
+							)
+							((Said '/counter')
+								(LocPrint 16 37) ; "There are two ticket agents behind the ticket counter."
+							)
+							((Said '/painting')
+								(LocPrint 16 38) ; "This abstract painting, entitled "After the Dust Settles", was created by "Vu", our very favorite computer artist."
+							)
+							((Said '/ass,cigarette')
+								(if (== local4 4)
+									(LocPrint 16 39) ; "Nasty-looking things. Some of 'em have lipstick on them."
+								else
+									(LocPrint 16 28) ; "You're not close enough."
+								)
+							)
+							((Said '/rope')
+								(LocPrint 16 40) ; "It's a velveteen braided rope similar to the ones found in some movie theaters."
+							)
+							((Said '/ashtray,(tray<ash)')
+								(if (== local4 4)
+									(LocPrint 16 41) ; "You look, and all you see are nasty old butts."
+								else
+									(LocPrint 16 28) ; "You're not close enough."
+								)
+							)
+							((Said '/list,flight')
+								(cond
+									(
+										(or
+											(== local4 0)
+											(== local4 4)
+											(== local4 5)
+										)
+										(LocPrint 16 42) ; "No one near you has any of that information."
+									)
+									(
+										(or
+											(and (== local4 1) (Btst 38))
+											(and
+												(or (== local4 2) (== local4 3))
+												(Btst 39)
+											)
+										)
+										(agentScript changeState: 1)
+									)
+									(else
+										(LocPrint 16 43) ; "I'm sorry sir," explains the ticket agent, "but the passenger list is confidential information."
+									)
+								)
+							)
+						)
+					)
+					((Said 'kiss')
+						(LocPrint 16 44) ; "Not one of your best ideas, Sonny."
+					)
+					((Said '/hello')
+						(LocPrint 16 45) ; "Hi there!"
+					)
+					((Said '/bye')
+						(LocPrint 16 46) ; "So long!"
+					)
+					((Said 'yes')
+						(LocPrint 16 47) ; "Yes...what??"
+					)
+					((Said 'no')
+						(LocPrint 16 48) ; "No...what??"
+					)
+					((Said 'frisk,kill,hit,fire')
+						(LocPrint 16 49) ; "That would be an entirely unprofessional and inappropriate action at this moment."
+					)
+					((Said 'get,eat,pick[<up]/candy,bar')
+						(LocPrint 16 50) ; "The one on the floor?? Y-E-C-C-C-H-H-H-H!!"
+					)
+					((Said 'give,get/briefcase')
+						(cond
+							((== ((inventory at: 10) owner:) 16) ; field_kit
+								(LocPrint 16 51) ; "It's on its way to the plane."
+							)
+							((ego has: 10) ; field_kit
+								(LocPrint 16 52) ; "You have it."
+							)
+							(else
+								(LocPrint 16 53) ; "You can't get it here."
+							)
+						)
+					)
+					((Said 'get,pick[<up]/baggage,briefcase,bag')
+						(if (ego inRect: 30 114 83 143)
+							(LocPrint 16 54) ; "Hey, buddy!! What do you think you're doing??"
+						else
+							(LocPrint 16 55) ; "That's uncalled for."
+						)
+					)
+					((Said 'sat[<down]')
+						(LocPrint 16 56) ; "You're not weary or tired enough to sit down."
+					)
+					((Said 'get/bench')
+						(if (== local4 4)
+							(LocPrint 16 34) ; "The gentleman says "Hey, fella! What're you trying to do?""
+						else
+							(LocPrint 16 57) ; "What for?"
+						)
+					)
+					((Said 'hoist,move/bench')
+						(if (== local4 4)
+							(LocPrint 16 34) ; "The gentleman says "Hey, fella! What're you trying to do?""
+						else
+							(LocPrint 16 57) ; "What for?"
+						)
+					)
+					((Said 'get/painting')
+						(LocPrint 16 58) ; "You're a homicide detective....not an art collector."
+					)
+					((Said 'eat,cigarette,get/ass,cigarette')
+						(if (== local4 4)
+							(LocPrint 16 59) ; "Not very sanitary."
+						else
+							(LocPrint 16 60) ; "Huh?"
+						)
+					)
+					((Said 'talk>')
+						(cond
+							((Said '/man,person')
+								(switch local4
+									(1
+										(localproc_000c)
+										(LocPrint 16 61) ; "It sure looks like you're trying to talk to the woman ticket agent."
+									)
+									(2
+										(localproc_000c)
+										(LocPrint 16 62) ; "The agent looks at you, pauses, and looks down at some paperwork."
+									)
+									(3
+										(localproc_000c)
+										(LocPrint 16 62) ; "The agent looks at you, pauses, and looks down at some paperwork."
+									)
+									(0
+										(LocPrint 16 63) ; "Nobody can hear you from over there."
+									)
+									(else
+										(switch (Random 1 3)
+											(1
+												(LocPrint 16 64) ; "This person seems to have just arrived from France. You hear, "Je ne parle pas anglais.""
+											)
+											(2
+												(LocPrint 16 65) ; "No one seems to be listening to you."
+											)
+											(3
+												(LocPrint 16 66) ; "Excuse me, but don't you have a flight to catch?"
+											)
+										)
+									)
+								)
+							)
+							((Said '/customer,passenger')
+								(if (== local4 1)
+									(LocPrint 16 67) ; "She glares at you, obviously upset, but says nothing."
+								else
+									(LocPrint 16 68) ; "She can't hear you."
+								)
+							)
+							((Said '/men,crowd')
+								(if (ego inRect: 63 130 116 184)
+									(LocPrint 16 69) ; "They're doing their best to ignore you."
+								else
+									(LocPrint 16 70) ; "The men in the center of the lobby are talking among themselves."
+								)
+							)
+							((Said '/woman')
+								(cond
+									((== local4 0)
+										(if
+											(or
+												(and
+													(> (ego x:) 225)
+													(< (ego y:) 114)
+												)
+												(< (ego y:) 141)
+											)
+											(LocPrint 16 63) ; "Nobody can hear you from over there."
+										else
+											(switch (Random 1 3)
+												(1
+													(LocPrint 16 64) ; "This person seems to have just arrived from France. You hear, "Je ne parle pas anglais.""
+												)
+												(2
+													(LocPrint 16 65) ; "No one seems to be listening to you."
+												)
+												(3
+													(LocPrint 16 66) ; "Excuse me, but don't you have a flight to catch?"
+												)
+											)
+										)
+									)
+									((not (Btst 38))
+										(localproc_000c)
+										(LocPrint 16 71) ; "The agent says, "Please, wait your turn!""
+									)
+									((== local4 1)
+										(localproc_000c)
+										(LocPrint 16 72) ; "The agent says, "Yes, officer, what do you want?""
+									)
+									(else
+										(localproc_000c)
+										(LocPrint 16 73) ; ""May I help you, sir?" asks the ticket agent."
+									)
+								)
+							)
+							((Said '/agent')
+								(switch local4
+									(1
+										(if (Btst 38)
+											(LocPrint 16 72) ; "The agent says, "Yes, officer, what do you want?""
+										else
+											(localproc_000c)
+											(LocPrint 16 74) ; "The ticket agent snaps at you, "Wait your turn, Mister! This lady was ahead of you.""
+										)
+									)
+									(2
+										(localproc_000c)
+										(LocPrint 16 62) ; "The agent looks at you, pauses, and looks down at some paperwork."
+									)
+									(3
+										(localproc_000c)
+										(LocPrint 16 62) ; "The agent looks at you, pauses, and looks down at some paperwork."
+									)
+									(0
+										(LocPrint 16 75) ; "The ticket agents can't hear you from over there."
+									)
+									(5
+										(LocPrint 16 75) ; "The ticket agents can't hear you from over there."
+									)
+									(4
+										(LocPrint 16 75) ; "The ticket agents can't hear you from over there."
+									)
+								)
+							)
+						)
+					)
+					((Said 'flash,show/badge')
+						(cond
+							((not (ego has: 7)) ; wallet
+								(LocPrint 16 76) ; "You don't have your identification with you."
+							)
+							((or (== local4 4) (== local4 5))
+								(LocPrint 16 77) ; "What is this....a shakedown?"
+							)
+							((== local4 1)
+								(localproc_000c)
+								(Bset 38)
+								(agentScript changeState: 0)
+							)
+							((or (== local4 2) (== local4 3))
+								(localproc_000c)
+								(Bset 39)
+								(agentScript changeState: 0)
+							)
+							(else
+								(LocPrint 16 78) ; "Nobody can see your badge from over there, and besides, what's your purpose?"
+							)
+						)
+					)
+					((Said '[*]/bains')
+						(LocPrint 16 79) ; "Who's Bains??"
+					)
+					(
+						(or
+							(Said 'ask/departure,flight')
+							(Said 'is<when/flight<next/houston')
+							(Said 'fly,go/houston')
+							(Said '/flight,departure<next')
+						)
+						(if
+							(and
+								(Btst 34)
+								(or (== local4 1) (== local4 2) (== local4 3))
+							)
+							(agentScript changeState: 4)
+						else
+							(switch (Random 1 4)
+								(1
+									(LocPrint 16 13) ; "You see from the display that the next flight departs in 2 minutes, headed for Beirut."
+								)
+								(2
+									(LocPrint 16 14) ; "You see from the display that there will be a flight to Houston shortly."
+								)
+								(3
+									(LocPrint 16 15) ; "You see from the display that the vacation special to Coarsegold departs in seven or eight months."
+								)
+								(4
+									(LocPrint 16 16) ; "You see from the display that there are several flights to Steelton today."
+								)
+							)
+						)
+					)
+					((or (Said '[get,buy]/ticket') (Said 'give/me/ticket'))
+						(event claimed: 0)
+						(= local3 100)
+						(cond
+							((or (== local4 0) (== local4 4) (== local4 5))
+								(event claimed: 1)
+								(switch (Random 1 4)
+									(1
+										(LocPrint 16 13) ; "You see from the display that the next flight departs in 2 minutes, headed for Beirut."
+									)
+									(2
+										(LocPrint 16 14) ; "You see from the display that there will be a flight to Houston shortly."
+									)
+									(3
+										(LocPrint 16 15) ; "You see from the display that the vacation special to Coarsegold departs in seven or eight months."
+									)
+									(4
+										(LocPrint 16 16) ; "You see from the display that there are several flights to Steelton today."
+									)
+								)
+							)
+							((and (== local4 1) (not (Btst 38)))
+								(localproc_000c)
+								(event claimed: 1)
+								(LocPrint 16 74) ; "The ticket agent snaps at you, "Wait your turn, Mister! This lady was ahead of you.""
+							)
+							((ego inRect: 225 139 265 145)
+								(event claimed: 1)
+								(localproc_000c)
+								(LocPrint 16 80) ; "Would you please step around to the front of the counter, Sir?"
+							)
+							((Said '//houston')
+								(= goingToHouston 1)
+								(agentScript changeState: 5)
+							)
+							((Said '//steelton')
+								(= goingToSteelton 1)
+								(agentScript changeState: 6)
+							)
+							((Said '//beirut')
+								(= local11 1)
+								(LocPrint 16 81) ; "After asking for a flight to Beirut, you think..."Hey, Sonny, are you out of your ever-lovin' mind??? That's no place to visit right now!""
+							)
+							((Said '//coarsegold')
+								(= local12 1)
+								(LocPrint 16 82) ; "Your ticket to Coarsegold will be $195.00, please."
+								(agentScript changeState: 7)
+							)
+							((Said '//*')
+								(LocPrint 16 83) ; "I'm sorry Sir. We don't have any flights to that location."
+							)
+							(else
+								(event claimed: 1)
+								(LocPrint 16 84) ; "Would you please be more specific, Sir?"
+							)
+						)
+					)
+					(
+						(and
+							(> local3 0)
+							(or
+								(ego inRect: 175 112 225 130)
+								(ego inRect: 195 130 225 139)
+								(ego inRect: 225 139 265 145)
+							)
+							(cond
+								((Said '/houston')
+									(= goingToHouston 1)
+									(agentScript changeState: 5)
+								)
+								((Said '/steelton')
+									(= goingToSteelton 1)
+									(agentScript changeState: 6)
+								)
+								((Said '/beirut')
+									(= local11 1)
+									(LocPrint 16 81) ; "After asking for a flight to Beirut, you think..."Hey, Sonny, are you out of your ever-lovin' mind??? That's no place to visit right now!""
+								)
+								((Said '/coarsegold')
+									(= local12 1)
+									(LocPrint 16 82) ; "Your ticket to Coarsegold will be $195.00, please."
+									(agentScript changeState: 7)
+								)
+								((Said '/america')
+									(LocPrint 16 83) ; "I'm sorry Sir. We don't have any flights to that location."
+								)
+							)
+						))
+					(
+						(or
+							(Said 'ask/ticket')
+							(Said 'ask/[agent,man,woman]/ticket')
+						)
+						(localproc_000c)
+						(LocPrint 16 84) ; "Would you please be more specific, Sir?"
+					)
+					((Said 'pay[/agent,man,woman,ticket,flight]')
+						(LocPrint 16 85) ; "With what? Good looks?"
+					)
+					(
+						(or
+							(Said 'ask,dial,use,get,pick[<up]/phone')
+							(Said 'ask,make/call,phone')
+						)
+						(cond
+							((ego inRect: 175 112 225 130)
+								(localproc_000c)
+								(if (Btst 38)
+									(LocPrint 16 86) ; "I'm awfully busy, Officer. Would you see the next agent please?"
+								else
+									(LocPrint 16 87) ; "I'm sorry, Sir. The telephone is for our use only."
+								)
+							)
+							((ego inRect: 195 130 225 139)
+								(localproc_000c)
+								(if (Btst 39)
+									(= local1 1)
+									(LocPrint 16 88) ; "Would you step around to the side of the counter, Officer?"
+								else
+									(LocPrint 16 87) ; "I'm sorry, Sir. The telephone is for our use only."
+								)
+							)
+							((ego inRect: 225 139 265 145)
+								(localproc_000c)
+								(if (Btst 39)
+									(LocPrint 16 89) ; "Certainly, Officer!"
+									(egoOnThePhoneScript changeState: 0)
+								else
+									(LocPrint 16 87) ; "I'm sorry, Sir. The telephone is for our use only."
+								)
+							)
+							(else
+								(LocPrint 16 90) ; "There doesn't seem to be a pay phone. Perhaps one of the ticket agents will let you use their phone."
+							)
+						)
+					)
+					(
+						(and
+							(or
+								(Said 'ask,get,give,look,see,show>')
+								(Said 'have<do>')
+							)
+							(or
+								(Said '/flight,list,passenger,info')
+								(Said '//flight,list,passenger,info')
+							)
+						)
+						(cond
+							((or (== local4 0) (== local4 4) (== local4 5))
+								(event claimed: 1)
+								(LocPrint 16 42) ; "No one near you has any of that information."
+							)
+							(
+								(or
+									(and (== local4 1) (Btst 38))
+									(and
+										(or (== local4 2) (== local4 3))
+										(Btst 39)
+									)
+								)
+								(agentScript changeState: 1)
+								(event claimed: 1)
+							)
+							(else
+								(LocPrint 16 43) ; "I'm sorry sir," explains the ticket agent, "but the passenger list is confidential information."
+								(event claimed: 1)
+							)
+						)
+					)
+				)
+			)
 		)
 	)
 )

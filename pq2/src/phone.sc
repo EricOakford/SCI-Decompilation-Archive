@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 12)
-(include system.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -88,83 +88,27 @@
 	(AssignObjectToScript person doTalk)
 )
 
-(procedure (localproc_1b13 param1)
-	(asm
-		ldi      0
-		sal      str
-		pushi    #message
-		pushi    0
-		lap      param1
-		send     4
-		push    
-		ldi      32
-		gt?     
-		bnt      code_1b3a
-		pushi    4
-		lea      @str
-		push    
-		pushi    12
-		pushi    108
-		pushi    #message
-		pushi    0
-		lap      param1
-		send     4
-		push    
-		callk    Format,  8
-code_1b3a:
-		pushi    8
-		pushi    12
-		pushi    109
-		pushi    67
-		pushi    20
-		pushi    120
-		pushi    41
-		lea      @str
-		push    
-		pushi    25
-		calle    Print,  16
-		bnt      code_1b85
-		pushi    2
-		lea      @str
-		push    
-		lofsa    myEvent
-		push    
-		callk    Parse,  4
-		bnt      code_1b3a
-		pushi    #type
-		pushi    1
-		pushi    128
-		lap      param1
-		send     6
-		pushi    #claimed
-		pushi    1
-		pushi    0
-		lap      param1
-		send     6
-		pushi    #handleEvent
-		pushi    1
-		lsp      param1
-		lag      curRoom
-		send     6
-		jmp      code_1ba3
-		jmp      code_1b3a
-code_1b85:
-		pushi    2
-		pushi    12
-		pushi    107
-		call     BondsSpeak,  4
-		pushi    #changeState
-		pushi    1
-		pushi    999
-		pushi    #script
-		pushi    0
-		lag      curRoom
-		send     4
-		send     6
-		jmp      code_1ba3
-		jmp      code_1b3a
-code_1ba3:
-		ret     
+(procedure (InputPhoneNumber event)
+	(= str 0)
+	(if (> (event message:) 32)
+		(Format @str 12 108 (event message:)) ; "%c"
+	)
+	(repeat
+		(if (Print 12 109
+				#at 20 120
+				#edit @str 25
+			) ; "Enter input: (ESC to disconnect)"
+			(if (Parse @str myEvent)
+				(event type: saidEvent)
+				(event claimed: FALSE)
+				(curRoom handleEvent: event)
+				(break)
+			)
+		else
+			(BondsSpeak 12 107)
+			((curRoom script:) changeState: 999)
+			(break)
+		)
 	)
 )
 
@@ -261,192 +205,62 @@ code_1ba3:
 )
 
 (instance phoneNumber of Script
-	(properties)
-	
 	(method (changeState newState)
-		(asm
-			lap      newState
-			aTop     state
-			push    
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_02c0
-			pushi    #canInput
-			pushi    1
-			pushi    0
-			class    User
-			send     6
-			ldi      2
-			aTop     seconds
-			jmp      code_03f6
-code_02c0:
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_03e0
-			pushi    #canInput
-			pushi    1
-			pushi    1
-			class    User
-			send     6
-			ldi      0
-			sal      str
-code_02d4:
-			pushi    8
-			pushi    12
-			pushi    3
-			pushi    67
-			pushi    20
-			pushi    120
-			pushi    41
-			lea      @str
-			push    
-			pushi    18
-			calle    Print,  16
-			not     
-			bnt      code_02fe
-			pushi    #changeState
-			pushi    1
-			pushi    999
-			self     6
-			jmp      code_03f6
-			jmp      code_02d4
-code_02fe:
-			pushi    1
-			lea      @str
-			push    
-			callk    StrLen,  2
-			push    
-			ldi      1
-			eq?     
-			bnt      code_0348
-			pushi    35
-			pushi    2
-			lea      @str
-			push    
-			pushi    0
-			callk    StrAt,  4
-			eq?     
-			bnt      code_0348
-			pushi    2
-			lea      @local171
-			push    
-			lofsa    myEvent
-			push    
-			callk    Parse,  4
-			bnt      code_0348
-			pushi    #type
-			pushi    1
-			pushi    128
-			lofsa    myEvent
-			send     6
-			pushi    #handleEvent
-			pushi    1
-			lofsa    myEvent
-			push    
-			lofsa    phoneNumber
-			send     6
-			jmp      code_03f6
-			jmp      code_02d4
-code_0348:
-			pushi    1
-			lea      @str
-			push    
-			callk    StrLen,  2
-			push    
-			ldi      7
-			lt?     
-			bnt      code_0389
-			pushi    2
-			lea      @str
-			push    
-			lofsa    {0}
-			push    
-			callk    StrCmp,  4
-			push    
-			ldi      0
-			ne?     
-			bnt      code_0389
-			pushi    2
-			lea      @str
-			push    
-			lofsa    {411}
-			push    
-			callk    StrCmp,  4
-			push    
-			ldi      0
-			ne?     
-			bnt      code_0389
-			pushi    2
-			pushi    12
-			pushi    4
-			calle    Print,  4
-			jmp      code_02d4
-code_0389:
-			pushi    2
-			lea      @str
-			push    
-			pushi    0
-			callk    StrAt,  4
-			push    
-			ldi      49
-			eq?     
-			bnt      code_03a5
-			pushi    2
-			pushi    12
-			pushi    5
-			calle    Print,  4
-			jmp      code_02d4
-code_03a5:
-			pushi    2
-			lea      @str
-			push    
-			lofsa    myEvent
-			push    
-			callk    Parse,  4
-			bnt      code_02d4
-			pushi    2
-			lea      @local171
-			push    
-			lea      @str
-			push    
-			callk    StrCpy,  4
-			pushi    #type
-			pushi    1
-			pushi    128
-			lofsa    myEvent
-			send     6
-			pushi    #handleEvent
-			pushi    1
-			lofsa    myEvent
-			push    
-			lofsa    phoneNumber
-			send     6
-			jmp      code_03f6
-			jmp      code_02d4
-			jmp      code_03f6
-code_03e0:
-			dup     
-			ldi      999
-			eq?     
-			bnt      code_03f6
-			pushi    0
-			callb    HandsOn,  0
-			pushi    #newRoom
-			pushi    1
-			lsg      prevRoomNum
-			lag      curRoom
-			send     6
-code_03f6:
-			toss    
-			ret     
+		(switch (= state newState)
+			(0
+				(User canInput: FALSE)
+				(= seconds 2)
+			)
+			(1
+				(User canInput: TRUE)
+				(= str 0)
+				(repeat
+					(if (not (Print 12 3 #at 20 120 #edit @str 18)) ; "Number to dial: (ESC to hang up) (xxx-xxxx) or (xxx-xxx-xxxx)"
+						(self changeState: 999)
+						(break)
+					else
+						(if
+							(and
+								(== (StrLen @str) 1)
+								(== 35 (StrAt @str 0))
+								(Parse @local171 myEvent)
+							)
+							(myEvent type: saidEvent)
+							(phoneNumber handleEvent: myEvent)
+							(break)
+						)
+						(if
+							(and
+								(< (StrLen @str) 7)
+								(!= (StrCmp @str {0}) 0)
+								(!= (StrCmp @str {411}) 0)
+							)
+							(Print 12 4) ; "Please use the proper format: (xxx-xxx-xxxx) or (xxx-xxxx)"
+							(continue)
+						)
+						(cond
+							((== (StrAt @str 0) 49)
+								(Print 12 5) ; "You do not need to put a '1' first."
+							)
+							((Parse @str myEvent)
+								(StrCpy @local171 @str)
+								(myEvent type: saidEvent)
+								(phoneNumber handleEvent: myEvent)
+								(break)
+							)
+						)
+					)
+				)
+			)
+			(999
+				(HandsOn)
+				(curRoom newRoom: prevRoomNum)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (event claimed?) (!= (event type?) saidEvent))
+		(if (or (event claimed?) (!= (event type?) saidEvent))
 			(return)
 		)
 		(cond 
@@ -577,7 +391,7 @@ code_03f6:
 	(method (handleEvent event)
 		(if (event claimed?) (return))
 		(if (== (event type?) keyDown)
-			(localproc_1b13 event)
+			(InputPhoneNumber event)
 			(return)
 		)
 		(if (!= (event type?) saidEvent) (return))
@@ -667,7 +481,7 @@ code_03f6:
 	(method (handleEvent event)
 		(if (event claimed?) (return))
 		(if (== (event type?) keyDown)
-			(localproc_1b13 event)
+			(InputPhoneNumber event)
 			(return)
 		)
 		(if (!= (event type?) saidEvent) (return))
@@ -764,7 +578,7 @@ code_03f6:
 	(method (handleEvent event)
 		(if (event claimed?) (return))
 		(if (== (event type?) keyDown)
-			(localproc_1b13 event)
+			(InputPhoneNumber event)
 			(return)
 		)
 		(if (!= (event type?) saidEvent) (return))
@@ -824,7 +638,7 @@ code_03f6:
 	(method (handleEvent event)
 		(if (event claimed?) (return))
 		(if (== (event type?) keyDown)
-			(localproc_1b13 event)
+			(InputPhoneNumber event)
 			(return)
 		)
 		(if (!= (event type?) saidEvent) (return))
@@ -940,7 +754,7 @@ code_03f6:
 	(method (handleEvent event)
 		(if (event claimed?) (return))
 		(if (== (event type?) keyDown)
-			(localproc_1b13 event)
+			(InputPhoneNumber event)
 			(return)
 		)
 		(if (!= (event type?) saidEvent) (return))
@@ -1016,7 +830,7 @@ code_03f6:
 	(method (handleEvent event)
 		(if (event claimed?) (return))
 		(if (== (event type?) keyDown)
-			(localproc_1b13 event)
+			(InputPhoneNumber event)
 			(return)
 		)
 		(if (!= (event type?) saidEvent) (return))
@@ -1068,7 +882,7 @@ code_03f6:
 	(method (handleEvent event)
 		(if (event claimed?) (return))
 		(if (== (event type?) keyDown)
-			(localproc_1b13 event)
+			(InputPhoneNumber event)
 			(return)
 		)
 		(if (!= (event type?) saidEvent) (return))
@@ -1132,7 +946,7 @@ code_03f6:
 	(method (handleEvent event)
 		(if (event claimed?) (return))
 		(if (== (event type?) keyDown)
-			(localproc_1b13 event)
+			(InputPhoneNumber event)
 			(return)
 		)
 		(if (!= (event type?) saidEvent) (return))
