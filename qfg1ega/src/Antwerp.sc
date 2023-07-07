@@ -545,276 +545,51 @@
 )
 
 (instance antwerpFollow of Script
-	;CI: This is a manual decompilation of the doit method.
-	;EO: It doesn't seem to work properly.
+	;EO: This is sluicebox's decompilation of the doit method.
 	(method (doit)
-		(= antPushX (- (ego x?) (antwerp x?)))
-		(= antPushY (- (ego y?) (antwerp y?)))
-		
-		(if (and (< -45 antPushX) (< antPushX 45)
-				 (< -8 antPushY)  (< antPushY 8))
+		(= antPushX (- (ego x:) (antwerp x:)))
+		(= antPushY (- (ego y:) (antwerp y:)))
+		(if (and (< -45 antPushX 45) (< -8 antPushY 8))
 			(antwerp cycleSpeed: 1 moveSpeed: 1)
 			(client setScript: antwerpPushes)
 		)
-		
 		(cond
-			((and (not (-- local8))
-				  (< (- minDistX) antPushX)
-				  (< antPushX minDistX)
-				  (< (- minDistY) antPushY)
-				  (< antPushY minDistY)
-			 )
+			((-- local8))
+			(
+				(or
+					(not (< (- minDistX) antPushX minDistX))
+					(not (< (- minDistY) antPushY minDistY))
+				)
 				(self changeState: 7)
 			)
-			((and (< (- (* minDistY antPushX) (* local3 antPushY)) 0)
-				  (< (+ (* minDistY antPushX) (* local3 antPushY)) 0)
-			 )
-			 	(self changeState: 1)
+			(
+				(and
+					(< (- (* antPushX minDistY) (* antPushY local3)) 0)
+					(< (+ (* antPushY local3) (* antPushX minDistY)) 0)
+				)
+				(self changeState: 1)
 			)
-			((and (> (- (* minDistY antPushX) (* local3 antPushY)) 0)
-				  (< 0 antPushX))
+			((and (> (- (* antPushX minDistY) (* antPushY local3)) 0) (< antPushX 0))
 				(self changeState: 2)
 			)
-			((< 0 (+ (* minDistX antPushY) (* local3 antPushY)))
+			((< (+ (* antPushY local3) (* antPushX minDistY)) 0)
 				(self changeState: 3)
 			)
-			((> (- (* minDistY antPushY) (* local3 antPushY)) 0)
+			((> (- (* antPushX minDistY) (* antPushY local3)) 0)
 				(self changeState: 4)
 			)
-			((and (< (- (* minDistY antPushX) (* local3 antPushY)) 0) 
-					(> antPushX 0))
+			((and (< (- (* antPushX minDistY) (* antPushY local3)) 0) (> antPushX 0))
 				(self changeState: 5)
 			)
 			(else
 				(self changeState: 6)
 			)
 		)
-		
-		
 		(if (not local8)
-			(= local9 local8)
+			(= local8 local9)
 		)
-		
 		(super doit:)
 	)
-		
-;;;	(method (doit)
-;;;		(asm
-;;;			pushi    #x
-;;;			pushi    0
-;;;			lag      ego
-;;;			send     4
-;;;			push    
-;;;			pushi    #x
-;;;			pushi    0
-;;;			lofsa    antwerp
-;;;			send     4
-;;;			sub     
-;;;			sal      antPushX
-;;;			pushi    #y
-;;;			pushi    0
-;;;			lag      ego
-;;;			send     4
-;;;			push    
-;;;			pushi    #y
-;;;			pushi    0
-;;;			lofsa    antwerp
-;;;			send     4
-;;;			sub     
-;;;			sal      antPushY
-;;;			pushi    65491
-;;;			lal      antPushX
-;;;			lt?     
-;;;			bnt      code_0bf7
-;;;			pprev   
-;;;			ldi      45
-;;;			lt?     
-;;; 			bnt      code_0bf7
-;;; 			pushi    65528
-;;; 			lal      antPushY
-;;; 			lt?     
-;;; 			bnt      code_0bf7
-;;; 			pprev   
-;;; 			ldi      8
-;;; 			lt?     
-;;; 			bnt      code_0bf7
-;;; 			pushi    #cycleSpeed
-;;; 			pushi    1
-;;; 			pushi    1
-;;; 			pushi    56
-;;; 			pushi    1
-;;; 			pushi    1
-;;; 			lofsa    antwerp
-;;; 			send     12
-;;; 			pushi    #setScript
-;;; 			pushi    1
-;;; 			lofsa    antwerpPushes
-;;; 			push    
-;;; 			pToa     client
-;;; 			send     6
-;;; code_0bf7:
-;;; 			-al      local8
-;;; 			bnt      code_0bff
-;;; 			jmp      code_0ce6
-;;; code_0bff:
-;;; 			lal      minDistX
-;;; 			neg     
-;;; 			push    
-;;; 			lal      antPushX
-;;; 			lt?     
-;;; 			bnt      code_0c0d
-;;; 			pprev   
-;;; 			lal      minDistX
-;;; 			lt?     
-;;; code_0c0d:
-;;; 			not     
-;;; 			bt       code_0c23
-;;; 			lal      minDistY
-;;; 			neg     
-;;; 			push    
-;;; 			lal      antPushY
-;;; 			lt?     
-;;; 			bnt      code_0c1f
-;;; 			pprev   
-;;; 			lal      minDistY
-;;; 			lt?     
-;;; code_0c1f:
-;;; 			not     
-;;; 			bnt      code_0c2d
-;;; code_0c23:
-;;; 			pushi    #changeState
-;;; 			pushi    1
-;;; 			pushi    7
-;;; 			self     6
-;;; 			jmp      code_0ce6
-;;; code_0c2d:
-;;; 			lsl      antPushX
-;;; 			lal      minDistY
-;;; 			mul     
-;;; 			push    
-;;; 			lsl      antPushY
-;;; 			lal      local3
-;;; 			mul     
-;;; 			sub     
-;;; 			push    
-;;; 			ldi      0
-;;; 			lt?     
-;;; 			bnt      code_0c5c
-;;; 			lsl      antPushY
-;;; 			lal      local3
-;;; 			mul     
-;;; 			push    
-;;; 			lsl      antPushX
-;;; 			lal      minDistY
-;;; 			mul     
-;;; 			add     
-;;; 			push    
-;;; 			ldi      0
-;;; 			lt?     
-;;; 			bnt      code_0c5c
-;;; 			pushi    #changeState
-;;; 			pushi    1
-;;; 			pushi    1
-;;; 			self     6
-;;; 			jmp      code_0ce6
-;;; code_0c5c:
-;;; 			lsl      antPushX
-;;; 			lal      minDistY
-;;; 			mul     
-;;; 			push    
-;;; 			lsl      antPushY
-;;; 			lal      local3
-;;; 			mul     
-;;; 			sub     
-;;; 			push    
-;;; 			ldi      0
-;;; 			gt?     
-;;; 			bnt      code_0c80
-;;; 			lsl      antPushX
-;;; 			ldi      0
-;;; 			lt?     
-;;; 			bnt      code_0c80
-;;; 			pushi    #changeState
-;;; 			pushi    1
-;;; 			pushi    2
-;;; 			self     6
-;;; 			jmp      code_0ce6
-;;; code_0c80:
-;;; 			lsl      antPushY
-;;; 			lal      local3
-;;; 			mul     
-;;; 			push    
-;;; 			lsl      antPushX
-;;; 			lal      minDistY
-;;; 			mul     
-;;; 			add     
-;;; 			push    
-;;; 			ldi      0
-;;; 			lt?     
-;;; 			bnt      code_0c9d
-;;; 			pushi    #changeState
-;;; 			pushi    1
-;;; 			pushi    3
-;;; 			self     6
-;;; 			jmp      code_0ce6
-;;; code_0c9d:
-;;; 			lsl      antPushX
-;;; 			lal      minDistY
-;;; 			mul     
-;;; 			push    
-;;; 			lsl      antPushY
-;;; 			lal      local3
-;;; 			mul     
-;;; 			sub     
-;;; 			push    
-;;; 			ldi      0
-;;; 			gt?     
-;;; 			bnt      code_0cba
-;;; 			pushi    #changeState
-;;; 			pushi    1
-;;; 			pushi    4
-;;; 			self     6
-;;; 			jmp      code_0ce6
-;;; code_0cba:
-;;; 			lsl      antPushX
-;;; 			lal      minDistY
-;;; 			mul     
-;;; 			push    
-;;; 			lsl      antPushY
-;;; 			lal      local3
-;;; 			mul     
-;;; 			sub     
-;;; 			push    
-;;; 			ldi      0
-;;; 			lt?     
-;;; 			bnt      code_0cdf
-;;; 			lsl      antPushX
-;;; 			ldi      0
-;;; 			gt?     
-;;; 			bnt      code_0cdf
-;;; 			pushi    #changeState
-;;; 			pushi    1
-;;; 			pushi    5
-;;; 			self     6
-;;; 			jmp      code_0ce6
-;;; code_0cdf:
-;;; 			pushi    #changeState
-;;; 			pushi    1
-;;; 			pushi    6
-;;; 			self     6
-;;; code_0ce6:
-;;; 			lal      local8
-;;; 			not     
-;;; 			bnt      code_0cf0
-;;; 			lal      local9
-;;; 			sal      local8
-;;; code_0cf0:
-;;; 			pushi    #doit
-;;; 			pushi    0
-;;; 			super    Script,  4
-;;; 			ret     
-;;; 		)
-;;; 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
