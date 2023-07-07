@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 67)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use SQRoom)
@@ -24,99 +24,59 @@
 (instance rm67 of SQRoom
 	(properties
 		picture 67
-		style $0005
+		style WIPEDOWN
 	)
 	
 	(method (init)
-		(LoadMany 128 2 43 167)
-		(self setRegions: 703)
+		(LoadMany VIEW 2 43 167)
+		(self setRegions: DELTAUR)
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						117
-						123
-						112
-						114
-						132
-						105
-						157
-						100
-						185
-						103
-						197
-						114
-						191
-						125
-						176
-						127
-						165
-						107
-						149
-						109
-						169
-						130
-						135
-						133
+						117 123 112 114 132 105 157 100 185 103 197 114
+						191 125 176 127 165 107 149 109 169 130 135 133
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						253
-						130
-						206
-						101
-						194
-						102
-						176
-						93
-						144
-						97
-						140
-						101
-						126
-						105
-						80
-						104
-						142
-						143
-						151
-						151
-						218
-						189
-						0
-						189
-						0
-						0
-						319
-						0
-						319
-						185
+						253 130 206 101 194 102 176 93 144 97 140 101 126
+						105 80 104 142 143 151 151 218 189 0 189 0 0 319 0
+						319 185
 					yourself:
 				)
 		)
 		(cond 
-			((Btst 52) 0)
-			((Btst 51) (escapePod init:) (hood init: setCycle: End self))
-			(else (escapePod init:) (hood init:))
+			((Btst fPodGone) 0)
+			((Btst fLeftDeltaurPodBay)
+				(escapePod init:)
+				(hood init: setCycle: EndLoop self)
+			)
+			(else
+				(escapePod init:)
+				(hood init:)
+			)
 		)
 		(elevator init:)
 		(elevatorDoor init: stopUpd:)
 		(doDadOnWall init:)
-		(ego observeControl: 16384)
+		(ego observeControl: cYELLOW)
 		(super init:)
 		(self setScript: roomControl)
 	)
 	
 	(method (doit)
 		(cond 
-			((Btst 54) (Print 67 0) (curRoom newRoom: 71))
+			((Btst fDeltaurSelfDestructs)
+				(Print 67 0)
+				(curRoom newRoom: 71)
+			)
 			((ego script?) 0)
 			(
 				(and
-					(& (ego onControl: 1) $0002)
+					(& (ego onControl: origin) cBLUE)
 					(!= (ego priority?) 11)
 				)
 				(ego setPri: 11)
@@ -124,26 +84,30 @@
 			)
 			(
 				(and
-					(& (ego onControl: 1) $0400)
+					(& (ego onControl: origin) cLGREEN)
 					(== (ego priority?) 11)
 				)
 				(ego setPri: -1)
 			)
-			((and (& (ego onControl: 0) $4000) (Btst 51)) (ego setScript: getInLaunchTube))
-			(
-			(and (& (ego onControl: 0) $4000) (not (ego script?))) (ego setScript: getInEscapePod))
+			((and (& (ego onControl: 0) cYELLOW)
+					(Btst fLeftDeltaurPodBay))
+					(ego setScript: getInLaunchTube)
+				)
+			((and (& (ego onControl: 0) cYELLOW) (not (ego script?)))
+				(ego setScript: getInEscapePod)
+			)
 		)
 		(super doit: &rest)
 	)
 	
 	(method (notify)
-		(if (== prevRoomNum 66) (HandsOff))
+		(if (== prevRoomNum 66)
+			(HandsOff)
+		)
 	)
 )
 
 (instance roomControl of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -152,9 +116,15 @@
 			)
 			(1
 				(cond 
-					((Btst 52) (self setScript: noEscapeForEgo))
-					((Btst 51) (self setScript: waveGoodBye))
-					(else (self setScript: madeItInTime))
+					((Btst fPodGone)
+						(self setScript: noEscapeForEgo)
+					)
+					((Btst fLeftDeltaurPodBay)
+						(self setScript: waveGoodBye)
+					)
+					(else
+						(self setScript: madeItInTime)
+					)
 				)
 			)
 		)
@@ -162,8 +132,6 @@
 )
 
 (instance egoDropsIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -185,7 +153,7 @@
 			)
 			(5
 				(soundFx number: 311 loop: 1 play:)
-				(elevatorDoor setCycle: End self)
+				(elevatorDoor setCycle: EndLoop self)
 			)
 			(6
 				(soundFx stop:)
@@ -205,15 +173,15 @@
 				(= cycles 3)
 			)
 			(7
-				(ego observeControl: 16384)
+				(ego observeControl: cYELLOW)
 				(ego
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setPri: 11
 					setMotion: MoveTo 172 132 self
 				)
 			)
 			(8
-				(SolvePuzzle 1 173)
+				(SolvePuzzle 1 fEnterDeltaurPodBay)
 				(NormalEgo 2 2 62)
 				(ego setPri: -1)
 				(HandsOn)
@@ -224,8 +192,6 @@
 )
 
 (instance goingUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -238,7 +204,7 @@
 			)
 			(2
 				(soundFx number: 311 loop: 1 play:)
-				(elevatorDoor setCycle: Beg self)
+				(elevatorDoor setCycle: BegLoop self)
 			)
 			(3
 				(elevatorDoor stopUpd:)
@@ -262,7 +228,9 @@
 				(elevator setMotion: MoveTo 155 20 self)
 			)
 			(9
-				(if (Btst 53) (Bset 51))
+				(if (Btst fStartedSelfDestruct)
+					(Bset fLeftDeltaurPodBay)
+				)
 				(curRoom newRoom: 66)
 			)
 		)
@@ -270,8 +238,6 @@
 )
 
 (instance madeItInTime of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -279,14 +245,14 @@
 				(hood init:)
 				(ego setScript: egoDropsIn self)
 			)
-			(1 (self dispose:))
+			(1
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance noEscapeForEgo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -294,23 +260,23 @@
 				(launchTube init:)
 			)
 			(1
-				(ego ignoreControl: 16384)
+				(ego ignoreControl: cYELLOW)
 				(= cycles 3)
 			)
-			(2 (self dispose:))
+			(2
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance waveGoodBye of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setScript: egoDropsIn)
 				(escapePod init:)
-				(hood init: setCycle: End self)
+				(hood init: setCycle: EndLoop self)
 			)
 			(1
 				(soundFx number: 532 loop: 1 play:)
@@ -329,22 +295,20 @@
 			(4
 				(Print 67 1)
 				(launchTube init:)
-				(ego ignoreControl: 16384)
-				(Bset 52)
+				(ego ignoreControl: cYELLOW)
+				(Bset fPodGone)
 			)
 		)
 	)
 )
 
 (instance getInEscapePod of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(= cycles 3)
-				(ego ignoreControl: 16384)
+				(ego ignoreControl: cYELLOW)
 			)
 			(1
 				(ego setMotion: PolyPath 192 139 self)
@@ -359,35 +323,37 @@
 					view: 43
 					cel: 0
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
 				(soundFx number: 324 loop: 1 play:)
-				(hood ignoreControl: 4096 setCycle: End self)
+				(hood ignoreControl: cLRED setCycle: EndLoop self)
 			)
 			(5
 				(soundFx number: 369 loop: 1 play: self)
 			)
-			(6 (= ticks 60))
+			(6
+				(= ticks 60)
+			)
 			(7
 				(sounds eachElementDo: #stop)
 				(soundFx number: 532 loop: 1 play:)
 				(flame1
 					init:
 					setPri: 14
-					ignoreControl: 4096
+					ignoreControl: cLRED
 					setCycle: RandCycle
 				)
 				(flame2
 					init:
 					setPri: 14
-					ignoreControl: 4096
+					ignoreControl: cLRED
 					setCycle: RandCycle
 				)
 				(flyingEgo
 					init:
-					ignoreControl: 4096
+					ignoreControl: cLRED
 					posn: (ego x?) (ego y?)
 				)
 				(ego hide:)
@@ -395,11 +361,11 @@
 			)
 			(8
 				(ego hide:)
-				(SolvePuzzle 3 174)
+				(SolvePuzzle 3 fEnterDeltaurEscapePod)
 				(soundFx number: 533 loop: 1 play:)
 				(escapePod
-					ignoreActors: 1
-					ignoreControl: 4096
+					ignoreActors: TRUE
+					ignoreControl: cLRED
 					setMotion: MoveTo 265 144 self
 				)
 			)
@@ -428,22 +394,29 @@
 			(16
 				(escapePod setStep: 50 30 setMotion: MoveTo 525 99 self)
 			)
-			(17 (curRoom newRoom: 71))
+			(17
+				(curRoom newRoom: 71)
+			)
 		)
 	)
 )
 
 (instance getInLaunchTube of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (ego setHeading: 180 self))
-			(1
-				(ego view: 43 setLoop: 1 cel: 0 setCycle: End self)
+			(0
+				(ego setHeading: 180 self)
 			)
-			(2 (Print 67 2) (= cycles 3))
-			(3 (curRoom newRoom: 71))
+			(1
+				(ego view: 43 setLoop: 1 cel: 0 setCycle: EndLoop self)
+			)
+			(2
+				(Print 67 2)
+				(= cycles 3)
+			)
+			(3
+				(curRoom newRoom: 71)
+			)
 		)
 	)
 )
@@ -451,16 +424,26 @@
 (instance launchTube of Feature
 	(properties
 		description {escape pod launch tube}
-		onMeCheck $1000
+		onMeCheck cLRED
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (Print 67 3))
-			(3 (Print 67 4))
-			(5 (Print 67 5))
-			(12 (Print 67 6))
-			(11 (Print 67 7))
+			(verbLook
+				(Print 67 3)
+			)
+			(verbDo
+				(Print 67 4)
+			)
+			(verbTalk
+				(Print 67 5)
+			)
+			(verbSmell
+				(Print 67 6)
+			)
+			(verbTaste
+				(Print 67 7)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -471,16 +454,26 @@
 (instance doDadOnWall of Feature
 	(properties
 		description {doDadOnWall}
-		onMeCheck $0010
+		onMeCheck cRED
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (Print 67 8))
-			(3 (Print 67 9))
-			(5 (Print 67 10))
-			(12 (Print 67 11))
-			(11 (Print 67 12))
+			(verbLook
+				(Print 67 8)
+			)
+			(verbDo
+				(Print 67 9)
+			)
+			(verbUse
+				(Print 67 10)
+			)
+			(verbSmell
+				(Print 67 11)
+			)
+			(verbTaste
+				(Print 67 12)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -494,17 +487,27 @@
 		y 115
 		view 167
 		priority 9
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 8
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (Print 67 13))
-			(3 (Print 67 14))
-			(5 (Print 67 15))
-			(12 (Print 67 16))
-			(11 (Print 67 17))
+			(verbLook
+				(Print 67 13)
+			)
+			(verbDo
+				(Print 67 14)
+			)
+			(verbUse
+				(Print 67 15)
+			)
+			(verbTaste
+				(Print 67 16)
+			)
+			(verbSmell
+				(Print 67 17)
+			)
 		)
 	)
 )
@@ -513,20 +516,30 @@
 	(properties
 		x 155
 		y 42
-		onMeCheck $0800
+		onMeCheck cLCYAN
 		view 167
 		loop 4
 		priority 8
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (Print 67 18))
-			(3 (self setScript: goingUp))
-			(5 (Print 67 19))
-			(12 (Print 67 20))
-			(11 (Print 67 21))
+			(verbLook
+				(Print 67 18)
+			)
+			(verbDo
+				(self setScript: goingUp)
+			)
+			(verbTalk
+				(Print 67 19)
+			)
+			(verbTaste
+				(Print 67 20)
+			)
+			(verbSmell
+				(Print 67 21)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -537,19 +550,15 @@
 		(return
 			(&
 				onMeCheck
-				(OnControl 4 (theObjOrX x?) (theObjOrX y?))
+				(OnControl CMAP (theObjOrX x?) (theObjOrX y?))
 			)
 		)
 	)
 )
 
 (instance accelCode of Code
-	(properties)
-	
-	(method (doit param1)
-		(param1
-			setStep: (+ (param1 xStep?) 2) (+ (param1 yStep?) 1)
-		)
+	(method (doit obj)
+		(obj setStep: (+ (obj xStep?) 2) (+ (obj yStep?) 1))
 	)
 )
 
@@ -561,23 +570,31 @@
 		view 167
 		loop 3
 		priority 13
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		xStep 8
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (Print 67 22))
-			(3
-				(if (Btst 51)
+			(verbLook
+				(Print 67 22)
+			)
+			(verbDo
+				(if (Btst fLeftDeltaurPodBay)
 					(Print 67 23)
 				else
 					(ego setScript: getInEscapePod)
 				)
 			)
-			(5 (Print 67 24))
-			(11 (Print 67 25))
-			(12 (Print 67 26))
+			(verbTalk
+				(Print 67 24)
+			)
+			(verbTaste
+				(Print 67 25)
+			)
+			(verbSmell
+				(Print 67 26)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -590,7 +607,7 @@
 		view 167
 		loop 1
 		priority 15
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		cycleSpeed 8
 		moveSpeed 2
 	)
@@ -607,7 +624,7 @@
 		view 167
 		loop 2
 		priority 11
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		cycleSpeed 2
 		moveSpeed 2
 	)
@@ -624,7 +641,7 @@
 		view 167
 		loop 2
 		priority 11
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		cycleSpeed 2
 		moveSpeed 2
 	)
@@ -641,7 +658,7 @@
 		view 43
 		cel 7
 		priority 15
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		cycleSpeed 2
 		moveSpeed 2
 	)

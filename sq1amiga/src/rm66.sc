@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 66)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Deltaur)
@@ -22,8 +22,8 @@
 (local
 	blastX
 	blastY
-	[withGPts 38] = [0 189 0 0 319 0 319 104 0 104 0 110 13 110 2 119 2 134 128 134 101 147 91 147 33 176 91 176 147 134 169 134 186 142 319 142 319 189]
-	[withoutGPts 48] = [0 189 0 0 319 0 319 102 308 105 304 110 286 110 280 104 0 104 0 110 13 110 2 119 2 134 128 134 104 149 88 149 39 175 91 175 112 158 144 134 169 134 186 142 319 142 319 189]
+	withoutGPts = [0 189 0 0 319 0 319 105 292 105 292 94 307 94 307 45 278 45 278 94 289 94 289 105 221 105 221 96 235 96 235 44 204 44 204 96 217 96 217 105 0 104 0 110 13 110 2 119 2 134 128 134 101 147 91 147 33 176 91 176 147 134 169 134 186 142 319 142 319 189]
+	withGPts = [0 189 0 0 319 0 319 102 308 105 304 110 286 110 278 105 221 105 221 96 235 96 235 44 204 44 204 96 217 96 217 105 0 104 0 110 13 110 2 119 2 134 128 134 104 149 88 149 39 175 91 175 112 158 144 134 169 134 186 142 319 142 319 189]
 )
 (instance rm66 of SQRoom
 	(properties
@@ -34,13 +34,13 @@
 	)
 	
 	(method (init)
-		(self setRegions: 703)
+		(self setRegions: DELTAUR)
 		(HandsOff)
-		(Load rsSOUND 312)
-		(LoadMany 128 415 66 166 479 419)
-		(withG points: @withoutGPts size: 24)
-		(withoutG points: @withGPts size: 19)
-		(if (not (Btst 58))
+		(Load SOUND 312)
+		(LoadMany VIEW 415 66 166 479 419)
+		(withG points: @withGPts size: 32)
+		(withoutG points: @withoutGPts size: 35)
+		(if (not (Btst fElevatorGuardDead))
 			(self addObstacle: withG)
 			(standingSarienHead init: standingSarien setLoop: 8)
 			(standingSarien
@@ -49,7 +49,7 @@
 				shootEgo: shootTheEgo1
 				blastID: blast1
 				regionPathID: 0
-				dead: 0
+				dead: FALSE
 				posn: 292 106
 				loop: 2
 				ignoreActors: 0
@@ -70,11 +70,13 @@
 		(switch prevRoomNum
 			(57
 				(ego loop: 0 posn: 9 109)
-				(if (== (DeltaurRegion egoStatus?) 0)
+				(if (== (DeltaurRegion egoStatus?) egoSpacesuit)
 					(standingSarien shotsFired: 3)
 				)
 			)
-			(61 (ego posn: 60 175))
+			(61
+				(ego posn: 60 175)
+			)
 		)
 		(super init: &rest)
 		(DeltaurRegion eDoor2: e2Door)
@@ -97,7 +99,7 @@
 			view: 166
 			loop: 0
 			posn: 290 101
-			locked: (not (Btst 58))
+			locked: (not (Btst fElevatorGuardDead))
 			lockStr:
 				{The right elevator is identical to the left except for the ugly green guy standing in front of it.}
 			setPri: 7
@@ -117,40 +119,52 @@
 			(61
 				(self setScript: fromHallwayC)
 			)
-			(else  (ego ignoreActors: 0))
+			(else
+				(ego ignoreActors: FALSE)
+			)
 		)
 		(ego init:)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp theControl)
 		(cond 
 			(script 0)
 			((ego script?) 0)
 			(
 				(and
 					(cast contains: standingSarien)
-					(not (& (ego illegalBits?) $0002))
+					(not (& (ego illegalBits?) cBLUE))
 				)
-				(ego observeControl: 2)
+				(ego observeControl: cBLUE)
 			)
 			(
 				(and
 					(not (cast contains: standingSarien))
-					(& (ego illegalBits?) $0002)
+					(& (ego illegalBits?) cBLUE)
 				)
 				(ego ignoreControl: 2)
 			)
-			((e1Door inFront:) (e1Door open:))
-			((e2Door inFront:) (e2Door open:))
-			((& (= temp0 (ego onControl: 1)) $0008) (self setScript: toLaundry))
-			((& temp0 $0010) (curRoom newRoom: 61))
+			((e1Door inFront:)
+				(e1Door open:)
+			)
+			((e2Door inFront:)
+				(e2Door open:)
+			)
+			((& (= theControl (ego onControl: origin)) cCYAN)
+				(self setScript: toLaundry)
+			)
+			((& theControl cRED)
+				(curRoom newRoom: 61)
+			)
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(ego ignoreControl: 2)
-		(if (standingSarien dead?) (Bset 58))
+		(ego ignoreControl: cBLUE)
+		(if (standingSarien dead?)
+			(Bset fElevatorGuardDead)
+		)
 		(super dispose:)
 	)
 	
@@ -163,13 +177,13 @@
 
 (instance withG of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance withoutG of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
@@ -191,7 +205,7 @@
 				(not (e1Door busy?))
 				(not (e2Door busy?))
 				(not dead)
-				(!= (DeltaurRegion egoStatus?) 1)
+				(!= (DeltaurRegion egoStatus?) egoWithHelmet)
 				(not (curRoom script?))
 			)
 			(self setScript: shootEgo)
@@ -200,8 +214,8 @@
 	)
 	
 	(method (doVerb theVerb theItem)
-		(if (and (== theVerb 4) (== theItem 12))
-			(e2Door locked: 0)
+		(if (and (== theVerb verbUse) (== theItem iPulseray))
+			(e2Door locked: FALSE)
 			((curRoom obstacles?) delete: withG)
 			(curRoom addObstacle: withoutG)
 		)
@@ -222,7 +236,7 @@
 		view 479
 		loop 15
 		priority 15
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 6
 	)
 )
@@ -232,7 +246,7 @@
 		description {elevator door}
 		sightAngle 90
 		priority 2
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -249,7 +263,7 @@
 		description {elevator door}
 		sightAngle 90
 		priority 2
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -262,9 +276,7 @@
 )
 
 (instance shootTheEgo1 of Script
-	(properties)
-	
-	(method (changeState newState &tmp egoX temp1)
+	(method (changeState newState &tmp egoX egoY)
 		(switch (= state newState)
 			(0
 				(client cel: 0 setMotion: 0 view: 415)
@@ -282,15 +294,15 @@
 				)
 				(if (== (client view?) 415)
 					(sarienShot play:)
-					(client cel: (- (client lastCel:) 2) setCycle: End self)
+					(client cel: (- (client lastCel:) 2) setCycle: EndLoop self)
 				else
-					(client view: 415 setMotion: 0 cel: 0 setCycle: End self)
+					(client view: 415 setMotion: 0 cel: 0 setCycle: EndLoop self)
 				)
 			)
 			(2
 				(if register
 					(= egoX (ego x?))
-					(= temp1 (- (ego y?) 35))
+					(= egoY (- (ego y?) 35))
 				else
 					(switch (Random 1 2)
 						(1
@@ -302,10 +314,10 @@
 					)
 					(switch (Random 1 2)
 						(1
-							(= temp1 (- (ego nsTop?) (Random 1 5)))
+							(= egoY (- (ego nsTop?) (Random 1 5)))
 						)
 						(2
-							(= temp1 (+ (ego nsBottom?) (Random 1 5)))
+							(= egoY (+ (ego nsBottom?) (Random 1 5)))
 						)
 					)
 				)
@@ -316,11 +328,11 @@
 					((client blastID?) setLoop: 2)
 				)
 				((client blastID?)
-					ignoreActors: 1
+					ignoreActors: TRUE
 					view: 479
-					posn: egoX temp1
+					posn: egoX egoY
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -328,27 +340,33 @@
 				(= blastX (client x?))
 				(= blastY (client y?))
 				(if (and register (not (ego script?)))
-					(curRoom setScript: (ScriptID 707 1))
+					(curRoom setScript: (ScriptID DELTAUR_DEATH 1))
 				)
 				(= seconds 2)
 			)
-			(4 (self dispose:))
+			(4
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance fromLaundry of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego ignoreActors: 1 setMotion: PolyPath 48 112 self)
+				(ego
+					ignoreActors: TRUE
+					setMotion: PolyPath 48 112 self
+				)
 			)
 			(1
-				(if (Btst 65) (Bclr 65) (Print 66 1))
-				(ego ignoreActors: 0)
+				(if (Btst fDisguiseMessage)
+					(Bclr fDisguiseMessage)
+					(Print 66 1)
+				)
+				(ego ignoreActors: FALSE)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -357,30 +375,34 @@
 )
 
 (instance toLaundry of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego ignoreActors: 1 setMotion: MoveTo 0 109 self)
+				(ego
+					ignoreActors: TRUE
+					setMotion: MoveTo 0 109 self
+				)
 			)
-			(1 (curRoom newRoom: 57))
+			(1
+				(curRoom newRoom: 57)
+			)
 		)
 	)
 )
 
 (instance fromHallwayC of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego ignoreActors: 1 setMotion: MoveTo 90 161 self)
+				(ego
+					ignoreActors: TRUE
+					setMotion: MoveTo 90 161 self
+				)
 			)
 			(1
-				(ego ignoreActors: 0)
+				(ego ignoreActors: FALSE)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -389,8 +411,6 @@
 )
 
 (instance bimWalk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -398,24 +418,26 @@
 					posn: -10 189
 					setLoop: 1
 					setStep: 5 2
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 335 189 self
 				)
 			)
-			(1 (self dispose:))
+			(1
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance bimActivate of RegionFeature
 	(properties
-		onMeCheck $0400
+		onMeCheck cLGREEN
 		level 1
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(11
+			(verbTaste
 				(if (not (bim script?))
 					(bim init: setScript: bimWalk)
 				else
@@ -434,7 +456,7 @@
 		view 166
 		loop 1
 		priority 15
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 

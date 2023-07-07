@@ -657,208 +657,66 @@
 		(super dispose:)
 	)
 	
-	(method (internalEvent &tmp temp0 temp1 temp2)
-		(asm
-			pushi    #curEvent
-			pushi    0
-			class    User
-			send     4
-			sat      temp0
-			pushi    #add
-			pushi    1
-			pushSelf
-			lofsa    myCast
-			send     6
-			pushi    #setCursor
-			pushi    2
-			pushi    69
-			pushi    1
-			lag      theGame
-			send     8
-			pushi    #show
-			pushi    0
-			pushi    4
-			pushi    1
-			lst      temp1
-			pushi    3
-			pushi    1
-			lst      temp2
-			self     16
-code_132e:
-			pushi    #type
-			pushi    1
-			pushi    0
-			pushi    40
-			pushi    1
-			pushi    0
-			pushi    64
-			pushi    1
-			pushi    0
-			pushi    3
-			pushi    1
-			pushi    0
-			pushi    4
-			pushi    1
-			pushi    0
-			pushi    76
-			pushi    1
-			pushi    0
-			pushi    141
-			pushi    1
-			pushi    0
-			lat      temp0
-			send     42
-			pushi    2
-			pushi    32767
-			lst      temp0
-			callk    GetEvent,  4
-			pushi    #localize
-			pushi    0
-			lat      temp0
-			send     4
-			pushi    #x
-			pushi    0
-			lat      temp0
-			send     4
-			sat      temp1
-			pushi    #y
-			pushi    0
-			lat      temp0
-			send     4
-			sat      temp2
-			pushi    6
-			pushi    224
-			pushi    115
-			pushi    295
-			pushi    187
-			lst      temp1
-			push    
-			calle    InRect,  12
-			not     
-			bnt      code_1392
-			jmp      code_1441
-			jmp      code_132e
-code_1392:
-			pushi    #type
-			pushi    0
-			lat      temp0
-			send     4
-			push    
-			ldi      5
-			and     
-			bnt      code_13d4
-			pushi    #type
-			pushi    0
-			lat      temp0
-			send     4
-			push    
-			ldi      4
-			and     
-			bt       code_13c7
-			pushi    #type
-			pushi    0
-			lat      temp0
-			send     4
-			push    
-			ldi      1
-			and     
-			bnt      code_132e
-			pushi    #modifiers
-			pushi    0
-			lat      temp0
-			send     4
-			not     
-			bnt      code_132e
-code_13c7:
-			pushi    #handleEvent
-			pushi    1
-			lst      temp0
-			class    User
-			send     6
-			jmp      code_132e
-code_13d4:
-			lat      temp1
-			aTop     x
-			lat      temp2
-			aTop     y
-			pushi    #register
-			pushi    0
-			lofsa    keyFlashScript
-			send     4
-			bnt      code_13f9
-			pushi    #doit
-			pushi    0
-			lofsa    keyFlashScript
-			send     4
-			pushi    #eachElementDo
-			pushi    1
-			pushi    60
-			lag      sounds
-			send     6
-code_13f9:
-			pushi    #script
-			pushi    0
-			lag      curRoom
-			send     4
-			push    
-			dup     
-			lofsa    lowerPad
-			eq?     
-			bnt      code_1410
-			jmp      code_1441
-			jmp      code_1429
-code_1410:
-			dup     
-			lofsa    EnterScript
-			eq?     
-			bnt      code_1429
-			pushi    #doit
-			pushi    0
-			lofsa    EnterScript
-			send     4
-			pushi    #eachElementDo
-			pushi    1
-			pushi    60
-			lag      sounds
-			send     6
-code_1429:
-			toss    
-			pushi    2
-			pushi    #elements
-			pushi    0
-			lofsa    myCast
-			send     4
-			push    
-			pushi    0
-			callk    Animate,  4
-			pushi    #doit
-			pushi    0
-			super    View,  4
-			jmp      code_132e
-code_1441:
-			pushi    #setCursor
-			pushi    2
-			pushi    #cursor
-			pushi    0
-			pushi    #curIcon
-			pushi    0
-			lag      theIconBar
-			send     4
-			send     4
-			push    
-			pushi    1
-			lag      theGame
-			send     8
-			pushi    #hide
-			pushi    0
-			self     4
-			pushi    #delete
-			pushi    1
-			pushSelf
-			lofsa    myCast
-			send     6
-			ret     
+	(method (internalEvent &tmp evt theX theY)
+		(= evt (User curEvent:))
+		(myCast add: self)
+		(theGame setCursor: 69 TRUE)
+		(self show: x: theX y: theY) ; UNINIT, UNINIT
+		(repeat
+			(evt
+				type: nullEvt
+				message: 0
+				modifiers: $0000
+				y: 0
+				x: 0
+				claimed: FALSE
+				port: 0
+			)
+			(GetEvent allEvents evt)
+			(evt localize:)
+			(= theX (evt x:))
+			(= theY (evt y:))
+			(cond
+				((not (InRect 224 115 295 187 theX theY))
+					(break)
+				)
+				((& (evt type:) (| keyDown mouseDown))
+					(if
+						(or
+							(& (evt type:) keyDown)
+							(if (& (evt type:) mouseDown)
+								(not (evt modifiers:))
+							else
+								(continue)
+							)
+						)
+						(User handleEvent: evt)
+					)
+				)
+				(else
+					(= x theX)
+					(= y theY)
+					(if (keyFlashScript register:)
+						(keyFlashScript doit:)
+						(sounds eachElementDo: #doit)
+					)
+					(switch (curRoom script:)
+						(lowerPad
+							(break)
+						)
+						(EnterScript
+							(EnterScript doit:)
+							(sounds eachElementDo: #doit)
+						)
+					)
+					(Animate (myCast elements:) FALSE)
+					(super doit:)
+				)
+			)
 		)
+		(theGame setCursor: ((theIconBar curIcon:) cursor:) TRUE)
+		(self hide:)
+		(myCast delete: self)
 	)
 )
 
