@@ -45,7 +45,7 @@
 		(control setCycle: Forward init:)
 		(if (Btst fBayDoorsOpen) (lights setCycle: Forward))
 		(lights init:)
-		(if (ArcadaCheck 553 128)
+		(if (ArcadaCheck #rFlag1 rFSpacesuitClosetOpen)
 			(closetDoor init: ignoreActors: TRUE cel: 6 stopUpd:)
 			(helmet approachVerbs: verbDo verbLook)
 			(spaceSuit approachVerbs: verbDo verbLook)
@@ -183,7 +183,7 @@
 			(2
 				(closetDoor setCycle: BegLoop self)
 				((ScriptID ARCADA 0)
-					rFlag1: (& ((ScriptID 700 0) rFlag1?) $ff7f)
+					rFlag1: (& ((ScriptID 700 0) rFlag1?) (~ rFSpacesuitClosetOpen))
 				)
 			)
 			(3
@@ -320,17 +320,17 @@
 			(3
 				(soundFx stop:)
 				((ScriptID ARCADA 0)
-					rFlag1: (| ((ScriptID ARCADA 0) rFlag1?) $0080)
+					rFlag1: (| ((ScriptID ARCADA 0) rFlag1?) rFSpacesuitClosetOpen)
 				)
 				(closetDoor ignoreActors: TRUE)
 				(if (Btst fWearingSpacesuit)
 					(NormalEgo 0 1 61)
 					(ego setMotion: PolyPath 159 80 self)
 				else
-					(if (not (ArcadaCheck 553 64))
+					(if (not (ArcadaCheck #rFlag1 rFFoundSpacesuit))
 						(Print 11 0)
 						((ScriptID ARCADA 0)
-							rFlag1: (| ((ScriptID 700 0) rFlag1?) $0040)
+							rFlag1: (| ((ScriptID 700 0) rFlag1?) rFFoundSpacesuit)
 						)
 					)
 					(helmet approachVerbs: verbDo verbLook)
@@ -359,7 +359,7 @@
 			(6
 				(closetDoor setCycle: BegLoop self)
 				((ScriptID ARCADA 0)
-					rFlag1: (& ((ScriptID ARCADA 0) rFlag1?) $ff7f)
+					rFlag1: (& ((ScriptID ARCADA 0) rFlag1?) (~ rFSpacesuitClosetOpen))
 				)
 				(Bclr fWearingSpacesuit)
 				(NormalEgo 3 0 60)

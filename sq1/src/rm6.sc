@@ -198,12 +198,11 @@
 			(1
 				(HandsOff)
 				(ego setLoop: 2)
-				(if
-				(and (>= howFast 1) (not (ArcadaCheck 553 2)))
+				(if (and (>= howFast 1) (not (ArcadaCheck #rFlag1 rFBeenInLab)))
 					(= local104 1)
 					(panicDroid init: setCycle: Forward)
 					((ScriptID ARCADA 0)
-						rFlag1: (| ((ScriptID ARCADA 0) rFlag1?) $0002)
+						rFlag1: (| ((ScriptID ARCADA 0) rFlag1?) rFBeenInLab)
 					)
 					(ego setMotion: MoveTo 183 155)
 				else

@@ -27,9 +27,9 @@
 	local2
 )
 
-(procedure (ArcadaCheck param1 param2)
+(procedure (ArcadaCheck flagVar flagEnum)
 	(return
-		(if (& (arcadaRegion param1?) param2)
+		(if (& (arcadaRegion flagVar?) flagEnum)
 			(return TRUE)
 		else
 			(return FALSE)
@@ -166,7 +166,7 @@
 (class arcadaRegion of Region
 	(properties
 		rFlag1 0
-		rFlag2 0
+		rFlag2 0	;unused, but was likely put here just to be safe
 		timeTilSariens -1
 		sarienState 0
 		safeCode 0
@@ -241,7 +241,7 @@
 			(and
 				(> selfDestructTimer 60)
 				(not (Btst fWearingSpacesuit))
-				(& rFlag1 $0004)
+				(& rFlag1 rFStartedGame)
 				(OneOf curRoomNum 4 6 9)
 				(not (Btst fWearingSpacesuit))
 				(!= prevRoomNum 10)

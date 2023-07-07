@@ -29,7 +29,7 @@
 		(self setRegions: ARCADA)
 		(super init:)
 		(ego init:)
-		(if (ArcadaCheck 553 1)
+		(if (ArcadaCheck #rFlag1 rFPodIsOn)
 			(buttons setCycle: Forward)
 			(motors setCycle: Forward)
 		)

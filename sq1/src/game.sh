@@ -236,3 +236,13 @@
 	fEnterDeltaurEscapePod	;174
 	fGetSarienID			;175
 )
+
+;Arcada region flags
+(define rFPodIsOn 				$0001)
+(define rFBeenInLab				$0002)
+(define rFStartedGame			$0004)
+(define rFWalkedInCloset		$0008)
+(define rFGettingCart			$0010)
+(define rFCartReadyToTake		$0020)
+(define rFFoundSpacesuit		$0040)
+(define rFSpacesuitClosetOpen	$0080)

@@ -245,8 +245,6 @@
 )
 
 (instance walkInCloset of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -265,7 +263,7 @@
 			)
 			(3
 				(soundFx stop:)
-				(if (not (ArcadaCheck 553 8))
+				(if (not (ArcadaCheck #rFlag1 rFWalkedInCloset))
 					(soundFx number: 310 loop: 1 play: self)
 				else
 					(HandsOn)
@@ -275,7 +273,7 @@
 			(4
 				(Print 4 2)
 				((ScriptID ARCADA 0)
-					rFlag1: (| ((ScriptID ARCADA 0) rFlag1?) $0008)
+					rFlag1: (| ((ScriptID ARCADA 0) rFlag1?) rFWalkedInCloset)
 				)
 				(= cycles 6)
 			)
@@ -424,8 +422,8 @@
 			(8
 				(= seconds 0)
 				((ScriptID ARCADA 0)
-					inGame: 1
-					rFlag1: (| ((ScriptID ARCADA 0) rFlag1?) $0004)
+					inGame: TRUE
+					rFlag1: (| ((ScriptID ARCADA 0) rFlag1?) rFStartedGame)
 				)
 			)
 			(9

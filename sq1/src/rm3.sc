@@ -91,7 +91,7 @@
 				stopUpd:
 			)
 		)
-		(if (not (ArcadaCheck 553 16))
+		(if (not (ArcadaCheck #rFlag1 rFGettingCart))
 			(if (== currentFloor 1)
 				(if (Btst fScientistDead)
 					(self
@@ -226,11 +226,13 @@
 			((== prevRoomNum 103)
 				(ego view: 7 setLoop: 0 cel: 7 posn: 168 92 normal: 0)
 				(cond 
-					((ArcadaCheck 553 32)
+					((ArcadaCheck #rFlag1 rFCartReadyToTake)
 						(droid posn: 183 64 setPri: 6)
 						(self setScript: putCartAway)
 					)
-					((ArcadaCheck 553 16) (self setScript: goGetCart))
+					((ArcadaCheck #rFlag1 rFGettingCart)
+						(self setScript: goGetCart)
+					)
 					(else (self setScript: riseFromComputer))
 				)
 			)
@@ -294,7 +296,7 @@
 				(backSound fade:)
 				(theMusic2 fade:)
 			)
-			(if (and (== n 103) (not (ArcadaCheck 553 16)))
+			(if (and (== n 103) (not (ArcadaCheck #rFlag1 rFGettingCart)))
 				(theMusic2 number: 353 fade: 50 25 10 0)
 			)
 		)
@@ -652,13 +654,11 @@
 )
 
 (instance putCartAway of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				((ScriptID ARCADA 0)
-					rFlag1: (& ((ScriptID ARCADA 0) rFlag1?) $ffdf)
+					rFlag1: (& ((ScriptID ARCADA 0) rFlag1?) (~ rFCartReadyToTake))
 				)
 				(droid
 					setLoop: 4
