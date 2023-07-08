@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 3)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Arcada)
@@ -33,7 +33,7 @@
 	local6
 	local7 =  3
 )
-(procedure (localproc_1e86)
+(procedure (WrongLevel)
 	(switch (Random 0 1)
 		(0 (Print 3 29))
 		(1 (Print 3 30))
@@ -43,21 +43,21 @@
 (instance rm3 of SQRoom
 	(properties
 		picture 3
-		style $000a
+		style FADEOUT
 		east 4
 		west 6
 	)
 	
 	(method (init)
-		(LoadMany 128 0 7 401 103)
+		(LoadMany VIEW 0 7 401 103)
 		(leftDoor init: stopUpd:)
 		(rightDoor init: stopUpd:)
-		(rightPanelLights setCycle: Fwd init:)
-		(leftPanelLights setCycle: Fwd init:)
+		(rightPanelLights setCycle: Forward init:)
+		(leftPanelLights setCycle: Forward init:)
 		(ego init:)
-		(self setRegions: 700)
+		(self setRegions: ARCADA)
 		(if (OneOf prevRoomNum west east)
-			(= style (if (== prevRoomNum west) 12 else 11))
+			(= style (if (== prevRoomNum west) SCROLLLEFT else SCROLLRIGHT))
 			(if (== currentFloor 1)
 				(= local0 1)
 				(soundFx number: 311 loop: 1 play:)
@@ -75,104 +75,72 @@
 			)
 		)
 		(droid init:)
-		(if (== howFast 0) (droid stopUpd:))
+		(if (== howFast slow)
+			(droid stopUpd:)
+		)
 		(super init:)
 		(features
 			add: Computer holes lights mainComputer cartridgeSlots
 			eachElementDo: #init
 		)
-		(if (Btst 8)
+		(if (Btst fScientistDead)
 			(scientist
 				init:
 				posn: 224 88
 				setLoop: 2
 				cel: 0
 				show:
-				ignoreActors: 1
+				ignoreActors: TRUE
 				stopUpd:
 			)
 		)
-		(if (not (ArcadaCheck 551 16))
+		(if (not (ArcadaCheck #rFlag1 rFGettingCart))
 			(if (== currentFloor 1)
-				(if (Btst 8)
+				(if (Btst fScientistDead)
 					(self
 						addObstacle:
 							((Polygon new:)
-								type: 2
+								type: PBarredAccess
 								init:
-									0
-									0
-									319
-									0
-									319
-									83
-									253
-									83
-									252
-									90
-									237
-									93
-									203
-									91
-									189
-									84
-									175
-									84
-									173
-									78
-									166
-									70
-									147
-									70
-									160
-									79
-									163
-									92
-									136
-									92
-									122
-									81
-									118
-									68
-									99
-									68
-									74
-									76
-									63
-									84
-									0
-									84
+									0 0
+									319 0
+									319 83
+									253 83
+									252 90
+									237 93
+									203 91
+									189 84
+									175 84
+									173 78
+									166 70
+									147 70
+									160 79
+									163 92
+									136 92
+									122 81
+									118 68
+									99 68
+									74 76
+									63 84
+									0 84
 								yourself:
 							)
 							((Polygon new:)
-								type: 2
+								type: PBarredAccess
 								init:
-									0
-									93
-									56
-									93
-									31
-									122
-									31
-									144
-									61
-									171
-									156
-									185
-									253
-									170
-									282
-									147
-									281
-									121
-									260
-									94
-									319
-									92
-									319
-									189
-									0
-									189
+									0 93
+									56 93
+									31 122
+									31 144
+									61 171
+									156 185
+									253 170
+									282 147
+									281 121
+									260 94
+									319 92
+									319 189
+									0 189
 								yourself:
 							)
 					)
@@ -180,87 +148,55 @@
 					(self
 						addObstacle:
 							((Polygon new:)
-								type: 2
+								type: PBarredAccess
 								init:
-									0
-									0
-									319
-									0
-									319
-									83
-									249
-									83
-									234
-									74
-									205
-									65
-									204
-									74
-									189
-									84
-									175
-									84
-									173
-									78
-									166
-									70
-									147
-									70
-									160
-									79
-									163
-									92
-									136
-									92
-									121
-									82
-									116
-									68
-									99
-									68
-									74
-									76
-									63
-									84
-									0
-									84
+									0 0
+									319 0
+									319 83
+									249 83
+									234 74
+									205 65
+									204 74
+									189 84
+									175 84
+									173 78
+									166 70
+									147 70
+									160 79
+									163 92
+									136 92
+									121 82
+									116 68
+									99 68
+									74 76
+									63 84
+									0 84
 								yourself:
 							)
 							((Polygon new:)
-								type: 2
+								type: PBarredAccess
 								init:
-									0
-									93
-									56
-									93
-									31
-									122
-									31
-									144
-									61
-									171
-									156
-									185
-									253
-									170
-									282
-									147
-									281
-									121
-									258
-									92
-									319
-									92
-									319
-									189
-									0
-									189
+									0 93
+									56 93
+									31 122
+									31 144
+									61 171
+									156 185
+									253 170
+									282 147
+									281 121
+									258 92
+									319 92
+									319 189
+									0 189
 								yourself:
 							)
 					)
 				)
 				(switch scientistState
-					(0 (= scientistState 1))
+					(0
+						(= scientistState 1)
+					)
 					(1
 						(scientist
 							init:
@@ -277,12 +213,12 @@
 				(self
 					addObstacle:
 						((Polygon new:)
-							type: 2
+							type: PBarredAccess
 							init: 0 0 319 0 319 133 0 133
 							yourself:
 						)
 						((Polygon new:)
-							type: 2
+							type: PBarredAccess
 							init: 0 157 319 157 319 189 0 189
 							yourself:
 						)
@@ -293,11 +229,13 @@
 			((== prevRoomNum 103)
 				(ego view: 7 setLoop: 0 cel: 7 posn: 168 92 normal: 0)
 				(cond 
-					((ArcadaCheck 551 32)
+					((ArcadaCheck #rFlag1 rFCartReadyToTake)
 						(droid posn: 183 64 setPri: 6)
 						(self setScript: putCartAway)
 					)
-					((ArcadaCheck 551 16) (self setScript: goGetCart))
+					((ArcadaCheck #rFlag1 rFGettingCart)
+						(self setScript: goGetCart)
+					)
 					(else (self setScript: riseFromComputer))
 				)
 			)
@@ -310,30 +248,32 @@
 		)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp thisControl)
 		(super doit:)
-		(= temp0 (ego onControl: 1))
-		(cond 
+		(= thisControl (ego onControl: origin))
+		(cond
 			((not local0)
-				(cond 
-					((& temp0 $0002)
+				(cond
+					((& thisControl cBLUE)
 						(soundFx number: 311 loop: 1 play:)
 						(= local0 1)
-						(leftDoor setCycle: End leftDoor)
+						(leftDoor setCycle: EndLoop leftDoor)
 					)
-					((& temp0 $0008)
+					((& thisControl cCYAN)
 						(soundFx number: 311 loop: 1 play:)
 						(= local0 1)
-						(rightDoor setCycle: End rightDoor)
+						(rightDoor setCycle: EndLoop rightDoor)
 					)
 				)
 			)
-			((not (& temp0 $000a))
+			((not (& thisControl (| cBLUE cCYAN)))
 				(soundFx number: 311 loop: 1 play:)
 				(= local0 0)
-				(if (leftDoor cel?) (leftDoor setCycle: Beg leftDoor))
-				(if (rightDoor cel?)
-					(rightDoor setCycle: Beg rightDoor)
+				(if (leftDoor cel:)
+					(leftDoor setCycle: BegLoop leftDoor)
+				)
+				(if (rightDoor cel:)
+					(rightDoor setCycle: BegLoop rightDoor)
 				)
 			)
 		)
@@ -342,7 +282,11 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(2
-				(if (== currentFloor 1) (Print 3 0) else (Print 3 1))
+				(if (== currentFloor 1)
+					(Print 3 0)
+				else
+					(Print 3 1)
+				)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -352,13 +296,16 @@
 	
 	(method (newRoom n)
 		(ego setPri: -1)
-		(if scientistCameIn (Bset 8) (= scientistState 3))
+		(if scientistCameIn
+			(Bset fScientistDead)
+			(= scientistState 3)
+		)
 		(if (!= (theMusic number?) 355)
 			(if (OneOf n west east)
 				(backSound fade:)
 				(theMusic2 fade:)
 			)
-			(if (and (== n 103) (not (ArcadaCheck 551 16)))
+			(if (and (== n 103) (not (ArcadaCheck #rFlag1 rFGettingCart)))
 				(theMusic2 number: 353 fade: 50 25 10 0)
 			)
 		)
@@ -417,9 +364,9 @@
 					(backSound number: 301 loop: 1 flags: 1 play:)
 					(theMusic2 fade: 30 25 10 0)
 					(theMusic fade: 30 25 10 0)
-					(= scientistCameIn 1)
+					(= scientistCameIn TRUE)
 					(soundFx number: 311 loop: 1 play:)
-					(rightDoor setCycle: End self)
+					(rightDoor setCycle: EndLoop self)
 				else
 					(self dispose:)
 				)
@@ -434,21 +381,21 @@
 					posn: 313 88
 					show:
 					setLoop: 4
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: 3 3
 					setMotion: MoveTo 224 88 self
 				)
 			)
 			(6
 				(soundFx number: 311 loop: 1 play:)
-				(rightDoor setCycle: Beg rightDoor)
+				(rightDoor setCycle: BegLoop rightDoor)
 				(Print 3 3)
 				(Face ego scientist)
-				(scientist setLoop: 0 cel: 0 setCycle: CT 2 1 self)
+				(scientist setLoop: 0 cel: 0 setCycle: CycleTo 2 1 self)
 			)
 			(7
 				(soundFx number: 522 loop: 1 play:)
-				(scientist setLoop: 0 cel: 3 setCycle: End self)
+				(scientist setLoop: 0 cel: 3 setCycle: EndLoop self)
 			)
 			(8
 				(theDummy
@@ -456,7 +403,7 @@
 					cycleSpeed: (if (<= howFast 1) 8 else 17)
 					posn: (scientist x?) (scientist y?)
 					setPri: (+ (scientist priority?) 1)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
@@ -466,98 +413,64 @@
 					setLoop: 2
 					cycleSpeed: 20
 					moveSpeed: 20
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(10 (= cycles 9))
 			(11
-				(scientist setLoop: 3 setCycle: End self)
+				(scientist setLoop: 3 setCycle: EndLoop self)
 			)
 			(12
-				(scientist setLoop: 2 cel: 2 setCycle: Beg self)
+				(scientist setLoop: 2 cel: 2 setCycle: BegLoop self)
 			)
 			(13
-				(ego moveHead: 1)
+				(ego moveHead: TRUE)
 				(HandsOn)
 				((curRoom obstacles?) dispose:)
 				(curRoom
 					addObstacle:
 						((Polygon new:)
-							type: 2
+							type: PBarredAccess
 							init:
-								0
-								0
-								319
-								0
-								319
-								83
-								253
-								83
-								252
-								90
-								237
-								93
-								203
-								91
-								189
-								84
-								175
-								84
-								173
-								78
-								166
-								70
-								147
-								70
-								160
-								79
-								163
-								92
-								136
-								92
-								122
-								81
-								118
-								68
-								99
-								68
-								74
-								76
-								63
-								84
-								0
-								84
+								0 0
+								319 0
+								319 83
+								253 83
+								252 90
+								237 93
+								203 91
+								189 84
+								175 84
+								173 78
+								166 70
+								147 70
+								160 79
+								163 92
+								136 92
+								122 81
+								118 68
+								99 68
+								74 76
+								63 84
+								0 84
 							yourself:
 						)
 						((Polygon new:)
-							type: 2
+							type: PBarredAccess
 							init:
-								0
-								93
-								56
-								93
-								31
-								122
-								31
-								144
-								61
-								171
-								156
-								185
-								253
-								170
-								282
-								147
-								281
-								121
-								260
-								94
-								319
-								92
-								319
-								189
-								0
-								189
+								0 93
+								56 93
+								31 122
+								31 144
+								61 171
+								156 185
+								253 170
+								282 147
+								281 121
+								260 94
+								319 92
+								319 189
+								0 189
 							yourself:
 						)
 				)
@@ -569,7 +482,7 @@
 				(backSound
 					number: 340
 					loop: -1
-					flags: 1
+					flags: mNOPAUSE
 					play: 0
 					fade: 127 25 10 0
 				)
@@ -584,18 +497,18 @@
 (instance talkScientist of Script
 	(properties)
 	
-	(method (changeState newState &tmp [temp0 130])
+	(method (changeState newState &tmp [str 130])
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(theMusic2 fade: 30 25 10 0)
 				(theMusic fade: 30 25 10 0)
-				(backSound number: 354 loop: -1 flags: 1 play:)
+				(backSound number: 354 loop: -1 flags: mNOPAUSE play:)
 				(Face ego scientist)
-				(scientist setLoop: 2 cel: 0 setCycle: End self)
+				(scientist setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(1
-				(scientist setLoop: 3 setCycle: Fwd)
+				(scientist setLoop: 3 setCycle: Forward)
 				(= cycles (if (<= howFast 1) 15 else 30))
 			)
 			(2
@@ -604,18 +517,13 @@
 					init: sciBust sciEyes sciMouth
 					say:
 						{"The Star Generator is in danger! The Arcada is under attack! You'd better get off this scow if you value your life, Wilco."}
-						0
-						0
-						0
+						0 0 0
 						self
 				)
 			)
 			(3
-				(Format
-					@temp0
-					3
-					5
-					(switch ((ScriptID 700 0) cartNumber?)
+				(Format @str 3 5
+					(switch ((ScriptID ARCADA 0) cartNumber?)
 						(1 {Black Holes})
 						(2 {Stars})
 						(3 {Magnetic Fields})
@@ -638,11 +546,11 @@
 						(20 {Warp Fields})
 					)
 				)
-				(sciTalker say: @temp0 0 0 1 self)
-				(SolvePuzzle 2 131)
+				(sciTalker say: @str 0 0 1 self)
+				(SolvePuzzle 2 fLearnCartridgeName)
 			)
 			(4
-				(scientist setLoop: 2 setCel: 2 setCycle: Beg self)
+				(scientist setLoop: 2 setCel: 2 setCycle: BegLoop self)
 			)
 			(5
 				(backSound fade:)
@@ -651,11 +559,11 @@
 			(6
 				(HandsOn)
 				(scientist stopUpd:)
-				(Bset 8)
+				(Bset fScientistDead)
 				(backSound
 					number: 340
 					loop: -1
-					flags: 1
+					flags: mNOPAUSE
 					play: 0
 					fade: 127 25 10 0
 				)
@@ -674,7 +582,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego view: 7 setLoop: 0 cel: 0 setCycle: End self)
+				(ego view: 7 setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(1 (curRoom newRoom: 103))
 		)
@@ -688,20 +596,20 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (Btst 9)
+				(if (Btst fFlag9)
 					(ego
 						setLoop: 1
 						cycleSpeed: 5
 						moveSpeed: 5
 						cel: 0
-						setCycle: Osc 1 self
+						setCycle: Oscillate 1 self
 					)
 				else
 					(= cycles 3)
 				)
 			)
 			(1
-				(ego setLoop: 2 cel: 0 setCycle: End self)
+				(ego setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(ego
@@ -714,7 +622,7 @@
 			(3
 				(HandsOn)
 				(NormalEgo 2 0 60)
-				(Bclr 9)
+				(Bclr fFlag9)
 				(self dispose:)
 			)
 		)
@@ -729,26 +637,26 @@
 			(0
 				(HandsOff)
 				(theMusic2 number: 302 loop: -1 play:)
-				(= droidMoving 1)
-				(droid setCycle: CT 1 -1 setMotion: MoveTo 108 21 self)
+				(= droidMoving TRUE)
+				(droid setCycle: CycleTo 1 -1 setMotion: MoveTo 108 21 self)
 			)
 			(1
 				(droid
 					setLoop: 4
 					setPri: (+ (ego priority?) 1)
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(2
 				(soundFx number: 303 loop: 1 play:)
-				(droid setCycle: End self)
+				(droid setCycle: EndLoop self)
 			)
 			(3
 				(droid setMotion: DPath 102 51 132 64 183 64 self)
 			)
 			(4
 				(theMusic2 number: 353 loop: -1 play:)
-				(droid setCycle: CT 9 -1 self)
+				(droid setCycle: CycleTo 9 -1 self)
 			)
 			(5 (curRoom newRoom: 103))
 		)
@@ -756,13 +664,11 @@
 )
 
 (instance putCartAway of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				((ScriptID 700 0)
-					rFlag1: (& ((ScriptID 700 0) rFlag1?) $ffdf)
+				((ScriptID ARCADA 0)
+					rFlag1: (& ((ScriptID ARCADA 0) rFlag1?) (~ rFCartReadyToTake))
 				)
 				(droid
 					setLoop: 4
@@ -772,24 +678,24 @@
 				(= droidMoving 1)
 			)
 			(1
-				(droid setCycle: CT 5 -1 self)
+				(droid setCycle: CycleTo 5 -1 self)
 			)
 			(2
 				(soundFx number: 303 loop: 1 play:)
-				(droid setCycle: Beg self)
+				(droid setCycle: BegLoop self)
 			)
 			(3
 				(droid
 					setLoop: 3
 					cel: 1
-					setCycle: CT 5 1
+					setCycle: CycleTo 5 1
 					setPri: -1
 					setMotion: MoveTo 170 37 self
 				)
-				(= droidMoving 0)
+				(= droidMoving FALSE)
 			)
 			(4
-				(droid cel: 5 setCycle: CT 3 -1 self)
+				(droid cel: 5 setCycle: CycleTo 3 -1 self)
 			)
 			(5
 				(client setScript: riseFromComputer)
@@ -805,16 +711,18 @@
 		lookStr {The old scientist doesn't appear healthy. In fact, his small intestine is about to unwind onto the floor.}
 		view 401
 		loop 1
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 2
 	)
 	
 	(method (doVerb theVerb theItem)
 		(if (== currentFloor 1)
 			(switch theVerb
-				(4
+				(verbUse
 					(switch theItem
-						(10 (Print 3 6))
+						(iBuckazoid
+							(Print 3 6)
+						)
 						(else 
 							(super doVerb: theVerb theItem)
 						)
@@ -825,7 +733,7 @@
 				)
 			)
 		else
-			(localproc_1e86)
+			(WrongLevel)
 		)
 	)
 )
@@ -845,7 +753,7 @@
 		(if (== currentFloor 1)
 			(super doVerb: theVerb &rest)
 		else
-			(localproc_1e86)
+			(WrongLevel)
 		)
 	)
 	
@@ -870,7 +778,7 @@
 		(if (== currentFloor 1)
 			(super doVerb: theVerb &rest)
 		else
-			(localproc_1e86)
+			(WrongLevel)
 		)
 	)
 	
@@ -888,7 +796,7 @@
 		lookStr {These panel lights are here just for decoration and don't actually have anything to do with the Data Archive Unit.}
 		view 103
 		loop 6
-		signal $4000
+		signal ignrAct
 		cycleSpeed 8
 		detailLevel 2
 	)
@@ -897,7 +805,7 @@
 		(if (== currentFloor 1)
 			(super doVerb: theVerb &rest)
 		else
-			(localproc_1e86)
+			(WrongLevel)
 		)
 	)
 )
@@ -910,7 +818,7 @@
 		lookStr {These lights have something to do with the Data Archive Unit, though you don't really know what. They do seem to indicate that the unit is still operational.}
 		view 103
 		loop 7
-		signal $4000
+		signal ignrAct
 		cycleSpeed 12
 		detailLevel 2
 	)
@@ -919,7 +827,7 @@
 		(if (== currentFloor 1)
 			(super doVerb: theVerb &rest)
 		else
-			(localproc_1e86)
+			(WrongLevel)
 		)
 	)
 )
@@ -937,55 +845,71 @@
 	
 	(method (init)
 		(super init: &rest)
-		(if (== currentFloor 1) (self approachVerbs: 2 5 3 4))
+		(if (== currentFloor 1) (self approachVerbs: verbLook verbTalk verbDo verbUse))
 	)
 	
 	(method (doVerb theVerb theItem)
 		(if (== currentFloor 1)
 			(switch theVerb
-				(2
+				(verbLook
 					(cond 
-						((Btst 8) (Print 3 7))
+						((Btst fScientistDead) (Print 3 7))
 						(lookedAtScientist (Print 3 8))
-						(else (Print 3 9) (= lookedAtScientist 1))
+						(else (Print 3 9) (= lookedAtScientist TRUE))
 					)
 				)
-				(3
-					(if (Btst 8)
+				(verbDo
+					(if (Btst fScientistDead)
 						(Print 3 10)
 					else
 						(curRoom setScript: talkScientist)
 					)
 				)
-				(4
+				(verbUse
 					(switch theItem
-						(10 (Print 3 6))
-						(0 (Print 3 11))
-						(1 (Print 3 12))
-						(15 (Print 3 13))
-						(2 (Print 3 14))
+						(iBuckazoid
+							(Print 3 6)
+						)
+						(iCartridge
+							(Print 3 11)
+						)
+						(iKeyCard
+							(Print 3 12)
+						)
+						(iWidget
+							(Print 3 13)
+						)
+						(iGadget
+							(Print 3 14)
+						)
 						(else 
 							(super doVerb: theVerb theItem)
 						)
 					)
 				)
-				(5
-					(if (Btst 8)
+				(verbTalk
+					(if (Btst fScientistDead)
 						(Print 3 15)
 					else
 						(curRoom setScript: talkScientist)
 					)
 				)
-				(12
-					(if (Btst 8) (Print 3 16) else (Print 3 17))
+				(verbSmell
+					(if (Btst fScientistDead)
+						(Print 3 16)
+					else
+						(Print 3 17)
+					)
 				)
-				(11 (Print 3 18))
+				(verbTaste
+					(Print 3 18)
+				)
 				(else 
 					(super doVerb: theVerb theItem &rest)
 				)
 			)
 		else
-			(localproc_1e86)
+			(WrongLevel)
 		)
 	)
 )
@@ -999,19 +923,20 @@
 		view 103
 		loop 3
 		cel 3
-		signal $2800
+		signal (| ignrHrz fixedLoop)
 		cycleSpeed 2
 		moveSpeed 2
 	)
 	
 	(method (doit &tmp temp0)
 		(super doit:)
-		(if (== howFast 0)
+		(if (== howFast slow)
 			(return)
 		else
-			(if (or mover droidMoving) (= local6 2))
-			(if
-			(and (not mover) (== local6 2) (not droidMoving))
+			(if (or mover droidMoving)
+				(= local6 2)
+			)
+			(if (and (not mover) (== local6 2) (not droidMoving))
 				(= local7 0)
 				(= local6 (Random 1 0))
 			)
@@ -1020,14 +945,22 @@
 				(= temp0 0)
 				(switch local6
 					(2
-						(if (> z 0) (= temp0 (- z 1)))
-						(if (< z 0) (= temp0 (+ z 1)))
+						(if (> z 0)
+							(= temp0 (- z 1))
+						)
+						(if (< z 0)
+							(= temp0 (+ z 1))
+						)
 					)
 					(1
-						(if (> (= temp0 (+ z 1)) 2) (= local6 0))
+						(if (> (= temp0 (+ z 1)) 2)
+							(= local6 0)
+						)
 					)
-					(else 
-						(if (< (= temp0 (- z 1)) -2) (= local6 1))
+					(else
+						(if (< (= temp0 (- z 1)) -2)
+							(= local6 1)
+						)
 					)
 				)
 				(self z: temp0)
@@ -1038,10 +971,8 @@
 	(method (doVerb theVerb theItem)
 		(if (== currentFloor 1)
 			(switch theVerb
-				(2
-					(Printf
-						3
-						19
+				(verbLook
+					(Printf 3 19
 						(if droidHoldingCartridge
 							{holding a cartridge}
 						else
@@ -1049,17 +980,35 @@
 						)
 					)
 				)
-				(3 (Print 3 20))
-				(5 (Print 3 21))
-				(12 (Print 3 22))
-				(11 (Print 3 22))
-				(4
+				(verbDo
+					(Print 3 20)
+				)
+				(verbTalk
+					(Print 3 21)
+				)
+				(verbSmell
+					(Print 3 22)
+				)
+				(verbTaste
+					(Print 3 22)
+				)
+				(verbUse
 					(switch theItem
-						(10 (Print 3 23))
-						(0 (Print 3 24))
-						(1 (Print 3 25))
-						(15 (Print 3 26))
-						(2 (Print 3 27))
+						(iBuckazoid
+							(Print 3 23)
+						)
+						(iCartridge
+							(Print 3 24)
+						)
+						(iKeyCard
+							(Print 3 25)
+						)
+						(iWidget
+							(Print 3 26)
+						)
+						(iGadget
+							(Print 3 27)
+						)
 						(else 
 							(super doVerb: theVerb &rest)
 						)
@@ -1070,7 +1019,7 @@
 				)
 			)
 		else
-			(localproc_1e86)
+			(WrongLevel)
 		)
 	)
 )
@@ -1085,7 +1034,7 @@
 		nsRight 197
 		description {Data retreval console}
 		sightAngle 45
-		onMeCheck $0004
+		onMeCheck FARCHECK
 		approachX 168
 		approachY 92
 		lookStr {This is the operation console of the Data Archive Unit. There is a CRT and chair.}
@@ -1093,19 +1042,21 @@
 	
 	(method (init)
 		(super init: &rest)
-		(if (== currentFloor 1) (self approachVerbs: 3 2))
+		(if (== currentFloor 1) (self approachVerbs: verbDo verbLook))
 	)
 	
 	(method (doVerb theVerb)
 		(if (== currentFloor 1)
 			(switch theVerb
-				(3 (curRoom setScript: sitDown))
+				(verbDo
+					(curRoom setScript: sitDown)
+				)
 				(else 
 					(super doVerb: theVerb &rest)
 				)
 			)
 		else
-			(localproc_1e86)
+			(WrongLevel)
 		)
 	)
 )
@@ -1126,7 +1077,7 @@
 			)
 			(super doVerb: theVerb &rest)
 		else
-			(localproc_1e86)
+			(WrongLevel)
 		)
 	)
 )
@@ -1147,7 +1098,7 @@
 			)
 			(super doVerb: theVerb &rest)
 		else
-			(localproc_1e86)
+			(WrongLevel)
 		)
 	)
 )
@@ -1168,7 +1119,7 @@
 			)
 			(super doVerb: theVerb &rest)
 		else
-			(localproc_1e86)
+			(WrongLevel)
 		)
 	)
 )
@@ -1187,7 +1138,7 @@
 			y: ((User curEvent?) y?)
 		)
 		(switch theVerb
-			(2
+			(verbLook
 				(if (== currentFloor 1)
 					(super doVerb: theVerb &rest)
 				else
@@ -1238,6 +1189,4 @@
 	)
 )
 
-(instance backSound of Sound
-	(properties)
-)
+(instance backSound of Sound)

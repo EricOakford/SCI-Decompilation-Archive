@@ -250,137 +250,38 @@
 		illegalBits $0000
 	)
 	
-	(method (doit param1 &tmp temp0)
-		(asm
-			pushi    #doit
-			pushi    0
-			&rest    param1
-			super    Actor,  4
-			pushi    #distanceTo
-			pushi    1
-			lofsa    gnome
-			push    
-			lag      ego
-			send     6
-			sat      temp0
-			pushi    1
-			pushi    108
-			callb    Btst,  2
-			not     
-			bnt      code_059d
-			pushi    1
-			pushi    92
-			callb    Btst,  2
-			not     
-			bnt      code_059d
-			pushi    1
-			pushi    1
-			callb    Btst,  2
-			not     
-			bnt      code_059d
-			pushi    #script
-			pushi    0
-			lofsa    gnome
-			send     4
-			bnt      code_055b
-			pushi    #script
-			pushi    0
-			lofsa    gnome
-			send     4
-			push    
-			lofsa    gnomeWhittle
-			ne?     
-code_055b:
-			not     
-			bnt      code_059d
-			lst      temp0
-			ldi      40
-			lt?     
-			bnt      code_059d
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      128
-			gt?     
-			bnt      code_059d
-			pushi    #loop
-			pushi    0
-			lofsa    gnome
-			send     4
-			push    
-			ldi      2
-			eq?     
-			bnt      code_059d
-			pushi    #start
-			pushi    1
-			pushi    0
-			lofsa    gnomeTalk
-			send     6
-			pushi    #setScript
-			pushi    1
-			lofsa    gnomeTalk
-			push    
-			lofsa    gnome
-			send     6
-			jmp      code_0602
-code_059d:
-			pushi    1
-			pushi    108
-			callb    Btst,  2
-			not     
-			bnt      code_0602
-			pushi    1
-			pushi    92
-			callb    Btst,  2
-			not     
-			bnt      code_0602
-			pushi    #script
-			pushi    0
-			lofsa    gnome
-			send     4
-			bnt      code_05c9
-			pushi    #script
-			pushi    0
-			lofsa    gnome
-			send     4
-			push    
-			lofsa    gnomeWhittle
-			ne?     
-code_05c9:
-			not     
-			bnt      code_0602
-			lst      temp0
-			ldi      70
-			gt?     
-			bt       code_05dd
-			pushi    1
-			pushi    1
-			callb    Btst,  2
-			bnt      code_0602
-code_05dd:
-			pushi    #loop
-			pushi    0
-			lofsa    gnome
-			send     4
-			push    
-			ldi      2
-			lt?     
-			bnt      code_0602
-			pushi    #start
-			pushi    1
-			pushi    4
-			lofsa    gnomeTalk
-			send     6
-			pushi    #setScript
-			pushi    1
-			lofsa    gnomeTalk
-			push    
-			lofsa    gnome
-			send     6
-code_0602:
-			ret     
+	(method (doit &tmp distToGnome)
+		(super doit: &rest)
+		(= distToGnome (ego distanceTo: gnome))
+		(cond
+			(
+				(and
+					(not (Btst fGotBeans))
+					(not (Btst fGotKey))
+					(not (Btst fInvisible))
+					(not
+						(and (gnome script:) (!= (gnome script:) gnomeWhittle))
+					)
+					(< distToGnome 40)
+					(> (ego y:) 128)
+					(== (gnome loop:) 2)
+				)
+				(gnomeTalk start: 0)
+				(gnome setScript: gnomeTalk)
+			)
+			(
+				(and
+					(not (Btst fGotBeans))
+					(not (Btst fGotKey))
+					(not
+						(and (gnome script:) (!= (gnome script:) gnomeWhittle))
+					)
+					(or (> distToGnome 70) (Btst fInvisible))
+					(< (gnome loop:) 2)
+				)
+				(gnomeTalk start: 4)
+				(gnome setScript: gnomeTalk)
+			)
 		)
 	)
 	
@@ -508,8 +409,6 @@ code_0602:
 )
 
 (instance gnomeWhittle of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -524,363 +423,99 @@ code_0602:
 )
 
 (instance goodGuess of Script
-	(properties)
-	
 	(method (changeState newState)
-		(asm
-			lap      newState
-			aTop     state
-			push    
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_0ab4
-			pushi    0
-			callb    HandsOff,  0
-			pushi    #script
-			pushi    0
-			lag      curRoom
-			send     4
-			bnt      code_0aac
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    1
-			pushi    0
-			callb    Btst,  2
-			bnt      code_0a93
-			ldi      23
-			jmp      code_0a95
-code_0a93:
-			ldi      16
-code_0a95:
-			eq?     
-			bnt      code_0aac
-			pushi    #cue
-			pushi    0
-			pushi    #script
-			pushi    0
-			lag      curRoom
-			send     4
-			send     4
-			ldi      7
-			aTop     cycles
-			jmp      code_0ba2
-code_0aac:
-			pushi    #cue
-			pushi    0
-			self     4
-			jmp      code_0ba2
-code_0ab4:
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_0b1b
-			pushi    #number
-			pushi    1
-			pushi    74
-			pushi    6
-			pushi    1
-			pushi    1
-			pushi    93
-			pushi    0
-			pushi    42
-			pushi    0
-			pushi    2
-			pushi    0
-			pushi    21
-			callk    ScriptID,  4
-			send     20
-			pushi    2
-			pushi    40
-			pushi    31
-			calle    Print,  4
-			pushi    2
-			pushi    40
-			pushi    32
-			calle    Print,  4
-			pushi    2
-			pushi    40
-			pushi    33
-			calle    Print,  4
-			pushi    #distanceTo
-			pushi    1
-			lofsa    gnome
-			push    
-			lag      ego
-			send     6
-			push    
-			ldi      15
-			lt?     
-			bnt      code_0b0a
-			pushi    #changeState
-			pushi    1
-			pushi    2
-			self     6
-			jmp      code_0ba2
-code_0b0a:
-			pushi    2
-			pushi    40
-			pushi    34
-			calle    Print,  4
-			pushi    #cue
-			pushi    0
-			self     4
-			jmp      code_0ba2
-code_0b1b:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_0b2f
-			pushi    #setScript
-			pushi    2
-			lofsa    approachGnome
-			push    
-			pushSelf
-			self     8
-			jmp      code_0ba2
-code_0b2f:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_0b96
-			pushi    #number
-			pushi    1
-			pushi    105
-			pushi    6
-			pushi    1
-			pushi    1
-			pushi    93
-			pushi    0
-			pushi    42
-			pushi    0
-			pushi    2
-			pushi    0
-			pushi    21
-			callk    ScriptID,  4
-			send     20
-			pushi    2
-			pushi    107
-			pushi    5
-			lag      gnomeNameGuesses
-			sub     
-			push    
-			callb    SolvePuzzle,  4
-			pushi    2
-			pushi    108
-			pushi    4
-			callb    SolvePuzzle,  4
-			pushi    #get
-			pushi    1
-			pushi    iBeans
-			lag      ego
-			send     6
-			pushi    #onControl
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-			push    
-			ldi      2
-			eq?     
-			bnt      code_0b89
-			pushi    #setScript
-			pushi    2
-			lofsa    gnomeWaitLeave
-			push    
-			pushSelf
-			self     8
-			jmp      code_0ba2
-code_0b89:
-			pushi    #setScript
-			pushi    2
-			lofsa    gnomeLeaves
-			push    
-			pushSelf
-			self     8
-			jmp      code_0ba2
-code_0b96:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_0ba2
-			pushi    #dispose
-			pushi    0
-			self     4
-code_0ba2:
-			toss    
-			ret     
+		(switch (= state newState)
+			(0
+				(HandsOff)
+				(if
+					(and
+						(curRoom script:)
+						(== (ego view:) (if (Btst fLittleEgo) 23 else 16))
+					)
+					((curRoom script:) cue:)
+					(= cycles 7)
+				else
+					(self cue:)
+				)
+			)
+			(1
+				((ScriptID 0 21) number: 74 loop: 1 init: play:) ; gameSound
+				(Print 40 31) ; "GNOME: "That's right! Outstanding! I didn't think you were THAT clever.""
+				(Print 40 32) ; "GNOME: "As a reward for your sharp intellect, here are some beans. They're no ordinary beans, but it's up to you to find out why.""
+				(Print 40 33) ; "GNOME: "Somebody as smart as yourself should have no problem at all. <giggle>""
+				(if (< (ego distanceTo: gnome) 15)
+					(self changeState: 2)
+				else
+					(Print 40 34) ; "GNOME: "Well, step over here so I can give them to you.""
+					(self cue:)
+				)
+			)
+			(2
+				(self setScript: approachGnome self)
+			)
+			(3
+				((ScriptID 0 21) number: 105 loop: 1 init: play:) ; gameSound
+				(SolvePuzzle fGuessedGnomeName (- 5 gnomeNameGuesses))
+				(SolvePuzzle fGotBeans 4)
+				(ego get: iBeans)
+				(if (== (ego onControl: origin) cBLUE)
+					(self setScript: gnomeWaitLeave self)
+				else
+					(self setScript: gnomeLeaves self)
+				)
+			)
+			(4
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance failGuess of Script
-	(properties)
-	
 	(method (changeState newState)
-		(asm
-			lap      newState
-			aTop     state
-			push    
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_0c2a
-			pushi    0
-			callb    HandsOff,  0
-			pushi    #script
-			pushi    0
-			lag      curRoom
-			send     4
-			bnt      code_0c22
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    1
-			pushi    0
-			callb    Btst,  2
-			bnt      code_0c09
-			ldi      23
-			jmp      code_0c0b
-code_0c09:
-			ldi      16
-code_0c0b:
-			eq?     
-			bnt      code_0c22
-			pushi    #cue
-			pushi    0
-			pushi    #script
-			pushi    0
-			lag      curRoom
-			send     4
-			send     4
-			ldi      7
-			aTop     cycles
-			jmp      code_0ce5
-code_0c22:
-			pushi    #cue
-			pushi    0
-			self     4
-			jmp      code_0ce5
-code_0c2a:
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_0c70
-			pushi    2
-			pushi    40
-			pushi    35
-			calle    Print,  4
-			pushi    2
-			pushi    40
-			pushi    36
-			calle    Print,  4
-			pushi    #distanceTo
-			pushi    1
-			lofsa    gnome
-			push    
-			lag      ego
-			send     6
-			push    
-			ldi      15
-			lt?     
-			bnt      code_0c5f
-			pushi    #changeState
-			pushi    1
-			pushi    2
-			self     6
-			jmp      code_0ce5
-code_0c5f:
-			pushi    2
-			pushi    40
-			pushi    37
-			calle    Print,  4
-			pushi    #cue
-			pushi    0
-			self     4
-			jmp      code_0ce5
-code_0c70:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_0c84
-			pushi    #setScript
-			pushi    2
-			lofsa    approachGnome
-			push    
-			pushSelf
-			self     8
-			jmp      code_0ce5
-code_0c84:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_0ce5
-			pushi    #number
-			pushi    1
-			pushi    105
-			pushi    6
-			pushi    1
-			pushi    1
-			pushi    93
-			pushi    0
-			pushi    42
-			pushi    0
-			pushi    2
-			pushi    0
-			pushi    21
-			callk    ScriptID,  4
-			send     20
-			pushi    2
-			pushi    92
-			pushi    3
-			callb    SolvePuzzle,  4
-			pushi    #get
-			pushi    1
-			pushi    iKey
-			lag      ego
-			send     6
-			pushi    #onControl
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-			push    
-			ldi      2
-			eq?     
-			bnt      code_0cd4
-			pushi    #setScript
-			pushi    1
-			lofsa    gnomeWaitLeave
-			push    
-			lofsa    gnome
-			send     6
-			jmp      code_0ce0
-code_0cd4:
-			pushi    #setScript
-			pushi    1
-			lofsa    gnomeLeaves
-			push    
-			lofsa    gnome
-			send     6
-code_0ce0:
-			pushi    #dispose
-			pushi    0
-			self     4
-code_0ce5:
-			toss    
-			ret     
+		(switch (= state newState)
+			(0
+				(HandsOff)
+				(if
+					(and
+						(curRoom script:)
+						(== (ego view:) (if (Btst fLittleEgo) 23 else 16))
+					)
+					((curRoom script:) cue:)
+					(= cycles 7)
+				else
+					(self cue:)
+				)
+			)
+			(1
+				(Print 40 35) ; "GNOME: "You didn't guess my name, but I am still going to help you, Sir Graham.""
+				(Print 40 36) ; "GNOME: "Take this golden key. It will aid you on your quest, Sir Graham, but it's up to you to find out how!""
+				(if (< (ego distanceTo: gnome) 15)
+					(self changeState: 2)
+				else
+					(Print 40 37) ; "GNOME: "Well, step over here so I can give it to you.""
+					(self cue:)
+				)
+			)
+			(2
+				(self setScript: approachGnome self)
+			)
+			(3
+				((ScriptID 0 21) number: 105 loop: 1 init: play:) ; gameSound
+				(SolvePuzzle fGotKey 3)
+				(ego get: iKey)
+				(if (== (ego onControl: origin) cBLUE)
+					(gnome setScript: gnomeWaitLeave)
+				else
+					(gnome setScript: gnomeLeaves)
+				)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance approachGnome of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -903,8 +538,6 @@ code_0ce5:
 )
 
 (instance gnomeWaitLeave of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -945,8 +578,6 @@ code_0ce5:
 )
 
 (instance gnomeLeaves of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -974,8 +605,6 @@ code_0ce5:
 )
 
 (instance gnomeTalk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

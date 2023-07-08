@@ -109,7 +109,7 @@
 	fAteMushroom				;104
 	fExitedLepCave				;105
 	fGoatKilledTroll			;106
-	fUnused107					;107
+	fGuessedGnomeName			;107
 	fGotBeans					;108
 	fPlantedBeanstalk			;109
 	fClimbedToCloudland			;110

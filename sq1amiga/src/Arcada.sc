@@ -28,9 +28,10 @@
 	updateTimerCycles
 	local4
 )
-(procedure (ArcadaCheck param1 flag)
+
+(procedure (ArcadaCheck flagVar flagEnum)
 	(return
-		(if (& (arcadaRegion param1?) flag)
+		(if (& (arcadaRegion flagVar?) flagEnum)
 			(return TRUE)
 		else
 			(return FALSE)
@@ -182,7 +183,7 @@
 (class arcadaRegion of Region
 	(properties
 		rFlag1 0
-		rFlag2 0
+		rFlag2 0	;unused, but was likely put here just to be safe
 		timeTilSariens -1
 		sarienState 0
 		safeCode 0
@@ -275,7 +276,7 @@
 			(and
 				(> selfDestructTimer 60)
 				(not (Btst fWearingSpacesuit))
-				(& rFlag1 $0004)
+				(& rFlag1 rFStartedGame)
 				(OneOf curRoomNum 4 6 9)
 				(not (Btst fWearingSpacesuit))
 				(!= prevRoomNum 10)
@@ -375,7 +376,7 @@
 				(2 (explosionSound number: 365))
 			)
 			(explosionSound loop: 1 play:)
-			(ShakeScreen (| shakeSRight shakeSDiagonal) (Random 1 3))
+			(ShakeScreen (| shakeSDown shakeSRight shakeSDiagonal) (Random 1 3))
 			(= explosionTimer (Random 50 1000))
 		)
 		(if (and (not script) (!= sarienState 1))
@@ -480,9 +481,7 @@
 (instance callGuards of Script
 	(method (doit)
 		(super doit:)
-		(if (and (== curRoomNum 4)
-				(== sarienFloor 2)
-			)
+		(if (and (== curRoomNum 4) (== sarienFloor 2))
 			(if (cast contains: sarien1)
 				(sarien1 setPri: 3)
 			)

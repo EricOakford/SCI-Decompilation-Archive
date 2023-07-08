@@ -24,9 +24,11 @@
 	local22 = [185 180 175 170 165 160 155 150 145 140 135 130 125 120 115 -1]
 )
 (procedure (RestoreBits)
-	(if ((ScriptID 700 0) saveBits?)
-		(Display 103 0 108 ((ScriptID 700 0) saveBits?))
-		((ScriptID 700 0) saveBits: 0)
+	(if ((ScriptID ARCADA 0) saveBits?)
+		(Display 103 0
+			p_restore ((ScriptID ARCADA 0) saveBits?)
+		)
+		((ScriptID ARCADA 0) saveBits: 0)
 	)
 )
 
@@ -87,12 +89,12 @@
 		(egoHead init:)
 		(egoArm init:)
 		(exitRoom init:)
-		(if (ArcadaCheck 551 16)
+		(if (ArcadaCheck #rFlag1 rFGettingCart)
 			((ScriptID ARCADA 0)
-				rFlag1: (& ((ScriptID ARCADA 0) rFlag1?) $ffef)
+				rFlag1: (& ((ScriptID ARCADA 0) rFlag1?) (~ rFGettingCart))
 			)
 			((ScriptID ARCADA 0)
-				rFlag1: (| ((ScriptID ARCADA 0) rFlag1?) $0020)
+				rFlag1: (| ((ScriptID ARCADA 0) rFlag1?) rFCartReadyToTake)
 			)
 			(droid init: stopUpd:)
 			(droidArm init: stopUpd:)
@@ -162,7 +164,7 @@
 				(if (cast contains: droidArm)
 					(theMusic2 number: 353 loop: -1 play:)
 				)
-				(curRoom drawPic: 103 10)
+				(curRoom drawPic: 103 FADEOUT)
 				(= cycles 2)
 			)
 			(1
@@ -210,7 +212,7 @@
 			(2
 				(soundFx number: 303 loop: 1 play:)
 				((ScriptID ARCADA 0)
-					rFlag1: (& ((ScriptID ARCADA 0) rFlag1?) $ffdf)
+					rFlag1: (& ((ScriptID ARCADA 0) rFlag1?) (~ rFCartReadyToTake))
 				)
 				(droidArm setCycle: EndLoop self)
 				(egoArm setCycle: EndLoop)
@@ -265,7 +267,7 @@
 				)
 				(if
 					(and
-						(not (ArcadaCheck 551 32))
+						(not (ArcadaCheck #rFlag1 rFCartReadyToTake))
 						(not (ego has: iCartridge))
 						(== (StrCmp @theButtons @cartCode) 0)
 					)
@@ -282,7 +284,7 @@
 			(3
 				(Print 103 5)
 				((ScriptID ARCADA 0)
-					rFlag1: (| ((ScriptID ARCADA 0) rFlag1?) $0010)
+					rFlag1: (| ((ScriptID ARCADA 0) rFlag1?) rFGettingCart)
 				)
 				(curRoom newRoom: 3)
 			)
@@ -334,7 +336,7 @@
 				(= cycles 1)
 			)
 			(2
-				(keyPad signal: (| (keyPad signal?) $0100) stopUpd:)
+				(keyPad signal: (| (keyPad signal?) staticView) stopUpd:)
 				(soundFx stop:)
 				(InitButtons)
 				(HandsOn)
@@ -412,7 +414,8 @@
 			(0
 				(HandsOff)
 				(egoArm setLoop: 3 cel: 0 setCycle: Forward)
-				(= cycles (Random 10 20))
+				;(= cycles (Random 10 20))
+				(= cycles (Random 30 60))	;EO: added from NRS speed patch
 			)
 			(1
 				(Print 103 11)
@@ -441,6 +444,7 @@
 		lookStr {This is your arm.}
 		view 203
 		loop 3
+		cycleSpeed 6	;EO: added from NRS speed patch		
 	)
 	
 	(method (init)

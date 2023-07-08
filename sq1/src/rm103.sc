@@ -21,12 +21,14 @@
 	[theButtons 10]
 	[cartCode 11]
 	local21
-	[local22 17] = [185 180 175 170 165 160 155 150 145 140 135 130 125 120 115 -1]
+	local22 = [185 180 175 170 165 160 155 150 145 140 135 130 125 120 115 -1]
 )
 (procedure (RestoreBits)
-	(if ((ScriptID 700 0) saveBits?)
-		(Display 103 0 p_restore ((ScriptID 700 0) saveBits?))
-		((ScriptID 700 0) saveBits: 0)
+	(if ((ScriptID ARCADA 0) saveBits?)
+		(Display 103 0
+			p_restore ((ScriptID ARCADA 0) saveBits?)
+		)
+		((ScriptID ARCADA 0) saveBits: 0)
 	)
 )
 
@@ -75,8 +77,8 @@
 	(method (init)
 		(Load PICTURE 102)
 		(LoadMany SOUND
-			358 340 341 342 343 344 345 346 347
-			348 349 350 351 352
+			358 340 341 342 343 344 345
+			346 347 348 349 350 351 352
 		)
 		(self setRegions: ARCADA)
 		(super init:)
@@ -134,19 +136,19 @@
 )
 
 (instance getTheCart of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 1))
-			(1 (curRoom newRoom: 3))
+			(0
+				(= cycles 1)
+			)
+			(1
+				(curRoom newRoom: 3)
+			)
 		)
 	)
 )
 
 (instance returnToComputer of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -157,14 +159,14 @@
 				(curRoom drawPic: 103 FADEOUT)
 				(= cycles 2)
 			)
-			(1 (self dispose:))
+			(1
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance lookAtMonitor of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -177,14 +179,14 @@
 			(1
 				(self setScript: raisePad self)
 			)
-			(2 (self dispose:))
+			(2
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance egoGrabCart of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -216,8 +218,6 @@
 )
 
 (instance EnterScript of Script
-	(properties)
-	
 	(method (dispose)
 		(StrCpy @theButtons {})
 		(super dispose:)
@@ -298,7 +298,7 @@
 					(and
 						(not (ego has: iCartridge))
 						(> selfDestructTimer 30)
-						(< (= selfDestructTimer (- selfDestructTimer 120)) 30)
+						(< (-= selfDestructTimer 120) 30)
 					)
 					(= selfDestructTimer 30)
 				)
@@ -309,8 +309,6 @@
 )
 
 (instance raisePad of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -339,8 +337,6 @@
 )
 
 (instance lowerPad of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -373,8 +369,6 @@
 )
 
 (instance keyFlashScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -390,8 +384,7 @@
 				(= cycles 1)
 			)
 			(2
-				(if
-				(and (client whoToCue?) (not (curRoom script?)))
+				(if (and (client whoToCue?) (not (curRoom script?)))
 					(curRoom setScript: (client whoToCue?))
 				)
 				(client setScript: 0)
@@ -401,8 +394,6 @@
 )
 
 (instance pushButtons of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -511,19 +502,19 @@
 (instance monitor of Feature
 	(properties
 		description {cracked monitor}
-		onMeCheck FARCHECK
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(2
+			(verbLook
 				(curRoom setScript: lookAtMonitor)
 			)
-			(3
+			(verbDo
 				(curRoom setScript: lookAtMonitor)
 			)
-			(4
-				(if (== theItem 0)
+			(verbUse
+				(if (== theItem iCartridge)
 					(Print 103 3)
 				else
 					(super doVerb: theVerb theItem &rest)
@@ -539,7 +530,7 @@
 (instance console of Feature
 	(properties
 		description {data computer}
-		onMeCheck $0040
+		onMeCheck cBROWN
 		lookStr {This is the Data Retrieval console.}
 	)
 )
@@ -547,7 +538,7 @@
 (instance controlPanel of Feature
 	(properties
 		description {control panel}
-		onMeCheck NEARCHECK
+		onMeCheck cBLUE
 		lookStr {This is the control panel for the Data Retrieval console.}
 	)
 	
@@ -566,7 +557,7 @@
 (instance lights of Feature
 	(properties
 		description {lights}
-		onMeCheck (| ISNOTHIDDEN NEARCHECK)
+		onMeCheck cRED
 		lookStr {These are some highly decorative illumination devices for the console.}
 	)
 )
@@ -574,7 +565,7 @@
 (instance egoFeat of Feature
 	(properties
 		description {yourself}
-		onMeCheck ISNOTHIDDEN
+		onMeCheck cCYAN
 		lookStr {It's you and you're darned handsome if you do say so yourself.}
 	)
 )
@@ -582,7 +573,7 @@
 (instance buttons of Feature
 	(properties
 		description {buttons}
-		onMeCheck $0080
+		onMeCheck cLGREY
 		lookStr {Buttons reside here. You hate buttons. They confuse you so.}
 	)
 	
@@ -598,9 +589,7 @@
 	)
 )
 
-(instance beep of Sound
-	(properties)
-)
+(instance beep of Sound)
 
 (instance hand of View
 	(properties
@@ -614,7 +603,7 @@
 	(method (doit &tmp event evtX evtY)
 		(if
 			(not
-				(& ((= event (User curEvent?)) type?) (| mouseDown mouseUp keyDown))
+				(& ((= event (User curEvent?)) type?) (| keyDown mouseDown mouseUp))
 			)
 			(event localize:)
 			(= evtX (event x?))
@@ -640,7 +629,7 @@
 	
 	(method (dispose)
 		(if (== theCursor 69)
-			(theGame setCursor: ((theIconBar curIcon?) cursor?) 1)
+			(theGame setCursor: ((theIconBar curIcon?) cursor?) TRUE)
 		)
 		(super dispose:)
 	)
@@ -676,7 +665,7 @@
 
 (class KeyPadButton103 of Prop
 	(properties
-		name "KeyPadButton"
+		name {KeyPadButton}
 		description {button}
 		lookStr {These buttons allow you to enter a code into the computer.}
 		theString 0
@@ -686,10 +675,10 @@
 		whoToCue 0
 	)
 	
-	(method (init theTheString)
+	(method (init str)
 		(super init:)
 		(self setPri: 0)
-		(= theString theTheString)
+		(= theString str)
 		(mouseDownHandler addToFront: self)
 		(keyDownHandler addToFront: self)
 	)
@@ -702,7 +691,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(verbDo (self flash:))
+			(verbDo
+				(self flash:)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)

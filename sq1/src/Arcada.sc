@@ -102,19 +102,28 @@
 			(if (<= x 0)
 				(= temp0 0)
 			else
-				(if (> (= temp0 (/ x 2)) 127) (= temp0 127))
-				(if (< temp0 0) (= temp0 0))
+				(if (> (= temp0 (/ x 2)) 127)
+					(= temp0 127)
+				)
+				(if (< temp0 0)
+					(= temp0 0)
+				)
 			)
 			(sarienSteps number: 313 loop: 1)
 			(if
-			(and (or (> x 320) (< x 0)) (OneOf stepState 1 2))
+				(and
+					(or (> x 320) (< x 0))
+					(OneOf stepState 1 2)
+				)
 				(cond 
 					((== stepState 1)
 						(if (> (= stepVol (+ stepVol 10)) 127)
 							(= stepVol 127)
 						)
 					)
-					((< (= stepVol (- stepVol 10)) 0) (= stepVol 0))
+					((< (-= stepVol 10) 0)
+						(= stepVol 0)
+					)
 				)
 			else
 				(= stepVol 127)
@@ -146,9 +155,15 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(verbDo (Print 700 0))
-			(verbSmell (Print 700 1))
-			(verbTaste (Print 700 1))
+			(verbDo
+				(Print 700 0)
+			)
+			(verbSmell
+				(Print 700 1)
+			)
+			(verbTaste
+				(Print 700 1)
+			)
 			(verbLook
 				(if (== currentFloor sarienFloor)
 					(super doVerb: theVerb &rest)
@@ -190,20 +205,36 @@
 		saveBits 0
 	)
 	
-	(method (init &tmp temp0)
+	(method (init &tmp soundNum)
 		(Load SOUND 308 364 365)
 		(super init: &rest)
 		(if (and inGame (!= curRoomNum 103))
 			(detonationBox init:)
 			(cond 
-				((> selfDestructTimer 600) (Load SOUND 997))
-				((> selfDestructTimer 300) (Load SOUND 996))
-				((> selfDestructTimer 240) (Load SOUND 995))
-				((> selfDestructTimer 180) (Load SOUND 994))
-				((> selfDestructTimer 120) (Load SOUND 993))
-				((> selfDestructTimer 60) (Load SOUND 992))
-				((> selfDestructTimer 30) (LoadMany SOUND 991 990 989))
-				((> selfDestructTimer 10) (LoadMany SOUND 984 985 986 987 988))
+				((> selfDestructTimer 600)
+					(Load SOUND 997)
+				)
+				((> selfDestructTimer 300)
+					(Load SOUND 996)
+				)
+				((> selfDestructTimer 240)
+					(Load SOUND 995)
+				)
+				((> selfDestructTimer 180)
+					(Load SOUND 994)
+				)
+				((> selfDestructTimer 120)
+					(Load SOUND 993)
+				)
+				((> selfDestructTimer 60)
+					(Load SOUND 992)
+				)
+				((> selfDestructTimer 30)
+					(LoadMany SOUND 991 990 989)
+				)
+				((> selfDestructTimer 10)
+					(LoadMany SOUND 984 985 986 987 988)
+				)
 			)
 		)
 		(if
@@ -214,23 +245,25 @@
 					(and
 						(OneOf curRoomNum 8 9 10 12)
 						(!= (theMusic number?) 360)
-						(= temp0 360)
+						(= soundNum 360)
 					)
 					(and
 						(OneOf curRoomNum 3 4 5 6 103)
 						(!= (theMusic number?) 300)
-						(= temp0 300)
+						(= soundNum 300)
 					)
 				)
 			)
 			(theMusic
-				number: temp0
+				number: soundNum
 				loop: -1
 				hold: 0
 				play: 30
 				fade: 127 25 10 0
 			)
-			(if (== temp0 360) (theMusic hold: TRUE))
+			(if (== soundNum 360)
+				(theMusic hold: TRUE)
+			)
 		)
 		(if (OneOf curRoomNum 4 5 6 8 10 11)
 			(Load SOUND 315)
@@ -271,8 +304,7 @@
 	(method (doit &tmp [str 10])
 		(super doit:)
 		(cond 
-			(
-			(and (not local2) inGame (>= selfDestructTimer 0))
+			((and (not local2) inGame (>= selfDestructTimer 0))
 				(if (!= lastTime (= theTime (GetTime SYSTIME1)))
 					(= lastTime theTime)
 					(if (cast contains: detonationBox)
@@ -302,7 +334,9 @@
 						(theMusic fade:)
 						(curRoom setScript: timesUp)
 					)
-					(if (!= timeTilSariens -1) (-- timeTilSariens))
+					(if (!= timeTilSariens -1)
+						(-- timeTilSariens)
+					)
 					(if
 						(and
 							(!= curRoomNum 103)
@@ -312,17 +346,18 @@
 					)
 				)
 			)
-			((cast contains: detonationBox) (detonationBox dispose:))
+			((cast contains: detonationBox)
+				(detonationBox dispose:)
+			)
 		)
-		(if
-		(and explosionTimer inGame (not (-- explosionTimer)))
+		(if (and explosionTimer inGame (not (-- explosionTimer)))
 			(switch (Random 0 2)
 				(0 (explosionSound number: 308))
 				(1 (explosionSound number: 364))
 				(2 (explosionSound number: 365))
 			)
 			(explosionSound loop: 1 play:)
-			(ShakeScreen 6 (Random 1 3))
+			(ShakeScreen (| shakeSDown shakeSRight shakeSDiagonal) (Random 1 3))
 			(= explosionTimer (Random 50 1000))
 		)
 		(if (and (not script) (!= sarienState 1))
@@ -383,7 +418,9 @@
 			(= sarienState (= sarienFloor (= initialized 0)))
 		)
 		(= timeTilSariens -1)
-		(if script (script dispose:))
+		(if script
+			(script dispose:)
+		)
 		(self
 			sarienEntryDir: 0
 			s1startX: 337
@@ -405,7 +442,9 @@
 			(theMusic loop: 0 fade: number: 0)
 		)
 		(if theTimeID
-			(Display 700 3 p_restore theTimeID)
+			(Display 700 3
+				p_restore theTimeID
+			)
 			(Animate (cast elements?) FALSE)
 			(= theTimeID 0)
 		)
@@ -414,22 +453,24 @@
 	
 	(method (setCountDown newTime)
 		(if (not (HaveMouse))
-			(= newTime (+ newTime 1))
+			(+= newTime 1)
 		)
 		(= timeTilSariens newTime)
 	)
 )
 
 (instance callGuards of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (and (== curRoomNum 4) (== sarienFloor 2))
-			(if (cast contains: sarien1) (sarien1 setPri: 3))
+			(if (cast contains: sarien1)
+				(sarien1 setPri: 3)
+			)
 			(sarien2 setPri: 3)
 		else
-			(if (cast contains: sarien1) (sarien1 setPri: -1))
+			(if (cast contains: sarien1)
+				(sarien1 setPri: -1)
+			)
 			(sarien2 setPri: -1)
 		)
 		(cond 
@@ -446,8 +487,7 @@
 						)
 					)
 					(2
-						(if
-						(or (!= sarienFloor currentFloor) (< (ego x?) 160))
+						(if (or (!= sarienFloor currentFloor) (< (ego x?) 160))
 							(self cue:)
 						)
 					)
@@ -520,16 +560,18 @@
 )
 
 (instance removeGuards of Script
-	(properties)
-	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
 				(if (> (sarien2 heading?) 180)
-					(if (cast contains: sarien1) (sarien1 setHeading: 90))
+					(if (cast contains: sarien1)
+						(sarien1 setHeading: 90)
+					)
 					(sarien2 setHeading: 90 self)
 				else
-					(if (cast contains: sarien1) (sarien1 setHeading: 270))
+					(if (cast contains: sarien1)
+						(sarien1 setHeading: 270)
+					)
 					(sarien2 setHeading: 270 self)
 				)
 			)
@@ -553,7 +595,9 @@
 				)
 			)
 			(3
-				(if (cast contains: sarien1) (sarien1 dispose:))
+				(if (cast contains: sarien1)
+					(sarien1 dispose:)
+				)
 				(sarien2 cycleSpeed: 5 setCycle: Forward)
 				(= seconds 2)
 			)
@@ -575,7 +619,7 @@
 		)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp obj)
 		(switch (= state newState)
 			(0 0)
 			(1
@@ -583,8 +627,8 @@
 					(= local2 1)
 					(HandsOff)
 					(ego setMotion: 0)
-					(if (= temp0 (cast firstTrue: #isKindOf Elevator))
-						(temp0 state: 0)
+					(if (= obj (cast firstTrue: #isKindOf Elevator))
+						(obj state: 0)
 					)
 					(Face ego sarien2)
 					(Face sarien2 ego self)
@@ -678,14 +722,18 @@
 							(else 0)
 						)
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setCycle: CycleTo 3 1 self
 				)
 			)
 			(5
 				(cond 
-					((& (ego onControl:) cLGREY) (ego setLoop: 0))
-					((& (ego onControl:) cYELLOW) (ego setLoop: 3))
+					((& (ego onControl:) cLGREY)
+						(ego setLoop: 0)
+					)
+					((& (ego onControl:) cYELLOW)
+						(ego setLoop: 3)
+					)
 				)
 				(ego cel: 3 setCycle: EndLoop self)
 			)
@@ -709,8 +757,6 @@
 )
 
 (instance timesUp of Script
-	(properties)
-	
 	(method (init)
 		(LoadMany SOUND 804 805)
 		(super init: &rest)
@@ -763,7 +809,9 @@
 				)
 				(= local1 1)
 			)
-			(2 (= local0 1))
+			(2
+				(= local0 1)
+			)
 			(3
 				(theMusic2 number: 805 loop: 1 flags: 1 play:)
 				(arcada setCycle: EndLoop self)
@@ -783,19 +831,39 @@
 )
 
 (instance DoCountDown of Script
-	(properties)
-	
 	(method (dispose)
 		(= register 0)
 		(cond 
-			((> selfDestructTimer 600) (Load SOUND 997))
-			((> selfDestructTimer 300) (UnLoad SOUND 997) (Load SOUND 996))
-			((> selfDestructTimer 240) (UnLoad SOUND 996) (Load SOUND 995))
-			((> selfDestructTimer 180) (UnLoad SOUND 995) (Load SOUND 994))
-			((> selfDestructTimer 120) (UnLoad SOUND 994) (Load SOUND 993))
-			((> selfDestructTimer 60) (UnLoad SOUND 993) (Load SOUND 992))
-			((> selfDestructTimer 30) (UnLoad SOUND 992) (LoadMany SOUND 991 990 989))
-			((> selfDestructTimer 10) (LoadMany SOUND 984 985 986 987 988))
+			((> selfDestructTimer 600)
+				(Load SOUND 997)
+			)
+			((> selfDestructTimer 300)
+				(UnLoad SOUND 997)
+				(Load SOUND 996)
+			)
+			((> selfDestructTimer 240)
+				(UnLoad SOUND 996)
+				(Load SOUND 995)
+			)
+			((> selfDestructTimer 180)
+				(UnLoad SOUND 995)
+				(Load SOUND 994)
+			)
+			((> selfDestructTimer 120)
+				(UnLoad SOUND 994)
+				(Load SOUND 993)
+			)
+			((> selfDestructTimer 60)
+				(UnLoad SOUND 993)
+				(Load SOUND 992)
+			)
+			((> selfDestructTimer 30)
+				(UnLoad SOUND 992)
+				(LoadMany SOUND 991 990 989)
+			)
+			((> selfDestructTimer 10)
+				(LoadMany SOUND 984 985 986 987 988)
+			)
 		)
 		(super dispose:)
 	)
@@ -845,9 +913,8 @@
 					)
 					((ScriptID 4 1) cue:)
 				)
-				(if
-				(and (!= curRoomNum 13) (< selfDestructTimer 15))
-					(arcadaRegion inGame: 0)
+				(if (and (!= curRoomNum 13) (< selfDestructTimer 15))
+					(arcadaRegion inGame: FALSE)
 					(curRoom setScript: timesUp)
 				)
 				(self dispose:)
@@ -999,7 +1066,7 @@
 	(properties
 		description {elevator shaft}
 		sightAngle 45
-		onMeCheck $0020
+		onMeCheck cMAGENTA
 		lookStr {This is an elevator shaft. Elevators are known to have traveled these parts, mostly up and down.}
 	)
 	
@@ -1016,7 +1083,7 @@
 	(properties
 		description {elevator shaft}
 		sightAngle 45
-		onMeCheck $2000
+		onMeCheck cLMAGENTA
 		lookStr {This is an elevator shaft.}
 	)
 	
@@ -1029,9 +1096,7 @@
 	)
 )
 
-(instance sarienSteps of Sound
-	(properties)
-)
+(instance sarienSteps of Sound)
 
 (instance explosionSound of Sound
 	(properties
@@ -1039,6 +1104,4 @@
 	)
 )
 
-(instance sampledVoice of Sound
-	(properties)
-)
+(instance sampledVoice of Sound)

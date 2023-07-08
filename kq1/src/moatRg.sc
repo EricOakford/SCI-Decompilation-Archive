@@ -604,116 +604,28 @@
 		)
 	)
 	
-	(method (doit param1)
-		(asm
-			lsg      howFast
-			ldi      1
-			ge?     
-			bnt      code_0f49
-			pushi    1
-			pushi    1
-			callb    Btst,  2
-			bnt      code_0ebd
-			pushi    #hide
-			pushi    0
-			self     4
-			jmp      code_0ec3
-code_0ebd:
-			pushi    #show
-			pushi    0
-			self     4
-code_0ec3:
-			pushi    5
-			pushi    1
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_0eda
-			ldi      80
-			jmp      code_0f15
-code_0eda:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_0ee6
-			ldi      81
-			jmp      code_0f15
-code_0ee6:
-			dup     
-			pushi    1
-			pushi    0
-			callb    Btst,  2
-			bnt      code_0ef4
-			ldi      23
-			jmp      code_0ef6
-code_0ef4:
-			ldi      16
-code_0ef6:
-			eq?     
-			bnt      code_0eff
-			ldi      76
-			jmp      code_0f15
-code_0eff:
-			dup     
-			pushi    1
-			pushi    0
-			callb    Btst,  2
-			bnt      code_0f0d
-			ldi      17
-			jmp      code_0f0f
-code_0f0d:
-			ldi      15
-code_0f0f:
-			eq?     
-			bnt      code_0f15
-			ldi      75
-code_0f15:
-			toss    
-			push    
-			pushi    6
-			pushi    1
-			pushi    #loop
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    7
-			pushi    1
-			pushi    #cel
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    4
-			pushi    1
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    3
-			pushi    1
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      20
-			add     
-			push    
-			self     30
-code_0f49:
-			pushi    #doit
-			pushi    0
-			&rest    param1
-			super    View,  4
-			ret     
+	(method (doit)
+		(if (>= howFast 1)
+			(if (Btst fInvisible)
+				(self hide:)
+			else
+				(self show:)
+			)
+			(self
+				view:
+					(switch (ego view:)
+						(0 80)
+						(2 81)
+						((if (Btst fLittleEgo) 23 else 16) 76)
+						((if (Btst fLittleEgo) 17 else 15) 75)
+					)
+				loop: (ego loop:)
+				cel: (ego cel:)
+				x: (ego x:)
+				y: (+ (ego y:) 20)
+			)
 		)
+		(super doit: &rest)
 	)
 	
 	(method (handleEvent event)

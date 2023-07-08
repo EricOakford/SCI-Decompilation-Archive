@@ -41,310 +41,87 @@
 	)
 	
 	(method (init &tmp temp0 temp1)
-		(asm
-			pushi    31
-			pushi    1
-			lsg      prevRoomNum
-			dup     
-			pToa     north
-			eq?     
-			bnt      code_001f
-			ldi      5
-			jmp      code_0040
-code_001f:
-			dup     
-			pToa     west
-			eq?     
-			bnt      code_002b
-			ldi      3
-			jmp      code_0040
-code_002b:
-			dup     
-			pToa     east
-			eq?     
-			bnt      code_0037
-			ldi      2
-			jmp      code_0040
-code_0037:
-			dup     
-			pToa     south
-			eq?     
-			bnt      code_0040
-			ldi      4
-code_0040:
-			toss    
-			push    
-			self     6
-			lsg      howFast
-			ldi      1
-			ge?     
-			bnt      code_0056
-			pushi    2
-			pushi    128
-			pushi    205
-			callk    Load,  4
-code_0056:
-			pushi    2
-			pushi    128
-			pushi    230
-			callk    Load,  4
-			pushi    #has
-			pushi    1
-			pushi    18
-			lag      ego
-			send     6
-			not     
-			bnt      code_0076
-			pushi    2
-			pushi    128
-			pushi    1
-			callk    Load,  4
-code_0076:
-			pushi    #init
-			pushi    0
-			super    Room,  4
-			lsg      prevRoomNum
-			dup     
-			pToa     north
-			eq?     
-			bnt      code_00b5
-			pushi    225
-			pushi    #-info-
-			pushi    3
-			pushi    319
-			pushi    3
-			pushi    272
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    248
-			callb    proc0_18,  6
-			push    
-			pushi    41
-			callb    proc0_17,  6
-			push    
-			pTos     horizon
-			ldi      2
-			add     
-			push    
-			lag      ego
-			send     8
-			jmp      code_0142
-code_00b5:
-			dup     
-			pToa     south
-			eq?     
-			bnt      code_00c9
-			pushi    #y
-			pushi    1
-			pushi    188
-			lag      ego
-			send     6
-			jmp      code_0142
-code_00c9:
-			dup     
-			pToa     west
-			eq?     
-			bnt      code_00fe
-			pushi    225
-			pushi    #-info-
-			pushi    3
-			dup     
-			pushi    188
-			pushi    3
-			pushi    130
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    125
-			callb    proc0_18,  6
-			push    
-			pTos     horizon
-			ldi      2
-			add     
-			push    
-			callb    proc0_17,  6
-			push    
-			lag      ego
-			send     8
-			jmp      code_0142
-code_00fe:
-			dup     
-			pToa     east
-			eq?     
-			bnt      code_0135
-			pushi    225
-			pushi    #-info-
-			pushi    317
-			pushi    3
-			pushi    178
-			pushi    3
-			pushi    141
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			pushi    113
-			callb    proc0_18,  6
-			push    
-			pTos     horizon
-			ldi      2
-			add     
-			push    
-			callb    proc0_17,  6
-			push    
-			lag      ego
-			send     8
-			jmp      code_0142
-code_0135:
-			pushi    #posn
-			pushi    2
-			pushi    3
-			pushi    137
-			lag      ego
-			send     8
-code_0142:
-			toss    
-			pushi    #init
-			pushi    0
-			lag      ego
-			send     4
-			pushi    0
-			callb    NormalEgo,  0
-			pushi    #init
-			pushi    0
-			lofsa    tree
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    tree1
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    tree2
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    pineTree1
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    trunk
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    smallBush
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    farTree
-			send     4
-			pushi    #init
-			pushi    0
-			lofsa    pineTree2
-			send     4
-			lsg      howFast
-			ldi      1
-			ge?     
-			bnt      code_01c3
-			pushi    #setStep
-			pushi    2
-			pushi    5
-			dup     
-			pushi    131
-			pushi    1
-			class    Walk
-			push    
-			pushi    241
-			pushi    1
-			class    Avoider
-			push    
-			pushi    231
-			pushi    0
-			pushi    18
-			pushi    1
-			pushi    0
-			pushi    242
-			pushi    0
-			pushi    93
-			pushi    0
-			pushi    226
-			pushi    0
-			lofsa    squirrel
-			send     42
-code_01c3:
-			pushi    1
-			lag      howFast
-			add     
-			push    
-			ldi      8
-			mul     
-			sal      local0
-			ldi      0
-			sal      local6
-code_01d1:
-			lsl      local6
-			lal      local0
-			lt?     
-			bnt      code_023e
-			pushi    1
-			lofsa    nutView
-			push    
-			callk    Clone,  2
-			push    
-			lal      local6
-			sali     local11
-code_01e6:
-			pushi    36
-			pushi    2
-			pushi    10
-			pushi    190
-			callk    Random,  4
-			sat      temp0
-			lt?     
-			bnt      code_0202
-			pprev   
-			ldi      130
-			lt?     
-			bnt      code_0202
-			jmp      code_01e6
-code_0202:
-			pushi    164
-			pushi    2
-			pushi    145
-			pushi    185
-			callk    Random,  4
-			sat      temp1
-			lt?     
-			bnt      code_0220
-			pprev   
-			ldi      172
-			lt?     
-			bnt      code_0220
-			jmp      code_0202
-code_0220:
-			pushi    #posn
-			pushi    2
-			lst      temp0
-			lst      temp1
-			pushi    93
-			pushi    0
-			pushi    231
-			pushi    0
-			pushi    226
-			pushi    0
-			lal      local6
-			lali     local11
-			send     20
-			+al      local6
-			jmp      code_01d1
-code_023e:
-			ret     
+		(self style:
+			(switch prevRoomNum
+				(north WIPEDOWN)
+				(west WIPERIGHT)
+				(east WIPELEFT)
+				(south WIPEUP)
+			)
+		)
+		(if (>= howFast 1)
+			(Load VIEW 205)
+		)
+		(Load VIEW 230)
+		(if (not (ego has: iWalnut))
+			(Load VIEW 1)
+		)
+		(super init:)
+		(switch prevRoomNum
+			(north
+				(ego
+					posn:
+						(proc0_17 319 (proc0_18 272 (ego x:) 248) 41)
+						(+ horizon 2)
+				)
+			)
+			(south
+				(ego y: 188)
+			)
+			(west
+				(ego posn:
+					3
+					(proc0_17
+						188
+						(proc0_18 130 (ego y:) 125)
+						(+ horizon 2)
+					)
+				)
+			)
+			(east
+				(ego posn:
+					317
+					(proc0_17
+						178
+						(proc0_18 141 (ego y:) 113)
+						(+ horizon 2)
+					)
+				)
+			)
+			(else
+				(ego posn: 3 137)
+			)
+		)
+		(ego init:)
+		(NormalEgo)
+		(tree init:)
+		(tree1 init:)
+		(tree2 init:)
+		(pineTree1 init:)
+		(trunk init:)
+		(smallBush init:)
+		(farTree init:)
+		(pineTree2 init:)
+		(if (>= howFast 1)
+			(squirrel
+				setStep: 5 5
+				setCycle: Walk
+				setAvoider: Avoider
+				ignoreActors:
+				illegalBits: 0
+				ignoreHorizon:
+				init:
+				stopUpd:
+			)
+		)
+		(= local0 (* (+ 1 howFast) 8))
+		(for ((= local6 0)) (< local6 local0) ((++ local6))
+			(= [local11 local6] (Clone nutView))
+			(while (< 36 (= temp0 (Random 10 190)) 130)
+			)
+			(while (< 164 (= temp1 (Random 145 185)) 172)
+			)
+			([local11 local6] posn: temp0 temp1 init: ignoreActors: stopUpd:)
 		)
 	)
 	
@@ -413,7 +190,9 @@ code_023e:
 									(Print 30 6)
 								)
 							)
-							(else (Print 30 2))
+							(else
+								(Print 30 2)
+							)
 						)
 					)
 				)
