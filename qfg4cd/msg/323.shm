@@ -1,0 +1,14 @@
+;;; Sierra Script
+;;; 323.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_TELL 7)
+(define N_ASK_STAFF 8)
+
+;;; CASES
+
+(define C_STAFF 4)
+(define C_ERANA 3)
+

@@ -45,4 +45,13 @@
 (define V_RATIONS 19)
 (define V_CLOTH 54)
 (define V_THIEF_SIGN 178)
+(define V_HERO_TELL 128)
+(define V_DOMOVOI_TELL 148)
+(define V_CHIEF_TELL 174)
+(define V_INNKEEPER_TELL 146)
+(define V_OLGA_TELL 141)
+(define V_BELLA_TELL 150)
+(define V_CHILD_TELL 151)
+(define V_GNOME_TELL 149)
+(define V_TOWNSPEOPLE_TELL 147)
 

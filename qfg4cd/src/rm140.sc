@@ -293,7 +293,7 @@
 		(if (<= local1 100)
 			(Palette palSET_FLAG 0 255 (= local1 (+ local1 1)))
 			(if (== local1 100)
-				(RemapColors 2 254 60)
+				(RemapColors RemapByPct 254 60)
 				(= local1 101)
 			)
 		)

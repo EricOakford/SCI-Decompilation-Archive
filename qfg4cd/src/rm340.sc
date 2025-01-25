@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 340)
-(include sci.sh)
+(include game.sh) (include "340.shm")
 (use Main)
 (use GloryRm)
 (use TellerIcon)
@@ -59,7 +59,7 @@
 			(chiefThief init: setPri: 53 approachVerbs: 4 2 37 36 66)
 		)
 		(if (== local3 3)
-			(chiefThief posn: 307 117 setCycle: Fwd)
+			(chiefThief posn: 307 117 setCycle: Forward)
 		)
 		(if (Btst 241) (book init: approachVerbs: 4 1))
 		(leftDoor
@@ -74,8 +74,8 @@
 			setPri: 20
 			approachVerbs: 4 41
 		)
-		(torch1 init: setPri: 55 setCycle: Fwd)
-		(torch2 init: setPri: 55 setCycle: Fwd)
+		(torch1 init: setPri: 55 setCycle: Forward)
+		(torch2 init: setPri: 55 setCycle: Forward)
 		(barrel init: setPri: 120 setLoop: 2 1 approachVerbs: 4)
 		(if (Btst 254)
 			(secretPassage init: approachVerbs: 4)
@@ -361,7 +361,7 @@
 		(super init: &rest)
 		(if (OneOf local3 3 4)
 			(heroTeller
-				init: ego 340 35 128
+				init: ego scriptNumber N_RESPONSE V_HERO_TELL
 				(switch local3
 					(3 33)
 					(4 34)
@@ -397,7 +397,7 @@
 			(0
 				(theGame handsOff:)
 				(= gTheObj_2CycleSpeed (ego cycleSpeed?))
-				(ego cycleSpeed: 9 setCycle: Beg self)
+				(ego cycleSpeed: 9 setCycle: BegLoop self)
 			)
 			(1
 				(ego
@@ -457,7 +457,7 @@
 					loop: 1
 					cel: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -480,7 +480,7 @@
 					setCel: 1
 					setMotion: MoveTo local1 120 self
 				)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(2 0)
 			(3 0)
@@ -621,7 +621,7 @@
 				(messager say: 12 28 25 0 self)
 			)
 			(2
-				(drawer init: setPri: 174 setCycle: End self)
+				(drawer init: setPri: 174 setCycle: EndLoop self)
 			)
 			(3
 				(if (Btst 247)
@@ -658,12 +658,12 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gasTrap init: setPri: 200 setCycle: End self)
+				(gasTrap init: setPri: 200 setCycle: EndLoop self)
 			)
 			(1
 				(Bset 14)
 				(= poisonLevel (+ poisonLevel 20))
-				(gasTrap loop: 2 setCycle: End self)
+				(gasTrap loop: 2 setCycle: EndLoop self)
 			)
 			(2
 				(messager say: 32 6 106 0 self)
@@ -705,7 +705,7 @@
 					x: 153
 					y: 130
 					cycleSpeed: 8
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(2
@@ -725,7 +725,7 @@
 					(barrel setMotion: MoveTo 116 148 self)
 				)
 			)
-			(4 4 (ego setCycle: Beg self))
+			(4 4 (ego setCycle: BegLoop self))
 			(5
 				5
 				(ego
@@ -758,7 +758,7 @@
 					init:
 					setPri: 53
 					setLoop: 0 1
-					setCycle: Fwd
+					setCycle: Forward
 					approachVerbs: 4 2 37 36 66
 				)
 				(heroTeller init: ego 340 35 128 1)
@@ -817,7 +817,7 @@
 				else
 					(DisposeScript 648)
 					(if (Btst 182)
-						(explosion init: setPri: 128 setCycle: End self)
+						(explosion init: setPri: 128 setCycle: EndLoop self)
 					else
 						(self changeState: 4)
 					)
@@ -861,7 +861,7 @@
 					)
 					(self changeState: 3)
 				else
-					(explosion init: setPri: 128 setCycle: End self)
+					(explosion init: setPri: 128 setCycle: EndLoop self)
 				)
 			)
 			(1
@@ -959,7 +959,7 @@
 				((curRoom obstacles?) dispose:)
 				(curRoom obstacles: 0)
 				((chiefThief actions?) dispose:)
-				(chiefThief x: 284 y: 117 setLoop: 2 1 setCycle: End self)
+				(chiefThief x: 284 y: 117 setLoop: 2 1 setCycle: EndLoop self)
 			)
 			(1
 				(chiefThief view: 345 loop: 0 cel: 0 posn: 280 119)
@@ -1073,10 +1073,10 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(chiefThief setLoop: 1 1 setCycle: End self)
+				(chiefThief setLoop: 1 1 setCycle: EndLoop self)
 			)
 			(1
-				(ego view: 43 loop: 2 cel: 0 setCycle: End self)
+				(ego view: 43 loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(2 (EgoDead 1 0 960 1 912))
 		)
@@ -1096,7 +1096,7 @@
 				(if (chiefThief actions?)
 					((chiefThief actions?) dispose:)
 				)
-				(chiefThief setLoop: 1 1 setCycle: End self)
+				(chiefThief setLoop: 1 1 setCycle: EndLoop self)
 			)
 			(1
 				(messager say: 32 6 64 0 self)
@@ -1119,7 +1119,7 @@
 				(ego setHeading: 90 self)
 			)
 			(1
-				(ego view: 4 setLoop: 0 1 cel: 0 setCycle: End self)
+				(ego view: 4 setLoop: 0 1 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(if
@@ -1134,7 +1134,7 @@
 					(messager say: 15 4 28 0 self)
 				)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(ego normalize:)
 				(theGame handsOn:)
@@ -1165,7 +1165,7 @@
 						view: 4
 						setLoop: (if register 1 else 0) 1
 						cel: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 			)
@@ -1241,7 +1241,7 @@
 				(if (== register safeMark)
 					(= cycles 1)
 				else
-					(ego setCycle: Beg self)
+					(ego setCycle: BegLoop self)
 				)
 			)
 			(9
@@ -1271,7 +1271,7 @@
 					cycleSpeed: 9
 					setPri: 130
 					setScale: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -1296,7 +1296,7 @@
 					loop: 1
 					cel: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -1305,7 +1305,7 @@
 				(mainFrame setCel: 1)
 				(= cycles 1)
 			)
-			(2 (ego setCycle: Beg self))
+			(2 (ego setCycle: BegLoop self))
 			(3
 				(ego cycleSpeed: gTheObj_2CycleSpeed normalize: 7)
 				(theGame handsOn:)
@@ -1715,11 +1715,7 @@ code_1f71:
 		)
 		(super init: &rest)
 		(chiefTeller
-			init:
-				self
-				340
-				35
-				174
+			init: self scriptNumber N_RESPONSE V_CHIEF_TELL
 				(cond 
 					((and (<= local3 2) (not (Btst 514))) 1)
 					((<= local3 2) 5)

@@ -1,0 +1,14 @@
+;;; Sierra Script
+;;; 322.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_VAMPIRES 45)
+(define C_GNOME 1)
+(define C_TOWN 9)
+
+;;; NOUNS
+
+(define N_TELL 10)
+

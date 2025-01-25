@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 15)
-(include sci.sh)
+(script# CHARSHEET)
+(include game.sh) (include "15.shm")
 (use Main)
 (use DText)
 (use Plane)
@@ -24,13 +24,11 @@
 	newStr
 )
 (instance charSheet of Code
-	(properties)
-	
 	(method (doit)
 		(cast eachElementDo: #perform (ScriptID 90 0) 1)
 		(= theScore score)
 		(Bset 13)
-		(= newStr (Str new:))
+		(= newStr (String new:))
 		(charInitScreen init: show: dispose:)
 		(newStr dispose:)
 		(Bclr 13)
@@ -42,13 +40,12 @@
 		x 100
 		y 142
 		view 142
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(class SheetIcon of Obj
+(class SheetIcon of Object
 	(properties
-		scratch 0
 		text1 0
 		text2 0
 		nameBack 0
@@ -70,16 +67,16 @@
 	)
 	
 	(method (init &tmp temp0)
-		(PalVary pvUNINIT)
-		(= text1 (Str new:))
-		(= text2 (Str new:))
+		(PalVary PalVaryKill)
+		(= text1 (String new:))
+		(= text2 (String new:))
 		(= nameBack (myDText new:))
 		(= nameLow (myDText new:))
 		(= valueBack (myDText new:))
 		(= valueLow (myDText new:))
 		(= maskView [egoStats stat])
 		(= maskLoop 0)
-		(Message msgGET 140 1 0 case 1 (text1 data?))
+		(Message MsgGet 140 1 0 case 1 (text1 data?))
 		(nameBack
 			posn: (- nsLeft 83) nsTop
 			text: (text1 data?)
@@ -108,8 +105,8 @@
 				(valueBack posn: nsLeft nsTop)
 				(valueLow posn: (- nsLeft 1) nsTop)
 			)
-			((== stat 17)
-				(text2 format: {%d/%d} [egoStats 17] (ego maxHealth:))
+			((== stat HEALTH)
+				(text2 format: {%d/%d} [egoStats HEALTH] (ego maxHealth:))
 				(valueBack posn: (- nsLeft 27) nsTop)
 				(valueLow posn: (- nsLeft 28) nsTop)
 			)
@@ -694,9 +691,7 @@
 	)
 )
 
-(instance myDText of DText
-	(properties)
-	
+(instance myDText of DText	
 	(method (dispose &tmp planeCasts theBitmap)
 		(= theBitmap 0)
 		(if bitmap (= theBitmap bitmap) (= bitmap 0))

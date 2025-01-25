@@ -25,7 +25,7 @@
 
 (local
 	[local0 2]
-	local2
+	eventNum
 	theGGX
 	local4
 	local5
@@ -45,7 +45,7 @@
 	)
 	
 	(method (init)
-		(= local2
+		(= eventNum
 			(cond 
 				((not (Btst 126)) 1)
 				(
@@ -270,9 +270,9 @@
 		(jug init: setCycle: Fwd)
 		(if
 			(or
-				(== local2 1)
+				(== eventNum 1)
 				(and
-					(OneOf local2 2 4 5 6 7 10 11 12)
+					(OneOf eventNum 2 4 5 6 7 10 11 12)
 					(OneOf timeODay 4 5)
 				)
 			)
@@ -286,9 +286,9 @@
 		)
 		(if
 			(or
-				(== local2 1)
+				(== eventNum 1)
 				(and
-					(OneOf local2 2 4 5 6 7 8 9 10 11 12)
+					(OneOf eventNum 2 4 5 6 7 8 9 10 11 12)
 					(or (OneOf timeODay 4 5) (<= timeODay 3))
 				)
 			)
@@ -301,19 +301,19 @@
 		)
 		(if
 			(or
-				(== local2 1)
+				(== eventNum 1)
 				(and
-					(OneOf local2 2 6 7 8 9 10 11 12)
+					(OneOf eventNum 2 6 7 8 9 10 11 12)
 					(or (OneOf timeODay 4 5) (<= timeODay 3))
 				)
 			)
 			(bella init: approachVerbs: 4)
 		)
-		(if (OneOf local2 4 5)
+		(if (OneOf eventNum 4 5)
 			(gnome init: approachVerbs: 4 setPri: 180)
 		)
-		(if (== local2 9) (child init: approachVerbs: 4))
-		(if (OneOf local2 3 13 15)
+		(if (== eventNum 9) (child init: approachVerbs: 4))
+		(if (OneOf eventNum 3 13 15)
 			(domovoi init: approachVerbs: 4 2)
 		)
 		(super init: &rest)
@@ -443,7 +443,7 @@
 				(if
 					(and
 						(< (ego y?) 105)
-						(or local12 (OneOf local2 1 4 5))
+						(or local12 (OneOf eventNum 1 4 5))
 					)
 					(= state 3)
 					(= local11 1)
@@ -456,10 +456,10 @@
 			(1
 				1
 				(if
-				(OneOf local2 1 2 3 4 5 6 7 8 9 10 11 12 13 15 16)
-					((ScriptID 324 0) init: local2 ego 324)
+				(OneOf eventNum 1 2 3 4 5 6 7 8 9 10 11 12 13 15 16)
+					((ScriptID 324 0) init: eventNum ego 324)
 				)
-				(switch local2
+				(switch eventNum
 					(1
 						(Bset 126)
 						(if Night
@@ -504,11 +504,11 @@
 						(messager say: 22 6 29)
 					)
 				)
-				(if (not (== local2 4)) (= cycles 1))
+				(if (not (== eventNum 4)) (= cycles 1))
 			)
 			(2
 				2
-				(if (== local2 14)
+				(if (== eventNum 14)
 					(messager say: 22 6 108 0 self)
 				else
 					(= cycles 1)
@@ -654,7 +654,7 @@
 				(bedroomDoor setCycle: End self)
 			)
 			(2
-				(if (== local2 5)
+				(if (== eventNum 5)
 					(self setScript: sGnomeLeaves self)
 				else
 					(= cycles 1)
@@ -812,14 +812,14 @@
 			(3
 				3
 				(Bclr 162)
-				(if (== local2 4)
+				(if (== eventNum 4)
 					(messager say: 25 6 38 0 self)
 				else
 					(messager say: 25 6 40 0 self)
 				)
 			)
 			(4
-				(if (== local2 4)
+				(if (== eventNum 4)
 					(messager say: 25 6 36 0 self)
 				else
 					(messager say: 25 6 37 0 self)
@@ -827,7 +827,7 @@
 			)
 			(5
 				(= state 5)
-				(if (== local2 4)
+				(if (== eventNum 4)
 					(messager say: 25 6 35 0 self)
 				else
 					(messager say: 25 6 41 0 self)
@@ -941,8 +941,8 @@
 					(and
 						(cast contains: bella)
 						(or
-							(OneOf local2 6 7 8 9 11 12)
-							(and (OneOf local2 1 2 10) (< freeMeals 2))
+							(OneOf eventNum 6 7 8 9 11 12)
+							(and (OneOf eventNum 1 2 10) (< freeMeals 2))
 						)
 					)
 					(bella setCycle: Walk setMotion: MoveTo 193 159 self)
@@ -980,7 +980,7 @@
 			(15
 				15
 				(tray init: setPri: 175)
-				(if (OneOf local2 1 2 6 10)
+				(if (OneOf eventNum 1 2 6 10)
 					(bella loop: 1 cel: 0 setCycle: End self)
 				else
 					(= cycles 2)
@@ -988,7 +988,7 @@
 			)
 			(16
 				16
-				(if (OneOf local2 7 8 9 11 12)
+				(if (OneOf eventNum 7 8 9 11 12)
 					(bella setScript: sBellaIncidental)
 					(self changeState: 19)
 				else
@@ -1026,7 +1026,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(switch local2
+				(switch eventNum
 					(7
 						(messager say: 23 6 32 0 self)
 					)
@@ -1041,11 +1041,11 @@
 				)
 			)
 			(1
-				(if (== local2 8) ((ego actions?) dispose:))
+				(if (== eventNum 8) ((ego actions?) dispose:))
 				(= cycles 1)
 			)
 			(2
-				(if (== local2 8) ((ScriptID 324 0) init: 16 ego 324))
+				(if (== eventNum 8) ((ScriptID 324 0) init: 16 ego 324))
 				(= cycles 1)
 			)
 			(3
@@ -1236,7 +1236,7 @@
 				(messager say: 12 6 100 0 self)
 			)
 			(5
-				(if (== local2 5)
+				(if (== eventNum 5)
 					(self setScript: sGnomeLeaves self)
 				else
 					(= cycles 1)
@@ -1317,8 +1317,8 @@
 					((and (Btst 146) (not (cast contains: gnome))) (messager say: 9 4 8) (return 1))
 					(
 						(or
-							(<= local2 3)
-							(and (== local2 10) (not (Btst 129)))
+							(<= eventNum 3)
+							(and (== eventNum 10) (not (Btst 129)))
 							(cast contains: gnome)
 						)
 						(messager say: 9 4 103)
@@ -1375,9 +1375,9 @@
 				12
 				(if (ego has: 13) else (ego has: 24))
 				10
-				(if (<= local2 13) else (>= local2 15))
+				(if (<= eventNum 13) else (>= eventNum 15))
 				17
-				(if (== local2 14) (not (Btst 137)) else 0)
+				(if (== eventNum 14) (not (Btst 137)) else 0)
 		)
 	)
 )
@@ -1396,8 +1396,8 @@
 	
 	(method (init)
 		(super init: &rest)
-		(if (OneOf local2 7 8 9 11 12)
-			((ScriptID 323 0) init: local2 self 323)
+		(if (OneOf eventNum 7 8 9 11 12)
+			((ScriptID 323 0) init: eventNum self 323)
 		)
 	)
 	
@@ -1414,7 +1414,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(2
-				(if (OneOf local2 1 2 10)
+				(if (OneOf eventNum 1 2 10)
 					(messager say: 22 6 27)
 				else
 					(super doVerb: theVerb)
@@ -1442,9 +1442,9 @@
 	)
 	
 	(method (init)
-		(if (== local2 5) (= view 322) (= loop 4) (= cel 0))
+		(if (== eventNum 5) (= view 322) (= loop 4) (= cel 0))
 		(super init: &rest)
-		((ScriptID 322 0) init: local2 self 322)
+		((ScriptID 322 0) init: eventNum self 322)
 	)
 	
 	(method (handleEvent event)
@@ -1472,7 +1472,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		((ScriptID 324 1) init: local2 self 324)
+		((ScriptID 324 1) init: eventNum self 324)
 	)
 )
 
@@ -1490,7 +1490,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		((ScriptID 321 0) init: local2 self 321)
+		((ScriptID 321 0) init: eventNum self 321)
 	)
 	
 	(method (handleEvent event)
@@ -1543,7 +1543,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		((ScriptID 323 1) init: local2 self 323)
+		((ScriptID 323 1) init: eventNum self 323)
 	)
 	
 	(method (handleEvent event)
@@ -1572,7 +1572,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		((ScriptID 322 1) init: local2 self 322)
+		((ScriptID 322 1) init: eventNum self 322)
 	)
 )
 
@@ -1641,8 +1641,8 @@
 							((and (not (cast contains: gnome)) (Btst 146)) (messager say: 9 4 8) (return 1))
 							(
 								(or
-									(<= local2 3)
-									(and (== local2 10) (not (Btst 129)))
+									(<= eventNum 3)
+									(and (== eventNum 10) (not (Btst 129)))
 									(cast contains: gnome)
 								)
 								(messager say: 9 4 103)
@@ -1660,8 +1660,8 @@
 							((and (not (cast contains: gnome)) (Btst 146)) (messager say: 9 4 8) (return 1))
 							(
 								(or
-									(<= local2 3)
-									(and (== local2 10) (not (Btst 129)))
+									(<= eventNum 3)
+									(and (== eventNum 10) (not (Btst 129)))
 									(cast contains: gnome)
 								)
 								(messager say: 9 4 103)

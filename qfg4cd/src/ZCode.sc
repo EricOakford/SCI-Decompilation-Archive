@@ -9,7 +9,6 @@
 )
 
 (instance ZCode of Code
-	
 	(method (doit param1 param2)
 		(if (not (== curRoomNum 470))
 			(cond 

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 321)
-(include sci.sh)
+(include game.sh) (include "321.shm")
 (use Main)
 (use TellerIcon)
 (use System)
@@ -14,16 +14,13 @@
 		title 1
 	)
 	
-	(method (init param1 param2 param3)
+	(method (init eventNum obj msgFile)
 		(= talker (ScriptID 98 0))
 		(super
-			init:
-				param2
-				param3
-				11
-				146
-				(switch param1
-					(1 3)
+			init: obj msgFile
+				N_TELL V_INNKEEPER_TELL
+				(switch eventNum
+					(1 N_ASK_FIRST)
 					(2 4)
 					(4 2)
 					(5 1)

@@ -1,0 +1,22 @@
+;;; Sierra Script
+;;; 321.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ASK_TOWN 13)
+(define N_ASK_FIRST 3)
+(define N_TELL 11)
+(define N_ASK_2 4)
+
+;;; CASES
+
+(define C_MONASTERY 25)
+(define C_GNOME_GONE 1)
+(define C_GNOME_HERE 2)
+(define C_INN 3)
+(define C_NAME 4)
+(define C_INNKEEPER 6)
+(define C_WIFE 7)
+(define C_TOWN 22)
+

@@ -34,7 +34,7 @@
 
 (instance glryInit of Code
 	(method (init &tmp [temp0 2])
-		(RemapColors 5 66 20)
+		(RemapColors RemapExcludeRange 66 20)
 		(User
 			alterEgo: ego
 			canControl: FALSE

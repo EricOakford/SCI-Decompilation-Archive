@@ -1,0 +1,15 @@
+;;; Sierra Script
+;;; 340.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+
+;;; NOUNS
+
+(define N_ASK 37)
+(define N_RESPONSE 35)
+(define N_BOOK 36)
+(define N_ASK_CHIEF_1 1)
+(define N_ASK_CHIEF_2 2)
+

@@ -1,0 +1,11 @@
+;;; Sierra Script
+;;; 310.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+
+;;; CASES
+
+(define C_RUMORS 45)
+
