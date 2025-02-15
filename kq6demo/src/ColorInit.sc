@@ -13,28 +13,32 @@
 	(method (init)
 		(if (> (Graph GDetect) 16)
 			(Bset fIsVGA)
-			(= colBlack (Palette PALMatch 31 31 31))
-			(= colGray1 (Palette PALMatch 63 63 63))
-			(= colGray2 (Palette PALMatch 95 95 95))
-			(= colGray3 (Palette PALMatch 127 127 127))
-			(= colGray4 (Palette PALMatch 159 159 159))
-			(= colGray5 (Palette PALMatch 191 191 191))
-			(= colWhite (Palette PALMatch 223 223 223))
-			(= colDRed (Palette PALMatch 151 27 27))
-			(= colLRed (Palette PALMatch 231 103 103))
-			(= colVLRed (Palette PALMatch 235 135 135))
-			(= colDYellow (Palette PALMatch 187 187 35))
-			(= colYellow (Palette PALMatch 219 219 39))
-			(= colLYellow (Palette PALMatch 223 223 71))
-			(= colDGreen (Palette PALMatch 27 151 27))
-			(= colLGreen (Palette PALMatch 71 223 71))
-			(= colVLGreen (Palette PALMatch 135 235 135))
-			(= colDBlue (Palette PALMatch 23 23 119))
-			(= colBlue (Palette PALMatch 35 35 187))
-			(= colLBlue (Palette PALMatch 71 71 223))
-			(= colVLBlue (Palette PALMatch 135 135 235))
-			(= colMagenta (Palette PALMatch 219 39 219))
-			(= colCyan (Palette PALMatch 27 151 151))
+			;                                   red grn blu   	# in std palette
+			(= colBlack			(Palette PALMatch  31  31  31))	; 1
+			(= colGray1			(Palette PALMatch  63  63  63))	; 2 is darkest gray
+			(= colGray2			(Palette PALMatch  95  95  95))	; 3
+			(= colGray3			(Palette PALMatch 127 127 127))	; 4
+			(= colGray4			(Palette PALMatch 159 159 159))	; 5
+			(= colGray5			(Palette PALMatch 191 191 191))	; 6 is lightest gray
+			(= colWhite			(Palette PALMatch 223 223 223))	; 7
+			(= colDRed			(Palette PALMatch 151  27  27))	; 10
+			(= colLRed			(Palette PALMatch 231 103 103))	; 14
+			(= colVLRed			(Palette PALMatch 235 135 135))	; 15
+			(= colDYellow		(Palette PALMatch 187 187  35))	; 27
+			(= colYellow		(Palette PALMatch 219 219  39))	; 28
+			(= colLYellow		(Palette PALMatch 223 223  71))	; 29
+			;(= colVDGreen		(Palette PALMatch  15  87  15))  ; 32	
+			(= colDGreen		(Palette PALMatch  27 151  27))	; 34
+			(= colLGreen		(Palette PALMatch  71 223  71))	; 37
+			(= colVLGreen		(Palette PALMatch 135 235 135))	; 39		
+			(= colDBlue			(Palette PALMatch  23  23 119))	; 49
+			(= colBlue			(Palette PALMatch  35  35 187))	; 51
+			(= colLBlue			(Palette PALMatch  71  71 223))	; 53
+			(= colVLBlue		(Palette PALMatch 135 135 235))	; 55
+			(= colMagenta		(Palette PALMatch 219  39 219))	; 60
+			;(= colLMagenta		(Palette PALMatch 223  71 223))	; 61
+			(= colCyan			(Palette PALMatch 27 151 151))  ; 42
+			;(= colLCyan			(Palette PALMatch	135 235 235))	; 47
 		else
 			(= colBlack vBLACK)
 			(= colBlue vBLUE)

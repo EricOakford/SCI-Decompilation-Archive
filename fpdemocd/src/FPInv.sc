@@ -78,8 +78,7 @@
 	)
 )
 
-(instance resetInv of Code
-	
+(instance resetInv of Code	
 	(method (doit who &tmp i what temp2 temp3)
 		(= temp3 0)
 		(= theOwner who)
