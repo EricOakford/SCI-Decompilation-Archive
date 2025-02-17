@@ -117,7 +117,7 @@
 (define DERIV_X			200)	;Health, Stamina, Mana, and Experience
 (define EXPER_Y			141)			
 (define HEALTH_Y		153)
-(define STAMINA_Y		167)
+(define STAMINA_Y		165)
 (define MANA_Y			177)
 
 (instance theCharSheet of Code
